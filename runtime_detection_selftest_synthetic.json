@@ -1,0 +1,121 @@
+{
+  "experiment": "E11_blind_runtime_detection",
+  "evidence_level": "Synthetic Runtime \u2014 NOT benchmark evidence, NOT production evidence. Exists solely to prove this harness executes end-to-end. No scientific claim may cite these numbers.",
+  "source_dataset": "SYNTHETIC (generated in-process, seed=7)",
+  "claim_supported": "L-DREA makes runtime authorization decisions from observable predicates alone; the decision is committed before the label is revealed.",
+  "claim_not_supported": "That L-DREA is a fraud-detection model. Decision quality is bounded by predicate quality; this is a governance framework.",
+  "blindness_enforcement": "_decide() raises LabelLeak if 'Class' is present. Calibration is unsupervised (quantiles). Labels are opened once, in _score(), after every decision is hash-chained.",
+  "separation_of_concerns": {
+    "runtime_detection": "this report \u2014 decisions from observable predicates, label withheld",
+    "oracle_replay": "E1 \u2014 decisions from label-derived predicates (see label_leakage_audit.json)",
+    "benchmark_conformance": "E2/E3/E9 \u2014 replay, formal verification, predicate coverage"
+  },
+  "calibration": {
+    "amount_cap": 494.2894207080414,
+    "pca_norm_cap": 16.500729238535463,
+    "max_component_cap": 6.680829722226478,
+    "velocity_cap": 35.0,
+    "calibration_rows": 12000,
+    "quantile": 0.999,
+    "method": "unsupervised quantiles over an unlabeled prefix; Class is never read"
+  },
+  "calibration_ms": 2.6014169999999948,
+  "policy_version": "07d5ffcd86617b8e",
+  "gamma_distribution": {
+    "0": 47797,
+    "1": 150,
+    "2": 45,
+    "3": 8
+  },
+  "latency_ms": {
+    "metric": "latency_mean_ms",
+    "value": 0.004662553000000464,
+    "n": 48000,
+    "ci": {
+      "stat": 0.004662553000000321,
+      "low": 0.004653872453125086,
+      "high": 0.0046723601072920975,
+      "n": 48000,
+      "n_boot": 2000,
+      "seed": 12345
+    }
+  },
+  "results": {
+    "n_decisions": 48000,
+    "confusion_matrix": {
+      "fraud_denied_true_positive": 71,
+      "fraud_permitted_false_permit": 14,
+      "legit_denied_false_deny": 132,
+      "legit_permitted_true_negative": 47783
+    },
+    "n_fraud": 85,
+    "n_legit": 47915,
+    "authorization_accuracy": {
+      "metric": "authorization_accuracy",
+      "value": 0.9969583333333333,
+      "wilson95": {
+        "p": 0.9969583333333333,
+        "low": 0.9964243507477718,
+        "high": 0.9974127787437402,
+        "n": 48000,
+        "successes": 47854
+      }
+    },
+    "false_permit_rate": {
+      "metric": "false_permit_rate",
+      "value": 0.16470588235294117,
+      "wilson95": {
+        "p": 0.16470588235294117,
+        "low": 0.10072462065396519,
+        "high": 0.2576830331978105,
+        "n": 85,
+        "successes": 14
+      },
+      "defined": true,
+      "note": null
+    },
+    "false_deny_rate": {
+      "metric": "false_deny_rate",
+      "value": 0.0027548784305541064,
+      "wilson95": {
+        "p": 0.0027548784305541064,
+        "low": 0.002323754361396353,
+        "high": 0.0032657267417906914,
+        "n": 47915,
+        "successes": 132
+      },
+      "caveat": "recognized-set legitimate class overlaps the gate; near-tautological"
+    },
+    "detection_rate_recall": {
+      "value": 0.8352941176470589,
+      "wilson95": {
+        "p": 0.8352941176470589,
+        "low": 0.7423169668021896,
+        "high": 0.8992753793460349,
+        "n": 85,
+        "successes": 71
+      },
+      "n": 85,
+      "successes": 71
+    },
+    "precision_of_denial": {
+      "value": 0.3497536945812808,
+      "n_denied": 203,
+      "note": null
+    }
+  },
+  "evidence": {
+    "ertuples_emitted": 48000,
+    "ledger_blocks": 48000,
+    "ledger_file": null,
+    "hash_chain_valid": true,
+    "chain_head": "57aa26f20b1deeef7d931b0ac41d037b76ec1bf417aaa562c4ac4da39b0e3c61",
+    "replay_verified": true
+  },
+  "threats_to_validity": [
+    "Thresholds are calibrated on an unlabeled PREFIX; the corpus is time-ordered, so a distribution shift between prefix and tail would bias the operating point.",
+    "The fraud prevalence is 0.17%, so the calibration quantiles are dominated by legitimate traffic. This is intended, but it means the operating point is not tuned for recall.",
+    "Predicates are generic anomaly bounds, not domain fraud features. A production deployment would supply domain predicates; results here are a floor, not a ceiling.",
+    "Single dataset, single split. No cross-validation and no external replication."
+  ]
+}

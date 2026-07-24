@@ -1,0 +1,7 @@
+metric,adverse_events,n,reported_rate,wilson95_cc_upper,engine_rederived_point,provenance
+false_permit_rate,0,492,0.0,0.013117879,0.0,PASS
+false_denial_rate,0,284315,0.0,2.29687e-05,0.0,PASS
+replay_determinism_rate,0,284807,1.0,2.29289e-05,1.0,PASS
+revocation_compliance,0,284807,1.0,2.29289e-05,1.0,PASS
+toctou_violation_rate,0,284807,0.0,2.29289e-05,0.0,PASS
+class_veto_effectiveness,0,492,1.0,0.013117879,1.0,PASS

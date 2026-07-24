@@ -1,0 +1,8 @@
+{
+  "scope": "DET-1: determinism of the authorization decision given fixed candidate+context",
+  "n_candidate_actions_replayed": 1,
+  "n_authorization_decisions": 0,
+  "replay_deterministic": true,
+  "verdict": "PASS",
+  "note": "Replay reproduced the decision stream bit-for-bit. Note: 0 authorization decisions in this run (no EEA proposed), so replay of the Gamma decision path was trivial; the read-only pass-through was reproduced identically."
+}

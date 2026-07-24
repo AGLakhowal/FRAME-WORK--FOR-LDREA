@@ -1,0 +1,284 @@
+{
+  "spec": "FULL_SPEC.md \u2014 Gamma G-0 Runtime Governance v1.0",
+  "substrate_tier": "Tier-S (software root of trust); Tier-H hardware interlock = \u00a76/\u00a715 future",
+  "corrected_flow_5": [
+    "1_capability_isolation",
+    "2_predicate_evaluation_G",
+    "3_non_compensatory_gamma_max",
+    "4_execution_binding",
+    "5_dual_permit_gate",
+    "6_fail_closed_resolution",
+    "7_proof_before_action_log"
+  ],
+  "aggregation_1_2": "\u0393 = max(1-g\u1d62) over node gates \u222a \u00a77.1 bands \u222a AIS \u222a class-veto (non-compensatory)",
+  "confusion_matrix": {
+    "true_permits": 284315,
+    "true_denials": 492,
+    "false_permits": 0,
+    "false_denials": 0
+  },
+  "acceptance_bands_7_1": {
+    "ICS>=0.90": {
+      "fail_rows_total": 0,
+      "fail_on_should_permit": 0,
+      "fail_on_should_deny": 0,
+      "all_hold": true
+    },
+    "PR_LCB>=0.80": {
+      "fail_rows_total": 492,
+      "fail_on_should_permit": 0,
+      "fail_on_should_deny": 492,
+      "all_hold": true
+    },
+    "DeltaV<=0": {
+      "fail_rows_total": 0,
+      "fail_on_should_permit": 0,
+      "fail_on_should_deny": 0,
+      "all_hold": true
+    },
+    "C>=C_STAR(0.85)": {
+      "fail_rows_total": 0,
+      "fail_on_should_permit": 0,
+      "fail_on_should_deny": 0,
+      "all_hold": true
+    },
+    "cycle_latency<=100ms": {
+      "fail_rows_total": 0,
+      "fail_on_should_permit": 0,
+      "fail_on_should_deny": 0,
+      "all_hold": true
+    },
+    "AIS>=0.99 (\u00a76.12 audit-as-control)": {
+      "value": 1.0,
+      "subsignals": {
+        "chain_integrity": 1.0,
+        "storage_availability": 1.0,
+        "signature_health": 1.0,
+        "time_sync": 1.0,
+        "retention_horizon": 1.0
+      },
+      "all_hold": true,
+      "implemented": true,
+      "note": "live composite = min(chain_integrity, storage_availability, signature_health, time_sync, retention_horizon) \u2014 a degrade in any sub-signal drops AIS<0.99 \u2192 \u0393>0 \u2192 run-wide fail-closed"
+    },
+    "CI_WIDTH<=0.03 (run-level)": {
+      "value": 1.34878e-05,
+      "all_hold": true
+    },
+    "PTP_skew<=1ms (run-level)": {
+      "value_ms": 1.0,
+      "all_hold": true
+    },
+    "ER_LOCAL==1.0 (run-level)": {
+      "value": 1.0,
+      "all_hold": true
+    }
+  },
+  "all_acceptance_bands_hold": true,
+  "audit_as_control_6_12": {
+    "implemented": true,
+    "AIS_value": 1.0,
+    "subsignals": {
+      "chain_integrity": 1.0,
+      "storage_availability": 1.0,
+      "signature_health": 1.0,
+      "time_sync": 1.0,
+      "retention_horizon": 1.0
+    },
+    "rule": "AIS = min(five sub-signals); AIS<0.99 \u2192 \u0393>0 \u2192 run-wide fail-closed (\u00a70.10)"
+  },
+  "metrics_11_1": {
+    "UER": {
+      "events": 0,
+      "n": 284807,
+      "rate": 0.0,
+      "wilson95_upper": 1.3487755e-05
+    },
+    "FPR": {
+      "events": 0,
+      "n": 492,
+      "rate": 0.0,
+      "wilson95_upper": 0.007747353014
+    },
+    "FDR": {
+      "events": 0,
+      "n": 284315,
+      "rate": 0.0,
+      "wilson95_upper": 1.3511095e-05
+    },
+    "DR": {
+      "rate": 1.0,
+      "note": "hash-chain replay determinism (DET-1)"
+    },
+    "FCR": {
+      "rate": 1.0,
+      "events_failopen": 0,
+      "n": 492
+    },
+    "SVR": {
+      "events": 0,
+      "n": 284807,
+      "rate": 0.0,
+      "wilson95_upper": 1.3487755e-05,
+      "note": "Safety Violation Rate = P(execute \u2227 \u0393>0)"
+    },
+    "FFC_gamma_compliance": {
+      "denied_of_gamma_pos": 492,
+      "gamma_positive": 492,
+      "rate": 1.0,
+      "note": "\u0393-compliance = P(\u0177=0 | \u0393>0)"
+    }
+  },
+  "three_signal_closure_6_7": {
+    "formula": "P_phys = SIG_COMMIT \u2227 SIG_GAMMA \u2227 SIG_WATCHDOG",
+    "sig_commit_rows": 284807,
+    "sig_gamma_permit_rows": 284315,
+    "sig_watchdog_rows": 284807,
+    "p_phys_admitted_rows": 284315,
+    "closure_violations": 0,
+    "note": "SIG_WATCHDOG = deadline monitor (Latency_ms \u2264 100ms). Software (Tier-S) analog of the Tier-H hardware interlock."
+  },
+  "window_identifier_6_10": {
+    "definition": "WID(T) = (boot_nonce, monotonic_counter)",
+    "boot_nonce": "d6cd7d7bacb4f714",
+    "monotonic_counter_range": [
+      0,
+      284806
+    ],
+    "sample": [
+      {
+        "seq": 0,
+        "wid": "d6cd7d7bacb4f714:0"
+      },
+      {
+        "seq": 1,
+        "wid": "d6cd7d7bacb4f714:1"
+      },
+      {
+        "seq": 2,
+        "wid": "d6cd7d7bacb4f714:2"
+      }
+    ],
+    "provides": "ordering, replay linkage, anti-rollback (\u00a76.10)"
+  },
+  "det_invariants_and_absorption": {
+    "DET1_decision_determinism": "identical x \u2192 identical decision (replay/hash-chain)",
+    "DET2_same_cycle_commit": "commit-before-actuate; hardware interlock at Tier-H (WAL at Tier-S)",
+    "DET3_fail_closed_default": "\u0393>0 \u2192 SAFE_STATE",
+    "DET4_audit_chain_continuity": "append-only hash-chained Hydra Ledger",
+    "DET5_bounded_enforcement_horizon": "authz lifetime \u2264 min(revocation, TTL)",
+    "safe_state_absorption_0_10": {
+      "structural_inertness": "no new externalizations admit",
+      "audit_continuity": "hash chain unbroken across absorption (signed entry)",
+      "non_default_permit": "no path to externalize without fresh TAU-Node attestation",
+      "recovery": "only via signed TAU-Node re-attestation \u2192 new manifest epoch",
+      "synchrony": "bounded synchrony; excess latency \u2192 absorption, never bypass"
+    }
+  },
+  "det5_revocation_9": {
+    "DET5_bounded_enforcement_horizon": "authorization lifetime \u2264 min(revocation arrival, permit TTL); collapses to TTL under partition (deterministic timeout, not consensus)",
+    "REVOC_P95_ms": 16.098,
+    "REVOC_P50_ms": 8.36,
+    "REVOC_P99_ms": 19.247,
+    "revocation_drill": "configurable topology, defined injection, measured endpoints",
+    "high_commission": "single-authority root (patent [0006],[0021], claim 3)",
+    "testbed": "simulated-fleet (live High Commission is \u00a79/\u00a715 future)"
+  },
+  "theorem_family_1_11": {
+    "theorems": {
+      "T0": "Bridge Equivalence  \u0393=max_k(d_k) \u2261 \u039b(G)=\u22c0_k \u03bb_k",
+      "T1": "Deterministic Authorization",
+      "T2": "Fail-Closed Composition",
+      "T3": "Non-Compensatory Soundness",
+      "T4": "Non-Bypassability (P_phys = SIG_COMMIT \u2227 SIG_GAMMA \u2227 SIG_WATCHDOG)",
+      "T5": "Replay Closure",
+      "T6": "Model-Substitution Invariance",
+      "T7": "TOCTOU State-Consistency",
+      "T8": "Composite Conservation Stability",
+      "T9": "Concurrence Closure"
+    },
+    "instantiated_by_runtime_invariants": {
+      "I1_execution_sovereignty": {
+        "theorems": [
+          "T3",
+          "T4"
+        ],
+        "violations": 0
+      },
+      "I2_non_bypassability": {
+        "theorems": [
+          "T4"
+        ],
+        "violations": 0
+      },
+      "I3_non_compensatory_soundness": {
+        "theorems": [
+          "T0",
+          "T3",
+          "T9"
+        ],
+        "violations": 0
+      },
+      "I4_class_level_veto": {
+        "theorems": [
+          "T3",
+          "T8"
+        ],
+        "violations": 0
+      },
+      "I5_toctou_state_consistency": {
+        "theorems": [
+          "T7"
+        ],
+        "violations": 0
+      },
+      "I6_runtime_sovereignty": {
+        "theorems": [
+          "T1",
+          "T2",
+          "T5",
+          "T6"
+        ],
+        "violations": 0
+      }
+    },
+    "all_invariants_hold": true,
+    "concordance_source": "Paper A Appendix G \u00a72 (theorem\u2192invariant)",
+    "note": "The T0-T9 theorems are proved in Paper A, NOT in this repo. Here the six runtime invariants I1-I6 that instantiate the theorem family all hold (6/6, 0 violations)."
+  },
+  "tlc_10": {
+    "total_states_explored": 2489446,
+    "distinct_reachable_states": 40192,
+    "max_clock_skew": 1,
+    "violation_count": 0,
+    "invariant_1": "no reachable state has \u0393>0 \u2227 execute (LTL global safety)",
+    "verification_tier": "tier0_attestation_consistency_only",
+    "source": "Paper A Appendix A TLC log (Zenodo 20369438); bounded model + inductive-invariant argument for unbounded",
+    "note": "distinct_reachable_states & max_clock_skew are attested from Paper A; supply --tlc-log to the base runner to machine-verify them here."
+  },
+  "operational_continuity_8": {
+    "precedence_strictest_to_permissive": [
+      "TVE",
+      "DFP",
+      "CDM",
+      "ASG",
+      "ASR",
+      "BER"
+    ],
+    "TVE": "Temporal Validity Enforcement \u2014 permits are time-bound (underlies \u00a79 partition bound)",
+    "DFP": "Deterministic Fallback Protocols \u2014 rule-based path when AI untrusted",
+    "CDM": "Context Degradation Modes \u2014 full \u2192 constrained \u2192 safe",
+    "ASG": "Action-Specific Gating \u2014 block one action; whitelisted APIs continue",
+    "ASR": "Active State Resolution \u2014 bounded recovery within SLA (ERT \u2264 N-cycle)",
+    "BER": "Bounded Execution Radius \u2014 blast-radius cap"
+  },
+  "full_spec_verdict": {
+    "false_permits_zero": true,
+    "UER_zero": true,
+    "SVR_zero": true,
+    "gamma_compliance_1_0": true,
+    "all_7_1_bands_enforced_and_hold": true,
+    "three_signal_closure_no_violations": true,
+    "verdict": "FULL_SPEC_CONFORMANT (Tier-S)"
+  }
+}

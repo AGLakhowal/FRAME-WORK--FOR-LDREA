@@ -1,0 +1,56 @@
+{
+  "artifact": "experiments/combined_ablation/combined_statistics.csv",
+  "generation_timestamp_utc": "2026-07-11T11:24:54Z",
+  "git": {
+    "commit_sha": "50d2bc4ae93d8999488dbeac671aed29df8677b9",
+    "commit_sha_short": "50d2bc4ae93d",
+    "branch": "main",
+    "dirty": true,
+    "dirty_note": "working tree has uncommitted changes at generation time \u2014 the artifact corresponds to the tree, not to the commit alone"
+  },
+  "dataset_sha256": {
+    "UNSW-NB15": {
+      "path": "dataset/ieee-fraud-detection/CSV Files/Training and Testing Sets/UNSW_NB15_testing-set.csv",
+      "sha256": "734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559",
+      "size_bytes": 15380800,
+      "mtime_ns": 1783684817021853401,
+      "hash_seconds": 0.01
+    },
+    "ULB": {
+      "path": "dataset/ieee-fraud-detection/creditcard.csv",
+      "sha256": "76274b691b16a6c49d3f159c883398e03ccd6d1ee12d9d8ee38f4b4b98551a89",
+      "size_bytes": 150828752,
+      "mtime_ns": 1783684975585582809,
+      "hash_seconds": 0.11
+    },
+    "IEEE-CIS": {
+      "path": "dataset/ieee-fraud-detection/train_transaction.csv",
+      "sha256": "3a5c83ab6b3cc13dcabe5ffa9f522307fd5f7f7b6e6f6a60c32284ca6283d642",
+      "size_bytes": 683351067,
+      "mtime_ns": 1783684511278869266,
+      "hash_seconds": 0.49
+    }
+  },
+  "experiment_seed": 20260710,
+  "experiment_version": "E5b/combined-ablation/2.0-publication",
+  "generator_script": "experiment_combined_ablation.py",
+  "generator_script_sha256": "5dda430b482a87d46c65364cc2bedad074788d660b4628f217e16e792364dac9",
+  "environment": {
+    "python_version": "3.9.6",
+    "python_implementation": "CPython",
+    "python_executable": "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "runtime_version": "CPython 3.9.6",
+    "hostname": "mac.lan",
+    "os": "macOS-26.5.1-arm64-arm-64bit",
+    "system": "Darwin",
+    "machine": "arm64",
+    "processor": "arm",
+    "cpu_count": 10
+  },
+  "command_executed": "python3 generate_provenance_metadata.py",
+  "reproduce_with": "python3 experiment_combined_ablation.py",
+  "status": "PRESENT",
+  "sha256": "966a359e471213b9c9617ccaef9bb0b41b0b84bac45cb3bfd666cf5a21e7ff04",
+  "size_bytes": 73436,
+  "modified_utc": "2026-07-11T11:15:16Z"
+}

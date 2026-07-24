@@ -1,0 +1,43 @@
+[combined-ablation] n=6000 configs=19 governance=per-config
+  [baseline_full_LDREA     ] fpr=0.519 recall=0.481 cov=0.700 ev=1.000 ledger=1.000 revoc=1.000 RIS-pending (4.0s)
+  [remove_PE               ] fpr=1.000 recall=0.000 cov=0.000 ev=1.000 ledger=1.000 revoc=1.000 RIS-pending (1.8s)
+  [remove_RV               ] fpr=0.519 recall=0.481 cov=0.700 ev=1.000 ledger=1.000 revoc=0.000 RIS-pending (3.3s)
+  [remove_EQ               ] fpr=0.519 recall=0.481 cov=0.700 ev=0.000 ledger=n/a revoc=1.000 RIS-pending (3.3s)
+  [remove_LG               ] fpr=0.519 recall=0.481 cov=0.700 ev=1.000 ledger=n/a revoc=1.000 RIS-pending (4.1s)
+  [remove_HC               ] fpr=0.519 recall=0.481 cov=0.700 ev=1.000 ledger=0.000 revoc=1.000 RIS-pending (4.3s)
+  [remove_PE+RV            ] fpr=1.000 recall=0.000 cov=0.000 ev=1.000 ledger=1.000 revoc=0.000 RIS-pending (1.1s)
+  [remove_EQ+PE            ] fpr=1.000 recall=0.000 cov=0.000 ev=0.000 ledger=n/a revoc=1.000 RIS-pending (1.1s)
+  [remove_LG+PE            ] fpr=1.000 recall=0.000 cov=0.000 ev=1.000 ledger=n/a revoc=1.000 RIS-pending (1.9s)
+  [remove_HC+PE            ] fpr=1.000 recall=0.000 cov=0.000 ev=1.000 ledger=0.000 revoc=1.000 RIS-pending (1.9s)
+  [remove_EQ+RV            ] fpr=0.519 recall=0.481 cov=0.700 ev=0.000 ledger=n/a revoc=0.000 RIS-pending (2.7s)
+  [remove_LG+RV            ] fpr=0.519 recall=0.481 cov=0.700 ev=1.000 ledger=n/a revoc=0.000 RIS-pending (3.5s)
+  [remove_HC+RV            ] fpr=0.519 recall=0.481 cov=0.700 ev=1.000 ledger=0.000 revoc=0.000 RIS-pending (3.5s)
+  [remove_EQ+LG            ] fpr=0.519 recall=0.481 cov=0.700 ev=0.000 ledger=n/a revoc=1.000 RIS-pending (3.5s)
+  [remove_EQ+HC            ] fpr=0.519 recall=0.481 cov=0.700 ev=0.000 ledger=n/a revoc=1.000 RIS-pending (3.6s)
+  [remove_HC+LG            ] fpr=0.519 recall=0.481 cov=0.700 ev=1.000 ledger=n/a revoc=1.000 RIS-pending (4.5s)
+  [remove_EQ+PE+RV         ] fpr=1.000 recall=0.000 cov=0.000 ev=0.000 ledger=n/a revoc=0.000 RIS-pending (0.3s)
+  [remove_EQ+HC+LG         ] fpr=0.519 recall=0.481 cov=0.700 ev=0.000 ledger=n/a revoc=1.000 RIS-pending (3.4s)
+  [remove_EQ+HC+LG+PE+RV   ] fpr=1.000 recall=0.000 cov=0.000 ev=0.000 ledger=n/a revoc=0.000 RIS-pending (0.2s)
+  [gov baseline_full_LDREA   ] wd_detect=0.0 fleet_tput=1412
+  [gov remove_PE             ] wd_detect=0.0 fleet_tput=1475
+  [gov remove_RV             ] wd_detect=0.0 fleet_tput=1422
+  [gov remove_EQ             ] wd_detect=0.0 fleet_tput=1432
+  [gov remove_LG             ] wd_detect=0.0 fleet_tput=1412
+  [gov remove_HC             ] wd_detect=0.0 fleet_tput=1428
+  [gov remove_PE+RV          ] wd_detect=0.0 fleet_tput=1475
+  [gov remove_EQ+PE          ] wd_detect=0.0 fleet_tput=1472
+  [gov remove_LG+PE          ] wd_detect=0.0 fleet_tput=1473
+  [gov remove_HC+PE          ] wd_detect=0.0 fleet_tput=1476
+  [gov remove_EQ+RV          ] wd_detect=0.0 fleet_tput=1427
+  [gov remove_LG+RV          ] wd_detect=0.0 fleet_tput=1431
+  [gov remove_HC+RV          ] wd_detect=0.0 fleet_tput=1417
+  [gov remove_EQ+LG          ] wd_detect=0.0 fleet_tput=1438
+  [gov remove_EQ+HC          ] wd_detect=0.0 fleet_tput=1427
+  [gov remove_HC+LG          ] wd_detect=1.0 fleet_tput=1338
+  [gov remove_EQ+PE+RV       ] wd_detect=0.0 fleet_tput=1457
+  [gov remove_EQ+HC+LG       ] wd_detect=1.0 fleet_tput=1269
+  [gov remove_EQ+HC+LG+PE+RV ] wd_detect=0.0 fleet_tput=1451
+[combined-ablation] full statistics for 19 configs x 17 metrics (28.7s) -> combined_statistics.{json,csv,md}
+
+[combined-ablation] 19 configs, 13 interactions in 120.25s
+[combined-ablation] artifacts -> experiments/combined_ablation/, paper_tables/, paper_figures/, dashboard/, metadata/, README/ ; analyses at repo root

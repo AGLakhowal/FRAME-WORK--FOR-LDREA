@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1020" height="764" viewBox="0 0 1020 764">
+<rect x="0" y="0" width="1020" height="764" fill="#ffffff"/>
+<text x="24" y="34" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#111111" font-weight="bold" text-anchor="start">Runtime integrity score by configuration (sorted)</text>
+<text x="24" y="51" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#555555" text-anchor="start">RIS = mean of six health planes (detection, revocation, evidence, ledger, hash-chain, replay), normalised so the intact baseline scores 1.00.</text>
+<text x="24" y="72" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">Bars are coloured by the experiment&apos;s own overall runtime verdict.</text>
+<line x1="240" y1="114" x2="240" y2="654" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="240" y="110" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="middle">0.0</text>
+<line x1="336" y1="114" x2="336" y2="654" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="336" y="110" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="middle">0.2</text>
+<line x1="432" y1="114" x2="432" y2="654" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="432" y="110" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="middle">0.4</text>
+<line x1="528" y1="114" x2="528" y2="654" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="528" y="110" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="middle">0.6</text>
+<line x1="624" y1="114" x2="624" y2="654" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="624" y="110" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="middle">0.8</text>
+<line x1="720" y1="114" x2="720" y2="654" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="720" y="110" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="middle">1.0</text>
+<text x="480" y="94" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="middle">runtime integrity score (RIS)</text>
+<line x1="720" y1="114" x2="720" y2="654" stroke="#0072b2" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+<text x="230" y="136.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="end">baseline (full L-DREA)</text>
+<rect x="240" y="122" width="480" height="22" fill="#0072b2" stroke="#ffffff" stroke-width="0.6"/>
+<text x="728" y="136.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">1.000</text>
+<text x="782" y="136.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">0 removed</text>
+<text x="230" y="164.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-PE</text>
+<rect x="240" y="150" width="399.9998" height="22" fill="#cc79a7" stroke="#ffffff" stroke-width="0.6"/>
+<text x="647.9998" y="164.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.833</text>
+<text x="782" y="164.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">1 removed</text>
+<text x="230" y="192.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-RV</text>
+<rect x="240" y="178" width="399.9998" height="22" fill="#cc79a7" stroke="#ffffff" stroke-width="0.6"/>
+<text x="647.9998" y="192.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.833</text>
+<text x="782" y="192.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">1 removed</text>
+<text x="230" y="220.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-PE+RV</text>
+<rect x="240" y="206" width="320.0002" height="22" fill="#cc79a7" stroke="#ffffff" stroke-width="0.6"/>
+<text x="568.0002" y="220.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.667</text>
+<text x="782" y="220.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="248.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-HC</text>
+<rect x="240" y="234" width="241.1266" height="22" fill="#e69f00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="489.1266" y="248.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.502</text>
+<text x="782" y="248.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">1 removed</text>
+<text x="230" y="276.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-HC+LG</text>
+<rect x="240" y="262" width="240" height="22" fill="#e69f00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="488" y="276.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.500</text>
+<text x="782" y="276.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="304.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-LG</text>
+<rect x="240" y="290" width="240" height="22" fill="#e69f00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="488" y="304.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.500</text>
+<text x="782" y="304.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">1 removed</text>
+<text x="230" y="332.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-HC+PE</text>
+<rect x="240" y="318" width="161.1269" height="22" fill="#d55e00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="409.1269" y="332.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.336</text>
+<text x="782" y="332.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="360.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-HC+RV</text>
+<rect x="240" y="346" width="161.1269" height="22" fill="#d55e00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="409.1269" y="360.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.336</text>
+<text x="782" y="360.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="388.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ</text>
+<rect x="240" y="374" width="159.9998" height="22" fill="#e69f00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="407.9998" y="388.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.333</text>
+<text x="782" y="388.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">1 removed</text>
+<text x="230" y="416.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ+HC</text>
+<rect x="240" y="402" width="159.9998" height="22" fill="#e69f00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="407.9998" y="416.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.333</text>
+<text x="782" y="416.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="444.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ+HC+LG</text>
+<rect x="240" y="430" width="159.9998" height="22" fill="#e69f00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="407.9998" y="444.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.333</text>
+<text x="782" y="444.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">3 removed</text>
+<text x="230" y="472.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ+LG</text>
+<rect x="240" y="458" width="159.9998" height="22" fill="#e69f00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="407.9998" y="472.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.333</text>
+<text x="782" y="472.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="500.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-LG+PE</text>
+<rect x="240" y="486" width="159.9998" height="22" fill="#d55e00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="407.9998" y="500.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.333</text>
+<text x="782" y="500.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="528.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-LG+RV</text>
+<rect x="240" y="514" width="159.9998" height="22" fill="#d55e00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="407.9998" y="528.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.333</text>
+<text x="782" y="528.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="556.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ+PE</text>
+<rect x="240" y="542" width="80.0002" height="22" fill="#d55e00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="328.0002" y="556.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.167</text>
+<text x="782" y="556.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="584.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ+RV</text>
+<rect x="240" y="570" width="80.0002" height="22" fill="#d55e00" stroke="#ffffff" stroke-width="0.6"/>
+<text x="328.0002" y="584.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.167</text>
+<text x="782" y="584.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">2 removed</text>
+<text x="230" y="612.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ+HC+LG+PE+RV</text>
+<rect x="240" y="598" width="2" height="22" fill="#d55e00"/>
+<text x="250" y="612.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.000</text>
+<text x="782" y="612.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">5 removed</text>
+<text x="230" y="640.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ+PE+RV</text>
+<rect x="240" y="626" width="2" height="22" fill="#d55e00"/>
+<text x="250" y="640.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">0.000</text>
+<text x="782" y="640.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">3 removed</text>
+<line x1="240" y1="654" x2="720" y2="654" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="850" y="126" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">overall runtime verdict</text>
+<rect x="850" y="138" width="13" height="13" fill="#0072b2"/>
+<text x="869" y="149" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="start">BASELINE</text>
+<rect x="850" y="157" width="13" height="13" fill="#009e73"/>
+<text x="869" y="168" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#bdbdbd" text-anchor="start">PASS</text>
+<text x="869" y="176" font-family="Helvetica, Arial, sans-serif" font-size="6.8" fill="#bdbdbd" text-anchor="start">(not observed)</text>
+<rect x="850" y="176" width="13" height="13" fill="#e69f00"/>
+<text x="869" y="187" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="start">AUDIT-DEGRADED</text>
+<rect x="850" y="195" width="13" height="13" fill="#cc79a7"/>
+<text x="869" y="206" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="start">SECURITY-DEGRADED</text>
+<rect x="850" y="214" width="13" height="13" fill="#d55e00"/>
+<text x="869" y="225" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="start">CRITICAL</text>
+<line x1="850" y1="247" x2="863" y2="247" stroke="#0072b2" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+<text x="869" y="250" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">baseline RIS = 1.00</text>
+<text x="24" y="686" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">RIS is audit-weighted by construction: four of the six planes are audit/provenance planes, so a purely</text>
+<text x="24" y="698" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">security-degrading ablation (e.g. removing revocation) costs less RIS than an evidence-plane ablation.</text>
+<text x="24" y="710" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">The verdict colour, not the bar length alone, carries the security interpretation.</text>
+</svg>

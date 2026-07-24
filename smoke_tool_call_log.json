@@ -1,0 +1,12 @@
+{
+  "n_tool_calls": 1,
+  "tool_calls": [
+    {
+      "function": "read_file",
+      "args": {
+        "file_path": "bill-december-2023.txt"
+      },
+      "class": "read-only (pass-through, outside externalization boundary)"
+    }
+  ]
+}

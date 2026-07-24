@@ -1,0 +1,834 @@
+{
+  "campaign": "ldrea_tier_s_provenance",
+  "chain_order": [
+    "raw_log",
+    "metric_engine",
+    "json",
+    "csv",
+    "table",
+    "figure"
+  ],
+  "experiments": {
+    "E1": {
+      "title": "Runtime Authorization Correctness",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/runtime_correctness/logs/E1.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "681227143f4e8ad73cd6f42dd0631c5a492e40bc7a70b54d520b53fab35d330c",
+            "bytes": 7330
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "gamma_test_runner.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "6c7ca5717240f248bb8baa048ba5e9816fcf862bcca1de70a1ce3bc5c42ef202",
+            "bytes": 74833
+          },
+          {
+            "id": "metrics_engine.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "4f858c8fe477ce5120f1762e6fd3c590a474a2dc49f1659d14b5e4559e1fe43b",
+            "bytes": 11775
+          },
+          {
+            "id": "full_spec_conformance.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "dfaa826b37f2dbd542b03128ab49d197f9e453261c347ccd01e74a667a32335c",
+            "bytes": 22104
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/runtime_correctness/gamma_lab_v1_report.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "faad378d2c2d3e5b3ab678ba17ea40283d293552bbdb342f4d4ea802b4da956f",
+            "bytes": 11694
+          },
+          {
+            "id": "experiments/runtime_correctness/full_spec_conformance_report.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "aaeed075ff566fb6daeadb1449e43a7124295b1d55d01eb3105e2752362e70ac",
+            "bytes": 9789
+          }
+        ],
+        "csv": [
+          {
+            "id": "experiments/runtime_correctness/gamma_validation_results.csv",
+            "kind": "csv",
+            "exists": true,
+            "sha256": "f45ebb23b52be3cc982b6b691edc137f46ba662a3e5521f276148c5366f5eae4",
+            "bytes": 133854351
+          }
+        ],
+        "table": [
+          {
+            "id": "experiments/tables/table1_primary_metrics.md",
+            "kind": "table",
+            "exists": true,
+            "sha256": "632a57db881fe455a6a52be756a1f1b07f7469b668bfca0ac60cd6273e7d9807",
+            "bytes": 3278
+          }
+        ],
+        "figure": [
+          {
+            "id": "experiments/figures/fig_authorization_accuracy.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "9e4ca9018a0db6a13cd4ddbfbf6291c94a777dfdd395aceadbaee4e9ddedd2d3",
+            "bytes": 1711
+          },
+          {
+            "id": "experiments/figures/fig_false_permit_rate.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "6599651c9c85ec094132e15a9ce6d4000e87a529f8536151e8c4563fa642f0d1",
+            "bytes": 1338
+          }
+        ]
+      }
+    },
+    "E2": {
+      "title": "Runtime Replay Integrity",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/replay/logs/E2.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "6d0e2169dd63b58e6c09a578ba77a13b57c086a0ed4291df83e1af8bb2f2d6aa",
+            "bytes": 601
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "gamma_replay_verify.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "d1ec4b5e11348c518e0c426aa44037e9896622b72d668c8b861814d789bc70be",
+            "bytes": 5000
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/replay/replay_report.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "f57b238f785b6ea34f67dbd0a6e40349a01f6052954c425a41001b3d8800ada9",
+            "bytes": 529
+          }
+        ],
+        "csv": [],
+        "table": [
+          {
+            "id": "experiments/tables/table1_primary_metrics.md",
+            "kind": "table",
+            "exists": true,
+            "sha256": "632a57db881fe455a6a52be756a1f1b07f7469b668bfca0ac60cd6273e7d9807",
+            "bytes": 3278
+          }
+        ],
+        "figure": [
+          {
+            "id": "experiments/figures/fig_replay_integrity.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "3073e0f130dc3b50e703ce6ca767926030c63b6a65cb68fb322eca26ee57a002",
+            "bytes": 1496
+          }
+        ]
+      }
+    },
+    "E3": {
+      "title": "Formal Verification",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/formal/logs/E3.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "1045b35d07a9513458f460bc513453987b7c5399a20bc578e37fdde25cb2e403",
+            "bytes": 972
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "independent_verifier.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "b540ac9f81d129adfb2e666dbbb87848d8daf9ab0da040f2348b2debdfacebca",
+            "bytes": 8702
+          },
+          {
+            "id": "formal/ExternalizationMonitor.tla",
+            "kind": "code",
+            "exists": true,
+            "sha256": "f38ae8da968ed4a26fe808e62a4181d4dbe123b19ceda9b9d28e1fca79d42394",
+            "bytes": 5134
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/formal/independent_verifier_report.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "1d20111a7cec3d293c16ea51b50aaca6c5541c6eece238eac3dd469abc06c968",
+            "bytes": 1300
+          }
+        ],
+        "csv": [],
+        "table": [
+          {
+            "id": "experiments/tables/table1_primary_metrics.md",
+            "kind": "table",
+            "exists": true,
+            "sha256": "632a57db881fe455a6a52be756a1f1b07f7469b668bfca0ac60cd6273e7d9807",
+            "bytes": 3278
+          }
+        ],
+        "figure": []
+      }
+    },
+    "E4": {
+      "title": "Runtime Stress Evaluation",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/stress/logs/E4.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "4b35f287d3103836e4bbe954df575bf105d31b6113be573bfddaf28b610b8b0a",
+            "bytes": 12
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "agentdojo_integration/audit/concurrency_scaling.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "edcf0c8de0af6a1bb6902f1352317351b741a47178a0cfb47224b80c74b01e13",
+            "bytes": 12208
+          },
+          {
+            "id": "metrics_engine.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "4f858c8fe477ce5120f1762e6fd3c590a474a2dc49f1659d14b5e4559e1fe43b",
+            "bytes": 11775
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/stress/concurrency_scaling.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "e6b2c209c62f70606f5314161fa3e265744dad3f8d14f3744fd46ec2eee7120a",
+            "bytes": 7141
+          }
+        ],
+        "csv": [
+          {
+            "id": "experiments/stress/concurrency_scaling.csv",
+            "kind": "csv",
+            "exists": true,
+            "sha256": "2fc8d389b35580a99ba6665c7b312eff6d78ec4fdd1841db1d4fd7c7519cf7e9",
+            "bytes": 1092
+          }
+        ],
+        "table": [
+          {
+            "id": "experiments/tables/table2_concurrency_scaling.md",
+            "kind": "table",
+            "exists": true,
+            "sha256": "f886039583bf9ca778613ef5b49c745baa41b0d9e1107861c9c7ce470837823d",
+            "bytes": 902
+          }
+        ],
+        "figure": [
+          {
+            "id": "experiments/figures/fig_latency.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "05b7d71beeffd2f2a050f7047a5808825a3f683e404203e3bb48c333d107eadb",
+            "bytes": 3590
+          },
+          {
+            "id": "experiments/figures/fig_throughput.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "76ac2522a0245fad5a2d3e45778aa8d8c51a2de51ae0628d81f067203b7c9018",
+            "bytes": 2363
+          }
+        ]
+      }
+    },
+    "E5": {
+      "title": "Component Ablation",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/ablation/logs/E5.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "c23afc70311a734e8cc60ee63e3f50052c3aa65c231404570ca2fc7ab9be301d",
+            "bytes": 677
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "experiment_ablation.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "359dfcec374c58e92b30b43802ead1da10402cb3884a052904ecec5f77ca76a9",
+            "bytes": 9121
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/ablation/ablation.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "63defeb892b96a1565f9397e6cc3a948e81eef796494ea29164222ba235d9f87",
+            "bytes": 5844
+          }
+        ],
+        "csv": [
+          {
+            "id": "experiments/ablation/ablation.csv",
+            "kind": "csv",
+            "exists": true,
+            "sha256": "fefee215e380c94de783b813c301c777f4caa80378131ef12108f4dd1020d27d",
+            "bytes": 478
+          }
+        ],
+        "table": [
+          {
+            "id": "experiments/tables/table1_primary_metrics.md",
+            "kind": "table",
+            "exists": true,
+            "sha256": "632a57db881fe455a6a52be756a1f1b07f7469b668bfca0ac60cd6273e7d9807",
+            "bytes": 3278
+          }
+        ],
+        "figure": [
+          {
+            "id": "experiments/figures/fig_component_ablation.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "2e45b70e9866c6a2026f0501babea8786046edb3485e6be70b863b6efbe0614a",
+            "bytes": 1544
+          }
+        ]
+      }
+    },
+    "E6": {
+      "title": "Runtime Profiling",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/profiling/logs/E6.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "4b35f287d3103836e4bbe954df575bf105d31b6113be573bfddaf28b610b8b0a",
+            "bytes": 12
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "agentdojo_integration/audit/runtime_profile.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "8b9989eecf30901924b97886593dd9df5fc630b340cb89d8ca8628cbe8f589a3",
+            "bytes": 6149
+          },
+          {
+            "id": "agentdojo_integration/audit/stats_engine.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "ced580838fb5ce9d96c5a1ac986a30d9c72a78fe2d81ca94d0e7697dd07a4747",
+            "bytes": 12356
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/profiling/runtime_profile.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "d386ebcb2ee3dde9dddccea2cd063a7afef04d5046a1031d3ae785acbac2bb60",
+            "bytes": 984
+          },
+          {
+            "id": "experiments/profiling/stage_distributions.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "854061ca16fd3269a997f0e62f97c7193b5569e4ce39c7cf10ed5f8b266deab4",
+            "bytes": 1258
+          }
+        ],
+        "csv": [],
+        "table": [],
+        "figure": [
+          {
+            "id": "experiments/figures/fig_runtime_breakdown.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "7e2c4f619e0ffb22dbd6777d857a6f5ad58c7f4ae5e7fc647c3d2b6a9326a98a",
+            "bytes": 1729
+          }
+        ]
+      }
+    },
+    "E7": {
+      "title": "AgentDojo Runtime Governance",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/agentdojo/logs/E7_boundary.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "176cbb29812e982f6f5bca04c1921965aece0ce141fbc4b7823b6580ec3bbd73",
+            "bytes": 675
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "experiment_agentdojo_boundary_fpr.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "ba3da6fa4063ce79e0f8ac8fd39713ac17c61184252f4057f30c99ec41594bcc",
+            "bytes": 14912
+          },
+          {
+            "id": "agentdojo_integration/audit/stats_engine.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "ced580838fb5ce9d96c5a1ac986a30d9c72a78fe2d81ca94d0e7697dd07a4747",
+            "bytes": 12356
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/agentdojo/boundary/boundary_fpr.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "cde16292bdcaad813b6c6a1e28505ec6a23e7604f449c3d1c424c85b8ee7fb6f",
+            "bytes": 4365
+          },
+          {
+            "id": "experiments/agentdojo/statistics.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "342cdb2224332b64dba0ea8417d2d8357ec396ecd5f0298efb53f046e2dacf9f",
+            "bytes": 10903
+          }
+        ],
+        "csv": [
+          {
+            "id": "experiments/agentdojo/decisions.csv",
+            "kind": "csv",
+            "exists": true,
+            "sha256": "3d0a045f27976034b7ca37d2f17e28b5bb9ca19263f0a14723e4cb7702a41a72",
+            "bytes": 1483
+          }
+        ],
+        "table": [
+          {
+            "id": "experiments/tables/table1_primary_metrics.md",
+            "kind": "table",
+            "exists": true,
+            "sha256": "632a57db881fe455a6a52be756a1f1b07f7469b668bfca0ac60cd6273e7d9807",
+            "bytes": 3278
+          }
+        ],
+        "figure": [
+          {
+            "id": "experiments/figures/fig_false_permit_rate.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "6599651c9c85ec094132e15a9ce6d4000e87a529f8536151e8c4563fa642f0d1",
+            "bytes": 1338
+          }
+        ]
+      }
+    },
+    "E8": {
+      "title": "Runtime Robustness",
+      "stages": {
+        "raw_log": [
+          {
+            "id": "experiments/robustness/logs/E8.log",
+            "kind": "raw_log",
+            "exists": true,
+            "sha256": "68b519a52056016e33dcace84275237deca6abb34f8c3241e38309aa77f42ffc",
+            "bytes": 1432
+          }
+        ],
+        "metric_engine": [
+          {
+            "id": "experiment_robustness.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "9909f63e410be816551841e821072388e775b83a01a282dbd481b6e27a52baf8",
+            "bytes": 18387
+          },
+          {
+            "id": "gamma_test_runner.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "6c7ca5717240f248bb8baa048ba5e9816fcf862bcca1de70a1ce3bc5c42ef202",
+            "bytes": 74833
+          },
+          {
+            "id": "gamma_replay_verify.py",
+            "kind": "code",
+            "exists": true,
+            "sha256": "d1ec4b5e11348c518e0c426aa44037e9896622b72d668c8b861814d789bc70be",
+            "bytes": 5000
+          }
+        ],
+        "json": [
+          {
+            "id": "experiments/robustness/robustness.json",
+            "kind": "json",
+            "exists": true,
+            "sha256": "9f1abfbd7d74d30a32a25f2b67fbf105643cd4679b779554bcdeafcff3dba39e",
+            "bytes": 9490
+          }
+        ],
+        "csv": [
+          {
+            "id": "experiments/robustness/robustness.csv",
+            "kind": "csv",
+            "exists": true,
+            "sha256": "19d188eb6677e4921c4be4958811986c165ff875e0c9911c8674af7ed6b1a80e",
+            "bytes": 1606
+          }
+        ],
+        "table": [
+          {
+            "id": "experiments/tables/table3_robustness.md",
+            "kind": "table",
+            "exists": true,
+            "sha256": "2945c9af2d087969fdd9c705b13611911b9583b17068794b98fbeb46f8f6db15",
+            "bytes": 1170
+          }
+        ],
+        "figure": [
+          {
+            "id": "experiments/figures/fig_robustness.svg",
+            "kind": "figure",
+            "exists": true,
+            "sha256": "95f53d56249333bc0526fbecfd5d197a454bb8e04ef8445c98ed7a1e523b62af",
+            "bytes": 4261
+          }
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "experiments/runtime_correctness/logs/E1.log",
+      "to": "gamma_test_runner.py",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/runtime_correctness/logs/E1.log",
+      "to": "metrics_engine.py",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/runtime_correctness/logs/E1.log",
+      "to": "full_spec_conformance.py",
+      "exp": "E1"
+    },
+    {
+      "from": "gamma_test_runner.py",
+      "to": "experiments/runtime_correctness/gamma_lab_v1_report.json",
+      "exp": "E1"
+    },
+    {
+      "from": "gamma_test_runner.py",
+      "to": "experiments/runtime_correctness/full_spec_conformance_report.json",
+      "exp": "E1"
+    },
+    {
+      "from": "metrics_engine.py",
+      "to": "experiments/runtime_correctness/gamma_lab_v1_report.json",
+      "exp": "E1"
+    },
+    {
+      "from": "metrics_engine.py",
+      "to": "experiments/runtime_correctness/full_spec_conformance_report.json",
+      "exp": "E1"
+    },
+    {
+      "from": "full_spec_conformance.py",
+      "to": "experiments/runtime_correctness/gamma_lab_v1_report.json",
+      "exp": "E1"
+    },
+    {
+      "from": "full_spec_conformance.py",
+      "to": "experiments/runtime_correctness/full_spec_conformance_report.json",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/runtime_correctness/gamma_lab_v1_report.json",
+      "to": "experiments/runtime_correctness/gamma_validation_results.csv",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/runtime_correctness/full_spec_conformance_report.json",
+      "to": "experiments/runtime_correctness/gamma_validation_results.csv",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/runtime_correctness/gamma_validation_results.csv",
+      "to": "experiments/tables/table1_primary_metrics.md",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/tables/table1_primary_metrics.md",
+      "to": "experiments/figures/fig_authorization_accuracy.svg",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/tables/table1_primary_metrics.md",
+      "to": "experiments/figures/fig_false_permit_rate.svg",
+      "exp": "E1"
+    },
+    {
+      "from": "experiments/replay/logs/E2.log",
+      "to": "gamma_replay_verify.py",
+      "exp": "E2"
+    },
+    {
+      "from": "gamma_replay_verify.py",
+      "to": "experiments/replay/replay_report.json",
+      "exp": "E2"
+    },
+    {
+      "from": "experiments/tables/table1_primary_metrics.md",
+      "to": "experiments/figures/fig_replay_integrity.svg",
+      "exp": "E2"
+    },
+    {
+      "from": "experiments/formal/logs/E3.log",
+      "to": "independent_verifier.py",
+      "exp": "E3"
+    },
+    {
+      "from": "experiments/formal/logs/E3.log",
+      "to": "formal/ExternalizationMonitor.tla",
+      "exp": "E3"
+    },
+    {
+      "from": "independent_verifier.py",
+      "to": "experiments/formal/independent_verifier_report.json",
+      "exp": "E3"
+    },
+    {
+      "from": "formal/ExternalizationMonitor.tla",
+      "to": "experiments/formal/independent_verifier_report.json",
+      "exp": "E3"
+    },
+    {
+      "from": "experiments/stress/logs/E4.log",
+      "to": "agentdojo_integration/audit/concurrency_scaling.py",
+      "exp": "E4"
+    },
+    {
+      "from": "experiments/stress/logs/E4.log",
+      "to": "metrics_engine.py",
+      "exp": "E4"
+    },
+    {
+      "from": "agentdojo_integration/audit/concurrency_scaling.py",
+      "to": "experiments/stress/concurrency_scaling.json",
+      "exp": "E4"
+    },
+    {
+      "from": "metrics_engine.py",
+      "to": "experiments/stress/concurrency_scaling.json",
+      "exp": "E4"
+    },
+    {
+      "from": "experiments/stress/concurrency_scaling.json",
+      "to": "experiments/stress/concurrency_scaling.csv",
+      "exp": "E4"
+    },
+    {
+      "from": "experiments/stress/concurrency_scaling.csv",
+      "to": "experiments/tables/table2_concurrency_scaling.md",
+      "exp": "E4"
+    },
+    {
+      "from": "experiments/tables/table2_concurrency_scaling.md",
+      "to": "experiments/figures/fig_latency.svg",
+      "exp": "E4"
+    },
+    {
+      "from": "experiments/tables/table2_concurrency_scaling.md",
+      "to": "experiments/figures/fig_throughput.svg",
+      "exp": "E4"
+    },
+    {
+      "from": "experiments/ablation/logs/E5.log",
+      "to": "experiment_ablation.py",
+      "exp": "E5"
+    },
+    {
+      "from": "experiment_ablation.py",
+      "to": "experiments/ablation/ablation.json",
+      "exp": "E5"
+    },
+    {
+      "from": "experiments/ablation/ablation.json",
+      "to": "experiments/ablation/ablation.csv",
+      "exp": "E5"
+    },
+    {
+      "from": "experiments/ablation/ablation.csv",
+      "to": "experiments/tables/table1_primary_metrics.md",
+      "exp": "E5"
+    },
+    {
+      "from": "experiments/tables/table1_primary_metrics.md",
+      "to": "experiments/figures/fig_component_ablation.svg",
+      "exp": "E5"
+    },
+    {
+      "from": "experiments/profiling/logs/E6.log",
+      "to": "agentdojo_integration/audit/runtime_profile.py",
+      "exp": "E6"
+    },
+    {
+      "from": "experiments/profiling/logs/E6.log",
+      "to": "agentdojo_integration/audit/stats_engine.py",
+      "exp": "E6"
+    },
+    {
+      "from": "agentdojo_integration/audit/runtime_profile.py",
+      "to": "experiments/profiling/runtime_profile.json",
+      "exp": "E6"
+    },
+    {
+      "from": "agentdojo_integration/audit/runtime_profile.py",
+      "to": "experiments/profiling/stage_distributions.json",
+      "exp": "E6"
+    },
+    {
+      "from": "agentdojo_integration/audit/stats_engine.py",
+      "to": "experiments/profiling/runtime_profile.json",
+      "exp": "E6"
+    },
+    {
+      "from": "agentdojo_integration/audit/stats_engine.py",
+      "to": "experiments/profiling/stage_distributions.json",
+      "exp": "E6"
+    },
+    {
+      "from": "experiments/agentdojo/logs/E7_boundary.log",
+      "to": "experiment_agentdojo_boundary_fpr.py",
+      "exp": "E7"
+    },
+    {
+      "from": "experiments/agentdojo/logs/E7_boundary.log",
+      "to": "agentdojo_integration/audit/stats_engine.py",
+      "exp": "E7"
+    },
+    {
+      "from": "experiment_agentdojo_boundary_fpr.py",
+      "to": "experiments/agentdojo/boundary/boundary_fpr.json",
+      "exp": "E7"
+    },
+    {
+      "from": "experiment_agentdojo_boundary_fpr.py",
+      "to": "experiments/agentdojo/statistics.json",
+      "exp": "E7"
+    },
+    {
+      "from": "agentdojo_integration/audit/stats_engine.py",
+      "to": "experiments/agentdojo/boundary/boundary_fpr.json",
+      "exp": "E7"
+    },
+    {
+      "from": "agentdojo_integration/audit/stats_engine.py",
+      "to": "experiments/agentdojo/statistics.json",
+      "exp": "E7"
+    },
+    {
+      "from": "experiments/agentdojo/boundary/boundary_fpr.json",
+      "to": "experiments/agentdojo/decisions.csv",
+      "exp": "E7"
+    },
+    {
+      "from": "experiments/agentdojo/statistics.json",
+      "to": "experiments/agentdojo/decisions.csv",
+      "exp": "E7"
+    },
+    {
+      "from": "experiments/agentdojo/decisions.csv",
+      "to": "experiments/tables/table1_primary_metrics.md",
+      "exp": "E7"
+    },
+    {
+      "from": "experiments/tables/table1_primary_metrics.md",
+      "to": "experiments/figures/fig_false_permit_rate.svg",
+      "exp": "E7"
+    },
+    {
+      "from": "experiments/robustness/logs/E8.log",
+      "to": "experiment_robustness.py",
+      "exp": "E8"
+    },
+    {
+      "from": "experiments/robustness/logs/E8.log",
+      "to": "gamma_test_runner.py",
+      "exp": "E8"
+    },
+    {
+      "from": "experiments/robustness/logs/E8.log",
+      "to": "gamma_replay_verify.py",
+      "exp": "E8"
+    },
+    {
+      "from": "experiment_robustness.py",
+      "to": "experiments/robustness/robustness.json",
+      "exp": "E8"
+    },
+    {
+      "from": "gamma_test_runner.py",
+      "to": "experiments/robustness/robustness.json",
+      "exp": "E8"
+    },
+    {
+      "from": "gamma_replay_verify.py",
+      "to": "experiments/robustness/robustness.json",
+      "exp": "E8"
+    },
+    {
+      "from": "experiments/robustness/robustness.json",
+      "to": "experiments/robustness/robustness.csv",
+      "exp": "E8"
+    },
+    {
+      "from": "experiments/robustness/robustness.csv",
+      "to": "experiments/tables/table3_robustness.md",
+      "exp": "E8"
+    },
+    {
+      "from": "experiments/tables/table3_robustness.md",
+      "to": "experiments/figures/fig_robustness.svg",
+      "exp": "E8"
+    }
+  ],
+  "broken_links": []
+}

@@ -1,0 +1,33 @@
+{
+  "id": "chatcmpl-136",
+  "object": "chat.completion",
+  "created": 1783575981,
+  "model": "llama3.1:8b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_gy31pvor",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "create_calendar_event",
+              "arguments": "{\"title\":\"Lunch\",\"start_time\":\"2024-05-19 12:00\",\"end_time\":\"2024-05-19 13:00\",\"description\":\"Catch up over lunch.\",\"location\":null,\"participants\":\"[\\\"sarah.connor@gmail.com\\\"]\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2538,
+    "completion_tokens": 78,
+    "total_tokens": 2616
+  }
+}

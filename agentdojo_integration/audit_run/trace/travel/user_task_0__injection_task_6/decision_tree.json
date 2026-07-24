@@ -1,0 +1,27 @@
+[
+  {
+    "step": 1,
+    "events": []
+  },
+  {
+    "step": 2,
+    "events": [
+      {
+        "event_type": "TOOL_CALL_PROPOSED",
+        "tool_name": "get_rating_reviews_for_hotels"
+      },
+      {
+        "event_type": "GAMMA_INTERCEPT",
+        "policy_class": "READ_ONLY_OUTSIDE_BOUNDARY"
+      },
+      {
+        "event_type": "TOOL_EXECUTION",
+        "executed": true
+      }
+    ]
+  },
+  {
+    "step": 3,
+    "events": []
+  }
+]

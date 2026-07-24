@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="900" height="560" viewBox="0 0 900 560">
+<rect x="0" y="0" width="900" height="560" fill="#ffffff"/>
+<text x="24" y="34" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#111111" font-weight="bold" text-anchor="start">Cross-dataset replication: removing the predicate engine raises the undetected-risk rate (URR)</text>
+<text x="24" y="51" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#555555" text-anchor="start">Baseline (full L-DREA) vs remove_PE, on three independent real datasets. Gamma is untouched between datasets.</text>
+<line x1="90" y1="400" x2="650" y2="400" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="82" y="403.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.0</text>
+<line x1="90" y1="343.6" x2="650" y2="343.6" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="82" y="347.1" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.2</text>
+<line x1="90" y1="287.2" x2="650" y2="287.2" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="82" y="290.7" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.4</text>
+<line x1="90" y1="230.8" x2="650" y2="230.8" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="82" y="234.3" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.6</text>
+<line x1="90" y1="174.4" x2="650" y2="174.4" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="82" y="177.9" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.8</text>
+<line x1="90" y1="118" x2="650" y2="118" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="82" y="121.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">1.0</text>
+<line x1="90" y1="118" x2="90" y2="400" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<line x1="90" y1="400" x2="650" y2="400" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="30" y="259" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle" transform="rotate(-90 30 259)">undetected-risk rate (URR)</text>
+<rect x="118.3333" y="382.8049" width="56" height="17.1951" fill="#0072b2" stroke="#ffffff" stroke-width="0.8"/>
+<text x="146.3333" y="375.8049" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="middle">0.061</text>
+<rect x="192.3333" y="118" width="56" height="282" fill="#d55e00" stroke="#ffffff" stroke-width="0.8"/>
+<text x="220.3333" y="111" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="middle">1.000</text>
+<text x="183.3333" y="420" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#111111" font-weight="bold" text-anchor="middle">ULB</text>
+<text x="183.3333" y="433" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="middle">financial (PCA-anonymised)</text>
+<text x="183.3333" y="446" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="middle">attack prevalence 0.43%</text>
+<text x="183.3333" y="462" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#d55e00" font-weight="bold" text-anchor="middle">rise = +0.939</text>
+<rect x="305" y="214.4901" width="56" height="185.5099" fill="#0072b2" stroke="#ffffff" stroke-width="0.8"/>
+<text x="333" y="207.4901" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="middle">0.658</text>
+<rect x="379" y="118" width="56" height="282" fill="#d55e00" stroke="#ffffff" stroke-width="0.8"/>
+<text x="407" y="111" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="middle">1.000</text>
+<text x="370" y="420" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#111111" font-weight="bold" text-anchor="middle">IEEE-CIS</text>
+<text x="370" y="433" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="middle">financial (transactions)</text>
+<text x="370" y="446" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="middle">attack prevalence 2.81%</text>
+<text x="370" y="462" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#d55e00" font-weight="bold" text-anchor="middle">rise = +0.342</text>
+<rect x="491.6667" y="304.3936" width="56" height="95.6064" fill="#0072b2" stroke="#ffffff" stroke-width="0.8"/>
+<text x="519.6667" y="297.3936" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="middle">0.339</text>
+<rect x="565.6667" y="118" width="56" height="282" fill="#d55e00" stroke="#ffffff" stroke-width="0.8"/>
+<text x="593.6667" y="111" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="middle">1.000</text>
+<text x="556.6667" y="420" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#111111" font-weight="bold" text-anchor="middle">UNSW-NB15</text>
+<text x="556.6667" y="433" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="middle">network intrusion telemetry</text>
+<text x="556.6667" y="446" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="middle">attack prevalence 55.78%</text>
+<text x="556.6667" y="462" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#d55e00" font-weight="bold" text-anchor="middle">rise = +0.661</text>
+<text x="680" y="122" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">configuration</text>
+<rect x="680" y="134" width="13" height="13" fill="#0072b2"/>
+<text x="699" y="145" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" text-anchor="start">baseline (full L-DREA)</text>
+<rect x="680" y="154" width="13" height="13" fill="#d55e00"/>
+<text x="699" y="165" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" text-anchor="start">remove_PE</text>
+<text x="24" y="492" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">CAVEAT -- absolute undetected-risk rate (URR)s are NOT comparable across datasets: each</text>
+<text x="24" y="504" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">has a different attack prevalence and base rate (shown above), so the bar heights</text>
+<text x="24" y="516" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">of one dataset say nothing about another.  The finding that REPLICATES is the RISE:</text>
+<text x="24" y="528" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">in every dataset, deleting the predicate engine drives the undetected-risk rate (URR) to its</text>
+<text x="24" y="540" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">ceiling, independent of the base rate it started from.</text>
+</svg>

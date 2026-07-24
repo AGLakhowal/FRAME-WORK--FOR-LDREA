@@ -1,0 +1,5056 @@
+{
+  "experiment": "cross_dataset_combined_ablation",
+  "evidence_level": "Measured Runtime",
+  "purpose": "Run the COMPLETE combined ablation independently on every real dataset. Datasets are not merged and metrics are not normalized across them \u2014 each has a different prevalence, feature space and unsupervised operating point, so only the ABLATION CONCLUSIONS are compared.",
+  "gamma_untouched": "stress_test.gamma_decision imported and used identically for every dataset",
+  "row_limit": 20000,
+  "n_datasets": 3,
+  "n_configurations_each": 19,
+  "datasets": [
+    {
+      "dataset": "UNSW-NB15",
+      "domain": "network intrusion telemetry",
+      "source_file": "dataset/ieee-fraud-detection/CSV Files/Training and Testing Sets/UNSW_NB15_testing-set.csv",
+      "rows_loaded": 20000,
+      "warmup_rows": 5000,
+      "evaluated": 15000,
+      "prevalence": 0.5578,
+      "n_predicates": 7,
+      "predicate_names": [
+        "bytes_within_bound",
+        "rate_within_bound",
+        "duration_within_bound",
+        "packets_within_bound",
+        "recognized_service",
+        "normal_connection_state",
+        "ttl_seen_in_baseline"
+      ],
+      "calibrated_thresholds": {
+        "bytes_cap": "746618.0",
+        "rate_cap": "1000000.003",
+        "dur_cap": "47.991306",
+        "pkts_cap": "730.0",
+        "services": "{'http', 'ssh', 'dns', 'smtp', 'dhcp', 'ssl', 'ftp', 'pop3',",
+        "ttls": "{0.0, 1.0, 32.0, 255.0, 29.0, 254.0, 63.0, 62.0, 31.0}",
+        "warmup_n": "5000"
+      },
+      "baseline_runtime_integrity_score": 1.0,
+      "adapter_independence": "a FRESH adapter is instantiated and re-calibrated for every configuration, so stateful online baselines cannot leak between configurations",
+      "configs": [
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "baseline_full_LDREA",
+          "disabled_components": [],
+          "disabled_codes": [],
+          "n_disabled": 0,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.4720094290000019,
+          "latency_median_ms": 0.576666,
+          "latency_p95_ms": 0.591541,
+          "latency_p99_ms": 0.629541,
+          "latency_max_ms": 6.001833,
+          "throughput_decisions_per_s": 2117.221746337427,
+          "runtime_overhead_ms": 0.0010512175333333245,
+          "execution_time_s": 7.0848,
+          "runtime_integrity_score": 1.0,
+          "overall_runtime_verdict": "BASELINE (full L-DREA)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_PE",
+          "disabled_components": [
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "PE"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 8368,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 6632
+          },
+          "blind_decision_accuracy": 0.4421333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.4421333333333333,
+            "low": 0.4342014009096516,
+            "high": 0.45009489715744017,
+            "n": 15000,
+            "successes": 6632
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9995411452976517,
+            "high": 1.0,
+            "n": 8368,
+            "successes": 8368
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0005788955092632397,
+            "n": 6632,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0004588547023482759,
+            "n": 8368,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.5867324472000001,
+          "latency_median_ms": 0.568041,
+          "latency_p95_ms": 0.65525,
+          "latency_p99_ms": 0.971583,
+          "latency_max_ms": 1.586041,
+          "throughput_decisions_per_s": 1703.3826136920811,
+          "runtime_overhead_ms": 0.0007285654000000243,
+          "execution_time_s": 8.806,
+          "runtime_integrity_score": 0.833333,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_RV",
+          "disabled_components": [
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "RV"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 431,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.3185034847999998,
+          "latency_median_ms": 0.312875,
+          "latency_p95_ms": 0.322334,
+          "latency_p99_ms": 0.354542,
+          "latency_max_ms": 6.748167,
+          "throughput_decisions_per_s": 3136.7184206037236,
+          "runtime_overhead_ms": 0.0010109673999999793,
+          "execution_time_s": 4.7821,
+          "runtime_integrity_score": 0.833333,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ",
+          "disabled_components": [
+            "evidence_quad"
+          ],
+          "disabled_codes": [
+            "EQ"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.17703681099999988,
+          "latency_median_ms": 0.2885,
+          "latency_p95_ms": 0.296333,
+          "latency_p99_ms": 0.30375,
+          "latency_max_ms": 0.888917,
+          "throughput_decisions_per_s": 5640.2103267369675,
+          "runtime_overhead_ms": 0.0009402571333333677,
+          "execution_time_s": 2.6595,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_LG",
+          "disabled_components": [
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "LG"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.4793486807333337,
+          "latency_median_ms": 0.577958,
+          "latency_p95_ms": 0.604375,
+          "latency_p99_ms": 0.807,
+          "latency_max_ms": 5.343375,
+          "throughput_decisions_per_s": 2084.698618093563,
+          "runtime_overhead_ms": 0.00106007013333333,
+          "execution_time_s": 7.1953,
+          "runtime_integrity_score": 0.5,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_HC",
+          "disabled_components": [
+            "hash_chain"
+          ],
+          "disabled_codes": [
+            "HC"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.4915092698000001,
+          "latency_median_ms": 0.577041,
+          "latency_p95_ms": 0.671375,
+          "latency_p99_ms": 0.994625,
+          "latency_max_ms": 2.851334,
+          "throughput_decisions_per_s": 2033.104946183459,
+          "runtime_overhead_ms": 0.001074519799999988,
+          "execution_time_s": 7.3779,
+          "runtime_integrity_score": 0.501412,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_PE+RV",
+          "disabled_components": [
+            "predicate_engine",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 8368,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 6632
+          },
+          "blind_decision_accuracy": 0.4421333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.4421333333333333,
+            "low": 0.4342014009096516,
+            "high": 0.45009489715744017,
+            "n": 15000,
+            "successes": 6632
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9995411452976517,
+            "high": 1.0,
+            "n": 8368,
+            "successes": 8368
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0005788955092632397,
+            "n": 6632,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0004588547023482759,
+            "n": 8368,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.30716590333333366,
+          "latency_median_ms": 0.300833,
+          "latency_p95_ms": 0.311916,
+          "latency_p99_ms": 0.393791,
+          "latency_max_ms": 5.246375,
+          "throughput_decisions_per_s": 3252.2913526545035,
+          "runtime_overhead_ms": 0.0006980612000000021,
+          "execution_time_s": 4.6121,
+          "runtime_integrity_score": 0.666667,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ+PE",
+          "disabled_components": [
+            "evidence_quad",
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 8368,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 6632
+          },
+          "blind_decision_accuracy": 0.4421333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.4421333333333333,
+            "low": 0.4342014009096516,
+            "high": 0.45009489715744017,
+            "n": 15000,
+            "successes": 6632
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9995411452976517,
+            "high": 1.0,
+            "n": 8368,
+            "successes": 8368
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0005788955092632397,
+            "n": 6632,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0004588547023482759,
+            "n": 8368,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.297958149266665,
+          "latency_median_ms": 0.285834,
+          "latency_p95_ms": 0.330083,
+          "latency_p99_ms": 0.464959,
+          "latency_max_ms": 5.93675,
+          "throughput_decisions_per_s": 3352.8408446016842,
+          "runtime_overhead_ms": 0.0006800607333333515,
+          "execution_time_s": 4.4738,
+          "runtime_integrity_score": 0.166667,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_LG+PE",
+          "disabled_components": [
+            "predicate_engine",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "LG",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 8368,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 6632
+          },
+          "blind_decision_accuracy": 0.4421333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.4421333333333333,
+            "low": 0.4342014009096516,
+            "high": 0.45009489715744017,
+            "n": 15000,
+            "successes": 6632
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9995411452976517,
+            "high": 1.0,
+            "n": 8368,
+            "successes": 8368
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0005788955092632397,
+            "n": 6632,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0004588547023482759,
+            "n": 8368,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.5884078505333343,
+          "latency_median_ms": 0.566375,
+          "latency_p95_ms": 0.680833,
+          "latency_p99_ms": 0.962916,
+          "latency_max_ms": 2.698875,
+          "throughput_decisions_per_s": 1698.5274478823092,
+          "runtime_overhead_ms": 0.000760971133333352,
+          "execution_time_s": 8.8312,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_HC+PE",
+          "disabled_components": [
+            "hash_chain",
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "HC",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 8368,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 6632
+          },
+          "blind_decision_accuracy": 0.4421333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.4421333333333333,
+            "low": 0.4342014009096516,
+            "high": 0.45009489715744017,
+            "n": 15000,
+            "successes": 6632
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9995411452976517,
+            "high": 1.0,
+            "n": 8368,
+            "successes": 8368
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0005788955092632397,
+            "n": 6632,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0004588547023482759,
+            "n": 8368,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.5744436191333323,
+          "latency_median_ms": 0.566667,
+          "latency_p95_ms": 0.583542,
+          "latency_p99_ms": 0.685333,
+          "latency_max_ms": 6.611208,
+          "throughput_decisions_per_s": 1739.8431233423992,
+          "runtime_overhead_ms": 0.0006973466666666747,
+          "execution_time_s": 8.6215,
+          "runtime_integrity_score": 0.334746,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 431,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.02409172846666675,
+          "latency_median_ms": 0.025125,
+          "latency_p95_ms": 0.026208,
+          "latency_p99_ms": 0.031333,
+          "latency_max_ms": 0.381084,
+          "throughput_decisions_per_s": 41110.889240208475,
+          "runtime_overhead_ms": 0.0009103217333333837,
+          "execution_time_s": 0.3649,
+          "runtime_integrity_score": 0.166667,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_LG+RV",
+          "disabled_components": [
+            "runtime_ledger",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "LG",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 431,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.3128712219333326,
+          "latency_median_ms": 0.312459,
+          "latency_p95_ms": 0.320709,
+          "latency_p99_ms": 0.328208,
+          "latency_max_ms": 0.969041,
+          "throughput_decisions_per_s": 3193.1965899914912,
+          "runtime_overhead_ms": 0.0010042287333333166,
+          "execution_time_s": 4.6975,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_HC+RV",
+          "disabled_components": [
+            "hash_chain",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "HC",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 431,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.3195648432666666,
+          "latency_median_ms": 0.313167,
+          "latency_p95_ms": 0.326458,
+          "latency_p99_ms": 0.440167,
+          "latency_max_ms": 1.473083,
+          "throughput_decisions_per_s": 3126.1444619491167,
+          "runtime_overhead_ms": 0.0010288809999999904,
+          "execution_time_s": 4.7982,
+          "runtime_integrity_score": 0.334746,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ+LG",
+          "disabled_components": [
+            "evidence_quad",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "LG"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.18967122953333365,
+          "latency_median_ms": 0.290166,
+          "latency_p95_ms": 0.351625,
+          "latency_p99_ms": 0.485958,
+          "latency_max_ms": 6.793958,
+          "throughput_decisions_per_s": 5263.034706484491,
+          "runtime_overhead_ms": 0.0011523676666666681,
+          "execution_time_s": 2.8501,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ+HC",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.1792502269333324,
+          "latency_median_ms": 0.289417,
+          "latency_p95_ms": 0.298958,
+          "latency_p99_ms": 0.319666,
+          "latency_max_ms": 9.3755,
+          "throughput_decisions_per_s": 5570.62788582409,
+          "runtime_overhead_ms": 0.000977850733333338,
+          "execution_time_s": 2.6927,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_HC+LG",
+          "disabled_components": [
+            "hash_chain",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "HC",
+            "LG"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.477945947600002,
+          "latency_median_ms": 0.576375,
+          "latency_p95_ms": 0.662333,
+          "latency_p99_ms": 0.798875,
+          "latency_max_ms": 2.523542,
+          "throughput_decisions_per_s": 2090.9136698959783,
+          "runtime_overhead_ms": 0.0010365686666666644,
+          "execution_time_s": 7.1739,
+          "runtime_integrity_score": 0.5,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ+PE+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "predicate_engine",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 3,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 8368,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 6632
+          },
+          "blind_decision_accuracy": 0.4421333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.4421333333333333,
+            "low": 0.4342014009096516,
+            "high": 0.45009489715744017,
+            "n": 15000,
+            "successes": 6632
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9995411452976517,
+            "high": 1.0,
+            "n": 8368,
+            "successes": 8368
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0005788955092632397,
+            "n": 6632,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0004588547023482759,
+            "n": 8368,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.02124058726666662,
+          "latency_median_ms": 0.020917,
+          "latency_p95_ms": 0.021875,
+          "latency_p99_ms": 0.028208,
+          "latency_max_ms": 0.684125,
+          "throughput_decisions_per_s": 46587.89004386985,
+          "runtime_overhead_ms": 0.00060942453333334,
+          "execution_time_s": 0.322,
+          "runtime_integrity_score": 0.0,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ+HC+LG",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC",
+            "LG"
+          ],
+          "n_disabled": 3,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 5531,
+            "fn_fraud_permitted": 2837,
+            "fp_legit_denied": 836,
+            "tn_legit_permitted": 5796
+          },
+          "blind_decision_accuracy": 0.7551333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.7551333333333333,
+            "low": 0.7481871453747266,
+            "high": 0.7619488768571163,
+            "n": 15000,
+            "successes": 11327
+          },
+          "undetected_risk_rate": 0.33902963671128106,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.33902963671128106,
+            "low": 0.32896300874600665,
+            "high": 0.3492439886928231,
+            "n": 8368,
+            "successes": 2837
+          },
+          "benign_flag_rate": 0.12605548854041013,
+          "benign_flag_rate_wilson95": {
+            "p": 0.12605548854041013,
+            "low": 0.11828314766162192,
+            "high": 0.1342607790159936,
+            "n": 6632,
+            "successes": 836
+          },
+          "blind_risk_detection_recall": 0.6609703632887189,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.6609703632887189,
+            "low": 0.650756011307177,
+            "high": 0.6710369912539934,
+            "n": 8368,
+            "successes": 5531
+          },
+          "blind_balanced_accuracy": 0.7674574373741544,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.8571428571428571,
+          "predicate_pass_rate": 0.9383428571428571,
+          "n_predicates": 7,
+          "predicate_names": [
+            "bytes_within_bound",
+            "rate_within_bound",
+            "duration_within_bound",
+            "packets_within_bound",
+            "recognized_service",
+            "normal_connection_state",
+            "ttl_seen_in_baseline"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 431,
+          "latency_mean_ms": 0.17712889686666644,
+          "latency_median_ms": 0.288958,
+          "latency_p95_ms": 0.296292,
+          "latency_p99_ms": 0.303875,
+          "latency_max_ms": 0.619583,
+          "throughput_decisions_per_s": 5637.835060061268,
+          "runtime_overhead_ms": 0.0009447740000000344,
+          "execution_time_s": 2.6606,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "UNSW-NB15",
+          "domain": "network intrusion telemetry",
+          "config": "remove_EQ+HC+LG+PE+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain",
+            "predicate_engine",
+            "runtime_ledger",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC",
+            "LG",
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 5,
+          "evaluated": 15000,
+          "prevalence": 0.5578666666666666,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 8368,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 6632
+          },
+          "blind_decision_accuracy": 0.4421333333333333,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.4421333333333333,
+            "low": 0.4342014009096516,
+            "high": 0.45009489715744017,
+            "n": 15000,
+            "successes": 6632
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9995411452976517,
+            "high": 1.0,
+            "n": 8368,
+            "successes": 8368
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0005788955092632397,
+            "n": 6632,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0004588547023482759,
+            "n": 8368,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.021769320199999692,
+          "latency_median_ms": 0.021167,
+          "latency_p95_ms": 0.022041,
+          "latency_p99_ms": 0.028667,
+          "latency_max_ms": 4.6665,
+          "throughput_decisions_per_s": 45477.52538593266,
+          "runtime_overhead_ms": 0.0006108945333333224,
+          "execution_time_s": 0.3298,
+          "runtime_integrity_score": 0.0,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        }
+      ]
+    },
+    {
+      "dataset": "ULB",
+      "domain": "financial (PCA-anonymised)",
+      "source_file": "dataset/ieee-fraud-detection/creditcard.csv",
+      "rows_loaded": 20000,
+      "warmup_rows": 5000,
+      "evaluated": 15000,
+      "prevalence": 0.00425,
+      "n_predicates": 5,
+      "predicate_names": [
+        "amount_within_calibrated_cap",
+        "pca_norm_within_bound",
+        "no_extreme_component",
+        "v14_not_anomalous",
+        "v17_not_anomalous"
+      ],
+      "calibrated_thresholds": {
+        "pca_norm_cap": "14.826451491859176",
+        "max_comp_cap": "9.50067888995147",
+        "amount_cap": "1043.56",
+        "v14_lo": "-3.68597996582649",
+        "v17_lo": "-1.56095511074774",
+        "warmup_n": "5000"
+      },
+      "baseline_runtime_integrity_score": 1.0,
+      "adapter_independence": "a FRESH adapter is instantiated and re-calibrated for every configuration, so stateful online baselines cannot leak between configurations",
+      "configs": [
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "baseline_full_LDREA",
+          "disabled_components": [],
+          "disabled_codes": [],
+          "n_disabled": 0,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.6333933898000024,
+          "latency_median_ms": 0.606083,
+          "latency_p95_ms": 0.834083,
+          "latency_p99_ms": 1.130041,
+          "latency_max_ms": 25.752875,
+          "throughput_decisions_per_s": 1577.728420923578,
+          "runtime_overhead_ms": 0.001146191533333391,
+          "execution_time_s": 9.5073,
+          "runtime_integrity_score": 1.0,
+          "overall_runtime_verdict": "BASELINE (full L-DREA)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_PE",
+          "disabled_components": [
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "PE"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 82,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14918
+          },
+          "blind_decision_accuracy": 0.9945333333333334,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9945333333333334,
+            "low": 0.9932201168691143,
+            "high": 0.995593317391615,
+            "n": 15000,
+            "successes": 14918
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9552493763098998,
+            "high": 1.0,
+            "n": 82,
+            "successes": 82
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0002574386567030129,
+            "n": 14918,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.04475062369010032,
+            "n": 82,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.6286835075999998,
+          "latency_median_ms": 0.590125,
+          "latency_p95_ms": 0.825833,
+          "latency_p99_ms": 1.107458,
+          "latency_max_ms": 24.034792,
+          "throughput_decisions_per_s": 1589.5510543531902,
+          "runtime_overhead_ms": 0.0008676320000000137,
+          "execution_time_s": 9.4366,
+          "runtime_integrity_score": 0.833333,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_RV",
+          "disabled_components": [
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "RV"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 728,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.5431759995999988,
+          "latency_median_ms": 0.392792,
+          "latency_p95_ms": 0.750417,
+          "latency_p99_ms": 1.978292,
+          "latency_max_ms": 69.28925,
+          "throughput_decisions_per_s": 1838.1272629182442,
+          "runtime_overhead_ms": 0.0017529064666668508,
+          "execution_time_s": 8.1605,
+          "runtime_integrity_score": 0.833333,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ",
+          "disabled_components": [
+            "evidence_quad"
+          ],
+          "disabled_codes": [
+            "EQ"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.3269187556666669,
+          "latency_median_ms": 0.314,
+          "latency_p95_ms": 0.43275,
+          "latency_p99_ms": 0.554083,
+          "latency_max_ms": 12.475209,
+          "throughput_decisions_per_s": 3055.6631049942307,
+          "runtime_overhead_ms": 0.0010127590666667392,
+          "execution_time_s": 4.9089,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_LG",
+          "disabled_components": [
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "LG"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.6609377234666692,
+          "latency_median_ms": 0.6065,
+          "latency_p95_ms": 0.869042,
+          "latency_p99_ms": 1.1095,
+          "latency_max_ms": 107.842458,
+          "throughput_decisions_per_s": 1512.0185440002313,
+          "runtime_overhead_ms": 0.0011972169333334672,
+          "execution_time_s": 9.9205,
+          "runtime_integrity_score": 0.5,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_HC",
+          "disabled_components": [
+            "hash_chain"
+          ],
+          "disabled_codes": [
+            "HC"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.634659654933333,
+          "latency_median_ms": 0.6,
+          "latency_p95_ms": 0.853166,
+          "latency_p99_ms": 1.151334,
+          "latency_max_ms": 44.829417,
+          "throughput_decisions_per_s": 1574.7218096451058,
+          "runtime_overhead_ms": 0.001066817066666695,
+          "execution_time_s": 9.5255,
+          "runtime_integrity_score": 0.501412,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_PE+RV",
+          "disabled_components": [
+            "predicate_engine",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 82,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14918
+          },
+          "blind_decision_accuracy": 0.9945333333333334,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9945333333333334,
+            "low": 0.9932201168691143,
+            "high": 0.995593317391615,
+            "n": 15000,
+            "successes": 14918
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9552493763098998,
+            "high": 1.0,
+            "n": 82,
+            "successes": 82
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0002574386567030129,
+            "n": 14918,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.04475062369010032,
+            "n": 82,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.41163009066666756,
+          "latency_median_ms": 0.328958,
+          "latency_p95_ms": 0.649667,
+          "latency_p99_ms": 1.429208,
+          "latency_max_ms": 47.21075,
+          "throughput_decisions_per_s": 2425.7334417312654,
+          "runtime_overhead_ms": 0.0012799401333333414,
+          "execution_time_s": 6.1837,
+          "runtime_integrity_score": 0.666667,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ+PE",
+          "disabled_components": [
+            "evidence_quad",
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 82,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14918
+          },
+          "blind_decision_accuracy": 0.9945333333333334,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9945333333333334,
+            "low": 0.9932201168691143,
+            "high": 0.995593317391615,
+            "n": 15000,
+            "successes": 14918
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9552493763098998,
+            "high": 1.0,
+            "n": 82,
+            "successes": 82
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0002574386567030129,
+            "n": 14918,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.04475062369010032,
+            "n": 82,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.3300778414666678,
+          "latency_median_ms": 0.307,
+          "latency_p95_ms": 0.427042,
+          "latency_p99_ms": 0.56275,
+          "latency_max_ms": 12.545708,
+          "throughput_decisions_per_s": 3026.29375171057,
+          "runtime_overhead_ms": 0.0008401376666666863,
+          "execution_time_s": 4.9566,
+          "runtime_integrity_score": 0.166667,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_LG+PE",
+          "disabled_components": [
+            "predicate_engine",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "LG",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 82,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14918
+          },
+          "blind_decision_accuracy": 0.9945333333333334,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9945333333333334,
+            "low": 0.9932201168691143,
+            "high": 0.995593317391615,
+            "n": 15000,
+            "successes": 14918
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9552493763098998,
+            "high": 1.0,
+            "n": 82,
+            "successes": 82
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0002574386567030129,
+            "n": 14918,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.04475062369010032,
+            "n": 82,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.8257044899333307,
+          "latency_median_ms": 0.609375,
+          "latency_p95_ms": 1.171458,
+          "latency_p99_ms": 3.198666,
+          "latency_max_ms": 368.636958,
+          "throughput_decisions_per_s": 1209.5106239381496,
+          "runtime_overhead_ms": 0.001564014933333297,
+          "execution_time_s": 12.4017,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_HC+PE",
+          "disabled_components": [
+            "hash_chain",
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "HC",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 82,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14918
+          },
+          "blind_decision_accuracy": 0.9945333333333334,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9945333333333334,
+            "low": 0.9932201168691143,
+            "high": 0.995593317391615,
+            "n": 15000,
+            "successes": 14918
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9552493763098998,
+            "high": 1.0,
+            "n": 82,
+            "successes": 82
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0002574386567030129,
+            "n": 14918,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.04475062369010032,
+            "n": 82,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.622170113866666,
+          "latency_median_ms": 0.587125,
+          "latency_p95_ms": 0.833042,
+          "latency_p99_ms": 1.105333,
+          "latency_max_ms": 7.043833,
+          "throughput_decisions_per_s": 1606.2997864547117,
+          "runtime_overhead_ms": 0.0008220734000000111,
+          "execution_time_s": 9.3382,
+          "runtime_integrity_score": 0.334746,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 728,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.055457261333332855,
+          "latency_median_ms": 0.048292,
+          "latency_p95_ms": 0.08025,
+          "latency_p99_ms": 0.082708,
+          "latency_max_ms": 21.12625,
+          "throughput_decisions_per_s": 17948.408205213782,
+          "runtime_overhead_ms": 0.0009657052666667214,
+          "execution_time_s": 0.8357,
+          "runtime_integrity_score": 0.166667,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_LG+RV",
+          "disabled_components": [
+            "runtime_ledger",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "LG",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 728,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.34446569859999865,
+          "latency_median_ms": 0.333125,
+          "latency_p95_ms": 0.395,
+          "latency_p99_ms": 0.56675,
+          "latency_max_ms": 1.023834,
+          "throughput_decisions_per_s": 2900.581131429679,
+          "runtime_overhead_ms": 0.0009491255333334001,
+          "execution_time_s": 5.1714,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_HC+RV",
+          "disabled_components": [
+            "hash_chain",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "HC",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 728,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.34373060353333307,
+          "latency_median_ms": 0.33275,
+          "latency_p95_ms": 0.380375,
+          "latency_p99_ms": 0.564,
+          "latency_max_ms": 18.831042,
+          "throughput_decisions_per_s": 2906.6729326473805,
+          "runtime_overhead_ms": 0.000935497666666733,
+          "execution_time_s": 5.1605,
+          "runtime_integrity_score": 0.334746,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ+LG",
+          "disabled_components": [
+            "evidence_quad",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "LG"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.3086638215333353,
+          "latency_median_ms": 0.312917,
+          "latency_p95_ms": 0.331625,
+          "latency_p99_ms": 0.396292,
+          "latency_max_ms": 1.20575,
+          "throughput_decisions_per_s": 3236.6830116461565,
+          "runtime_overhead_ms": 0.0009432844000000541,
+          "execution_time_s": 4.6344,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ+HC",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.30918986466666676,
+          "latency_median_ms": 0.3135,
+          "latency_p95_ms": 0.331667,
+          "latency_p99_ms": 0.398333,
+          "latency_max_ms": 1.175958,
+          "throughput_decisions_per_s": 3231.1177316713492,
+          "runtime_overhead_ms": 0.0009402936000000623,
+          "execution_time_s": 4.6424,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_HC+LG",
+          "disabled_components": [
+            "hash_chain",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "HC",
+            "LG"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.6969691858000002,
+          "latency_median_ms": 0.603458,
+          "latency_p95_ms": 1.012416,
+          "latency_p99_ms": 1.202375,
+          "latency_max_ms": 91.366,
+          "throughput_decisions_per_s": 1433.8673836131038,
+          "runtime_overhead_ms": 0.0012060125333334434,
+          "execution_time_s": 10.4612,
+          "runtime_integrity_score": 0.5,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ+PE+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "predicate_engine",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 3,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 82,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14918
+          },
+          "blind_decision_accuracy": 0.9945333333333334,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9945333333333334,
+            "low": 0.9932201168691143,
+            "high": 0.995593317391615,
+            "n": 15000,
+            "successes": 14918
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9552493763098998,
+            "high": 1.0,
+            "n": 82,
+            "successes": 82
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0002574386567030129,
+            "n": 14918,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.04475062369010032,
+            "n": 82,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.04325077886666673,
+          "latency_median_ms": 0.040875,
+          "latency_p95_ms": 0.051084,
+          "latency_p99_ms": 0.095917,
+          "latency_max_ms": 0.599292,
+          "throughput_decisions_per_s": 22989.158991566055,
+          "runtime_overhead_ms": 0.000672505333333323,
+          "execution_time_s": 0.6525,
+          "runtime_integrity_score": 0.0,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ+HC+LG",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC",
+            "LG"
+          ],
+          "n_disabled": 3,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 77,
+            "fn_fraud_permitted": 5,
+            "fp_legit_denied": 358,
+            "tn_legit_permitted": 14560
+          },
+          "blind_decision_accuracy": 0.9758,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9758,
+            "low": 0.9732162978197388,
+            "high": 0.9781400624281479,
+            "n": 15000,
+            "successes": 14637
+          },
+          "undetected_risk_rate": 0.06097560975609756,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.06097560975609756,
+            "low": 0.02632395506781607,
+            "high": 0.1349204950015403,
+            "n": 82,
+            "successes": 5
+          },
+          "benign_flag_rate": 0.023997854940340527,
+          "benign_flag_rate_wilson95": {
+            "p": 0.023997854940340527,
+            "low": 0.021661792266083453,
+            "high": 0.026579000320221424,
+            "n": 14918,
+            "successes": 358
+          },
+          "blind_risk_detection_recall": 0.9390243902439024,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.9390243902439024,
+            "low": 0.8650795049984596,
+            "high": 0.973676044932184,
+            "n": 82,
+            "successes": 77
+          },
+          "blind_balanced_accuracy": 0.9575132676517809,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 1.0,
+          "predicate_pass_rate": 0.9882933333333334,
+          "n_predicates": 5,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "pca_norm_within_bound",
+            "no_extreme_component",
+            "v14_not_anomalous",
+            "v17_not_anomalous"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 728,
+          "latency_mean_ms": 0.3063589198000001,
+          "latency_median_ms": 0.312416,
+          "latency_p95_ms": 0.32175,
+          "latency_p99_ms": 0.331459,
+          "latency_max_ms": 1.267541,
+          "throughput_decisions_per_s": 3261.451102510303,
+          "runtime_overhead_ms": 0.0008801313333334103,
+          "execution_time_s": 4.5992,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "ULB",
+          "domain": "financial (PCA-anonymised)",
+          "config": "remove_EQ+HC+LG+PE+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain",
+            "predicate_engine",
+            "runtime_ledger",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC",
+            "LG",
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 5,
+          "evaluated": 15000,
+          "prevalence": 0.0054666666666666665,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 82,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14918
+          },
+          "blind_decision_accuracy": 0.9945333333333334,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9945333333333334,
+            "low": 0.9932201168691143,
+            "high": 0.995593317391615,
+            "n": 15000,
+            "successes": 14918
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9552493763098998,
+            "high": 1.0,
+            "n": 82,
+            "successes": 82
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.0002574386567030129,
+            "n": 14918,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.04475062369010032,
+            "n": 82,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.04157180886666694,
+          "latency_median_ms": 0.039958,
+          "latency_p95_ms": 0.041584,
+          "latency_p99_ms": 0.048459,
+          "latency_max_ms": 17.8685,
+          "throughput_decisions_per_s": 23930.238568524874,
+          "runtime_overhead_ms": 0.0006243474000000082,
+          "execution_time_s": 0.6268,
+          "runtime_integrity_score": 0.0,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        }
+      ]
+    },
+    {
+      "dataset": "IEEE-CIS",
+      "domain": "financial (transactions)",
+      "source_file": "dataset/ieee-fraud-detection/train_transaction.csv",
+      "rows_loaded": 20000,
+      "warmup_rows": 5000,
+      "evaluated": 15000,
+      "prevalence": 0.0281,
+      "n_predicates": 6,
+      "predicate_names": [
+        "amount_within_calibrated_cap",
+        "known_product_code",
+        "recognized_card_network",
+        "recognized_card_type",
+        "billing_addr_present",
+        "card_behaviour_normal"
+      ],
+      "calibrated_thresholds": {
+        "amount_cap": "2079.95",
+        "products": "{'C', 'H', 'S', 'R', 'W'}",
+        "card4": "{'visa', 'discover', 'american express', 'mastercard'}",
+        "card6": "{'credit', 'debit'}",
+        "warmup_n": "5000"
+      },
+      "baseline_runtime_integrity_score": 1.0,
+      "adapter_independence": "a FRESH adapter is instantiated and re-calibrated for every configuration, so stateful online baselines cannot leak between configurations",
+      "configs": [
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "baseline_full_LDREA",
+          "disabled_components": [],
+          "disabled_codes": [],
+          "n_disabled": 0,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.5775604878666701,
+          "latency_median_ms": 0.583875,
+          "latency_p95_ms": 0.776125,
+          "latency_p99_ms": 0.943542,
+          "latency_max_ms": 7.453208,
+          "throughput_decisions_per_s": 1730.4009713601724,
+          "runtime_overhead_ms": 0.0009647756000000146,
+          "execution_time_s": 8.6685,
+          "runtime_integrity_score": 1.0,
+          "overall_runtime_verdict": "BASELINE (full L-DREA)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_PE",
+          "disabled_components": [
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "PE"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 453,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14547
+          },
+          "blind_decision_accuracy": 0.9698,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9698,
+            "low": 0.9669387103062841,
+            "high": 0.9724207223218311,
+            "n": 15000,
+            "successes": 14547
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9915912648764178,
+            "high": 1.0,
+            "n": 453,
+            "successes": 453
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.00026400252051165325,
+            "n": 14547,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.008408735123582253,
+            "n": 453,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.5713892995333332,
+          "latency_median_ms": 0.565208,
+          "latency_p95_ms": 0.580209,
+          "latency_p99_ms": 0.665375,
+          "latency_max_ms": 1.527459,
+          "throughput_decisions_per_s": 1749.1256995190997,
+          "runtime_overhead_ms": 0.0006940091333333362,
+          "execution_time_s": 8.5757,
+          "runtime_integrity_score": 0.833333,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_RV",
+          "disabled_components": [
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "RV"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 662,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.34197946406666535,
+          "latency_median_ms": 0.318708,
+          "latency_p95_ms": 0.504583,
+          "latency_p99_ms": 0.706417,
+          "latency_max_ms": 4.283875,
+          "throughput_decisions_per_s": 2921.240744369303,
+          "runtime_overhead_ms": 0.0009832744666666685,
+          "execution_time_s": 5.1348,
+          "runtime_integrity_score": 0.833333,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ",
+          "disabled_components": [
+            "evidence_quad"
+          ],
+          "disabled_codes": [
+            "EQ"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.2854722477333332,
+          "latency_median_ms": 0.294625,
+          "latency_p95_ms": 0.405459,
+          "latency_p99_ms": 0.602208,
+          "latency_max_ms": 6.396417,
+          "throughput_decisions_per_s": 3499.3416820302004,
+          "runtime_overhead_ms": 0.000919110733333391,
+          "execution_time_s": 4.2865,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_LG",
+          "disabled_components": [
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "LG"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.5913549774000044,
+          "latency_median_ms": 0.586083,
+          "latency_p95_ms": 0.810667,
+          "latency_p99_ms": 0.996708,
+          "latency_max_ms": 2.01275,
+          "throughput_decisions_per_s": 1689.9877306586573,
+          "runtime_overhead_ms": 0.001038123733333348,
+          "execution_time_s": 8.8758,
+          "runtime_integrity_score": 0.5,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_HC",
+          "disabled_components": [
+            "hash_chain"
+          ],
+          "disabled_codes": [
+            "HC"
+          ],
+          "n_disabled": 1,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.6000778463333334,
+          "latency_median_ms": 0.5875,
+          "latency_p95_ms": 0.828041,
+          "latency_p99_ms": 1.117583,
+          "latency_max_ms": 9.277667,
+          "throughput_decisions_per_s": 1665.315594644451,
+          "runtime_overhead_ms": 0.001084781200000009,
+          "execution_time_s": 9.0073,
+          "runtime_integrity_score": 0.501412,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_PE+RV",
+          "disabled_components": [
+            "predicate_engine",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 453,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14547
+          },
+          "blind_decision_accuracy": 0.9698,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9698,
+            "low": 0.9669387103062841,
+            "high": 0.9724207223218311,
+            "n": 15000,
+            "successes": 14547
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9915912648764178,
+            "high": 1.0,
+            "n": 453,
+            "successes": 453
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.00026400252051165325,
+            "n": 14547,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.008408735123582253,
+            "n": 453,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 1.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 1.0,
+          "hash_chain_links_ok": 118,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 1.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": null,
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.3611673320666653,
+          "latency_median_ms": 0.305917,
+          "latency_p95_ms": 0.546417,
+          "latency_p99_ms": 0.908041,
+          "latency_max_ms": 26.740583,
+          "throughput_decisions_per_s": 2764.6762626522773,
+          "runtime_overhead_ms": 0.001031635066666686,
+          "execution_time_s": 5.4256,
+          "runtime_integrity_score": 0.666667,
+          "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ+PE",
+          "disabled_components": [
+            "evidence_quad",
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 453,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14547
+          },
+          "blind_decision_accuracy": 0.9698,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9698,
+            "low": 0.9669387103062841,
+            "high": 0.9724207223218311,
+            "n": 15000,
+            "successes": 14547
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9915912648764178,
+            "high": 1.0,
+            "n": 453,
+            "successes": 453
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.00026400252051165325,
+            "n": 14547,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.008408735123582253,
+            "n": 453,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.3143678185999977,
+          "latency_median_ms": 0.286167,
+          "latency_p95_ms": 0.409041,
+          "latency_p99_ms": 0.5,
+          "latency_max_ms": 4.697333,
+          "throughput_decisions_per_s": 3177.4462607156775,
+          "runtime_overhead_ms": 0.0008712551999999215,
+          "execution_time_s": 4.7208,
+          "runtime_integrity_score": 0.166667,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_LG+PE",
+          "disabled_components": [
+            "predicate_engine",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "LG",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 453,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14547
+          },
+          "blind_decision_accuracy": 0.9698,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9698,
+            "low": 0.9669387103062841,
+            "high": 0.9724207223218311,
+            "n": 15000,
+            "successes": 14547
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9915912648764178,
+            "high": 1.0,
+            "n": 453,
+            "successes": 453
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.00026400252051165325,
+            "n": 14547,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.008408735123582253,
+            "n": 453,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.5663417269333335,
+          "latency_median_ms": 0.564,
+          "latency_p95_ms": 0.58,
+          "latency_p99_ms": 0.601291,
+          "latency_max_ms": 2.879792,
+          "throughput_decisions_per_s": 1764.7567141977206,
+          "runtime_overhead_ms": 0.0007074831333333442,
+          "execution_time_s": 8.4998,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_HC+PE",
+          "disabled_components": [
+            "hash_chain",
+            "predicate_engine"
+          ],
+          "disabled_codes": [
+            "HC",
+            "PE"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 453,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14547
+          },
+          "blind_decision_accuracy": 0.9698,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9698,
+            "low": 0.9669387103062841,
+            "high": 0.9724207223218311,
+            "n": 15000,
+            "successes": 14547
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9915912648764178,
+            "high": 1.0,
+            "n": 453,
+            "successes": 453
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.00026400252051165325,
+            "n": 14547,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.008408735123582253,
+            "n": 453,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.5728452276000031,
+          "latency_median_ms": 0.564958,
+          "latency_p95_ms": 0.583292,
+          "latency_p99_ms": 0.702542,
+          "latency_max_ms": 6.549583,
+          "throughput_decisions_per_s": 1744.6658803457549,
+          "runtime_overhead_ms": 0.0006963508000000076,
+          "execution_time_s": 8.5976,
+          "runtime_integrity_score": 0.334746,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 662,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.05597465760000029,
+          "latency_median_ms": 0.033292,
+          "latency_p95_ms": 0.179291,
+          "latency_p99_ms": 0.367,
+          "latency_max_ms": 16.021542,
+          "throughput_decisions_per_s": 17767.373561800123,
+          "runtime_overhead_ms": 0.0010569727333334083,
+          "execution_time_s": 0.8442,
+          "runtime_integrity_score": 0.166667,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_LG+RV",
+          "disabled_components": [
+            "runtime_ledger",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "LG",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 662,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.4642089045333339,
+          "latency_median_ms": 0.362542,
+          "latency_p95_ms": 0.745459,
+          "latency_p99_ms": 1.450667,
+          "latency_max_ms": 40.928083,
+          "throughput_decisions_per_s": 2151.0309708175264,
+          "runtime_overhead_ms": 0.0016729442666667208,
+          "execution_time_s": 6.9734,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_HC+RV",
+          "disabled_components": [
+            "hash_chain",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "HC",
+            "RV"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": 0.00847457627118644,
+          "hash_chain_links_ok": 1,
+          "hash_chain_links_total": 118,
+          "ledger_integrity": 0.0,
+          "ledger_blocks": 118,
+          "ledger_verify_error": "chain break at 1",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 662,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.3791343794666681,
+          "latency_median_ms": 0.330417,
+          "latency_p95_ms": 0.600375,
+          "latency_p99_ms": 0.899083,
+          "latency_max_ms": 16.840833,
+          "throughput_decisions_per_s": 2634.4806697573094,
+          "runtime_overhead_ms": 0.0011564435333333999,
+          "execution_time_s": 5.6937,
+          "runtime_integrity_score": 0.334746,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ+LG",
+          "disabled_components": [
+            "evidence_quad",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "LG"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.28210056453333326,
+          "latency_median_ms": 0.29425,
+          "latency_p95_ms": 0.3815,
+          "latency_p99_ms": 0.582125,
+          "latency_max_ms": 5.407125,
+          "throughput_decisions_per_s": 3541.1111443309373,
+          "runtime_overhead_ms": 0.0009190316666667246,
+          "execution_time_s": 4.236,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ+HC",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.3066610746666648,
+          "latency_median_ms": 0.296584,
+          "latency_p95_ms": 0.52575,
+          "latency_p99_ms": 0.687292,
+          "latency_max_ms": 6.093667,
+          "throughput_decisions_per_s": 3257.161770867075,
+          "runtime_overhead_ms": 0.0010446626666666958,
+          "execution_time_s": 4.6052,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_HC+LG",
+          "disabled_components": [
+            "hash_chain",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "HC",
+            "LG"
+          ],
+          "n_disabled": 2,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 1.0,
+          "ertuples": 15000,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.6781541383999979,
+          "latency_median_ms": 0.604792,
+          "latency_p95_ms": 1.045458,
+          "latency_p99_ms": 1.569208,
+          "latency_max_ms": 26.854583,
+          "throughput_decisions_per_s": 1473.3494051806576,
+          "runtime_overhead_ms": 0.0014467338666668548,
+          "execution_time_s": 10.1809,
+          "runtime_integrity_score": 0.5,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ+PE+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "predicate_engine",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 3,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 453,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14547
+          },
+          "blind_decision_accuracy": 0.9698,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9698,
+            "low": 0.9669387103062841,
+            "high": 0.9724207223218311,
+            "n": 15000,
+            "successes": 14547
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9915912648764178,
+            "high": 1.0,
+            "n": 453,
+            "successes": 453
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.00026400252051165325,
+            "n": 14547,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.008408735123582253,
+            "n": 453,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no evidence to chain",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.021099657733333145,
+          "latency_median_ms": 0.020167,
+          "latency_p95_ms": 0.021125,
+          "latency_p99_ms": 0.027166,
+          "latency_max_ms": 8.764166,
+          "throughput_decisions_per_s": 46904.51686589064,
+          "runtime_overhead_ms": 0.0006114591333333106,
+          "execution_time_s": 0.3198,
+          "runtime_integrity_score": 0.0,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ+HC+LG",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain",
+            "runtime_ledger"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC",
+            "LG"
+          ],
+          "n_disabled": 3,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 155,
+            "fn_fraud_permitted": 298,
+            "fp_legit_denied": 1592,
+            "tn_legit_permitted": 12955
+          },
+          "blind_decision_accuracy": 0.874,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.874,
+            "low": 0.8685934624237521,
+            "high": 0.8792150258753435,
+            "n": 15000,
+            "successes": 13110
+          },
+          "undetected_risk_rate": 0.6578366445916115,
+          "undetected_risk_rate_wilson95": {
+            "p": 0.6578366445916115,
+            "low": 0.6129840037478066,
+            "high": 0.7000348723610846,
+            "n": 453,
+            "successes": 298
+          },
+          "benign_flag_rate": 0.10943837217295663,
+          "benign_flag_rate_wilson95": {
+            "p": 0.10943837217295663,
+            "low": 0.10446794779690832,
+            "high": 0.11461501505732785,
+            "n": 14547,
+            "successes": 1592
+          },
+          "blind_risk_detection_recall": 0.34216335540838855,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.34216335540838855,
+            "low": 0.2999651276389154,
+            "high": 0.38701599625219346,
+            "n": 453,
+            "successes": 155
+          },
+          "blind_balanced_accuracy": 0.616362491617716,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.6666666666666666,
+          "predicate_pass_rate": 0.9800111111111112,
+          "n_predicates": 6,
+          "predicate_names": [
+            "amount_within_calibrated_cap",
+            "known_product_code",
+            "recognized_card_network",
+            "recognized_card_type",
+            "billing_addr_present",
+            "card_behaviour_normal"
+          ],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 1.0,
+          "false_permits_after_revocation": 0,
+          "revocation_probe_n": 662,
+          "latency_mean_ms": 0.3184889160666674,
+          "latency_median_ms": 0.299541,
+          "latency_p95_ms": 0.547625,
+          "latency_p99_ms": 0.813625,
+          "latency_max_ms": 29.172792,
+          "throughput_decisions_per_s": 3135.69369540564,
+          "runtime_overhead_ms": 0.0011778085333334156,
+          "execution_time_s": 4.7836,
+          "runtime_integrity_score": 0.333333,
+          "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)"
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "domain": "financial (transactions)",
+          "config": "remove_EQ+HC+LG+PE+RV",
+          "disabled_components": [
+            "evidence_quad",
+            "hash_chain",
+            "predicate_engine",
+            "runtime_ledger",
+            "runtime_revocation"
+          ],
+          "disabled_codes": [
+            "EQ",
+            "HC",
+            "LG",
+            "PE",
+            "RV"
+          ],
+          "n_disabled": 5,
+          "evaluated": 15000,
+          "prevalence": 0.0302,
+          "confusion_matrix": {
+            "tp_fraud_denied": 0,
+            "fn_fraud_permitted": 453,
+            "fp_legit_denied": 0,
+            "tn_legit_permitted": 14547
+          },
+          "blind_decision_accuracy": 0.9698,
+          "blind_decision_accuracy_wilson95": {
+            "p": 0.9698,
+            "low": 0.9669387103062841,
+            "high": 0.9724207223218311,
+            "n": 15000,
+            "successes": 14547
+          },
+          "undetected_risk_rate": 1.0,
+          "undetected_risk_rate_wilson95": {
+            "p": 1.0,
+            "low": 0.9915912648764178,
+            "high": 1.0,
+            "n": 453,
+            "successes": 453
+          },
+          "benign_flag_rate": 0.0,
+          "benign_flag_rate_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.00026400252051165325,
+            "n": 14547,
+            "successes": 0
+          },
+          "blind_risk_detection_recall": 0.0,
+          "blind_risk_detection_recall_wilson95": {
+            "p": 0.0,
+            "low": 0.0,
+            "high": 0.008408735123582253,
+            "n": 453,
+            "successes": 0
+          },
+          "blind_balanced_accuracy": 0.5,
+          "replay_determinism_rate": 1.0,
+          "replay_integrity": 0.0,
+          "evidence_completeness": 0.0,
+          "ertuples": 0,
+          "predicate_coverage": 0.0,
+          "predicate_pass_rate": 1.0,
+          "n_predicates": 0,
+          "predicate_names": [],
+          "hash_chain_integrity": null,
+          "hash_chain_links_ok": 0,
+          "hash_chain_links_total": 0,
+          "ledger_integrity": null,
+          "ledger_blocks": 0,
+          "ledger_verify_error": "no ledger",
+          "revocation_compliance": 0.0,
+          "false_permits_after_revocation": 750,
+          "revocation_probe_n": 750,
+          "latency_mean_ms": 0.032935519133333424,
+          "latency_median_ms": 0.025667,
+          "latency_p95_ms": 0.079125,
+          "latency_p99_ms": 0.104792,
+          "latency_max_ms": 7.568834,
+          "throughput_decisions_per_s": 30012.46267512765,
+          "runtime_overhead_ms": 0.0009432335999999993,
+          "execution_time_s": 0.4998,
+          "runtime_integrity_score": 0.0,
+          "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)"
+        }
+      ]
+    }
+  ],
+  "failed": [],
+  "cross_dataset_conclusions": {
+    "all_conclusions_replicate": true,
+    "per_dataset": {
+      "UNSW-NB15": {
+        "checks": {
+          "PE_removal_raises_URR": true,
+          "EQ_removal_zeroes_evidence": true,
+          "EQ_removal_cascades_to_ledger": true,
+          "LG_HC_removal_does_not_raise_URR": true
+        },
+        "baseline_urr": 0.33902963671128106,
+        "baseline_recall": 0.6609703632887189,
+        "baseline_accuracy": 0.7551333333333333,
+        "prevalence": 0.5578,
+        "all_hold": true
+      },
+      "ULB": {
+        "checks": {
+          "PE_removal_raises_URR": true,
+          "EQ_removal_zeroes_evidence": true,
+          "EQ_removal_cascades_to_ledger": true,
+          "LG_HC_removal_does_not_raise_URR": true
+        },
+        "baseline_urr": 0.06097560975609756,
+        "baseline_recall": 0.9390243902439024,
+        "baseline_accuracy": 0.9758,
+        "prevalence": 0.00425,
+        "all_hold": true
+      },
+      "IEEE-CIS": {
+        "checks": {
+          "PE_removal_raises_URR": true,
+          "EQ_removal_zeroes_evidence": true,
+          "EQ_removal_cascades_to_ledger": true,
+          "LG_HC_removal_does_not_raise_URR": true
+        },
+        "baseline_urr": 0.6578366445916115,
+        "baseline_recall": 0.34216335540838855,
+        "baseline_accuracy": 0.874,
+        "prevalence": 0.0281,
+        "all_hold": true
+      }
+    },
+    "interpretation": "The ABSOLUTE metrics differ across datasets by design (different prevalence, observables and operating points \u2014 they are not comparable and are deliberately not normalized). What replicates is the ablation STRUCTURE: the predicate engine is the only component whose removal opens the authorization boundary, and the evidence->ledger->hash-chain cascade is a critical dependency on every dataset."
+  },
+  "duration_s": 363.86
+}

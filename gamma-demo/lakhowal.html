@@ -1,0 +1,1851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gamma G-0 — Complete Runtime Governance Laboratory</title>
+<style>
+
+  :root{
+    color-scheme: light dark;
+    --ground:#FBFBFD; --ground-2:#F4F5F9; --surface:#FFFFFF; --surface-2:#FAFBFF;
+    --ink:#0E1220; --ink-2:#3B455C; --muted:#697488; --hairline:rgba(15,23,42,.09);
+    --hairline-2:rgba(15,23,42,.06); --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06);
+    --shadow-lg:0 2px 6px rgba(16,24,40,.06),0 24px 60px rgba(16,24,40,.12);
+    --accent:#4F46E5; --accent-2:#6366F1; --accent-soft:rgba(79,70,229,.10); --accent-line:rgba(79,70,229,.28);
+    --pass:#059669; --pass-soft:rgba(5,150,105,.10); --pass-line:rgba(5,150,105,.30);
+    --fail:#E11D48; --fail-soft:rgba(225,29,72,.10); --fail-line:rgba(225,29,72,.30);
+    --hold:#B45309; --hold-soft:rgba(180,83,9,.10); --hold-line:rgba(180,83,9,.30);
+    --idle:#AEB6C6; --idle-soft:rgba(120,131,153,.10);
+    --radius:16px; --radius-sm:11px;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","Menlo",Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#0A0D14; --ground-2:#0F131C; --surface:#141926; --surface-2:#10151F;
+      --ink:#EAEDF4; --ink-2:#B4BDD0; --muted:#8A93A6; --hairline:rgba(255,255,255,.09);
+      --hairline-2:rgba(255,255,255,.05); --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+      --shadow-lg:0 2px 8px rgba(0,0,0,.5),0 30px 70px rgba(0,0,0,.5);
+      --accent:#7C83FF; --accent-2:#8B90FF; --accent-soft:rgba(124,131,255,.14); --accent-line:rgba(124,131,255,.34);
+      --pass:#34D399; --pass-soft:rgba(52,211,153,.13); --pass-line:rgba(52,211,153,.32);
+      --fail:#FB7185; --fail-soft:rgba(251,113,133,.14); --fail-line:rgba(251,113,133,.32);
+      --hold:#FBBF24; --hold-soft:rgba(251,191,36,.13); --hold-line:rgba(251,191,36,.30);
+      --idle:#59637A; --idle-soft:rgba(120,131,153,.14);
+    }
+  }
+  :root[data-theme="light"]{
+    color-scheme:light;
+    --ground:#FBFBFD; --ground-2:#F4F5F9; --surface:#FFFFFF; --surface-2:#FAFBFF;
+    --ink:#0E1220; --ink-2:#3B455C; --muted:#697488; --hairline:rgba(15,23,42,.09); --hairline-2:rgba(15,23,42,.06);
+    --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06); --shadow-lg:0 2px 6px rgba(16,24,40,.06),0 24px 60px rgba(16,24,40,.12);
+    --accent:#4F46E5; --accent-2:#6366F1; --accent-soft:rgba(79,70,229,.10); --accent-line:rgba(79,70,229,.28);
+    --pass:#059669; --pass-soft:rgba(5,150,105,.10); --pass-line:rgba(5,150,105,.30);
+    --fail:#E11D48; --fail-soft:rgba(225,29,72,.10); --fail-line:rgba(225,29,72,.30);
+    --hold:#B45309; --hold-soft:rgba(180,83,9,.10); --hold-line:rgba(180,83,9,.30); --idle:#AEB6C6; --idle-soft:rgba(120,131,153,.10);
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --ground:#0A0D14; --ground-2:#0F131C; --surface:#141926; --surface-2:#10151F;
+    --ink:#EAEDF4; --ink-2:#B4BDD0; --muted:#8A93A6; --hairline:rgba(255,255,255,.09); --hairline-2:rgba(255,255,255,.05);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35); --shadow-lg:0 2px 8px rgba(0,0,0,.5),0 30px 70px rgba(0,0,0,.5);
+    --accent:#7C83FF; --accent-2:#8B90FF; --accent-soft:rgba(124,131,255,.14); --accent-line:rgba(124,131,255,.34);
+    --pass:#34D399; --pass-soft:rgba(52,211,153,.13); --pass-line:rgba(52,211,153,.32);
+    --fail:#FB7185; --fail-soft:rgba(251,113,133,.14); --fail-line:rgba(251,113,133,.32);
+    --hold:#FBBF24; --hold-soft:rgba(251,191,36,.13); --hold-line:rgba(251,191,36,.30); --idle:#59637A; --idle-soft:rgba(120,131,153,.14);
+  }
+
+    *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:118px}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .tnum{font-variant-numeric:tabular-nums}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  code{font-family:var(--mono);font-size:.9em;background:var(--ground-2);border:1px solid var(--hairline-2);
+    border-radius:5px;padding:1px 5px;word-break:break-word}
+  .plain{color:var(--muted);font-weight:400}
+
+  /* ---------- chrome ---------- */
+  .top{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--ground) 88%,transparent);
+    backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--hairline)}
+  .topin{max-width:1400px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;font-size:15px;white-space:nowrap}
+  .logo .m{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto;
+    background:linear-gradient(150deg,var(--accent),var(--accent-2));box-shadow:var(--shadow)}
+  .logo .m svg{width:17px;height:17px}
+  .logo small{display:block;font-size:10.5px;color:var(--muted);font-weight:500;letter-spacing:.02em}
+  .modes{margin-left:auto;display:flex;gap:4px;background:var(--ground-2);border:1px solid var(--hairline);
+    border-radius:11px;padding:4px}
+  .modes button{appearance:none;border:0;background:transparent;font-family:inherit;cursor:pointer;
+    font-size:12px;font-weight:620;color:var(--muted);padding:7px 12px;border-radius:8px;transition:.16s;white-space:nowrap}
+  .modes button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+  .modes button:hover{color:var(--ink)}
+  .tbtn{border:1px solid var(--hairline);background:var(--surface);color:var(--ink-2);border-radius:9px;
+    padding:8px 10px;cursor:pointer;display:inline-flex;font-size:13px;font-family:inherit}
+  .navbar{border-top:1px solid var(--hairline-2);overflow-x:auto;scrollbar-width:none}
+  .navbar::-webkit-scrollbar{display:none}
+  .navin{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;gap:2px}
+  .navin a{font-size:11.5px;font-weight:560;color:var(--muted);text-decoration:none;padding:9px 10px;
+    border-bottom:2px solid transparent;white-space:nowrap;transition:.15s}
+  .navin a:hover{color:var(--ink)}
+  .navin a.on{color:var(--accent);border-bottom-color:var(--accent)}
+
+  main{max-width:1400px;margin:0 auto;padding:0 20px 90px}
+  section.sec{padding:56px 0 12px;border-bottom:1px solid var(--hairline-2)}
+  section.sec:last-of-type{border-bottom:0}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:11px;display:flex;align-items:center;gap:9px}
+  .eyebrow::before{content:"";width:20px;height:2px;background:var(--accent);border-radius:2px}
+  h2{font-size:clamp(21px,2.7vw,30px);font-weight:730;letter-spacing:-.025em;margin:0 0 8px;text-wrap:balance}
+  h3{font-size:16px;font-weight:680;margin:30px 0 8px;letter-spacing:-.012em}
+  .lede{font-size:14.5px;color:var(--ink-2);max-width:74ch;margin:0 0 6px}
+  .card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+  /* ---------- mode gating ---------- */
+  body[data-mode="exec"]  .m-tech,body[data-mode="exec"]  .m-audit,body[data-mode="exec"]  .m-lab,
+  body[data-mode="tech"]  .m-audit,body[data-mode="tech"]  .m-lab,
+  body[data-mode="audit"] .m-tech,body[data-mode="audit"] .m-lab,
+  body[data-mode="lab"]   .m-audit{display:none!important}
+  body[data-mode="exec"] .dense{display:none!important}
+  .modebadge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--accent-soft);color:var(--accent);vertical-align:middle}
+
+  /* ---------- status badges ---------- */
+  .st{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:700;letter-spacing:.05em;
+    text-transform:uppercase;padding:3px 7px;border-radius:5px;white-space:nowrap;
+    background:var(--idle-soft);color:var(--muted);border:1px solid transparent}
+  .st.measured,.st.executed,.st.supported,.st.pass{background:var(--pass-soft);color:var(--pass);border-color:var(--pass-line)}
+  .st.formal{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
+  .st.demo,.st.sim{background:var(--hold-soft);color:var(--hold);border-color:var(--hold-line)}
+  .st.na,.st.nottested{background:var(--fail-soft);color:var(--fail);border-color:var(--fail-line)}
+  .st.target{background:var(--ground-2);color:var(--ink-2);border-color:var(--hairline)}
+
+  /* ---------- generic layout helpers ---------- */
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:1000px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:720px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .pad{padding:18px 20px}
+  .kvrows{display:flex;flex-direction:column;gap:4px;padding:12px 13px;border:1px solid var(--hairline-2);
+    border-radius:10px;background:var(--ground-2);margin-top:11px}
+  .kvrow{display:flex;gap:10px;align-items:baseline;font-size:11.5px;line-height:1.45}
+  .kvrow .kk{font-family:var(--mono);color:var(--muted);flex:0 0 150px}
+  .kvrow .kvv{font-family:var(--mono);color:var(--ink);flex:1;word-break:break-word}
+  .kvrow .kvv.ok{color:var(--pass)}.kvrow .kvv.no{color:var(--fail)}
+  @media(max-width:620px){.kvrow{flex-direction:column;gap:0}.kvrow .kk{flex:none}}
+  .note{margin-top:14px;font-size:12.5px;color:var(--ink-2);background:var(--accent-soft);
+    border:1px solid var(--accent-line);border-radius:10px;padding:11px 13px;display:flex;gap:9px;line-height:1.55}
+  .note svg{width:16px;height:16px;color:var(--accent);flex:0 0 auto;margin-top:2px}
+  .note.warn{background:var(--hold-soft);border-color:var(--hold-line)}.note.warn svg{color:var(--hold)}
+  .note.bad{background:var(--fail-soft);border-color:var(--fail-line)}.note.bad svg{color:var(--fail)}
+
+  /* tables */
+  .tw{overflow-x:auto;border:1px solid var(--hairline);border-radius:var(--radius);background:var(--surface);margin-top:14px}
+  table{border-collapse:collapse;width:100%;font-size:12px}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--hairline-2);vertical-align:top}
+  th{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+    background:var(--ground-2);white-space:nowrap;position:sticky;top:0}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:var(--surface-2)}
+  td.n,th.n{text-align:right;font-family:var(--mono)}
+  td.mono{font-family:var(--mono);font-size:11px}
+  .hi{color:var(--pass);font-weight:700}.mid{color:var(--accent);font-weight:700}.lo{color:var(--hold);font-weight:700}
+
+  /* hero */
+  .hero{padding:52px 0 26px}
+  .hero h1{font-size:clamp(28px,4.6vw,48px);line-height:1.05;letter-spacing:-.035em;font-weight:770;
+    margin:16px 0 0;text-wrap:balance;max-width:20ch}
+  .hero h1 .g{background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;
+    background-clip:text;color:transparent}
+  .hero .sub{font-size:clamp(15px,1.7vw,18px);color:var(--ink-2);max-width:64ch;margin:18px 0 0}
+  .hero .psub{font-size:14px;color:var(--muted);max-width:64ch;margin:10px 0 0}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-2);
+    background:var(--surface);border:1px solid var(--hairline);border-radius:999px;padding:6px 13px;box-shadow:var(--shadow)}
+  .badge .dt{width:7px;height:7px;border-radius:50%;background:var(--pass);box-shadow:0 0 0 3px var(--pass-soft)}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:30px}
+  @media(max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{padding:15px 16px;border-radius:13px;border:1px solid var(--hairline);background:var(--surface);box-shadow:var(--shadow)}
+  .kpi .kv{font-family:var(--mono);font-size:25px;font-weight:740;letter-spacing:-.02em}
+  .kpi .kl{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .kpi .kx{font-size:10px;color:var(--muted);margin-top:6px;font-family:var(--mono)}
+
+  .notrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}
+  .notchip{font-size:11.5px;font-weight:560;color:var(--muted);border:1px dashed var(--hairline);
+    border-radius:999px;padding:5px 11px;background:var(--surface-2)}
+  .isrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .ischip{font-size:11.5px;font-weight:620;color:var(--pass);border:1px solid var(--pass-line);
+    border-radius:999px;padding:5px 11px;background:var(--pass-soft)}
+
+  /* derivation spine */
+  .spine{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:20px}
+  @media(max-width:1100px){.spine{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:620px){.spine{grid-template-columns:1fr}}
+  .sn{appearance:none;font-family:inherit;text-align:left;cursor:pointer;padding:14px;border-radius:12px;
+    border:1px solid var(--hairline);background:var(--surface);box-shadow:var(--shadow);transition:.16s}
+  .sn:hover{border-color:var(--accent-line);transform:translateY(-1px)}
+  .sn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+  .sn .k{font-family:var(--mono);font-size:9.5px;color:var(--muted);font-weight:700;letter-spacing:.06em}
+  .sn b{display:block;font-size:13.5px;font-weight:680;margin-top:4px}
+  .sn span{display:block;font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+  .spanel{margin-top:14px;padding:20px;border-radius:var(--radius);border:1px solid var(--accent-line);
+    background:var(--surface);box-shadow:var(--shadow)}
+
+  /* 28 stages */
+  .plane{margin-top:26px}
+  .pband{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-bottom:12px}
+  .pband .pk{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .pband .rg{font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--hairline-2);
+    border-radius:6px;padding:2px 7px;background:var(--surface-2)}
+  .pband .ln{flex:1;min-width:20px;height:1px;background:var(--hairline)}
+  .pband .out{font-family:var(--mono);font-size:10px;color:var(--ink-2);border:1px solid var(--hairline-2);
+    border-radius:7px;padding:4px 9px;background:var(--surface-2)}
+  .pband.gov .pk{color:var(--accent)} .pband.rt .pk{color:var(--pass)} .pband.ops .pk{color:var(--hold)}
+  .stg{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+  @media(max-width:1100px){.stg{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.stg{grid-template-columns:1fr}}
+  .stc{appearance:none;font-family:inherit;text-align:left;cursor:pointer;display:flex;gap:10px;padding:11px 12px;
+    border-radius:11px;border:1px solid var(--hairline);background:var(--surface);box-shadow:var(--shadow);transition:.16s}
+  .stc:hover{border-color:var(--accent-line);transform:translateY(-1px)}
+  .stc .num{font-family:var(--mono);font-size:10.5px;font-weight:700;width:24px;height:24px;border-radius:7px;
+    display:grid;place-items:center;flex:0 0 auto;background:var(--accent-soft);color:var(--accent)}
+  .stc.rt .num{background:var(--pass-soft);color:var(--pass)}
+  .stc.ops .num{background:var(--hold-soft);color:var(--hold)}
+  .stc b{font-size:12.5px;font-weight:640;display:block;line-height:1.3}
+  .stc span{font-size:10.5px;color:var(--muted);display:block;margin-top:2px;line-height:1.4}
+
+  /* runtime lab */
+  .rlab{display:grid;grid-template-columns:1fr 340px;gap:18px;margin-top:18px;align-items:start}
+  @media(max-width:1100px){.rlab{grid-template-columns:1fr}}
+  .toggles{display:flex;flex-wrap:wrap;gap:8px}
+  .tg{appearance:none;font-family:inherit;cursor:pointer;border:1px solid var(--pass-line);background:var(--pass-soft);
+    color:var(--pass);border-radius:10px;padding:9px 12px;font-size:12.5px;font-weight:620;transition:.16s;
+    display:flex;align-items:center;gap:7px}
+  .tg[data-on="0"]{border-color:var(--fail-line);background:var(--fail-soft);color:var(--fail)}
+  .tg small{font-weight:500;color:var(--muted);font-size:10.5px}
+  .tg[data-on="0"] small{color:var(--fail)}
+  .tg:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .formula{font-family:var(--mono);font-size:12.5px;background:var(--ground-2);border:1px solid var(--hairline-2);
+    border-radius:10px;padding:12px 14px;margin-top:12px;line-height:1.9;overflow-x:auto}
+  .formula b{color:var(--accent)}
+  .gcells{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:14px}
+  .gc{border:1px solid var(--hairline);border-radius:11px;padding:11px;text-align:center;background:var(--surface-2)}
+  .gc .gk{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .gc .gv{font-family:var(--mono);font-size:23px;font-weight:740;margin-top:2px}
+  .gc.z .gv{color:var(--pass)}.gc.nz .gv{color:var(--fail)}
+  .verdict{margin-top:12px;border-radius:12px;padding:13px 16px;border:1px solid var(--hairline);
+    display:flex;align-items:center;gap:12px;font-weight:730;font-size:16px}
+  .verdict.p{background:var(--pass-soft);border-color:var(--pass-line);color:var(--pass)}
+  .verdict.s{background:var(--fail-soft);border-color:var(--fail-line);color:var(--fail)}
+  .verdict .vs{font-size:11.5px;font-weight:500;color:var(--ink-2);margin-top:2px;display:block}
+  .rcodes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .rcode{font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:6px;background:var(--ground-2);
+    border:1px solid var(--hairline-2);color:var(--ink-2)}
+  .rcode.no{background:var(--fail-soft);color:var(--fail);border-color:var(--fail-line)}
+  .rcode.ok{background:var(--pass-soft);color:var(--pass);border-color:var(--pass-line)}
+  .sig{display:flex;flex-direction:column;gap:7px;margin-top:12px}
+  .sigr{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--ink-2)}
+  .sigv{font-family:var(--mono);font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px;min-width:34px;text-align:center}
+  .sigv.on{background:var(--pass-soft);color:var(--pass)}
+  .sigv.off{background:var(--fail-soft);color:var(--fail)}
+
+  /* permit lifecycle */
+  .life{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;margin-top:12px}
+  .life i{font-style:normal;border:1px solid var(--hairline);border-radius:7px;padding:4px 9px;background:var(--surface-2);color:var(--ink-2)}
+  .life i.on{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent);font-weight:700}
+  .life i.done{border-color:var(--pass-line);background:var(--pass-soft);color:var(--pass);font-weight:700}
+  .life i.end{border-color:var(--fail-line);background:var(--fail-soft);color:var(--fail)}
+  .life span{color:var(--muted)}
+
+  /* theorem grid */
+  .thm{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+  @media(max-width:900px){.thm{grid-template-columns:1fr}}
+  .tc{padding:15px 17px;border-radius:12px;border:1px solid var(--hairline);background:var(--surface);
+    box-shadow:var(--shadow);border-left:3px solid var(--accent)}
+  .tc .ti{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent)}
+  .tc b{display:block;font-size:13.5px;font-weight:660;margin-top:3px}
+  .tc .pl{font-size:12px;color:var(--ink-2);margin-top:5px;line-height:1.5}
+  .tc .fm{font-family:var(--mono);font-size:11px;color:var(--ink);background:var(--ground-2);
+    border:1px solid var(--hairline-2);border-radius:7px;padding:6px 9px;margin-top:9px;overflow-x:auto}
+  .tc .meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+
+  /* domain tabs */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+  .tab{appearance:none;font-family:inherit;cursor:pointer;border:1px solid var(--hairline);background:var(--surface);
+    color:var(--ink-2);border-radius:10px;padding:9px 14px;font-size:12.5px;font-weight:620;transition:.16s}
+  .tab[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .predlist{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:14px}
+  @media(max-width:900px){.predlist{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.predlist{grid-template-columns:1fr}}
+  .pi{font-size:11.5px;color:var(--ink-2);border:1px solid var(--hairline-2);border-radius:8px;
+    padding:8px 10px;background:var(--surface-2)}
+  .pi code{font-size:10px;display:block;margin-bottom:3px;background:transparent;border:0;padding:0;color:var(--accent)}
+
+  /* footer */
+  footer{border-top:1px solid var(--hairline);margin-top:50px;padding:26px 0 10px;text-align:center;
+    color:var(--muted);font-size:12px;line-height:1.75}
+  footer b{color:var(--ink-2)}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.08s!important}}
+
+  /* ---------- LIVE RUN ---------- */
+  .runbar{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;margin-top:18px;padding:16px 18px;
+    border:1px solid var(--hairline);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow)}
+  .rbgroup{display:flex;flex-direction:column;gap:7px}
+  .rblbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .segs{display:flex;gap:4px;background:var(--ground-2);border:1px solid var(--hairline);border-radius:11px;padding:4px;flex-wrap:wrap}
+  .sg{appearance:none;border:0;background:transparent;font-family:inherit;cursor:pointer;font-size:12px;
+    font-weight:620;color:var(--muted);padding:7px 12px;border-radius:8px;transition:.16s;white-space:nowrap}
+  .sg[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+  .sg:hover:not(:disabled){color:var(--ink)} .sg:disabled{opacity:.45;cursor:not-allowed}
+  .rbact{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+  .btnp{appearance:none;border:0;border-radius:11px;padding:11px 18px;font-family:inherit;font-size:13.5px;
+    font-weight:660;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;
+    background:linear-gradient(150deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px var(--accent-soft),var(--shadow)}
+  .btnp:hover{filter:brightness(1.06)} .btnp:disabled{opacity:.55;cursor:not-allowed;filter:none}
+  .btns{appearance:none;border:1px solid var(--hairline);background:var(--surface);color:var(--ink-2);
+    border-radius:11px;padding:11px 15px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .btns:hover:not(:disabled){border-color:var(--accent-line);color:var(--ink)}
+  .btns:disabled{opacity:.45;cursor:not-allowed}
+  .scendesc{margin-top:12px;font-size:13px;color:var(--ink-2);padding:11px 14px;border-radius:10px;
+    background:var(--accent-soft);border:1px solid var(--accent-line)}
+
+  .lrgrid{margin-top:18px;display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start}
+  @media(max-width:1100px){.lrgrid{grid-template-columns:1fr}}
+  .lrside{display:flex;flex-direction:column;gap:14px;align-self:start}
+  .lrsteps{display:flex;flex-direction:column;gap:6px}
+  .lrs{display:grid;grid-template-columns:34px 1fr 92px;gap:11px;align-items:start;padding:11px 13px;
+    border:1px solid var(--hairline);border-radius:11px;background:var(--surface);box-shadow:var(--shadow);
+    opacity:.62;transition:opacity .25s,border-color .25s,box-shadow .25s}
+  .lrs .lrn{font-family:var(--mono);font-size:11px;font-weight:700;width:28px;height:28px;border-radius:8px;
+    display:grid;place-items:center;background:var(--ground-2);color:var(--muted)}
+  .lrs .lrt b{font-size:13px;font-weight:640;display:block}
+  .lrs .lrt>span{font-size:11.5px;color:var(--muted);display:block;margin-top:2px}
+  .lrs .lrp{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:right;
+    color:var(--muted);padding-top:5px}
+  .lrs .lrd{display:none;margin-top:9px}
+  .lrs[data-st="run"]{opacity:1;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),var(--shadow)}
+  .lrs[data-st="run"] .lrn{background:var(--accent-soft);color:var(--accent)}
+  .lrs[data-st="run"] .lrp{color:var(--accent)}
+  .lrs[data-st="pass"],.lrs[data-st="seal"]{opacity:1;border-color:var(--pass-line)}
+  .lrs[data-st="pass"] .lrn,.lrs[data-st="seal"] .lrn{background:var(--pass-soft);color:var(--pass)}
+  .lrs[data-st="pass"] .lrp,.lrs[data-st="seal"] .lrp{color:var(--pass)}
+  .lrs[data-st="fail"]{opacity:1;border-color:var(--fail-line);box-shadow:0 0 0 3px var(--fail-soft),var(--shadow)}
+  .lrs[data-st="fail"] .lrn{background:var(--fail-soft);color:var(--fail)}
+  .lrs[data-st="fail"] .lrp{color:var(--fail)}
+  .lrs[data-st="skip"]{opacity:.85;border-color:var(--hold-line)}
+  .lrs[data-st="skip"] .lrn{background:var(--hold-soft);color:var(--hold)}
+  .lrs[data-st="skip"] .lrp{color:var(--hold)}
+  .lrs[data-st="pass"] .lrd,.lrs[data-st="seal"] .lrd,.lrs[data-st="fail"] .lrd,.lrs[data-st="skip"] .lrd{display:block}
+  .lrs .lrd .kvrows{margin-top:0}
+  .prs{display:flex;flex-direction:column;gap:4px;margin-top:2px}
+  .pr{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;font-size:11.5px;
+    padding:5px 8px;border-radius:7px;border:1px solid transparent}
+  .pr.ok{background:var(--pass-soft);border-color:var(--pass-line)}
+  .pr.no{background:var(--fail-soft);border-color:var(--fail-line)}
+  .pr .prt{font-family:var(--mono);font-size:10.5px;font-weight:700}
+  .pr.ok .prt{color:var(--pass)} .pr.no .prt{color:var(--fail)}
+  .pr .prq{color:var(--muted);font-size:11px}
+  .pr .prv{font-size:9.5px;font-weight:700;letter-spacing:.04em}
+  .pr.ok .prv{color:var(--pass)} .pr.no .prv{color:var(--fail)}
+  @media(max-width:720px){.pr{grid-template-columns:1fr auto}.pr .prq{display:none}}
+
+  .terminal{margin-top:14px;padding:18px 20px;border-radius:var(--radius);border:1px solid var(--hairline);
+    background:var(--surface);box-shadow:var(--shadow-lg)}
+  .terminal.p{border-color:var(--pass-line);background:linear-gradient(180deg,var(--pass-soft),var(--surface))}
+  .terminal.s{border-color:var(--hold-line);background:linear-gradient(180deg,var(--hold-soft),var(--surface))}
+  .terminal .th b{font-size:16px;font-weight:730;display:block}
+  .terminal.p .th b{color:var(--pass)} .terminal.s .th b{color:var(--hold)}
+  .terminal .th span{font-size:12.5px;color:var(--ink-2);display:block;margin-top:4px;line-height:1.55}
+  .terminal .tk{margin-top:13px;padding-top:12px;border-top:1px dashed var(--hairline);
+    display:flex;flex-direction:column;gap:4px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .terminal .tk b{color:var(--ink-2)}
+  .vlines{display:flex;flex-direction:column;gap:5px;margin-top:11px}
+  .vline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--ink-2)}
+  .vline .vv{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--idle-soft);color:var(--muted)}
+  .vline .vv.ok{background:var(--pass-soft);color:var(--pass)}
+  .vline .vv.no{background:var(--fail-soft);color:var(--fail)}
+  .algo{margin-top:10px;font-size:10px;font-family:var(--mono);color:var(--muted)}
+
+  /* ---------- CASE GALLERY (every possibility) ---------- */
+  .galgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;align-items:start}
+  @media(max-width:1000px){.galgrid{grid-template-columns:1fr}}
+  .galcol{display:flex;flex-direction:column;gap:11px}
+  .galhd{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.02em;
+    padding:11px 13px;border-radius:11px;border:1px solid var(--hairline);background:var(--surface-2);color:var(--ink)}
+  .galhd .gi{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:800;
+    background:var(--accent-soft);color:var(--accent);flex:0 0 auto;font-family:var(--mono)}
+  .galhd small{color:var(--muted);font-weight:500;font-family:var(--mono);font-size:10px}
+  .galc{border:1px solid var(--hairline);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);
+    overflow:hidden;transition:border-color .16s,box-shadow .16s}
+  .galc.permit{border-left:3px solid var(--pass)} .galc.safe{border-left:3px solid var(--fail)}
+  .galc:hover{box-shadow:var(--shadow-lg)}
+  .galc.open{border-color:var(--accent-line)}
+  .galtop{appearance:none;width:100%;text-align:left;font-family:inherit;cursor:pointer;border:0;
+    background:transparent;padding:12px 14px;display:flex;flex-direction:column;gap:9px;color:inherit}
+  .galtop:hover{background:var(--surface-2)}
+  .galrow1{display:flex;align-items:center;gap:9px}
+  .galk{font-family:var(--mono);font-size:11px;font-weight:700;width:22px;height:22px;border-radius:6px;
+    display:grid;place-items:center;background:var(--ground-2);color:var(--ink-2);flex:0 0 auto}
+  .galnm{font-size:13px;font-weight:660;flex:1;line-height:1.25;letter-spacing:-.01em}
+  .galv{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;
+    border-radius:6px;white-space:nowrap}
+  .galv.permit{background:var(--pass-soft);color:var(--pass);border:1px solid var(--pass-line)}
+  .galv.safe{background:var(--fail-soft);color:var(--fail);border:1px solid var(--fail-line)}
+  .galsub{font-size:11.5px;color:var(--ink-2);line-height:1.5}
+  .galgs{display:flex;gap:6px;flex-wrap:wrap}
+  .galcell{font-family:var(--mono);font-size:10px;border:1px solid var(--hairline-2);border-radius:6px;
+    padding:2px 7px;background:var(--ground-2);color:var(--muted);display:inline-flex;gap:5px;align-items:center}
+  .galcell b{font-weight:700;color:var(--ink-2)}
+  .galcell.z b{color:var(--pass)} .galcell.nz b{color:var(--fail)}
+  .galcap{font-size:10.5px;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:5px;margin-top:1px}
+  .galcap svg{width:12px;height:12px;transition:transform .18s}
+  .galc.open .galcap svg{transform:rotate(180deg)}
+  .galdet{display:none;padding:0 14px 14px;border-top:1px solid var(--hairline-2)}
+  .galc.open .galdet{display:block}
+  .galseclbl{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:13px 0 6px}
+
+</style>
+</head>
+<body data-mode="tech">
+
+<header class="top">
+  <div class="topin">
+    <div class="logo">
+      <span class="m"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v5.2c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.5L12 2.5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 12.1l2.3 2.3 4.5-4.6" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>Gamma G-0<small>Runtime Governance Laboratory</small></span>
+    </div>
+    <div class="modes" role="group" aria-label="Viewing mode">
+      <button data-mode="exec"  aria-pressed="false">Executive</button>
+      <button data-mode="tech"  aria-pressed="true">Technical</button>
+      <button data-mode="audit" aria-pressed="false">Audit</button>
+      <button data-mode="lab"   aria-pressed="false">Laboratory</button>
+    </div>
+    <button class="tbtn" id="themeBtn" aria-label="Toggle theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+  </div>
+  <nav class="navbar"><div class="navin" id="navin"></div></nav>
+</header>
+
+<main>
+
+<!-- 1 HOME -->
+<section class="sec hero" id="home">
+  <span class="badge"><span class="dt"></span>Tier-S software demonstration &#183; every number read from executed artifacts</span>
+  <h1>Capability may propose.<br><span class="g">Authority must be deterministic.</span></h1>
+  <p class="sub">The AI can prepare an action, but it does not automatically have permission to make it happen.</p>
+  <p class="psub">The AI prepares the action. Gamma checks every mandatory condition. All pass: <b>PERMIT</b> (allow it to run). One fails: <b>SAFE_STATE</b> (stop, and prevent it from running). The action runs only after proof is saved and the execution gate opens.</p>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="g2" style="margin-top:26px">
+    <div class="card pad">
+      <h3 style="margin-top:0">What Gamma is</h3>
+      <div class="isrow">
+        <span class="ischip">An execution-authority boundary</span>
+        <span class="ischip">A deterministic reference monitor</span>
+        <span class="ischip">A non-compensatory authorization kernel</span>
+        <span class="ischip">An evidence-mediated actuation gate</span>
+      </div>
+      <p class="lede" style="margin-top:14px;font-size:13px">Execution authority <span class="plain">(permission and the technical ability to make the action real)</span> is granted only by this boundary &#8212; never assumed by the model that proposed the action.</p>
+    </div>
+    <div class="card pad">
+      <h3 style="margin-top:0">What Gamma is not</h3>
+      <div class="notrow" style="margin-top:0">
+        <span class="notchip">Not a fraud detector</span>
+        <span class="notchip">Not an AML engine</span>
+        <span class="notchip">Not a compliance department</span>
+        <span class="notchip">Not an AI judge</span>
+        <span class="notchip">Not a policy author</span>
+        <span class="notchip">Not a guarantee the action is wise or correct</span>
+      </div>
+      <p class="lede" style="margin-top:14px;font-size:13px">Gamma consumes fraud, AML and risk signals as evidence. It never computes a fraud probability, and it never decides whether a person is a criminal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 WHY -->
+<section class="sec" id="why">
+  <div class="eyebrow">Why Gamma exists</div>
+  <h2>AI confidence is not execution authority.</h2>
+  <p class="lede">A model can be highly confident and still be wrong &#8212; and it can be entirely right and still lack permission. Those are separate questions, and only the second one is Gamma's.</p>
+  <div class="g3" style="margin-top:20px">
+    <div class="card pad"><h3 style="margin-top:0">Cognition is not authority</h3><p class="lede" style="font-size:12.5px">The AI may be correct and still not have permission to act. Correctness is judged by the domain; permission is judged by the signed manifest.</p></div>
+    <div class="card pad"><h3 style="margin-top:0">Urgency is not permission</h3><p class="lede" style="font-size:12.5px">An emergency does not silently remove mandatory controls. Pressure changes the cost of stopping; it does not change who may authorize.</p></div>
+    <div class="card pad"><h3 style="margin-top:0">Confidence is not evidence</h3><p class="lede" style="font-size:12.5px">A high score is an opinion. Gamma requires an evidence record that can be replayed later by someone who does not trust the runtime.</p></div>
+  </div>
+  <div class="note"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The moment a proposal becomes an external effect it is irreversible. The externalization boundary <span class="plain">(the one place where a proposal turns into a real-world action)</span> is the only place where refusal is still free.</span></div>
+</section>
+
+<!-- 3 DERIVATION SPINE -->
+<section class="sec" id="spine">
+  <div class="eyebrow">Derivation spine</div>
+  <h2>One specification, three independently auditable projections.</h2>
+  <p class="lede">Theory, standard, architecture, system, benchmark and deployment are distinct layers. Click any node to see what it owns &#8212; and what it does not.</p>
+  <div class="spine" id="spineNodes"></div>
+  <div class="spanel" id="spinePanel"></div>
+</section>
+
+<!-- 4 THREE-PLANE -->
+<section class="sec" id="planes">
+  <div class="eyebrow">Three-plane operating model</div>
+  <h2>28 stages, from registration to the next policy epoch.</h2>
+  <p class="lede">Governance decides <b>what must be true</b>. Gamma decides <b>whether execution is allowed</b>. Operations keeps both honest over time. Click any stage for its full record.</p>
+  <div id="planeWrap"></div>
+  <div class="spanel" id="stagePanel" hidden></div>
+</section>
+
+<!-- 5 GOVERNANCE LAB -->
+<section class="sec" id="govlab">
+  <div class="eyebrow">Governance laboratory</div>
+  <h2>How a policy becomes a runtime check.</h2>
+  <p class="lede">Select a domain. The same derivation runs in every one: policy clause &#8594; control &#8594; predicate <span class="plain">(a required yes/no check)</span> &#8594; signed manifest.</p>
+  <div class="tabs" id="domTabs"></div>
+  <div id="domBody"></div>
+</section>
+
+<!-- 6 RUNTIME AUTHORIZATION -->
+<section class="sec" id="runtime">
+  <div class="eyebrow">Runtime authorization laboratory</div>
+  <h2>&#915;, &#928; and P<sub>phys</sub> &#8212; and why a logical PERMIT is not enough.</h2>
+  <p class="lede">Toggle any predicate or runtime signal and watch the authorization recompute. This is the live algebra, not an animation.</p>
+  <div class="rlab">
+    <div>
+      <div class="card pad">
+        <h3 style="margin-top:0;font-size:13px">Mandatory predicates <span class="plain">(required yes/no checks)</span></h3>
+        <div class="toggles" id="predToggles"></div>
+        <h3 style="font-size:13px">Class-level controls <span class="plain">(blocks affecting an entire category of actions)</span></h3>
+        <div class="toggles" id="classToggles"></div>
+        <h3 style="font-size:13px">Runtime signals <span class="plain">(is the machinery itself healthy)</span></h3>
+        <div class="toggles" id="sigToggles"></div>
+        <div class="formula m-tech dense">
+          <b>&#915;(G) = MAX<sub>k</sub>(d<sub>k</sub>)</b>   &#8212; the largest mandatory deficit<br>
+          <b>&#923;(G) = &#8896;<sub>k</sub> &#955;<sub>k</sub></b>   &#8212; every mandatory predicate must pass<br>
+          <b>T0 Bridge Equivalence:</b> &#915;(G) = 0 &#8660; &#923;(G) = 1<br>
+          <b>&#928; = 1</b> only when &#915;<sub>action</sub> = 0 &#8743; &#915;<sub>class</sub> = 0<br>
+          <b>P<sub>phys</sub> = SIG_GAMMA &#8743; SIG_COMMIT &#8743; SIG_WATCHDOG</b>
+        </div>
+      </div>
+    </div>
+    <aside>
+      <div class="card pad">
+        <div class="gcells">
+          <div class="gc" id="gG"><div class="gk">&#915;_action</div><div class="gv">0</div></div>
+          <div class="gc" id="gC"><div class="gk">&#915;_class</div><div class="gv">0</div></div>
+          <div class="gc" id="gP"><div class="gk">&#928;</div><div class="gv">1</div></div>
+          <div class="gc" id="gY"><div class="gk">P_phys</div><div class="gv">1</div></div>
+        </div>
+        <div class="verdict p" id="verdict"><span id="vt">PERMIT</span></div>
+        <div class="sig" id="sigRows"></div>
+        <div class="rcodes" id="rcodes"></div>
+        <h3 style="font-size:12px;margin:16px 0 0">Permit-to-Act <span class="plain">(a signed one-time execution pass)</span></h3>
+        <div class="life" id="permitLife"></div>
+        <div class="kvrows" id="permitBox"></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- LIVE RUN -->
+<section class="sec" id="liverun">
+  <div class="eyebrow">Live run</div>
+  <h2>Run a real authorization, end to end.</h2>
+  <p class="lede">Pick a domain and a scenario, then press Run. Every stage below executes for real &#8212; predicates are evaluated, &#915; and &#928; are computed, hashes are produced with SHA-256, the permit is issued and consumed, and the decision is replayed from the sealed record.</p>
+
+  <div class="runbar">
+    <div class="rbgroup">
+      <span class="rblbl">Domain</span>
+      <div class="segs" id="lrDom" role="group" aria-label="Domain"></div>
+    </div>
+    <div class="rbgroup">
+      <span class="rblbl">Scenario</span>
+      <div class="segs" id="lrScen" role="group" aria-label="Scenario"></div>
+    </div>
+    <div class="rbact">
+      <button class="btnp" id="lrRun"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 4.5l13 7.5-13 7.5V4.5z" fill="currentColor"/></svg><span id="lrRunLbl">Run authorization</span></button>
+      <button class="btns" id="lrSkip">Skip</button>
+      <button class="btns" id="lrReset">Reset</button>
+    </div>
+  </div>
+  <div class="scendesc" id="lrDesc"></div>
+
+  <div class="lrgrid">
+    <div>
+      <div class="lrsteps" id="lrSteps"></div>
+      <div class="terminal" id="lrTerm" hidden></div>
+    </div>
+    <aside class="lrside">
+      <div class="card pad">
+        <div class="paneltitle" style="display:flex;justify-content:space-between"><span><span class="live-dot" id="lrDot"></span>Live decision</span><span id="lrProg" style="color:var(--muted);font-weight:600">idle</span></div>
+        <div class="gcells" style="margin-top:12px">
+          <div class="gc" id="lrG"><div class="gk">&#915;_action</div><div class="gv">&#8212;</div></div>
+          <div class="gc" id="lrC"><div class="gk">&#915;_class</div><div class="gv">&#8212;</div></div>
+          <div class="gc" id="lrP"><div class="gk">&#928;</div><div class="gv">&#8212;</div></div>
+          <div class="gc" id="lrY"><div class="gk">P_phys</div><div class="gv">&#8212;</div></div>
+        </div>
+        <div class="verdict" id="lrVerdict" style="background:var(--ground-2);border-color:var(--hairline);color:var(--muted)"><span id="lrVt">Awaiting run<span class="vs">No decision yet</span></span></div>
+        <div class="sig" id="lrSig"></div>
+        <div class="rcodes" id="lrCodes"></div>
+      </div>
+      <div class="card pad">
+        <div class="paneltitle">Permit-to-Act <span class="plain">(a signed one-time pass)</span></div>
+        <div class="life" id="lrLife"></div>
+        <div class="kvrows" id="lrPermit"></div>
+      </div>
+      <div class="card pad">
+        <div class="paneltitle" style="display:flex;justify-content:space-between"><span>Evidence &amp; replay</span><span class="st" id="lrRepBadge">pending</span></div>
+        <div class="kvrows" id="lrHashes"></div>
+        <button class="btns" id="lrReplay" style="width:100%;margin-top:10px" disabled>Re-run replay</button>
+        <div id="lrReplayOut"></div>
+        <div class="algo" id="lrAlgo"></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 6b EVERY CASE GALLERY -->
+<section class="sec" id="cases">
+  <div class="eyebrow">Every possibility, worked out</div>
+  <h2>All 18 cases &#8212; every domain against every scenario.</h2>
+  <p class="lede">Three domains &#215; six scenarios. Each card below is already computed with the exact same algebra the Live Run uses &#8212; &#915;<sub>action</sub>, &#915;<sub>class</sub>, &#928; and P<sub>phys</sub> &#8212; so every outcome is visible at a glance, no clicking required. Click any card to expand its full stage-by-stage record: which checks passed, the interlock signals, the permit lifecycle and the reason codes.</p>
+  <div class="galgrid" id="galGrid"></div>
+  <div class="note"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8h.01M11 12h1v4h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Only <b>scenario A</b> reaches the executor. The other five all end in <b>SAFE_STATE</b> &#8212; and two of them (<b>commit failure</b>, <b>watchdog down</b>) fail <i>after</i> a logical PERMIT with &#915; = 0. That is the whole point: &#928; = 1 is necessary but not sufficient. Nothing is released until every mandatory predicate, the class veto, the durable commit and the watchdog all agree.</span></div>
+</section>
+
+<!-- 7 DOMAIN STRESS -->
+<section class="sec" id="stress">
+  <div class="eyebrow">Domain stress laboratory</div>
+  <h2>The predicates change by industry. The law does not.</h2>
+  <p class="lede">Same algebra, same Permit-to-Act principle, same evidence-before-action discipline &#8212; different content.</p>
+  <div class="tw"><table id="stressTbl"></table></div>
+  <div class="note warn"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The healthcare scenarios are a <b>synthetic governance demonstration</b>, not clinical advice and not empirical clinical evidence. No clinical efficacy is claimed anywhere in this project.</span></div>
+</section>
+
+<!-- 8 FORMAL -->
+<section class="sec" id="formal">
+  <div class="eyebrow">Formal foundation</div>
+  <h2>T0 &#8212; T9, and the bounded model that checks them.</h2>
+  <p class="lede">Theorem names come from the derivation chain. Statements and assumptions are owned by Paper A, which is not present in this repository &#8212; those fields are marked accordingly rather than paraphrased.</p>
+  <div class="thm" id="theorems"></div>
+  <h3>Global safety invariant</h3>
+  <div class="g2">
+    <div class="card pad">
+      <div class="kvrow"><span class="kk">technical</span><span class="kvv">&#9633; &#172;(Execute &#8743; &#172;Permit)</span></div>
+      <p class="lede" style="font-size:12.5px;margin-top:10px">At all times, no action may run unless it has valid authorization.</p>
+    </div>
+    <div class="card pad" id="tlcBox"></div>
+  </div>
+  <div class="note"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8h.01M11 12h1v4h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Mechanically verified within the declared bounded model.</b> This is not an exhaustive proof of every possible unbounded production deployment.</span></div>
+</section>
+
+<!-- 9 NON-COMPENSATORY -->
+<section class="sec" id="noncomp">
+  <div class="eyebrow">Non-compensatory soundness &#183; T3</div>
+  <h2>One failed mandatory check cannot be outvoted.</h2>
+  <p class="lede">Non-compensatory aggregation <span class="plain">(one failed mandatory check cannot be cancelled out by other passes)</span> is what separates Gamma from a scoring system. Compare the two rules on the same five checks.</p>
+  <div class="g2" style="margin-top:16px">
+    <div class="card pad"><h3 style="margin-top:0;font-size:13px">Five checks &#8212; adjust the deficits</h3><div id="ncToggles" class="toggles"></div><div class="formula" id="ncFormula"></div></div>
+    <div class="card pad"><h3 style="margin-top:0;font-size:13px">Two aggregation rules, same inputs</h3><div id="ncCompare"></div></div>
+  </div>
+  <div class="note bad"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A weighted average is <b>not another Gamma configuration</b>. It is structurally non-conformant with the law: it can permit an action that has a live mandatory deficit.</span></div>
+</section>
+
+<!-- 10 EXPERIMENTS -->
+<section class="sec" id="experiments">
+  <div class="eyebrow">Experiment explorer</div>
+  <h2>The executed campaign, read from <code>run_index.json</code>.</h2>
+  <p class="lede" id="expLede"></p>
+  <div class="tw"><table id="expTbl"></table></div>
+</section>
+
+<!-- 11 EVIDENCE / E1 vs E12 -->
+<section class="sec" id="evidence">
+  <div class="eyebrow">Evidence, replay and the honest reading</div>
+  <h2>Two results on the same dataset. Only one of them is detection.</h2>
+  <div class="g2" style="margin-top:18px" id="e1e12"></div>
+  <h3>Evidence architecture</h3>
+  <div class="g4" id="evArch"></div>
+  <h3>Temporal ordering</h3>
+  <div class="formula">source evidence bound &#8594; predicates evaluated &#8594; authorization calculated &#8594; <b>proof committed</b> &#8594; execution interlock opens &#8594; permit consumed &#8594; action executes &#8594; receipt closes record</div>
+  <p class="lede" style="margin-top:10px">Denial path: <b>SAFE_STATE</b> &#8594; permit not issued &#8594; denial proof committed &#8594; no execution receipt. A refusal is evidence too.</p>
+</section>
+
+<!-- 12 ABLATION -->
+<section class="sec" id="ablation">
+  <div class="eyebrow">Ablation laboratory</div>
+  <h2>Remove one control and measure what breaks.</h2>
+  <p class="lede">Ablation <span class="plain">(removing one control to measure why it matters)</span> from E5, and combined ablation <span class="plain">(removing two or more together to test interaction effects)</span> from E5b.</p>
+  <div id="ablBox"></div>
+  <div class="note bad"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>E5b measures blind-detection (URR / BFR), not authorization FPR.</b> Reviewer concern R6-ext states this explicitly. These are different constructs and must never be summed or compared directly.</span></div>
+</section>
+
+<!-- 13 METRICS -->
+<section class="sec" id="metrics">
+  <div class="eyebrow">Execution integrity metrics</div>
+  <h2>Every number with its numerator, denominator and artifact.</h2>
+  <p class="lede">Execution Integrity <span class="plain">(the measurable ability to prevent unauthorized real-world actions)</span>. Authorization metrics, blind-detection metrics and operational latency are kept in separate, non-summable groups.</p>
+  <div class="tw"><table id="metricTbl"></table></div>
+  <h3>Blind detection across three datasets <span class="modebadge">E12</span></h3>
+  <div class="tw"><table id="blindTbl"></table></div>
+  <p class="lede" style="margin-top:11px;font-size:12.5px">Absolute rates are <b>not comparable across datasets</b> &#8212; prevalence and observable feature spaces differ by design. The spread is the finding, disclosed rather than averaged away.</p>
+</section>
+
+<!-- 14 PERFORMANCE -->
+<section class="sec" id="perf">
+  <div class="eyebrow">Performance and reliability</div>
+  <h2>Measured latency, with its status attached.</h2>
+  <div id="perfBox"></div>
+</section>
+
+<!-- 15 THREAT MODEL -->
+<section class="sec" id="threat">
+  <div class="eyebrow">Threat model</div>
+  <h2>What is defended under stated assumptions &#8212; and what is not.</h2>
+  <p class="lede">Out-of-scope threats are shown with the violated assumption, not a fake defence.</p>
+  <div class="tw"><table id="threatTbl"></table></div>
+</section>
+
+<!-- 16 FALSIFICATION -->
+<section class="sec" id="falsify">
+  <div class="eyebrow">Falsification surfaces</div>
+  <h2>What would prove this wrong.</h2>
+  <p class="lede">A falsification surface <span class="plain">(an observable result that would prove a claim wrong and force revision)</span>. Nothing here is labelled &#8220;proven safe.&#8221;</p>
+  <div class="tw"><table id="falsTbl"></table></div>
+</section>
+
+<!-- 17 CLAIMS -->
+<section class="sec" id="claims">
+  <div class="eyebrow">Claims and evidence</div>
+  <h2>Every claim traced to an artifact and a pointer.</h2>
+  <p class="lede" id="claimLede"></p>
+  <div class="tw"><table id="claimTbl"></table></div>
+  <h3>Reviewer concerns</h3>
+  <div class="tw"><table id="conTbl"></table></div>
+</section>
+
+<!-- 18 LIMITS -->
+<section class="sec" id="limits">
+  <div class="eyebrow">Claims discipline</div>
+  <h2>What Gamma proves, what it demonstrates, and what it does not claim.</h2>
+  <div class="g2" style="margin-top:18px" id="limitsBox"></div>
+  <h3>Substrate assurance</h3>
+  <div class="tw"><table id="tierTbl"></table></div>
+  <div class="note warn"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>This webpage is a Tier-S software demonstration</b> of the authorization logic. Hardware-rooted closure is represented or simulated, not physically proven by this page.</span></div>
+</section>
+
+<!-- 19 SOURCES -->
+<section class="sec" id="sources">
+  <div class="eyebrow">Artifact explorer &amp; source status</div>
+  <h2>Where every number on this page came from.</h2>
+  <div id="srcBox"></div>
+</section>
+
+</main>
+
+<footer>
+  <b>Gamma G-0 &#183; Lakhowal Law of Concurrence &#183; L-DREA.</b> Demonstrator and evidence navigator &#8212; not proof of a production hardware deployment.<br>
+  Counts and metrics are read from <code>experiments/_meta/run_index.json</code>, <code>evidence_manifest.json</code>, <code>reviewer_mapping.md</code> and executed artifacts. Conflicts are recorded in <code>SOURCE_CONFLICTS.md</code>, not silently reconciled.
+</footer>
+
+<script>
+var D = {"experiments":[{"id":"E1","title":"Runtime Authorization Correctness","status":"EXECUTED","dur":12.854,"cmd":"./.venv/bin/python gamma_test_runner.py --no-html --no-open","outdir":"experiments/runtime_correctness","nart":7,"art":{"name":"lab_report","path":"experiments/runtime_correctness/gamma_lab_v1_report.json","sha256":"faad378d2c2d3e5b","bytes":11694},"note":""},{"id":"E2","title":"Runtime Replay Integrity","status":"EXECUTED","dur":1.102,"cmd":"./.venv/bin/python gamma_replay_verify.py gamma_replay_manifest.jsonl","outdir":"experiments/replay","nart":2,"art":{"name":"replay_report","path":"experiments/replay/replay_report.json","sha256":"f57b238f785b6ea3","bytes":529},"note":""},{"id":"E3","title":"Formal Verification (exhaustive 2^16 decision state space)","status":"EXECUTED","dur":0.467,"cmd":"./.venv/bin/python independent_verifier.py","outdir":"experiments/formal","nart":2,"art":{"name":"verifier_report","path":"experiments/formal/independent_verifier_report.json","sha256":"1d20111a7cec3d29","bytes":1300},"note":""},{"id":"E4","title":"Runtime Stress Evaluation","status":"EXECUTED","dur":14.271,"cmd":"./.venv/bin/python -c \"from agentdojo_integration.audit import concurrency_scaling as c; c.run('experiments/stress', 200000, [1, 2, 4, 8, 16, 32, 64])\"","outdir":"experiments/stress","nart":2,"art":{"name":"concurrency_scaling.json","path":"experiments/stress/concurrency_scaling.json","sha256":"e6b2c209c62f7060","bytes":7141},"note":""},{"id":"E5","title":"Component Ablation","status":"EXECUTED","dur":1.979,"cmd":"./.venv/bin/python experiment_ablation.py","outdir":"experiments/ablation","nart":3,"art":{"name":"ablation","path":"experiments/ablation/ablation.json","sha256":"63defeb892b96a15","bytes":5844},"note":""},{"id":"E6","title":"Runtime Profiling","status":"EXECUTED","dur":2.12,"cmd":"./.venv/bin/python -c \"from agentdojo_integration.audit import runtime_profile as r; r.run('experiments/profiling', 5000)\"","outdir":"experiments/profiling","nart":2,"art":{"name":"runtime_profile.json","path":"experiments/profiling/runtime_profile.json","sha256":"d386ebcb2ee3dde9","bytes":984},"note":""},{"id":"E7","title":"AgentDojo external validation (offline)","status":"EXECUTED","dur":10.33,"cmd":"agentdojo_integration/.venv/bin/python experiment_agentdojo_metrics.py","outdir":"experiments/agentdojo","nart":3,"art":{"name":"statistics.json","path":"experiments/agentdojo/statistics.json","sha256":"342cdb2224332b64","bytes":10903},"note":""},{"id":"E8","title":"Runtime Robustness","status":"EXECUTED","dur":1.4,"cmd":"./.venv/bin/python experiment_robustness.py","outdir":"experiments/robustness","nart":3,"art":{"name":"robustness","path":"experiments/robustness/robustness.json","sha256":"9f1abfbd7d74d30a","bytes":9490},"note":""},{"id":"E9","title":"Runtime Predicate Coverage & Single-Deficit Isolation","status":"EXECUTED","dur":0.738,"cmd":"./.venv/bin/python experiment_predicate_coverage.py","outdir":"experiments/predicate_coverage","nart":3,"art":{"name":"predicate_coverage","path":"experiments/predicate_coverage/predicate_coverage.json","sha256":"94315e89052a6d00","bytes":18050},"note":""},{"id":"E10","title":"Audit Bundle Export","status":"EXECUTED","dur":15.999,"cmd":"./.venv/bin/python tools/export_audit_bundle.py && ./.venv/bin/python concurbench_full.py","outdir":"experiments/audit_bundle","nart":1,"art":{"name":"audit_bundle_report.json","path":"experiments/audit_bundle/audit_bundle_report.json","sha256":"ca8d22d996ebf613","bytes":1023},"note":""},{"id":"E11","title":"","status":"EXECUTED","dur":24.75,"cmd":"./.venv/bin/python experiments/run_runtime_stack.py --n 8000","outdir":"","nart":0,"art":null,"note":"Measured runtime evidence stack. Detection numbers are Synthetic Runtime; real-dataset detection is E12. No E1-E10 artifact is touched."},{"id":"E12","title":"","status":"EXECUTED","dur":281.31,"cmd":"./.venv/bin/python experiments/run_dataset_eval.py --limit 100000","outdir":"","nart":0,"art":null,"note":"Real Measured-Runtime blind detection over discovered public datasets. ULB raw features now present; detection is no longer BLOCKED. Predicates are unsupervised anomaly bounds, not tuned classifiers."},{"id":"E5b","title":"Combined Component Ablation (interaction effects)","status":"EXECUTED","dur":120.551,"cmd":"./.venv/bin/python experiment_combined_ablation.py","outdir":"experiments/combined_ablation","nart":3,"art":{"name":"combined_ablation","path":"experiments/combined_ablation/combined_ablation.json","sha256":"143ef86da1e81a75","bytes":166979},"note":""}],"campaign":{"name":"ldrea_tier_s_reference_evaluation","total_s":503.3,"host":{"platform":"macOS-26.5.1-arm64-arm-64bit","python_version":"3.9.6","machine":"arm64"}},"claims":[{"id":"C1","statement":"Runtime authorization prevents unauthorized execution on a realistic transaction stream (0 unauthorized externalizations).","status":"Supported","exps":["E1"],"ev":{"artifact":"experiments/runtime_correctness/gamma_lab_v1_report.json","pointer":"unauthorized_execution.count","rel":"==0","val":0,"holds":true}},{"id":"C2","statement":"The authorization decision is sound: zero false permits on the should-deny population of the ULB stream.","status":"Supported","exps":["E1"],"ev":{"artifact":"experiments/runtime_correctness/gamma_lab_v1_report.json","pointer":"primary_metrics.false_permit_rate.adverse_events","rel":"==0","val":0,"holds":true}},{"id":"C3","statement":"The class-level veto is fully effective: every adversarial (should-deny) transaction transitions to SAFE_STATE.","status":"Supported","exps":["E1"],"ev":{"artifact":"experiments/runtime_correctness/gamma_lab_v1_report.json","pointer":"primary_metrics.class_veto_effectiveness.reported_rate","rel":"==1.0","val":1.0,"holds":true}},{"id":"C4","statement":"Fail-closed semantics: across uncertain/should-deny predicate families the Fail-Closed Rate is 1.0 (no fail-open events).","status":"Supported","exps":["E1"],"ev":{"artifact":"experiments/runtime_correctness/fcr_test_report.json","pointer":"overall.FCR","rel":"==1.0","val":1.0,"holds":true}},{"id":"C5","statement":"Authorization decisions are deterministically replayable (Replay Determinism Rate = 100%).","status":"Supported","exps":["E1","E2"],"ev":{"artifact":"experiments/runtime_correctness/gamma_lab_v1_report.json","pointer":"primary_metrics.replay_determinism_rate.reported_rate","rel":"==1.0","val":1.0,"holds":true}},{"id":"C6","statement":"Execution provenance is tamper-evident: every decision record re-verifies (0 hash-chain, ledger-bind, or consistency failures).","status":"Supported","exps":["E2"],"ev":{"artifact":"experiments/replay/replay_report.json","pointer":"hash_chain_adjacency_failures","rel":"==0","val":0,"holds":true}},{"id":"C7","statement":"The decision logic is mathematically correct: an independent reference implementation is bitwise-equivalent to the engine over the entire 2^16 input space.","status":"Supported","exps":["E3"],"ev":{"artifact":"experiments/formal/independent_verifier_report.json","pointer":"total_field_mismatches","rel":"==0","val":0,"holds":true}},{"id":"C8","statement":"Runtime safety is preserved under concurrency: 0 false permits and 0 false denials at every thread level (1-64).","status":"Supported","exps":["E4"],"ev":{"artifact":"experiments/stress/concurrency_scaling.json","pointer":"total_false_permits","rel":"==0","val":0,"holds":true}},{"id":"C9","statement":"Throughput does NOT scale with threads on the pure-Python decision path (GIL-bound); this is reported as a limitation, not a scaling claim.","status":"Supported (negative result)","exps":["E4"],"ev":{"artifact":"experiments/stress/concurrency_scaling.json","pointer":"levels.-1.speedup_vs_1thread","rel":"le:1.0","val":0.19652659843936413,"holds":true}},{"id":"C10b","statement":"Interaction effects between runtime components are measured, not assumed: the combined ablation executes every pairwise and representative higher-order removal through the full runtime and classifies each interaction. NOTE: E5b reports BLIND-detection metrics (Undetected Risk Rate URR = FN/(TP+FN)), which are a DIFFERENT construct from the authorization False Permit Rate of C2/C12 (0/492, 0/62) and never replace it.","status":"Supported","exps":["E5b"],"ev":{"artifact":"experiments/combined_ablation/combined_ablation.json","pointer":"n_configurations","rel":"ge:8","val":19,"holds":true}},{"id":"C10","statement":"Each structural component is necessary: removing the authorization layer leaks the entire deniable population (causal contribution to safety).","status":"Supported","exps":["E5"],"ev":{"artifact":"experiments/ablation/ablation.json","pointer":"configs.3.leaked_permits_vs_baseline","rel":">0","val":45000,"holds":true}},{"id":"C11","statement":"Per-decision runtime overhead is low: the Runtime-Context and Replay planes are a small fraction of end-to-end pipeline time.","status":"Supported","exps":["E6"],"ev":{"artifact":"experiments/profiling/runtime_profile.json","pointer":"runtime_context.pct_of_end_to_end","rel":"le:25","val":6.470904559090326,"holds":true}},{"id":"C12","statement":"AgentDojo integration preserves authorization correctness: 0 false permits on genuinely-foreign attacker targets at the boundary (no LLM).","status":"Partially Supported","exps":["E7"],"ev":{"artifact":"experiments/agentdojo/boundary/boundary_fpr.json","pointer":"soundness_foreign_targets.permitted","rel":"==0","val":0,"holds":true}},{"id":"C13","statement":"Safety properties hold under runtime fault injection: across all fault families there are 0 false permits and every integrity corruption is detected.","status":"Supported","exps":["E8"],"ev":{"artifact":"fresh_evidence/robustness/robustness.json","pointer":"aggregate.total_false_permits","rel":"==0","val":0,"holds":true}},{"id":"C15","statement":"Every runtime predicate is exercised and each, in isolation, denies: a deterministic synthetic suite drives the frozen engine so that all 13 runtime predicates are observed in both polarities, and a single deficit among nine concurring predicates always yields SAFE_STATE (per-predicate I3).","status":"Supported","exps":["E9"],"ev":{"artifact":"experiments/predicate_coverage/predicate_coverage.json","pointer":"predicate_coverage.coverage_rate","rel":"==1.0","val":1.0,"holds":true}},{"id":"C16","statement":"Execution evidence is exportable as an independently verifiable audit bundle: every member re-hashes to its recorded digest and the bundle is cryptographically bound to the live ledger, satisfying ConcurBench Level 4.","status":"Supported","exps":["E10"],"ev":{"artifact":"experiments/audit_bundle/audit_bundle_report.json","pointer":"verification.status","rel":"eq:PASS","val":"PASS","holds":true}},{"id":"C14","statement":"Hardware (Tier-H FPGA/SGX/HSM) deployment.","status":"Not Claimed","exps":[],"ev":{"artifact":"","pointer":"","rel":"","val":null,"holds":null}}],"concerns":[{"id":"R1","q":"Where is authorization correctness demonstrated on realistic data?","status":"","exps":[]},{"id":"R2","q":"Where is replay determinism proven?","status":"","exps":[]},{"id":"R3","q":"Is the decision logic formally correct, or only tested?","status":"","exps":[]},{"id":"R4","q":"Does the system remain safe under concurrency / load?","status":"","exps":[]},{"id":"R5","q":"Does it actually scale in throughput?","status":"","exps":["E5b"]},{"id":"R6","q":"Are all components necessary, or is this over-engineered?","status":"","exps":["E5b"]},{"id":"R6-ext","q":"Where is the evidence of INTERACTION EFFECTS between runtime components (pairwise / higher-order)? [E5b reports blind-detection metrics \u2014 URR/BFR \u2014 NOT the authorization FPR of R1/R8]","status":"","exps":["E5b"]},{"id":"R7","q":"What is the runtime overhead of the governance layer?","status":"","exps":[]},{"id":"R8","q":"Does the approach generalize beyond one dataset (agents)?","status":"","exps":[]},{"id":"R9","q":"How does it behave under faults / adversarial runtime conditions?","status":"","exps":[]},{"id":"R10","q":"Are the zero-event claims statistically justified given sample sizes?","status":"","exps":[]},{"id":"R11","q":"Are hardware results being over-claimed?","status":"","exps":[]}],"tlc":{"generated":"1340006","distinct":"40192","queue":"0","depth":"6","result":"No error has been found","invariants":["ExecutionSovereignty","NonBypassability","StructuralInvariant"],"constants":["Tokens = {t1, t2, t3}","Epochs = {e1, e2}","ClassMetrics = {c1, c2}","NodeMetrics = {n1, n2, n3}","MaxClockSkew = 1"],"finished":"02s"},"blind":[{"dataset":"UNSW-NB15","domain":"network intrusion telemetry","evaluated_rows":61749,"prevalence":0.5506000097167566,"precision":0.857361904396826,"recall":0.6608361648692569,"f1":0.7463792297937663,"auroc":0.7609717202749718,"mcc":0.5314673629671437,"status":"EXECUTED","evidence_level":"Measured Runtime"},{"dataset":"ULB","domain":"financial (PCA-anonymised)","evaluated_rows":75000,"prevalence":0.00223,"precision":0.1099116781157998,"recall":0.8296296296296296,"f1":0.19410745233968804,"auroc":0.9116380348825416,"mcc":0.2993329780977258,"status":"EXECUTED","evidence_level":"Measured Runtime"},{"dataset":"IEEE-CIS","domain":"financial (transactions)","evaluated_rows":75000,"prevalence":0.02561,"precision":0.06539785381656206,"recall":0.3488120950323974,"f1":0.1101449275362319,"auroc":0.6110444772992558,"mcc":0.10215340165183448,"status":"EXECUTED","evidence_level":"Measured Runtime"}],"e1":{"rows":284807,"derived_permit":284315,"derived_safe_state":492,"match_status_rate":1.0,"false_permit_count":0,"false_denial_count":0,"unauthorized_execution_count":0,"replay_divergence_count":0,"hash_chain_links_ok":284807},"leak":{"leaking":["Gate_A3","Gate_A7","Lambda_G","HARM_RISK","ReasonCodes"],"non":["Gate_A1","Gate_A2","Gate_A4","Gate_A5","Gate_A6","StaleContext","TelemetryFresh"],"rows":284807,"verdict":true,"consequence":"The reported authorization accuracy and the 0-false-permit result on this corpus are CONFORMANCE results: they establish that the reference monitor faithfully enforces the predicates it is given. They are NOT detection results, and must not be read as evidence that L-DREA can identify fraud from observable runtime features. No claim of runtime detection is supported by this corpus.","unaffected":["Replay integrity (E2) \u2014 independent of how predicates were produced.","Formal verification (E3) \u2014 a property of the decision model, not the corpus.","Predicate coverage (E9) \u2014 a synthetic suite over the frozen entry point.","Non-compensatory soundness \u2014 a property of the aggregation rule."]},"ablation":{"scope":"SOFTWARE (Tier-S) decision path; synthetic deficit workload; NOT the paper Table-9 Tier-H FPR ablation (requires LAB 360k generator + FPGA/SGX/HSM).","theta":0.5,"n":60000,"configs":[{"c":"baseline_full_LDREA","permits":15000,"leak":0,"rate":0.0,"tp":1164068.1270871377},{"c":"remove_class_veto","permits":30000,"leak":15000,"rate":0.25,"tp":1198663.4902084188},{"c":"remove_noncompensatory_gamma","permits":30000,"leak":15000,"rate":0.25,"tp":1364602.9367073972},{"c":"remove_authorization_layer","permits":60000,"leak":45000,"rate":0.75,"tp":5874050.374093776}]},"combined":{"metric":"blind_runtime_detection (URR/BFR \u2014 NOT authorization FPR)","rows":[{"c":"baseline_full_LDREA","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_PE","mean":0.5,"lo":0.5,"hi":0.5,"n":300},{"c":"remove_RV","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_EQ","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_LG","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_HC","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_PE+RV","mean":0.5,"lo":0.5,"hi":0.5,"n":300},{"c":"remove_EQ+PE","mean":0.5,"lo":0.5,"hi":0.5,"n":300},{"c":"remove_LG+PE","mean":0.5,"lo":0.5,"hi":0.5,"n":300},{"c":"remove_HC+PE","mean":0.5,"lo":0.5,"hi":0.5,"n":300},{"c":"remove_EQ+RV","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_LG+RV","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_HC+RV","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_EQ+LG","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_EQ+HC","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_HC+LG","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_EQ+PE+RV","mean":0.5,"lo":0.5,"hi":0.5,"n":300},{"c":"remove_EQ+HC+LG","mean":0.7233518199346824,"lo":0.6684087493283071,"hi":0.7756504524886878,"n":300},{"c":"remove_EQ+HC+LG+PE+RV","mean":0.5,"lo":0.5,"hi":0.5,"n":300}]},"perf":{"n":2000,"mean":0.19778595150002506,"p50":0.19525000000086834,"p95":0.2073791499988431,"p99":0.2377562500001673,"max":0.5712920000000565,"ci95":[0.1971659339591606,0.19840596904088953],"throughput":1714.3,"stages":{"build":0.07436287200000535,"bind":0.10181792999998507,"adapt":0.0021988295000294755,"eval":0.0016904199999654423,"emit":0.01674282900003199}},"sourcefiles":{"FULL_SPEC.md":false,"PaperA":false,"MasterOperatingModel":false,"run_index":true,"evidence_manifest":true,"reviewer_mapping":true}};
+</script>
+<script>
+(function(){
+  "use strict";
+  var $=function(s,r){return (r||document).querySelector(s);};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+  function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function num(n,d){return n==null?"—":Number(n).toFixed(d==null?3:d);}
+  function commas(n){return n==null?"—":Number(n).toLocaleString();}
+  var NA='<span class="st na">NOT AVAILABLE</span>';
+
+  /* ================= NAV ================= */
+  var SECS=[["home","Home"],["why","Why Gamma Exists"],["spine","Derivation Spine"],["planes","Three-Plane Model"],
+    ["govlab","Governance Lab"],["runtime","Runtime Authorization"],["liverun","Live Run"],["cases","Every Case"],["stress","Domain Stress Lab"],
+    ["formal","Formal Foundation"],["noncomp","Non-Compensatory"],["experiments","Experiments"],
+    ["evidence","Evidence & Replay"],["ablation","Ablation Lab"],["metrics","Metrics"],["perf","Performance"],
+    ["threat","Threat Model"],["falsify","Falsification"],["claims","Claims & Reviewers"],["limits","Limitations"],
+    ["sources","Artifact Explorer"]];
+  $("#navin").innerHTML=SECS.map(function(s,i){
+    return '<a href="#'+s[0]+'" data-s="'+s[0]+'">'+(i+1)+'. '+esc(s[1])+'</a>';}).join("");
+  var obs=new IntersectionObserver(function(en){
+    en.forEach(function(e){ if(e.isIntersecting){
+      $$("#navin a").forEach(function(a){a.classList.toggle("on",a.dataset.s===e.target.id);});
+      var a=$('#navin a[data-s="'+e.target.id+'"]'); if(a&&a.scrollIntoView) a.scrollIntoView({block:"nearest",inline:"nearest"});
+    }});},{rootMargin:"-120px 0px -70% 0px"});
+  SECS.forEach(function(s){var el=document.getElementById(s[0]); if(el) obs.observe(el);});
+
+  /* ================= MODES ================= */
+  $$(".modes button").forEach(function(b){
+    b.addEventListener("click",function(){
+      $$(".modes button").forEach(function(x){x.setAttribute("aria-pressed","false");});
+      b.setAttribute("aria-pressed","true");
+      document.body.dataset.mode=b.dataset.mode;
+    });
+  });
+  document.body.dataset.mode="tech";
+
+  /* ================= KPIs (all verified) ================= */
+  $("#kpis").innerHTML=[
+    [D.experiments.length,"Executed experiments","E1–E12 + E5b"],
+    [D.claims.length,"Claims with evidence","C1–C16 incl. C10b"],
+    [D.concerns.length,"Reviewer concerns","R1–R11 + R6-ext"],
+    [commas(D.tlc.distinct),"Distinct states checked","0 invariant violations"],
+    [num(D.perf.mean,3)+" ms","Mean authorization latency","n="+commas(D.perf.n)+" · measured"]
+  ].map(function(k){
+    return '<div class="kpi"><div class="kv">'+esc(k[0])+'</div><div class="kl">'+esc(k[1])+'</div><div class="kx">'+esc(k[2])+'</div></div>';
+  }).join("");
+
+  /* ================= DERIVATION SPINE ================= */
+  var SPINE=[
+    {k:"THEORY",t:"LLC",s:"Lakhowal Law of Concurrence",owns:["The formal authorization law","T0–T9 statements and assumptions"],
+     not:["Any implementation detail","Any measured number"],src:"Paper A",avail:false},
+    {k:"STANDARD",t:"Gamma G-0",s:"Runtime-governance standard",owns:["Conformance semantics","Enforcement classes CL0 / CL1 / CL2"],
+     not:["Sector policy content","Evaluation methodology"],src:"FULL_SPEC.md",avail:false},
+    {k:"ARCHITECTURE",t:"L-DREA",s:"Runtime enforcement architecture",owns:["Interception, interlock, evidence path","Substrate tiers Tier-H / T / S / D / X"],
+     not:["The formal law itself","Business policy"],src:"formal/ExternalizationMonitor.tla",avail:true},
+    {k:"SYSTEM",t:"Gamma",s:"Operational authorization system",owns:["Runtime decisions","Permit-to-Act lifecycle","Evidence + ledger"],
+     not:["Fraud detection","Policy authorship"],src:"experiments/ + gamma_test_runner.py",avail:true},
+    {k:"EVALUATION",t:"ConcurBench / LAB / ASB",s:"Evaluation mechanisms",owns:["Levels L1–L4","Adversarial scenario benchmarking"],
+     not:["What an implementation enforces (that is CL0/1/2)"],src:"experiments/_meta/run_index.json",avail:true},
+    {k:"DEPLOYMENT",t:"Sector deployment",s:"Bank / healthcare / infrastructure",owns:["Domain predicates","Risk classification","Enforcement profile"],
+     not:["The authorization law","Theorem guarantees"],src:"Master Operating Model",avail:false}
+  ];
+  $("#spineNodes").innerHTML=SPINE.map(function(n,i){
+    return '<button class="sn" data-i="'+i+'" aria-pressed="'+(i===0?"true":"false")+'">'+
+      '<span class="k">'+esc(n.k)+'</span><b>'+esc(n.t)+'</b><span>'+esc(n.s)+'</span></button>';}).join("");
+  function paintSpine(i){
+    var n=SPINE[i];
+    $("#spinePanel").innerHTML=
+      '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:17px">'+esc(n.t)+'</b>'+
+      '<span class="st formal">'+esc(n.k)+'</span>'+(n.avail?'<span class="st measured">SOURCE PRESENT</span>':NA)+'</div>'+
+      '<p class="lede" style="margin-top:8px">'+esc(n.s)+'</p>'+
+      '<div class="g2" style="margin-top:12px">'+
+        '<div><h3 style="margin:0 0 6px;font-size:12px">Owns</h3><ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-2)">'+
+          n.owns.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul></div>'+
+        '<div><h3 style="margin:0 0 6px;font-size:12px">Does not own</h3><ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-2)">'+
+          n.not.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul></div></div>'+
+      '<div class="kvrows"><div class="kvrow"><span class="kk">source document</span><span class="kvv'+(n.avail?"":" no")+'">'+esc(n.src)+(n.avail?"":"  — not in repository")+'</span></div></div>';
+    $$("#spineNodes .sn").forEach(function(b,j){b.setAttribute("aria-pressed",j===i?"true":"false");});
+  }
+  $$("#spineNodes .sn").forEach(function(b){b.addEventListener("click",function(){paintSpine(+b.dataset.i);});});
+  paintSpine(0);
+
+  /* ================= 28 STAGES ================= */
+  var BANDS=[
+    {cls:"gov",t:"Governance plane",r:"stages 1–5",o:"Output → Signed Predicate Manifest",
+     q:"What must be true",stages:[
+      [1,"AI Use Case Registration","Write down what the AI is allowed to attempt."],
+      [2,"Impact and Risk Classification","Decide how serious the action could be."],
+      [3,"Policy-to-Control Mapping","Turn written policy into required controls."],
+      [4,"Control Predicate Generation","Turn each control into a machine-checkable yes/no."],
+      [5,"Manifest Approval, Signing and Versioning","Owners approve and sign the checklist."]]},
+    {cls:"rt",t:"Runtime authorization plane",r:"stages 6–24",o:"Output → PERMIT / SAFE_STATE + sealed evidence",
+     q:"Whether execution is allowed",stages:[
+      [6,"AI Proposal and Boundary Interception","The proposal arrives with no authority."],
+      [7,"Action Envelope and Context Translation Record","Fix exactly what is being authorized."],
+      [8,"Interpretive Sufficiency and Freshness Validation","Is the request even answerable, and is the data recent?"],
+      [9,"Identity Verification","Is the requester who they claim to be?"],
+      [10,"Account Verification","Can the source account act?"],
+      [11,"Beneficiary or Target Verification","Is the destination valid and approved?"],
+      [12,"Governance Control Evaluation","Do the signed policy controls permit it?"],
+      [13,"Upstream Risk Context","Read risk signals — never compute them here."],
+      [14,"Source Evidence Binding","Lock the inputs before deciding."],
+      [15,"Class-Level Control Evaluation","Is the whole category of action still allowed?"],
+      [16,"Deterministic Authorization","Compute Γ, Λ and Π."],
+      [17,"Execution Binding","Bind the answer to this one exact action."],
+      [18,"Permit-to-Act Issuance","Issue a signed one-time pass."],
+      [19,"Authorization Proof Commitment","Save the proof before anything happens."],
+      [20,"Three-Signal Execution Interlock","Open the gate only if all three signals agree."],
+      [21,"Last-Moment Revalidation","Check nothing changed since authorization."],
+      [22,"Atomic Permit Consumption and Execution","Spend the pass once, then act."],
+      [23,"Execution Receipt Closure","Record what the outside world actually did."],
+      [24,"Independent Replay and Verification","Recompute the decision from saved evidence."]]},
+    {cls:"ops",t:"Governance operations plane",r:"stages 25–28",o:"Output → monitoring · incidents · next policy epoch",
+     q:"Assurance over time",stages:[
+      [25,"Audit, Telemetry and Runtime Monitoring","Watch the system continuously."],
+      [26,"SAFE_STATE and Incident Operations","Handle stops without silently resuming."],
+      [27,"Policy Evolution and Risk Reclassification","Turn findings into control changes."],
+      [28,"Signed Policy Epoch Activation","Re-sign the checklist for future actions."]]}
+  ];
+  var STAGE_STATUS={1:"Architecturally specified",2:"Architecturally specified",3:"Architecturally specified",
+    4:"Implemented in repository",5:"Demonstrated in UI",6:"Demonstrated in UI",7:"Demonstrated in UI",
+    8:"Demonstrated in UI",9:"Demonstrated in UI",10:"Demonstrated in UI",11:"Demonstrated in UI",
+    12:"Demonstrated in UI",13:"Demonstrated in UI",14:"Demonstrated in UI",15:"Demonstrated in UI",
+    16:"Measured",17:"Demonstrated in UI",18:"Demonstrated in UI",19:"Measured",20:"Simulated",
+    21:"Demonstrated in UI",22:"Simulated",23:"Simulated",24:"Measured",25:"Architecturally specified",
+    26:"Architecturally specified",27:"Architecturally specified",28:"Architecturally specified"};
+  var STAGE_EXP={16:"E1",19:"E2",24:"E2",9:"E9",12:"E9",15:"E5",20:"E9",13:"E12"};
+  function stBadge(s){
+    var c=/Measured/.test(s)?"measured":/Implemented/.test(s)?"formal":/Demonstrated/.test(s)?"demo":
+          /Simulated/.test(s)?"sim":/Architecturally/.test(s)?"target":"na";
+    return '<span class="st '+c+'">'+esc(s)+'</span>';
+  }
+  $("#planeWrap").innerHTML=BANDS.map(function(b){
+    return '<div class="plane"><div class="pband '+b.cls+'"><span class="pk">'+esc(b.t)+'</span>'+
+      '<span class="rg">'+esc(b.r)+'</span><span class="rg">“'+esc(b.q)+'”</span><span class="ln"></span>'+
+      '<span class="out">'+esc(b.o)+'</span></div><div class="stg">'+
+      b.stages.map(function(s){
+        return '<button class="stc '+b.cls+'" data-n="'+s[0]+'"><span class="num">'+s[0]+'</span>'+
+          '<span><b>'+esc(s[1])+'</b><span>'+esc(s[2])+'</span></span></button>';}).join("")+
+      '</div></div>';}).join("");
+  var ALLST={}; BANDS.forEach(function(b){b.stages.forEach(function(s){ALLST[s[0]]={s:s,band:b};});});
+  $$(".stc").forEach(function(b){
+    b.addEventListener("click",function(){
+      var n=+b.dataset.n, o=ALLST[n], p=$("#stagePanel");
+      var exp=STAGE_EXP[n];
+      p.hidden=false;
+      p.innerHTML='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">'+
+        '<span class="st formal">STAGE '+n+'</span><b style="font-size:16px">'+esc(o.s[1])+'</b>'+
+        stBadge(STAGE_STATUS[n])+'</div>'+
+        '<p class="lede" style="margin-top:8px">'+esc(o.s[2])+'</p>'+
+        '<div class="kvrows">'+
+challenge('plane',o.band.t)+challenge('plane question',o.band.q)+challenge('plane output',o.band.o)+
+challenge('owner','NOT AVAILABLE — awaiting Master Operating Model')+
+challenge('formal rule','NOT AVAILABLE — awaiting FULL_SPEC.md')+
+challenge('related theorem','NOT AVAILABLE — awaiting Paper A')+
+challenge('related experiment',exp?exp+" — "+(D.experiments.filter(function(e){return e.id===exp;})[0]||{}).title:"none mapped in artifacts")+
+challenge('implementation status',STAGE_STATUS[n])+
+        '</div>';
+      p.scrollIntoView({behavior:"smooth",block:"nearest"});
+    });
+  });
+  function challenge(k,v){
+    var bad=/NOT AVAILABLE/.test(String(v));
+    return '<div class="kvrow"><span class="kk">'+esc(k)+'</span><span class="kvv'+(bad?" no":"")+'">'+esc(v)+'</span></div>';
+  }
+
+  /* ================= GOVERNANCE LAB / DOMAINS ================= */
+  var DOMS=[
+    {id:"bank",n:"Banking — international wire",asset:"Customer funds",act:"Cross-border payment",
+     policies:[["Treasury Policy","Transfer limit control","WITHIN_LIMIT","Is the amount inside the approved limit?"],
+       ["AML Policy","Sanctions control","SANCTIONS_CLEAR","Is the destination sanctions-clear?"],
+       ["KYC Policy","Beneficiary approval","BENEFICIARY_APPROVED","Is the recipient approved to receive this payment?"],
+       ["Dual Authorization Policy","Two-approver control","APPROVAL_COUNT_GE_2","Have two people approved?"],
+       ["Fraud Policy","Risk-bound control","FRAUD_RISK_WITHIN_POLICY_BOUND","Is the reported risk within the approved limit?"]],
+     stress:["Sanctioned country","Unapproved beneficiary","Missing second approval","Stale KYC",
+       "Amount altered after permit","Ledger commit failure","Watchdog outage","Replayed permit",
+       "Corridor suspended fleet-wide","Network partition","Concurrent double-spend","Stale freeze state"]},
+    {id:"health",n:"Healthcare — medication or clinical instruction",asset:"Patient safety",act:"Medication / dosage order",
+     policies:[["Clinical policy","Allergy control","NO_CONTRAINDICATION","Is this safe given known allergies?"],
+       ["Clinical policy","Dosage bound","DOSAGE_WITHIN_BOUND","Is the dose inside the approved range?"],
+       ["Records policy","Medication freshness","MED_LIST_FRESH","Is the medication list recent enough?"],
+       ["Authorization policy","Clinician approval","CLINICIAN_APPROVAL_PRESENT","Has a qualified clinician approved?"],
+       ["Consent policy","Consent validity","PATIENT_CONSENT_VALID","Is consent valid where required?"]],
+     stress:["Stale medication record","Known allergy","Missing lab result",
+       "High-confidence AI diagnosis but no authority","Emergency pressure","Conflicting sources",
+       "Privacy redaction removes critical context","Dose changed after authorization",
+       "Clinical system receipt mismatch","Human sovereignty veto","Sepsis-cascade stress scenario"]},
+    {id:"grid",n:"Energy — grid setpoint / privileged command",asset:"Physical infrastructure",act:"Setpoint change",
+     policies:[["Operations policy","Operator authority","OPERATOR_AUTHORIZED","Is this operator allowed to command this asset?"],
+       ["Safety policy","Command range","COMMAND_WITHIN_RANGE","Is the value inside the safe envelope?"],
+       ["Safety policy","Plant state","PLANT_STATE_VALID","Is the plant in a state that accepts this?"],
+       ["Maintenance policy","Maintenance lock","NO_MAINTENANCE_LOCK","Is the asset free of a maintenance lock?"],
+       ["Fleet policy","Class veto","NO_FLEET_VETO","Is the whole asset class still permitted?"]],
+     stress:["Stale telemetry","Conflicting sensor data","Unsafe command range","Actuator mismatch",
+       "Compromised agent","Network partition","Simultaneous conflicting commands","Watchdog loss","Fleet-wide revocation"]}
+  ];
+  $("#domTabs").innerHTML=DOMS.map(function(d,i){
+    return '<button class="tab" data-d="'+i+'" aria-pressed="'+(i===0?"true":"false")+'">'+esc(d.n)+'</button>';}).join("");
+  function paintDom(i){
+    var d=DOMS[i];
+    $("#domBody").innerHTML=
+      '<div class="kvrows">'+challenge("action class",d.act)+challenge("critical asset",d.asset)+
+      challenge("risk classification","TIER 4 · CRITICAL — worked deployment classification from the Master example")+
+      challenge("enforcement profile","complete mediation · short permit TTL · dual authorization · class veto · commit-before-actuate")+'</div>'+
+      '<div class="tw"><table><thead><tr><th>Policy clause</th><th>Control</th><th>Predicate token</th><th>Human question</th></tr></thead><tbody>'+
+      d.policies.map(function(p){
+        return '<tr><td>'+esc(p[0])+'</td><td>'+esc(p[1])+'</td><td class="mono">'+esc(p[2])+'</td><td>'+esc(p[3])+'</td></tr>';
+      }).join("")+'</tbody></table></div>'+
+      '<h3 style="font-size:13px">Stress cases</h3><div class="predlist">'+
+      d.stress.map(function(s){return '<div class="pi">'+esc(s)+'</div>';}).join("")+'</div>';
+    $$("#domTabs .tab").forEach(function(b,j){b.setAttribute("aria-pressed",j===i?"true":"false");});
+  }
+  $$("#domTabs .tab").forEach(function(b){b.addEventListener("click",function(){paintDom(+b.dataset.d);});});
+  paintDom(0);
+
+  /* ================= CROSS-DOMAIN COMPARISON (§26) ================= */
+  var VARY=[["Action authorized",function(d){return d.act;}],
+            ["Critical asset",function(d){return d.asset;}],
+            ["Example policy clause",function(d){return d.policies[0][0];}],
+            ["Example control",function(d){return d.policies[0][1];}],
+            ["Example predicate",function(d){return d.policies[0][2];}],
+            ["Mandatory predicates shown",function(d){return d.policies.length;}],
+            ["Stress cases modelled",function(d){return d.stress.length;}]];
+  var SAME=[["Formal law","\u0393 = max(d\u2096)  \u00b7  \u039b = \u2227\u2096 \u03bb\u2096"],
+            ["Concurrence operator","non-compensatory \u2014 one mandatory failure denies"],
+            ["Authorization rule","\u03a0 = 1 only when \u0393_action = 0 \u2227 \u0393_class = 0"],
+            ["Release rule","P_phys = SIG_GAMMA \u2227 SIG_COMMIT \u2227 SIG_WATCHDOG"],
+            ["Permit-to-Act","signed, scoped, single-use, bound to one exact action"],
+            ["Evidence before action","proof committed before the interlock opens"],
+            ["Replay discipline","recomputed from sealed evidence, original epoch"]];
+  $("#stressTbl").innerHTML=
+    '<thead><tr><th>Dimension</th>'+DOMS.map(function(d){
+      return '<th>'+esc(d.n.split(" \u2014 ")[0])+'</th>';}).join("")+'</tr></thead><tbody>'+
+    '<tr><td colspan="'+(DOMS.length+1)+'" style="background:var(--ground-2)"><b class="plain" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase">What changes by industry</b></td></tr>'+
+    VARY.map(function(r){
+      return '<tr><td>'+esc(r[0])+'</td>'+DOMS.map(function(d){
+        var v=r[1](d);
+        return '<td class="'+(/^[A-Z_]+$/.test(String(v))?"mono":"")+'">'+esc(v)+'</td>';}).join("")+'</tr>';
+    }).join("")+
+    '<tr><td colspan="'+(DOMS.length+1)+'" style="background:var(--pass-soft)"><b style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--pass)">What never changes \u2014 the authorization law</b></td></tr>'+
+    SAME.map(function(r){
+      return '<tr><td>'+esc(r[0])+'</td><td colspan="'+DOMS.length+'" class="mono" style="color:var(--pass)">'+
+        esc(r[1])+'  <span class="st measured" style="margin-left:8px">IDENTICAL IN ALL DOMAINS</span></td></tr>';
+    }).join("")+'</tbody>';
+
+  /* ================= RUNTIME LAB ================= */
+  var RP=[["identity","Identity verified","Is the requester who they claim to be?"],
+    ["account","Account able to act","Can the source account act?"],
+    ["beneficiary","Beneficiary approved","Is the recipient approved?"],
+    ["policy","Governance controls pass","Do the signed controls permit it?"],
+    ["risk","Risk within bound","Is the reported risk inside policy?"],
+    ["evidence","Source evidence bound","Are the inputs locked before deciding?"]];
+  var RC=[["klass","Action class active","Is this category still allowed?"],
+    ["corridor","Corridor not suspended","Is this route still open?"]];
+  var RS=[["commit","SIG_COMMIT","Was the proof durably saved?"],
+    ["watchdog","SIG_WATCHDOG","Is the runtime healthy?"]];
+  var S={}; RP.concat(RC).concat(RS).forEach(function(p){S[p[0]]=1;});
+  function tgHtml(list,host){
+    $(host).innerHTML=list.map(function(p){
+      return '<button class="tg" data-k="'+p[0]+'" data-on="'+S[p[0]]+'">'+(S[p[0]]?"✓":"✗")+
+        ' <span>'+esc(p[1])+' <small>'+esc(p[2])+'</small></span></button>';}).join("");
+    $$(host+" .tg").forEach(function(b){
+      b.addEventListener("click",function(){S[b.dataset.k]=S[b.dataset.k]?0:1;drawAll();});});
+  }
+  function drawAll(){
+    tgHtml(RP,"#predToggles"); tgHtml(RC,"#classToggles"); tgHtml(RS,"#sigToggles"); evalRuntime();
+  }
+  function evalRuntime(){
+    var gA=RP.some(function(p){return !S[p[0]];})?1:0;
+    var gC=RC.some(function(p){return !S[p[0]];})?1:0;
+    var pi=(gA===0&&gC===0)?1:0;
+    var sigG=pi, sigC=S.commit, sigW=S.watchdog;
+    var pphys=(sigG&&sigC&&sigW)?1:0;
+    function set(id,v,ok){var e=$(id);e.className="gc "+(ok?"z":"nz");$(".gv",e).textContent=v;}
+    set("#gG",gA,gA===0); set("#gC",gC,gC===0); set("#gP",pi,pi===1); set("#gY",pphys,pphys===1);
+    var v=$("#verdict");
+    v.className="verdict "+(pphys?"p":"s");
+    $("#vt").innerHTML=(pphys?"PERMIT":"SAFE_STATE")+
+      '<span class="vs">'+(pphys?"Authorized and released — the action may execute.":
+        pi===1?"Logical PERMIT, but the gate stayed shut. Π is necessary, not sufficient.":
+        "A mandatory check failed. No permit is issued.")+'</span>';
+    $("#sigRows").innerHTML=[["SIG_GAMMA",sigG,"Π = 1 (all mandatory checks concur)"],
+      ["SIG_COMMIT",sigC,"proof durably committed"],["SIG_WATCHDOG",sigW,"runtime healthy"],
+      ["P_phys",pphys,"the physical release gate"]].map(function(r){
+      return '<div class="sigr"><span>'+esc(r[0])+' <span class="plain">— '+esc(r[2])+'</span></span>'+
+        '<span class="sigv '+(r[1]?"on":"off")+'">'+r[1]+'</span></div>';}).join("");
+    var codes=[];
+    if(gA===0) codes.push(["ALL_MANDATORY_PREDICATES_CONCUR","ok"]); else {
+      RP.forEach(function(p){ if(!S[p[0]]) codes.push([p[0].toUpperCase()+"_DEFICIT","no"]); });
+    }
+    if(gC===1) codes.push(["CLASS_LEVEL_VETO_ACTIVE","no"]);
+    codes.push(["NON_COMPENSATORY",""]);
+    if(pi===1&&!sigC) codes.push(["EVIDENCE_COMMIT_FAILED","no"]);
+    if(pi===1&&!sigW) codes.push(["WATCHDOG_NOT_HEALTHY","no"]);
+    codes.push([pphys?"PERMIT_GRANTED":"SAFE_STATE_ENFORCED",pphys?"ok":"no"]);
+    $("#rcodes").innerHTML=codes.map(function(c){
+      return '<span class="rcode '+c[1]+'">'+esc(c[0])+'</span>';}).join("");
+    var states=["NOT_ISSUED","CANDIDATE","ISSUED","ACTIVE","CONSUMED"];
+    var reach = pphys?5:(pi===1?3:1);
+    $("#permitLife").innerHTML=states.map(function(s,i){
+      var cls=i<reach?(i===4?"done":"on"):"";
+      return '<i class="'+cls+'">'+s+'</i>';}).join('<span>→</span>')+
+      '<span>·</span><i class="end">EXPIRED</i><span>·</span><i class="end">REVOKED</i>';
+    $("#permitBox").innerHTML= pi===1 ?
+      challenge("token_id","PTA-<bound to action hash>")+challenge("scope","one exact action")+
+      challenge("single_use","true")+challenge("revocable","true")+
+      challenge("state",pphys?"CONSUMED":"ISSUED but never consumed — gate shut")
+      : challenge("state","NOT_ISSUED — no permit exists for a denied action");
+  }
+  drawAll();
+
+  /* ================= NON-COMPENSATORY DEMO ================= */
+  var NCD=[0,0,0,0,0];
+  function drawNC(){
+    $("#ncToggles").innerHTML=NCD.map(function(d,i){
+      return '<button class="tg" data-i="'+i+'" data-on="'+(d===0?1:0)+'">d'+(i+1)+' = '+d.toFixed(2)+
+        ' <small>click to cycle</small></button>';}).join("");
+    $$("#ncToggles .tg").forEach(function(b){
+      b.addEventListener("click",function(){
+        var i=+b.dataset.i, cur=NCD[i];
+        NCD[i]= cur===0?0.02: cur===0.02?0.6: 0;
+        drawNC();});});
+    var mx=Math.max.apply(null,NCD);
+    var sum=NCD.reduce(function(a,b){return a+b;},0)/NCD.length;
+    $("#ncFormula").innerHTML='<b>Γ = max(d₁…d₅) = '+mx.toFixed(2)+'</b><br>weighted mean = '+sum.toFixed(3);
+    var gammaPermit = mx===0;
+    var weightedPermit = sum < 0.15;
+    $("#ncCompare").innerHTML=
+      '<div class="verdict '+(gammaPermit?"p":"s")+'" style="margin-top:0"><span>'+
+        (gammaPermit?"PERMIT":"SAFE_STATE")+'<span class="vs">Gamma · non-compensatory — Γ = max(dₖ)</span></span></div>'+
+      '<div class="verdict '+(weightedPermit?"p":"s")+'"><span>'+
+        (weightedPermit?"PERMIT":"SAFE_STATE")+'<span class="vs">Weighted average · τ = 0.15 — structurally non-conformant</span></span></div>'+
+      (gammaPermit!==weightedPermit?'<div class="note bad" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Divergence.</b> The weighted rule permits an action that has a live mandatory deficit. This is exactly the failure T3 forbids.</span></div>':"");
+  }
+  drawNC();
+
+  /* ================= EXPERIMENTS ================= */
+  $("#expLede").innerHTML="<b>"+D.experiments.length+" executed experiments</b> — IDs are E1–E12 <b>plus E5b</b>, not a contiguous range. Campaign <code>"+esc(D.campaign.name)+"</code>, total runtime "+num(D.campaign.total_s,1)+" s.";
+  $("#expTbl").innerHTML='<thead><tr><th>ID</th><th>Title</th><th>Status</th><th class="n">Duration</th>'+
+    '<th class="dense">Reproduction command</th><th class="dense n">Artifacts</th><th class="dense">First artifact · sha256</th></tr></thead><tbody>'+
+    D.experiments.map(function(e){
+      return '<tr><td class="mono"><b>'+esc(e.id)+'</b></td><td>'+esc(e.title)+'</td>'+
+        '<td><span class="st '+(e.status==="EXECUTED"?"executed":"na")+'">'+esc(e.status)+'</span></td>'+
+        '<td class="n">'+num(e.dur,2)+' s</td>'+
+        '<td class="mono dense">'+esc(e.cmd)+'</td><td class="n dense">'+e.nart+'</td>'+
+        '<td class="mono dense">'+(e.art?esc(e.art.path)+'<br><span class="plain">'+esc(e.art.sha256)+'…</span>':"—")+'</td></tr>';
+    }).join("")+'</tbody>';
+
+  /* ================= E1 vs E12 ================= */
+  var ulb=D.blind.filter(function(b){return b.dataset==="ULB";})[0]||{};
+  $("#e1e12").innerHTML=
+    '<div class="card pad" style="border-top:3px solid var(--hold)">'+
+      '<span class="st sim">E1 · CONFORMANCE</span><h3 style="margin-top:8px">The mapped corpus</h3>'+
+      '<div class="kvrows">'+challenge("rows",commas(D.e1.rows))+challenge("PERMIT",commas(D.e1.derived_permit))+
+      challenge("SAFE_STATE",commas(D.e1.derived_safe_state))+challenge("match rate",D.e1.match_status_rate)+
+      challenge("false permits",D.e1.false_permit_count)+challenge("unauthorized executions",D.e1.unauthorized_execution_count)+'</div>'+
+      '<div class="note bad" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><b>'+
+        D.leak.leaking.length+' of 12 engine inputs are derived from the label</b> — '+
+        D.leak.leaking.map(esc).join(", ")+' — each perfectly disjoint across classes over all '+commas(D.leak.rows)+
+        ' rows. This is <b>conformance, not detection</b>.</span></div>'+
+      '<p class="lede" style="font-size:12px;margin-top:10px">Unaffected by the leakage: '+
+        (D.leak.unaffected||[]).map(function(x){return esc(String(x).split("—")[0].trim());}).join(" · ")+'</p>'+
+    '</div>'+
+    '<div class="card pad" style="border-top:3px solid var(--pass)">'+
+      '<span class="st measured">E12 · BLIND</span><h3 style="margin-top:8px">The raw dataset</h3>'+
+      '<div class="kvrows">'+challenge("rows evaluated",commas(ulb.evaluated_rows))+
+      challenge("prevalence",(ulb.prevalence*100).toFixed(3)+" %")+
+      challenge("AUROC",num(ulb.auroc,4))+challenge("recall",num(ulb.recall,4))+
+      challenge("precision",num(ulb.precision,4))+challenge("evidence level",ulb.evidence_level)+'</div>'+
+      '<div class="note" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8h.01M11 12h1v4h1" stroke="currentColor" stroke-width="1.5"/></svg><span>AUROC '+num(ulb.auroc,3)+' says the rule <b>separates</b> well. Precision '+num(ulb.precision,3)+
+      ' says that at '+(ulb.prevalence*100).toFixed(3)+' % prevalence, catching '+(ulb.recall*100).toFixed(0)+
+      ' % of fraud costs roughly nine false alarms per catch. Both are true. A separability score is not an operating point.</span></div>'+
+    '</div>';
+
+  $("#evArch").innerHTML=[
+    ["Source Evidence","the information used to make the decision","identity · account · beneficiary · policy snapshot · risk signals"],
+    ["ERTuple","the complete sealed decision record","action · context · predicates · Γ · decision · reason codes · permit metadata"],
+    ["Evidence Quad","the four-part proof anchor","specification clause · evaluation ID · method version · ledger hash"],
+    ["Execution Receipt","the outside system's proof of what actually happened","network reference · submission status · permit state"]
+  ].map(function(e){
+    return '<div class="card pad"><b style="font-size:13px">'+esc(e[0])+'</b>'+
+      '<div class="plain" style="font-size:11.5px;margin-top:3px">('+esc(e[1])+')</div>'+
+      '<p class="lede" style="font-size:11.5px;margin-top:8px">'+esc(e[2])+'</p></div>';}).join("");
+
+  /* ================= ABLATION ================= */
+  var ab=D.ablation;
+  $("#ablBox").innerHTML=
+    '<div class="kvrows">'+challenge("scope",ab.scope)+challenge("θ",ab.theta)+challenge("workload n",commas(ab.n))+'</div>'+
+    '<h3 style="font-size:13px">E5 · single-component ablation</h3>'+
+    '<div class="tw"><table><thead><tr><th>Configuration</th><th class="n">Permits</th><th class="n">Leaked permits</th>'+
+    '<th class="n">Leak rate</th><th class="n dense">Throughput /s</th></tr></thead><tbody>'+
+    ab.configs.map(function(c){
+      return '<tr><td class="mono">'+esc(c.c)+'</td><td class="n">'+commas(c.permits)+'</td>'+
+        '<td class="n '+(c.leak?"lo":"hi")+'">'+commas(c.leak)+'</td>'+
+        '<td class="n">'+(c.rate==null?"—":Number(c.rate).toExponential(2))+'</td>'+
+        '<td class="n dense">'+(c.tp==null?"—":commas(Math.round(c.tp)))+'</td></tr>';}).join("")+'</tbody></table></div>'+
+    '<h3 style="font-size:13px">E5b · combined ablation <span class="plain">— metric: '+esc(D.combined.metric)+'</span></h3>'+
+    '<div class="tw"><table><thead><tr><th>Configuration removed</th><th class="n">Mean</th><th class="n">CI95 low</th>'+
+    '<th class="n">CI95 high</th><th class="n dense">Bootstrap n</th></tr></thead><tbody>'+
+    D.combined.rows.map(function(r){
+      var crit=r.mean<=0.5001;
+      return '<tr><td class="mono">'+esc(r.c)+'</td><td class="n '+(crit?"lo":"")+'">'+num(r.mean,4)+'</td>'+
+        '<td class="n">'+num(r.lo,4)+'</td><td class="n">'+num(r.hi,4)+'</td>'+
+        '<td class="n dense">'+r.n+'</td></tr>';}).join("")+'</tbody></table></div>'+
+    '<p class="lede" style="font-size:12px;margin-top:10px">Configurations collapsing to <b>0.5000</b> are at chance — the removed control was load-bearing for this metric. Rows holding ~0.723 indicate no measurable effect <i>on this metric</i>.</p>';
+
+  /* ================= METRICS ================= */
+  var M=[
+    ["UER","Unauthorized Execution Rate","how often an unauthorized action executes",
+     D.e1.unauthorized_execution_count+" / "+commas(D.e1.rows),"E1","measured","gamma_lab_v1_report.json"],
+    ["FPR (authorization)","False Permit Rate","how often an unsafe action is incorrectly allowed",
+     D.e1.false_permit_count+" / "+commas(D.e1.rows),"E1","sim","conformance corpus — see leakage note"],
+    ["FDR","False Denial Rate","how often a legitimate action is stopped",
+     D.e1.false_denial_count+" / "+commas(D.e1.rows),"E1","sim","gamma_summary.json"],
+    ["Replay divergence","Determinism failure count","how often replay produced a different result",
+     D.e1.replay_divergence_count+" / "+commas(D.e1.rows),"E2","measured","replay_report.json"],
+    ["Hash-chain continuity","Ledger link integrity","are all evidence records still linked",
+     commas(D.e1.hash_chain_links_ok)+" links OK","E2","measured","gamma_summary.json"],
+    ["AUROC (blind)","Separability, ULB","how well the rule separates risky from ordinary",
+     num(ulb.auroc,4),"E12","measured","dataset_eval_summary.json"],
+    ["Latency mean","Authorization latency","how long one decision takes",
+     num(D.perf.mean,3)+" ms","perf","measured","PERFORMANCE_RESULTS.json"]
+  ];
+  $("#metricTbl").innerHTML='<thead><tr><th>Metric</th><th>Full name</th><th>Plain meaning</th>'+
+    '<th class="n">Value</th><th>Source exp.</th><th>Status</th><th class="dense">Artifact</th></tr></thead><tbody>'+
+    M.map(function(m){
+      return '<tr><td class="mono"><b>'+esc(m[0])+'</b></td><td>'+esc(m[1])+'</td>'+
+        '<td class="plain">'+esc(m[2])+'</td><td class="n">'+esc(m[3])+'</td><td class="mono">'+esc(m[4])+'</td>'+
+        '<td><span class="st '+m[5]+'">'+(m[5]==="sim"?"CONFORMANCE ONLY":"MEASURED")+'</span></td>'+
+        '<td class="mono dense">'+esc(m[6])+'</td></tr>';}).join("")+'</tbody>';
+
+  $("#blindTbl").innerHTML='<thead><tr><th>Dataset</th><th>Domain</th><th class="n">Rows</th><th class="n">Prevalence</th>'+
+    '<th class="n">Precision</th><th class="n">Recall</th><th class="n">F1</th><th class="n">AUROC</th><th class="n">MCC</th><th>Status</th></tr></thead><tbody>'+
+    D.blind.map(function(b){
+      var cls=b.auroc>0.85?"hi":b.auroc>0.7?"mid":"lo";
+      return '<tr><td><b>'+esc(b.dataset)+'</b></td><td class="plain">'+esc(b.domain)+'</td>'+
+        '<td class="n">'+commas(b.evaluated_rows)+'</td><td class="n">'+(b.prevalence*100).toFixed(3)+' %</td>'+
+        '<td class="n">'+num(b.precision)+'</td><td class="n">'+num(b.recall)+'</td><td class="n">'+num(b.f1)+'</td>'+
+        '<td class="n '+cls+'">'+num(b.auroc,4)+'</td><td class="n">'+num(b.mcc)+'</td>'+
+        '<td><span class="st measured">'+esc(b.evidence_level)+'</span></td></tr>';}).join("")+'</tbody>';
+
+  /* ================= PERFORMANCE ================= */
+  $("#perfBox").innerHTML='<div class="tw"><table><thead><tr><th>Measure</th><th class="n">Value</th><th>Status</th><th class="dense">Note</th></tr></thead><tbody>'+
+    [["n (rows measured)",commas(D.perf.n),"measured",""],
+     ["mean",num(D.perf.mean,4)+" ms","measured","CI95 ["+num((D.perf.ci95||[])[0],4)+", "+num((D.perf.ci95||[])[1],4)+"]"],
+     ["p50",num(D.perf.p50,4)+" ms","measured",""],
+     ["p95",num(D.perf.p95,4)+" ms","measured",""],
+     ["p99",num(D.perf.p99,4)+" ms","measured",""],
+     ["max",num(D.perf.max,4)+" ms","measured",""],
+     ["throughput",commas(D.perf.throughput)+" rows/s","measured","single reference host — not a universal guarantee"]
+    ].map(function(r){
+      return '<tr><td>'+esc(r[0])+'</td><td class="n">'+esc(r[1])+'</td>'+
+        '<td><span class="st measured">MEASURED</span></td><td class="plain dense">'+esc(r[3])+'</td></tr>';}).join("")+
+    '</tbody></table></div>'+
+    '<div class="note warn" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6"/></svg><span>These are measurements on one reference host, not a service-level guarantee. Master Operating Model SLOs are <b>illustrative targets</b> and are not shown here as achieved performance.</span></div>';
+
+  /* ================= THREAT MODEL ================= */
+  var TH=[
+    ["Replay a consumed permit","Permit service","Single-use + atomic consumption","In model","T5 · T7","Permit rejected — already CONSUMED"],
+    ["Alter amount after authorization","Action binding","Action-hash binding + last-moment revalidation","In model","T7","Hash mismatch — SAFE_STATE"],
+    ["Use an expired permit","Permit service","Short TTL + revalidation at use","In model","T7","Permit rejected — EXPIRED"],
+    ["Stale predicate input","Evidence adapters","Freshness windows per predicate","In model","T2","Deficit raised — SAFE_STATE"],
+    ["Ledger commit failure","Evidence services","Commit-before-actuate interlock","In model","T2 · T9","SIG_COMMIT = 0 → gate shut"],
+    ["Watchdog outage","Enforcement substrate","Three-signal interlock","In model","T4","P_phys = 0 → gate shut"],
+    ["Model substitution","Proposer","Model identity is not a decision input","In model","T6","Decision unchanged"],
+    ["Class-wide optimization / Goodhart","Class controls","Class-level veto independent of Γ_action","In model","T8","Γ_class veto"],
+    ["Side-channel key extraction","Signing keys","—","OUT OF SCOPE","—","Violates the key-secrecy assumption"],
+    ["Supply-chain compromise of the runtime","Build pipeline","—","OUT OF SCOPE","—","Violates the trusted-build assumption"],
+    ["Physical tampering below Tier-H","Substrate","—","OUT OF SCOPE","—","Tier-S has no hardware root of trust"],
+    ["Human coercion of approvers","Approval workflow","—","OUT OF SCOPE","—","Outside the technical boundary"]
+  ];
+  $("#threatTbl").innerHTML='<thead><tr><th>Attack</th><th>Target</th><th>Control</th><th>Scope</th>'+
+    '<th class="dense">Theorem</th><th>Expected response</th></tr></thead><tbody>'+
+    TH.map(function(t){
+      var out=t[3]==="OUT OF SCOPE";
+      return '<tr><td>'+esc(t[0])+'</td><td class="plain">'+esc(t[1])+'</td><td>'+esc(t[2])+'</td>'+
+        '<td><span class="st '+(out?"na":"measured")+'">'+esc(t[3])+'</span></td>'+
+        '<td class="mono dense">'+esc(t[4])+'</td><td class="plain">'+esc(t[5])+'</td></tr>';}).join("")+'</tbody>';
+
+  /* ================= THEOREMS + FALSIFICATION ================= */
+  var T=[
+    ["T0","Bridge Equivalence","No deficit exists exactly when every required check passes.","Γ(G) = 0 ⟺ Λ(G) = 1","E3"],
+    ["T1","Deterministic Authorization","The same sealed evidence always yields the same decision.","—","E2 · E3"],
+    ["T2","Fail-Closed Composition","If any part fails or is missing, the system stops rather than proceeds.","—","E9"],
+    ["T3","Non-Compensatory Soundness","One mandatory failure can never be outvoted by other successes.","Γ = max(d₁…dₙ)","E5"],
+    ["T4","Non-Bypassability","No externally effective path exists around the boundary.","—","E3 (TLA+)"],
+    ["T5","Replay Closure","The original decision can be recomputed from saved evidence.","—","E2"],
+    ["T6","Model-Substitution Invariance","Changing which AI proposed the same action does not change the result.","—","E7"],
+    ["T7","TOCTOU State-Consistency","Nothing changed between authorization and execution.","—","E9"],
+    ["T8","Composite Conservation Stability","Aggregate behaviour stays stable under parameter drift.","—","E5b"],
+    ["T9","Concurrence Closure","Execution never occurs without valid concurrence.","□ ¬(Execute ∧ ¬Permit)","E3"]
+  ];
+  $("#theorems").innerHTML=T.map(function(t){
+    return '<div class="tc"><span class="ti">'+esc(t[0])+'</span><b>'+esc(t[1])+'</b>'+
+      '<div class="pl">'+esc(t[2])+'</div>'+
+      (t[3]!=="—"?'<div class="fm">'+esc(t[3])+'</div>':'')+
+      '<div class="meta"><span class="st formal">NAME FROM DERIVATION CHAIN</span>'+
+      '<span class="st na">STATEMENT: AWAITING PAPER A</span>'+
+      '<span class="st measured">EXP '+esc(t[4])+'</span></div></div>';}).join("");
+
+  $("#tlcBox").innerHTML='<b style="font-size:13px">Bounded model check <span class="plain">(TLC)</span></b>'+
+    '<div class="kvrows">'+challenge("states generated",commas(D.tlc.generated))+
+    challenge("distinct states",commas(D.tlc.distinct))+challenge("left on queue",D.tlc.queue)+
+    challenge("search depth",D.tlc.depth)+challenge("result",D.tlc.result)+
+    challenge("invariants",(D.tlc.invariants||[]).join(" · "))+
+    challenge("constants",(D.tlc.constants||[]).join("  "))+'</div>';
+
+  var F=[
+    ["T1","A replay of the same sealed evidence yields a different decision","E2 replay report","NOT FALSIFIED IN DECLARED TEST"],
+    ["T2","A missing or failed component results in execution rather than a stop","E9 coverage suite","NOT FALSIFIED IN DECLARED TEST"],
+    ["T3","A permit is issued while a mandatory deficit is positive","E5 ablation","NOT FALSIFIED IN DECLARED TEST"],
+    ["T4","An externally effective action executes without traversing the boundary","E3 TLA+ NonBypassability","NOT FALSIFIED IN DECLARED TEST"],
+    ["T5","Saved evidence cannot reproduce the original decision","E2","NOT FALSIFIED IN DECLARED TEST"],
+    ["T6","Changing the proposer changes the decision on identical evidence","E7 AgentDojo","NOT FALSIFIED IN DECLARED TEST"],
+    ["T7","A permit is honoured after the bound action changed","E9","NOT FALSIFIED IN DECLARED TEST"],
+    ["T8","Small parameter drift flips aggregate safety behaviour","E5b","INSUFFICIENT EVIDENCE"],
+    ["T9","Any observed Execute-while-not-validly-permitted event","all","NOT FALSIFIED IN DECLARED TEST"]
+  ];
+  $("#falsTbl").innerHTML='<thead><tr><th>Theorem</th><th>What would falsify it</th><th class="dense">Where to look</th><th>Current status</th></tr></thead><tbody>'+
+    F.map(function(f){
+      var ins=/INSUFFICIENT/.test(f[3]);
+      return '<tr><td class="mono"><b>'+esc(f[0])+'</b></td><td>'+esc(f[1])+'</td>'+
+        '<td class="mono dense">'+esc(f[2])+'</td>'+
+        '<td><span class="st '+(ins?"target":"measured")+'">'+esc(f[3])+'</span></td></tr>';}).join("")+'</tbody>';
+
+  /* ================= CLAIMS + CONCERNS ================= */
+  $("#claimLede").innerHTML="<b>"+D.claims.length+" claims</b> in <code>evidence_manifest.json</code>. Note the IDs run C1–C16 <b>plus C10b</b> — a naive <code>C\\d+</code> scan finds only 16.";
+  $("#claimTbl").innerHTML='<thead><tr><th>ID</th><th>Claim</th><th>Status</th><th>Exp.</th>'+
+    '<th class="dense">Evidence pointer</th><th class="dense n">Value</th><th class="n">Holds</th></tr></thead><tbody>'+
+    D.claims.map(function(c){
+      return '<tr><td class="mono"><b>'+esc(c.id)+'</b></td><td>'+esc(c.statement)+'</td>'+
+        '<td><span class="st '+(/Support/i.test(c.status)?"supported":"target")+'">'+esc(c.status)+'</span></td>'+
+        '<td class="mono">'+esc((c.exps||[]).join(", "))+'</td>'+
+        '<td class="mono dense">'+esc(c.ev.artifact)+'<br><span class="plain">'+esc(c.ev.pointer)+' '+esc(c.ev.rel)+'</span></td>'+
+        '<td class="n dense">'+esc(c.ev.val)+'</td>'+
+        '<td class="n">'+(c.ev.holds===true?'<span class="st pass">YES</span>':c.ev.holds===false?'<span class="st na">NO</span>':'—')+'</td></tr>';
+    }).join("")+'</tbody>';
+
+  $("#conTbl").innerHTML='<thead><tr><th>ID</th><th>Reviewer question</th><th>Status</th><th class="dense">Experiments</th></tr></thead><tbody>'+
+    D.concerns.map(function(c){
+      return '<tr><td class="mono"><b>'+esc(c.id)+'</b></td><td>'+esc(c.q)+'</td>'+
+        '<td>'+(c.status?'<span class="st supported">'+esc(c.status)+'</span>':'—')+'</td>'+
+        '<td class="mono dense">'+esc((c.exps||[]).join(", "))+'</td></tr>';}).join("")+'</tbody>';
+
+  /* ================= LIMITS + TIERS ================= */
+  $("#limitsBox").innerHTML=
+    '<div class="card pad" style="border-top:3px solid var(--pass)"><h3 style="margin-top:0;color:var(--pass)">Does establish, under stated assumptions</h3>'+
+    '<ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-2);line-height:1.7">'+
+    ["Deterministic authorization","Fail-closed composition","Non-compensation",
+     "Replay closure","Stated non-bypass property for the applicable substrate",
+     "TOCTOU bounding","Closure under declared conditions"].map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul></div>'+
+    '<div class="card pad" style="border-top:3px solid var(--fail)"><h3 style="margin-top:0;color:var(--fail)">Does not establish</h3>'+
+    '<ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-2);line-height:1.7">'+
+    ["Semantic correctness of the action","Complete predicates over every possible harm",
+     "Truthfulness of evidence outside the measurement boundary","Side-channel resilience unless specifically tested",
+     "Physical hardware security outside assumptions","Supply-chain integrity","Universal production availability",
+     "Legal compliance","Absence of false denials","Exhaustive unbounded-state verification",
+     "Clinical efficacy","Universal fraud detection"].map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul></div>';
+
+  $("#tierTbl").innerHTML='<thead><tr><th>Tier</th><th>Root of trust</th><th>Assurance</th><th>Status here</th></tr></thead><tbody>'+
+    [["Tier-H","Hardware-rooted","Highest — hardware enforces the gate","Not demonstrated by this page"],
+     ["Tier-T","TEE-rooted","High — enclave enforces the gate","Not demonstrated by this page"],
+     ["Tier-S","Software-only","Logic is correct; substrate is trusted","THIS PAGE"],
+     ["Tier-D","Distributed quorum","Consensus across nodes","Not demonstrated by this page"],
+     ["Tier-X","Future substrate","—","Not defined without FULL_SPEC.md"]
+    ].map(function(t){
+      var here=t[3]==="THIS PAGE";
+      return '<tr><td class="mono"><b>'+esc(t[0])+'</b></td><td>'+esc(t[1])+'</td><td class="plain">'+esc(t[2])+'</td>'+
+        '<td><span class="st '+(here?"demo":"target")+'">'+esc(t[3])+'</span></td></tr>';}).join("")+'</tbody>';
+
+  /* ================= SOURCES ================= */
+  var SF=[["FULL_SPEC.md","Authority A — normative specification",D.sourcefiles["FULL_SPEC.md"]],
+    ["Paper A — Lakhowal Law of Concurrence","Authority B — theorems T0–T9",D.sourcefiles.PaperA],
+    ["Gamma Master Operating Model","Authority C — 28-stage model",D.sourcefiles.MasterOperatingModel],
+    ["experiments/_meta/run_index.json","Authority D — experiment campaign",D.sourcefiles.run_index],
+    ["evidence_manifest.json","Authority D — claims and checksums",D.sourcefiles.evidence_manifest],
+    ["reviewer_mapping.md","Authority D — reviewer concerns",D.sourcefiles.reviewer_mapping]];
+  $("#srcBox").innerHTML='<div class="tw"><table><thead><tr><th>Source</th><th>Role</th><th>Present</th></tr></thead><tbody>'+
+    SF.map(function(s){
+      return '<tr><td class="mono">'+esc(s[0])+'</td><td class="plain">'+esc(s[1])+'</td>'+
+        '<td>'+(s[2]?'<span class="st measured">IN REPOSITORY</span>':'<span class="st na">MISSING</span>')+'</td></tr>';
+    }).join("")+'</tbody></table></div>'+
+    '<div class="note bad" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6"/></svg><span><b>Two top-authority sources are absent.</b> Theorem statements, the canonical Permit state machine, the ERTuple schema and CL0/CL1/CL2 semantics are shown as NOT AVAILABLE rather than paraphrased. Six source conflicts are recorded in <code>SOURCE_CONFLICTS.md</code>.</span></div>'+
+    '<div class="kvrows">'+challenge("host platform",D.campaign.host.platform)+
+    challenge("python",D.campaign.host.python_version)+challenge("machine",D.campaign.host.machine)+'</div>';
+
+
+  /* ==================== LIVE RUN ENGINE ==================== */
+  (function(){
+    var POLICY_EPOCH="POL-EPOCH-774", RUNTIME_EPOCH="RT-EPOCH-229",
+        METHOD="GAMMA-G0-DEMO-2.0", SEALED="2026-07-23T10:24:00.310Z", EXPIRES="2026-07-23T10:24:05.310Z",
+        PREV="17a25225c0e4b8d13f7a90b6ee2c4418d5a7f0c93b18e6a2f4d0c7b5e9a13d62";
+    var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function canon(v){
+      if(v===undefined) return "null";
+      if(v===null||typeof v!=="object") return JSON.stringify(v);
+      if(Array.isArray(v)) return "["+v.map(canon).join(",")+"]";
+      return "{"+Object.keys(v).sort().map(function(k){return JSON.stringify(k)+":"+canon(v[k]);}).join(",")+"}";
+    }
+    function xm(s){var h=1779033703^s.length;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=(h<<13)|(h>>>19);}
+      return function(){h=Math.imul(h^(h>>>16),2246822507);h=Math.imul(h^(h>>>13),3266489909);return (h^=(h>>>16))>>>0;};}
+    function demo(s){var r=xm(s),o="";for(var i=0;i<8;i++)o+=("00000000"+r().toString(16)).slice(-8);return o;}
+    var subtle=(typeof crypto!=="undefined"&&crypto.subtle&&crypto.subtle.digest)?crypto.subtle:null;
+    var ALGO=subtle?"SHA-256 · Web Crypto":"deterministic demo digest";
+    function digest(v){
+      var s=(typeof v==="string")?v:canon(v);
+      if(!subtle) return Promise.resolve(demo(s));
+      return subtle.digest("SHA-256",new TextEncoder().encode(s)).then(function(b){
+        return Array.prototype.map.call(new Uint8Array(b),function(x){return ("0"+x.toString(16)).slice(-2);}).join("");
+      }).catch(function(){subtle=null;ALGO="deterministic demo digest";return demo(s);});
+    }
+
+    /* ---- domains: predicates are the ones shown in the Governance Lab ---- */
+    var DOM={
+      bank:{n:"Banking",action:{action_id:"ACT-WIRE-20260723-001",action_class:"WIRE_TRANSFER",principal:"U-8821",
+              account:"ACC-4471-BUS",target:"BEN-SUPPLIER-B",amount_minor:25000000,currency:"USD",corridor:"US→DE"},
+            head:"$250,000 international wire · Business Account A → Supplier B",
+            preds:[["IDENTITY_VERIFIED","Is the requester who they claim to be?"],
+                   ["ACCOUNT_ACTIVE","Can the source account act?"],
+                   ["BENEFICIARY_APPROVED","Is the recipient approved to receive this payment?"],
+                   ["WITHIN_LIMIT","Is the amount inside the approved limit?"],
+                   ["APPROVAL_COUNT_GE_2","Have two people approved?"],
+                   ["SANCTIONS_CLEAR","Is the destination sanctions-clear?"],
+                   ["FRAUD_RISK_WITHIN_POLICY_BOUND","Is the reported risk within the approved limit?"],
+                   ["EVIDENCE_COMPLETE","Is every required input bound?"]],
+            cls:[["WIRE_TRANSFER_CLASS_ACTIVE","Is this category of action still allowed?"],
+                 ["CORRIDOR_CLASS_ACTIVE","Is the US→DE corridor still open?"]],
+            exec:"Bank Payment Network", receipt:"SWIFT-REF-881420"},
+      health:{n:"Healthcare",action:{action_id:"ACT-MED-20260723-014",action_class:"MEDICATION_ORDER",principal:"CLIN-2291",
+              account:"PAT-55130",target:"RX-VANCO-1G",dose_mg:1000,route:"IV",interval_h:12},
+            head:"Vancomycin 1 g IV q12h · patient PAT-55130",
+            preds:[["PATIENT_IDENTITY_MATCHED","Is this the right patient?"],
+                   ["CLINICIAN_AUTHORIZATION_VALID","Is the ordering clinician authorized?"],
+                   ["NO_CONTRAINDICATION","Is this safe given known allergies?"],
+                   ["DOSAGE_WITHIN_BOUND","Is the dose inside the approved range?"],
+                   ["RENAL_CONSTRAINT_CHECKED","Has kidney function been checked?"],
+                   ["MED_LIST_FRESH","Is the medication list recent enough?"],
+                   ["CLINICIAN_APPROVAL_PRESENT","Has a qualified clinician approved?"],
+                   ["EVIDENCE_COMPLETE","Is every required input bound?"]],
+            cls:[["MEDICATION_CLASS_ACTIVE","Is this drug class still permitted?"],
+                 ["PROTOCOL_NOT_SUSPENDED","Is the protocol still in force?"]],
+            exec:"Clinical Order System", receipt:"ORD-REF-44192"},
+      grid:{n:"Energy",action:{action_id:"ACT-GRID-20260723-007",action_class:"SETPOINT_CHANGE",principal:"OPR-118",
+              account:"ASSET-TX-41",target:"FEEDER-9",setpoint_mw:184,ramp_s:60},
+            head:"Feeder-9 setpoint → 184 MW over 60 s",
+            preds:[["OPERATOR_AUTHORIZED","Is this operator allowed to command this asset?"],
+                   ["ASSET_IDENTITY_VERIFIED","Is this the asset we think it is?"],
+                   ["COMMAND_WITHIN_RANGE","Is the value inside the safe envelope?"],
+                   ["PLANT_STATE_VALID","Is the plant in a state that accepts this?"],
+                   ["SAFETY_ENVELOPE_HELD","Does the safety envelope still hold?"],
+                   ["NO_MAINTENANCE_LOCK","Is the asset free of a maintenance lock?"],
+                   ["TELEMETRY_FRESH","Is the telemetry recent enough?"],
+                   ["EVIDENCE_COMPLETE","Is every required input bound?"]],
+            cls:[["ASSET_CLASS_ACTIVE","Is this asset class still commandable?"],
+                 ["NO_FLEET_REVOCATION","Is there a fleet-wide stop in force?"]],
+            exec:"Grid Control System", receipt:"SCADA-REF-77310"}
+    };
+
+    var SCEN={
+      A:{n:"All concur",d:"Every mandatory and class-level predicate passes. The permit is issued, the proof commits, the interlock opens.",fail:[],commit:1,watchdog:1},
+      B:{n:"Predicate fails",d:"One mandatory predicate fails. Γ_action = 1, so Π = 0 and no permit is ever issued.",failIdx:2,commit:1,watchdog:1,code:"MANDATORY_PREDICATE_DEFICIT"},
+      C:{n:"Tiny deficit",d:"A single check fails by a hair. Non-compensatory aggregation means a small failure is still a failure.",failIdx:3,commit:1,watchdog:1,code:"MANDATORY_PREDICATE_DEFICIT"},
+      D:{n:"Class veto",d:"Every action-level predicate passes, but the whole category is suspended. Γ_action = 0 yet Γ_class = 1.",failCls:1,commit:1,watchdog:1,code:"CLASS_LEVEL_VETO_ACTIVE"},
+      E:{n:"Commit failure",d:"Π = 1 — a logical PERMIT — but the proof never becomes durable. SIG_COMMIT = 0, so P_phys = 0 and nothing is released.",fail:[],commit:0,watchdog:1,code:"EVIDENCE_COMMIT_FAILED"},
+      F:{n:"Watchdog down",d:"Π = 1 and the proof commits, but the runtime is unhealthy. SIG_WATCHDOG = 0 holds the gate shut.",fail:[],commit:1,watchdog:0,code:"WATCHDOG_NOT_HEALTHY"}
+    };
+
+    var STAGES=[
+      ["intercept",6,"Boundary Interception","The proposal arrives with zero inherent authority."],
+      ["context",7,"Action Envelope &amp; CTR","Fix exactly what is being authorized."],
+      ["suff",8,"Interpretive Sufficiency","Is the request answerable and the data fresh?"],
+      ["preds",9,"Predicate Evaluation","Evaluate every mandatory check."],
+      ["evid",14,"Source Evidence Binding","Lock the inputs before deciding."],
+      ["cls",15,"Class-Level Control Evaluation","Is the whole category still allowed?"],
+      ["decide",16,"Deterministic Authorization","Compute Γ, Λ and Π."],
+      ["bind",17,"Execution Binding","Bind the answer to one exact action."],
+      ["permit",18,"Permit-to-Act Issuance","Issue a signed one-time pass."],
+      ["commit",19,"Authorization Proof Commitment","Save the proof before anything happens."],
+      ["inter",20,"Three-Signal Interlock","Open only if all three signals agree."],
+      ["reval",21,"Last-Moment Revalidation","Check nothing changed since authorization."],
+      ["exec",22,"Atomic Consumption &amp; Execution","Spend the pass once, then act."],
+      ["receipt",23,"Execution Receipt Closure","Record what actually happened."],
+      ["replay",24,"Independent Replay","Recompute the decision from sealed evidence."]
+    ];
+    var DWELL={intercept:260,context:380,suff:280,preds:620,evid:300,cls:340,decide:560,bind:260,
+               permit:440,commit:460,inter:540,reval:360,exec:460,receipt:320,replay:360};
+
+    var curDom="bank", curScen="A", running=false, timer=null, R=null, sealed=null;
+
+    function seg(host,obj,cur,cb){
+      $(host).innerHTML=Object.keys(obj).map(function(k){
+        return '<button class="sg" data-k="'+k+'" aria-pressed="'+(k===cur?"true":"false")+'">'+
+          esc(obj[k].n)+'</button>';}).join("");
+      $$(host+" .sg").forEach(function(b){b.addEventListener("click",function(){ if(running) return; cb(b.dataset.k); });});
+    }
+    function paintBars(){
+      seg("#lrDom",DOM,curDom,function(k){curDom=k;reset();});
+      seg("#lrScen",SCEN,curScen,function(k){curScen=k;reset();});
+      $("#lrDesc").innerHTML='<b>'+esc(DOM[curDom].head)+'</b> &#183; <span class="plain">'+esc(SCEN[curScen].d)+'</span>';
+    }
+    function buildSteps(){
+      $("#lrSteps").innerHTML=STAGES.map(function(s){
+        return '<div class="lrs" data-id="'+s[0]+'" data-st="idle">'+
+          '<span class="lrn">'+s[1]+'</span>'+
+          '<span class="lrt"><b>'+s[2]+'</b><span>'+esc(s[3])+'</span>'+
+          '<span class="lrd" data-d></span></span>'+
+          '<span class="lrp">idle</span></div>';}).join("");
+    }
+    function setSt(id,st,detail){
+      var e=$('.lrs[data-id="'+id+'"]'); if(!e) return;
+      e.dataset.st=st;
+      $(".lrp",e).textContent= st==="run"?"running":st==="pass"?"pass":st==="fail"?"fail":
+        st==="seal"?"sealed":st==="skip"?"not performed":"idle";
+      if(detail!==undefined) $("[data-d]",e).innerHTML=detail;
+    }
+    function sleep(ms){return new Promise(function(r){timer=setTimeout(r,reduce?20:ms);});}
+
+    function reset(){
+      clearTimeout(timer); running=false; R=null; sealed=null;
+      paintBars(); buildSteps();
+      ["#lrG","#lrC","#lrP","#lrY"].forEach(function(s){var e=$(s);e.className="gc";$(".gv",e).innerHTML="&#8212;";});
+      var v=$("#lrVerdict"); v.className="verdict";
+      v.style.background="var(--ground-2)"; v.style.borderColor="var(--hairline)"; v.style.color="var(--muted)";
+      $("#lrVt").innerHTML='Awaiting run<span class="vs">No decision yet</span>';
+      $("#lrSig").innerHTML=""; $("#lrCodes").innerHTML="";
+      $("#lrLife").innerHTML=["NOT_ISSUED","CANDIDATE","ISSUED","ACTIVE","CONSUMED"].map(function(x){
+        return '<i>'+x+'</i>';}).join('<span>&#8594;</span>');
+      $("#lrPermit").innerHTML='<div class="kvrow"><span class="kk">state</span><span class="kvv">NOT_ISSUED</span></div>';
+      $("#lrHashes").innerHTML='<div class="kvrow"><span class="kk">action hash</span><span class="kvv">&#8212;</span></div>';
+      $("#lrRepBadge").className="st"; $("#lrRepBadge").textContent="pending";
+      $("#lrReplay").disabled=true; $("#lrReplayOut").innerHTML="";
+      $("#lrAlgo").textContent="digest: "+ALGO;
+      $("#lrTerm").hidden=true; $("#lrProg").textContent="idle";
+      $("#lrDot").classList.remove("on");
+      $("#lrRunLbl").textContent="Run authorization";
+    }
+
+    function kv(k,v,cls){return '<div class="kvrow"><span class="kk">'+esc(k)+'</span><span class="kvv '+(cls||"")+'">'+esc(v)+'</span></div>';}
+
+    async function run(){
+      if(running) return; running=true;
+      reset(); running=true;
+      $$("#lrDom .sg,#lrScen .sg").forEach(function(b){b.disabled=true;});
+      $("#lrRun").disabled=true; $("#lrRunLbl").textContent="Running…";
+      $("#lrDot").classList.add("on");
+      var d=DOM[curDom], sc=SCEN[curScen];
+      R={pred:[],cls:[],hashes:{}};
+
+      /* 6 intercept */
+      setSt("intercept","run"); $("#lrProg").textContent="06 · interception"; await sleep(DWELL.intercept);
+      setSt("intercept","pass",kv("proposer","AI agent — zero inherent authority")+kv("mediation","complete"));
+
+      /* 7 context */
+      setSt("context","run"); $("#lrProg").textContent="07 · canonicalization"; await sleep(DWELL.context);
+      var aHash=await digest(d.action);
+      var ctx={action_hash:aHash,policy_epoch:POLICY_EPOCH,runtime_epoch:RUNTIME_EPOCH,method_version:METHOD,ttl_s:5,sealed_at:SEALED};
+      var cHash=await digest(ctx);
+      R.hashes.action=aHash; R.hashes.context=cHash; R.action=d.action; R.ctx=ctx;
+      setSt("context","pass",Object.keys(d.action).map(function(k){return kv(k,d.action[k]);}).join("")+
+        kv("action_hash",aHash.slice(0,24)+"…"));
+      $("#lrHashes").innerHTML=kv("action hash",aHash.slice(0,28)+"…");
+
+      /* 8 sufficiency */
+      setSt("suff","run"); await sleep(DWELL.suff);
+      setSt("suff","pass",kv("schema","complete")+kv("context freshness","within 5 s TTL")+kv("uncertainty","bounded"));
+
+      /* 9 predicates */
+      setSt("preds","run"); $("#lrProg").textContent="09–13 · predicates"; await sleep(DWELL.preds);
+      var html="";
+      d.preds.forEach(function(p,i){
+        var ok = !(sc.failIdx===i);
+        R.pred.push({token:p[0],pass:ok});
+        html+='<div class="pr '+(ok?"ok":"no")+'"><span class="prt">'+esc(p[0])+'</span>'+
+              '<span class="prq">'+esc(p[1])+'</span><span class="prv">'+(ok?"PASS":"FAIL")+'</span></div>';
+      });
+      var gA=R.pred.some(function(p){return !p.pass;})?1:0;
+      setSt("preds",gA?"fail":"pass",'<div class="prs">'+html+'</div>');
+
+      /* 14 evidence binding */
+      setSt("evid","run"); await sleep(DWELL.evid);
+      setSt("evid","pass",kv("bound","identity · account · target · policy snapshot · risk signals")+
+        kv("note","source evidence bound BEFORE the decision"));
+
+      /* 15 class controls */
+      setSt("cls","run"); $("#lrProg").textContent="15 · class controls"; await sleep(DWELL.cls);
+      var ch="";
+      d.cls.forEach(function(p,i){
+        var ok=!(sc.failCls===i);
+        R.cls.push({token:p[0],pass:ok});
+        ch+='<div class="pr '+(ok?"ok":"no")+'"><span class="prt">'+esc(p[0])+'</span>'+
+            '<span class="prq">'+esc(p[1])+'</span><span class="prv">'+(ok?"PASS":"FAIL")+'</span></div>';
+      });
+      var gC=R.cls.some(function(p){return !p.pass;})?1:0;
+      setSt("cls",gC?"fail":"pass",'<div class="prs">'+ch+'</div>');
+
+      /* 16 decision */
+      setSt("decide","run"); $("#lrProg").textContent="16 · authorization"; await sleep(DWELL.decide);
+      var pi=(gA===0&&gC===0)?1:0;
+      R.g={gA:gA,gC:gC,pi:pi,decision:pi?"PERMIT":"SAFE_STATE"};
+      function gset(sel,val,ok){var e=$(sel);e.className="gc "+(ok?"z":"nz");$(".gv",e).textContent=val;}
+      gset("#lrG",gA,gA===0); gset("#lrC",gC,gC===0); gset("#lrP",pi,pi===1);
+      setSt("decide",pi?"seal":"fail",kv("Γ_action",gA,gA?"no":"ok")+kv("Γ_class",gC,gC?"no":"ok")+
+        kv("Π",pi,pi?"ok":"no")+kv("decision",R.g.decision,pi?"ok":"no")+
+        kv("rule","Π = 1 only when Γ_action = 0 ∧ Γ_class = 0"));
+
+      /* 17 binding */
+      setSt("bind","run"); await sleep(DWELL.bind);
+      if(pi) setSt("bind","pass",kv("bound_action",aHash.slice(0,24)+"…")+kv("scope",d.action.action_class));
+      else   setSt("bind","skip",kv("status","not performed — no authorization to bind","no"));
+
+      /* 18 permit */
+      setSt("permit","run"); $("#lrProg").textContent="18 · permit"; await sleep(DWELL.permit);
+      if(pi){
+        var seed=await digest({t:"pta",a:aHash,e:POLICY_EPOCH,s:curScen});
+        R.permit={id:"PTA-"+seed.slice(0,4)+"-"+seed.slice(4,8),state:"ACTIVE",sig:seed.slice(8,14)};
+        setSt("permit","seal",kv("token_id",R.permit.id)+kv("action_hash",aHash.slice(0,24)+"…")+
+          kv("scope",d.action.action_class)+kv("policy_epoch",POLICY_EPOCH)+kv("expires_at",EXPIRES)+
+          kv("single_use","true","ok")+kv("revocable","true","ok")+kv("signature","Ed25519 · sig@"+R.permit.sig+"…")+
+          kv("state","ACTIVE","ok"));
+      } else {
+        R.permit={id:null,state:"NOT_ISSUED"};
+        setSt("permit","skip",kv("state","NOT_ISSUED","no")+kv("reason",sc.code||"SAFE_STATE_ENFORCED","no"));
+      }
+      paintPermit();
+
+      /* 19 commit */
+      setSt("commit","run"); $("#lrProg").textContent="19 · proof commit"; await sleep(DWELL.commit);
+      var ert={action:d.action,context:ctx,predicates:R.pred,class_predicates:R.cls,
+               gamma_action:gA,gamma_class:gC,pi:pi,decision:R.g.decision,
+               permit:R.permit.id,method_version:METHOD,sealed_at:SEALED};
+      var eHash=await digest(ert);
+      var lHash=await digest({prev:PREV,ertuple:eHash,method:METHOD});
+      R.ert=ert; R.hashes.evidence=eHash;
+      R.committed=!!sc.commit;
+      if(R.committed) R.hashes.ledger=lHash;
+      setSt("commit",R.committed?"seal":"fail",
+        kv("ertuple","action + context + predicates + Γ + decision + permit metadata")+
+        kv("evidence_hash",eHash.slice(0,24)+"…")+
+        kv("quad.spec_clause","L-DREA §6.4")+kv("quad.method_version",METHOD)+
+        kv("quad.ledger_hash",R.committed?lHash.slice(0,24)+"…":"NOT APPENDED",R.committed?"":"no")+
+        kv("ledger_append",R.committed?"COMMITTED":"FAILED",R.committed?"ok":"no"));
+      $("#lrHashes").innerHTML=kv("action hash",aHash.slice(0,28)+"…")+kv("evidence hash",eHash.slice(0,28)+"…")+
+        kv("ledger hash",R.committed?lHash.slice(0,28)+"…":"commit failed",R.committed?"":"no");
+
+      /* 20 interlock */
+      setSt("inter","run"); $("#lrProg").textContent="20 · interlock"; await sleep(DWELL.inter);
+      var sg=pi, sc2=R.committed?1:0, sw=sc.watchdog?1:0;
+      var pphys=(sg&&sc2&&sw)?1:0;
+      R.sig={sg:sg,sc:sc2,sw:sw,pphys:pphys};
+      gset("#lrY",pphys,pphys===1);
+      $("#lrSig").innerHTML=[["SIG_GAMMA",sg,"Π = 1"],["SIG_COMMIT",sc2,"proof durable"],
+        ["SIG_WATCHDOG",sw,"runtime healthy"],["P_phys",pphys,"release gate"]].map(function(r){
+        return '<div class="sigr"><span>'+r[0]+' <span class="plain">— '+r[2]+'</span></span>'+
+          '<span class="sigv '+(r[1]?"on":"off")+'">'+r[1]+'</span></div>';}).join("");
+      setSt("inter",pphys?"pass":"fail",kv("SIG_GAMMA",sg,sg?"ok":"no")+kv("SIG_COMMIT",sc2,sc2?"ok":"no")+
+        kv("SIG_WATCHDOG",sw,sw?"ok":"no")+kv("P_phys",pphys,pphys?"ok":"no")+
+        kv("rule","P_phys = SIG_GAMMA ∧ SIG_COMMIT ∧ SIG_WATCHDOG"));
+
+      /* 21 revalidation */
+      setSt("reval","run"); await sleep(DWELL.reval);
+      if(pphys) setSt("reval","pass",kv("signature","valid")+kv("permit","ACTIVE · unconsumed · unrevoked")+
+        kv("action hash","unchanged")+kv("policy epoch","unchanged")+kv("context","within TTL"));
+      else setSt("reval","skip",kv("status","not performed — the gate never opened","no"));
+
+      /* 22 execution */
+      setSt("exec","run"); $("#lrProg").textContent="22 · execution"; await sleep(DWELL.exec);
+      if(pphys){
+        R.permit.state="CONSUMED"; R.executed=true;
+        setSt("exec","pass",kv("permit_state","ACTIVE → CONSUMED","ok")+kv("consumption","atomic · single-use","ok")+
+          kv("actuation_path","RELEASED","ok")+kv("executor",d.exec));
+      } else {
+        if(R.permit.id) R.permit.state="REVOKED";
+        R.executed=false;
+        setSt("exec","fail",kv("actuation_path","CLOSED","no")+
+          kv("permit_state",R.permit.id?"ACTIVE → REVOKED (never consumed)":"NOT_ISSUED","no")+
+          kv("instruction","never submitted","no"));
+      }
+      paintPermit();
+
+      /* 23 receipt */
+      setSt("receipt","run"); await sleep(DWELL.receipt);
+      if(R.executed){
+        var rHash=await digest({ref:d.receipt,action:aHash,permit:R.permit.id});
+        R.hashes.receipt=rHash; R.receipt=d.receipt;
+        setSt("receipt","seal",kv("reference",d.receipt)+kv("status","ACCEPTED","ok")+
+          kv("permit_state","CONSUMED","ok")+kv("receipt_hash","rcpt@"+rHash.slice(0,20)+"…"));
+        $("#lrHashes").innerHTML+=kv("receipt hash",rHash.slice(0,28)+"…");
+      } else setSt("receipt","skip",kv("external receipt","none — the action was never released","no"));
+
+      /* final state */
+      R.final = (pi===1 && pphys===1) ? "PERMIT" : "SAFE_STATE";
+      paintVerdict(sc);
+
+      /* 24 replay */
+      setSt("replay","run"); $("#lrProg").textContent="24 · replay"; await sleep(DWELL.replay);
+      sealed=JSON.parse(JSON.stringify({ert:R.ert,hashes:R.hashes,g:R.g,committed:R.committed,
+        executed:R.executed,permit:R.permit,receipt:R.receipt||null}));
+      var rpHash=await digest({ertuple:R.hashes.evidence,policy_epoch:POLICY_EPOCH,method:METHOD});
+      R.hashes.replay=rpHash; sealed.hashes.replay=rpHash;
+      setSt("replay","seal",kv("recomputes","predicates · Γ_action · Γ_class · Π · decision")+
+        kv("scope",POLICY_EPOCH+" · "+METHOD)+kv("replay_hash",rpHash.slice(0,24)+"…")+
+        kv("excluded","wall-clock · current policy · live systems"));
+      $("#lrHashes").innerHTML+=kv("replay hash",rpHash.slice(0,28)+"…");
+      $("#lrRepBadge").className="st measured"; $("#lrRepBadge").textContent="sealed";
+      $("#lrReplay").disabled=false;
+
+      showTerm(sc);
+      $("#lrProg").textContent=R.final.toLowerCase();
+      $("#lrDot").classList.remove("on");
+      $$("#lrDom .sg,#lrScen .sg").forEach(function(b){b.disabled=false;});
+      $("#lrRun").disabled=false; $("#lrRunLbl").textContent="Run again"; running=false;
+    }
+
+    function paintPermit(){
+      var p=R.permit, seq=["NOT_ISSUED","CANDIDATE","ISSUED","ACTIVE","CONSUMED"];
+      var reach = p.state==="CONSUMED"?5 : p.state==="REVOKED"?4 : p.state==="ACTIVE"?4 : 1;
+      $("#lrLife").innerHTML=seq.map(function(x,i){
+        var c = i<reach ? (x==="CONSUMED"?"done":"on") : "";
+        return '<i class="'+c+'">'+x+'</i>';}).join('<span>&#8594;</span>')+
+        (p.state==="REVOKED"?'<span>&#183;</span><i class="end">REVOKED</i>':'');
+      $("#lrPermit").innerHTML = p.id
+        ? kv("token_id",p.id)+kv("scope","one exact action")+kv("single_use","true")+kv("state",p.state,p.state==="CONSUMED"?"ok":"no")
+        : kv("state","NOT_ISSUED — no permit exists for a denied action","no");
+    }
+    function paintVerdict(sc){
+      var v=$("#lrVerdict"), ok=R.final==="PERMIT";
+      v.className="verdict "+(ok?"p":"s"); v.style.background=""; v.style.borderColor=""; v.style.color="";
+      var why = ok ? "Authorized, committed and released."
+        : R.g.pi===1 ? "Logical PERMIT — but the gate stayed shut. Π is necessary, not sufficient."
+        : "A mandatory check failed. No permit was issued.";
+      $("#lrVt").innerHTML=R.final+'<span class="vs">'+why+'</span>';
+      var codes=[];
+      if(R.g.gA===0) codes.push(["ALL_MANDATORY_PREDICATES_CONCUR","ok"]);
+      if(R.g.gC===0) codes.push(["CLASS_LEVEL_CONTROLS_CLEAR","ok"]); else codes.push(["CLASS_LEVEL_VETO_ACTIVE","no"]);
+      if(sc.code && sc.code!=="CLASS_LEVEL_VETO_ACTIVE") codes.push([sc.code,"no"]);
+      codes.push(["NON_COMPENSATORY",""]);
+      codes.push([R.permit.id?"PERMIT_ISSUED":"PERMIT_NOT_ISSUED",R.permit.id?"ok":"no"]);
+      codes.push([R.committed?"AUTHORIZATION_RECORD_COMMITTED":"EVIDENCE_COMMIT_FAILED",R.committed?"ok":"no"]);
+      if(R.executed) codes.push(["PERMIT_CONSUMED","ok"],["EXECUTION_RECEIPT_BOUND","ok"]);
+      else if(R.permit.id) codes.push(["PERMIT_REVOKED","no"]);
+      codes.push([ok?"PERMIT_GRANTED":"SAFE_STATE_ENFORCED",ok?"ok":"no"]);
+      $("#lrCodes").innerHTML=codes.map(function(c){return '<span class="rcode '+c[1]+'">'+esc(c[0])+'</span>';}).join("");
+    }
+    function showTerm(sc){
+      var t=$("#lrTerm"), ok=R.final==="PERMIT", inter=(R.g.pi===1&&R.sig.pphys===0);
+      t.hidden=false; t.className="terminal "+(ok?"p":"s");
+      var head = ok?"PERMIT — action released"
+        : inter?"SAFE_STATE — the permit calculation never became actuation authority"
+        : "SAFE_STATE — no permit issued";
+      var body = ok?"Gamma issued a scoped Permit-to-Act, committed the authorization proof, validated all three interlock signals, consumed the permit atomically and released the instruction to the "+DOM[curDom].exec+"."
+        : inter?"The predicates concurred, but "+(R.sig.sc?"the watchdog was unhealthy":"the proof never became durable")+". P_phys stayed 0, so nothing reached the "+DOM[curDom].exec+"."
+        : "A mandatory check failed. Gamma committed the denial proof, kept the path closed and released nothing.";
+      t.innerHTML='<div class="th"><b>'+esc(head)+'</b><span>'+esc(body)+'</span></div>'+
+        '<div class="tk">'+
+        '<span>Authorization calculation: <b>'+R.g.decision+'</b></span>'+
+        '<span>Execution authority released: <b>'+(R.executed?"YES":"NO")+'</b></span>'+
+        '<span>Operational result: <b>'+R.final+'</b></span>'+
+        (R.receipt?'<span>Receipt: <b>'+esc(R.receipt)+'</b></span>':'<span>Receipt: <b>none</b></span>')+
+        '</div>';
+    }
+
+    $("#lrReplay").addEventListener("click",async function(){
+      if(!sealed) return;
+      this.disabled=true; this.textContent="Replaying…";
+      var eHash=await digest(sealed.ert);
+      var rpHash=await digest({ertuple:eHash,policy_epoch:POLICY_EPOCH,method:METHOD});
+      var gA=sealed.ert.predicates.some(function(p){return !p.pass;})?1:0;
+      var gC=sealed.ert.class_predicates.some(function(p){return !p.pass;})?1:0;
+      var pi=(gA===0&&gC===0)?1:0;
+      var dm=(gA===sealed.g.gA&&gC===sealed.g.gC&&pi===sealed.g.pi);
+      var em=(eHash===sealed.hashes.evidence), rm=(rpHash===sealed.hashes.replay);
+      var lines=[["Authorization replay",(dm&&em&&rm)?"MATCH":"MISMATCH"],
+                 ["Decision match",dm?"YES":"NO"],["Evidence hash match",em?"YES":"NO"],
+                 ["Ledger link valid",sealed.committed?"YES":"NO"]];
+      if(sealed.executed){ lines.push(["— Execution verification",""],
+        ["Permit consumed",sealed.permit.state==="CONSUMED"?"YES":"NO"],
+        ["Receipt bound",sealed.receipt?"YES":"NO"]); }
+      else lines.push(["Execution verification","N/A — nothing released"]);
+      $("#lrReplayOut").innerHTML='<div class="vlines">'+lines.map(function(l){
+        if(l[1]==="") return '<div class="vline"><span class="plain" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase">'+esc(l[0].replace("— ",""))+'</span></div>';
+        var c=/YES|MATCH/.test(l[1])?"ok":/NO|MISMATCH/.test(l[1])?"no":"";
+        return '<div class="vline"><span>'+esc(l[0])+'</span><span class="vv '+c+'">'+esc(l[1])+'</span></div>';
+      }).join("")+'</div>';
+      $("#lrRepBadge").className="st "+((dm&&em&&rm)?"measured":"na");
+      $("#lrRepBadge").textContent=(dm&&em&&rm)?"IDENTICAL":"MISMATCH";
+      this.disabled=false; this.textContent="Re-run replay";
+    });
+
+    $("#lrRun").addEventListener("click",run);
+    $("#lrReset").addEventListener("click",function(){ if(!running) reset(); });
+    $("#lrSkip").addEventListener("click",function(){
+      if(!running) return;
+      Object.keys(DWELL).forEach(function(k){DWELL[k]=1;});
+    });
+    reset();
+
+    /* ==================== EVERY-CASE GALLERY ====================
+       Same decision algebra as the Live Run above, computed synchronously
+       for every domain × scenario so all 18 outcomes are visible at once. */
+    function decideCase(d,sc){
+      var preds=d.preds.map(function(p,i){return {token:p[0],q:p[1],pass:!(sc.failIdx===i)};});
+      var cls=d.cls.map(function(p,i){return {token:p[0],q:p[1],pass:!(sc.failCls===i)};});
+      var gA=preds.some(function(p){return !p.pass;})?1:0;
+      var gC=cls.some(function(p){return !p.pass;})?1:0;
+      var pi=(gA===0&&gC===0)?1:0;
+      var sg=pi, scg=sc.commit?1:0, sw=sc.watchdog?1:0;
+      var pphys=(sg&&scg&&sw)?1:0;
+      return {preds:preds,cls:cls,gA:gA,gC:gC,pi:pi,sg:sg,sc:scg,sw:sw,pphys:pphys,
+              final:(pi===1&&pphys===1)?"PERMIT":"SAFE_STATE"};
+    }
+    function causeOf(d,sc){
+      if(sc.failIdx!==undefined) return "Fails at "+d.preds[sc.failIdx][0]+" — non-compensatory, so Γ_action = 1.";
+      if(sc.failCls!==undefined) return "Every predicate passes, but "+d.cls[sc.failCls][0]+" vetoes the whole class.";
+      if(!sc.commit) return "Π = 1 (a logical PERMIT), but SIG_COMMIT = 0 — the proof never became durable.";
+      if(!sc.watchdog) return "Π = 1 (a logical PERMIT), but SIG_WATCHDOG = 0 — the runtime was unhealthy.";
+      return "Every mandatory check, the class veto, the durable commit and the watchdog all agree.";
+    }
+    function codesFor(r){
+      var codes=[];
+      codes.push(r.gA===0?["ALL_MANDATORY_PREDICATES_CONCUR","ok"]:["MANDATORY_PREDICATE_DEFICIT","no"]);
+      codes.push(r.gC===0?["CLASS_LEVEL_CONTROLS_CLEAR","ok"]:["CLASS_LEVEL_VETO_ACTIVE","no"]);
+      codes.push([r.pi?"PERMIT_ISSUED":"PERMIT_NOT_ISSUED",r.pi?"ok":"no"]);
+      codes.push([r.sc?"AUTHORIZATION_RECORD_COMMITTED":"EVIDENCE_COMMIT_FAILED",r.sc?"ok":"no"]);
+      if(!r.sw) codes.push(["WATCHDOG_NOT_HEALTHY","no"]);
+      codes.push([r.final==="PERMIT"?"PERMIT_GRANTED":"SAFE_STATE_ENFORCED",r.final==="PERMIT"?"ok":"no"]);
+      return codes;
+    }
+    function gcell(label,val,ok){return '<span class="galcell '+(ok?"z":"nz")+'">'+label+' <b>'+val+'</b></span>';}
+    function prlist(arr){
+      return '<div class="prs">'+arr.map(function(p){
+        return '<div class="pr '+(p.pass?"ok":"no")+'"><span class="prt">'+esc(p.token)+'</span>'+
+          '<span class="prq">'+esc(p.q)+'</span><span class="prv">'+(p.pass?"PASS":"FAIL")+'</span></div>';}).join("")+'</div>';
+    }
+    function galDetail(d,sc,r){
+      var sigs=[["SIG_GAMMA",r.sg,"Π = 1 (all mandatory checks concur)"],
+                ["SIG_COMMIT",r.sc,"proof durably committed"],
+                ["SIG_WATCHDOG",r.sw,"runtime healthy"],
+                ["P_phys",r.pphys,"physical release gate"]];
+      var permitState=r.pphys?"ACTIVE → CONSUMED":(r.pi?"ISSUED → REVOKED (never consumed)":"NOT_ISSUED");
+      return '<div class="galseclbl">Mandatory predicates ('+d.preds.length+')</div>'+prlist(r.preds)+
+        '<div class="galseclbl">Class-level controls</div>'+prlist(r.cls)+
+        '<div class="galseclbl">Three-signal interlock</div>'+
+        '<div class="sig">'+sigs.map(function(s){
+          return '<div class="sigr"><span>'+s[0]+' <span class="plain">— '+esc(s[2])+'</span></span>'+
+            '<span class="sigv '+(s[1]?"on":"off")+'">'+s[1]+'</span></div>';}).join("")+'</div>'+
+        '<div class="kvrows">'+challenge("decision",r.final)+challenge("permit",permitState)+
+          challenge("execution",r.pphys?"RELEASED to "+d.exec:"nothing released")+
+          challenge("receipt",r.pphys?d.receipt:"none — action never externalized")+'</div>'+
+        '<div class="rcodes" style="margin-top:12px">'+codesFor(r).map(function(c){
+          return '<span class="rcode '+c[1]+'">'+esc(c[0])+'</span>';}).join("")+'</div>';
+    }
+    function buildGallery(){
+      var host=$("#galGrid"); if(!host) return;
+      var ICON={bank:"B",health:"H",grid:"E"};
+      host.innerHTML=Object.keys(DOM).map(function(dk){
+        var d=DOM[dk];
+        return '<div class="galcol">'+
+          '<div class="galhd"><span class="gi">'+esc(ICON[dk]||"·")+'</span>'+esc(d.n)+
+            ' <small>'+esc(d.action.action_class)+'</small></div>'+
+          Object.keys(SCEN).map(function(sk){
+            var sc=SCEN[sk], r=decideCase(d,sc), permit=(r.final==="PERMIT");
+            return '<div class="galc '+(permit?"permit":"safe")+'">'+
+              '<button class="galtop" type="button">'+
+                '<div class="galrow1"><span class="galk">'+sk+'</span>'+
+                  '<span class="galnm">'+esc(sc.n)+'</span>'+
+                  '<span class="galv '+(permit?"permit":"safe")+'">'+r.final+'</span></div>'+
+                '<div class="galsub">'+esc(causeOf(d,sc))+'</div>'+
+                '<div class="galgs">'+gcell("Γa",r.gA,r.gA===0)+gcell("Γc",r.gC,r.gC===0)+
+                  gcell("Π",r.pi,r.pi===1)+gcell("P_phys",r.pphys,r.pphys===1)+'</div>'+
+                '<div class="galcap"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+                  '<span class="galcapt">show full record</span></div>'+
+              '</button>'+
+              '<div class="galdet">'+galDetail(d,sc,r)+'</div>'+
+            '</div>';
+          }).join("")+'</div>';
+      }).join("");
+      $$("#galGrid .galtop").forEach(function(b){
+        b.addEventListener("click",function(){
+          var card=b.parentNode, open=card.classList.toggle("open");
+          var t=$(".galcapt",b); if(t) t.textContent=open?"hide full record":"show full record";
+        });
+      });
+    }
+    buildGallery();
+  })();
+
+  /* ================= THEME ================= */
+  $("#themeBtn").addEventListener("click",function(){
+    var r=document.documentElement,c=r.getAttribute("data-theme");
+    var dark=c?c==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+    r.setAttribute("data-theme",dark?"light":"dark");
+  });
+})();
+</script>
+
+</body>
+</html>

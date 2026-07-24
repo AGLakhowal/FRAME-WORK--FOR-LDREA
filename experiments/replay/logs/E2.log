@@ -1,0 +1,14 @@
+============================================================
+  GAMMA G-0 replay-manifest verification
+============================================================
+manifest            : gamma_replay_manifest.jsonl
+method_version      : gamma_test_runner/LAB-v1.0/2.0
+declared n_records  : 284807
+genesis anchor      : GENESIS
+decision records    : 284807
+adjacency failures  : 0
+ledger-bind failures: 0
+consistency failures: 0
+manifest SHA-256    : 1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da
+------------------------------------------------------------
+RESULT              : PASS

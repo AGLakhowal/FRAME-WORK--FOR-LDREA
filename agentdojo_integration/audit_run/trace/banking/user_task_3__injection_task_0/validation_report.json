@@ -1,0 +1,23 @@
+{
+  "candidate_actions_replayed": 1,
+  "traced_decision_stream": [
+    [
+      "send_money",
+      "FUNDS_TRANSFER",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "replay_decision_stream": [
+    [
+      "send_money",
+      "FUNDS_TRANSFER",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "identical": true,
+  "n_decisions": 1
+}

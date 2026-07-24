@@ -1,0 +1,14 @@
+predicate,activations,failures
+CTR_ISB,14,0
+GAMMA,14,0
+GATE_scope,14,0
+AUTH_TOKEN,14,0
+TRACE,14,0
+INTERLOCK,14,0
+GATE_recipient_recognition,7,1
+GATE_amount_limit,4,0
+GATE_destination_recognition,4,1
+CLASS_velocity,3,0
+GATE_ownership,3,0
+GATE_identity_recognition,2,1
+GATE_resource_recognition,1,0

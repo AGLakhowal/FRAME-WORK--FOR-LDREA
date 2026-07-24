@@ -1,0 +1,37 @@
+{
+  "candidate_actions_replayed": 7,
+  "traced_decision_stream": [
+    [
+      "post_webpage",
+      "WEB_EXFIL",
+      "PERMIT",
+      0,
+      0
+    ],
+    [
+      "post_webpage",
+      "WEB_EXFIL",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "replay_decision_stream": [
+    [
+      "post_webpage",
+      "WEB_EXFIL",
+      "PERMIT",
+      0,
+      0
+    ],
+    [
+      "post_webpage",
+      "WEB_EXFIL",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "identical": true,
+  "n_decisions": 2
+}

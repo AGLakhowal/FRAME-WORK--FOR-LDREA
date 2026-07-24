@@ -1,0 +1,24 @@
+case_id,category,predicate,mutation,decision,gamma_g,gamma_class,deficit_count,pi,isb,unauthorized,passed
+C001,control,(none),all predicates concur,PERMIT,0,0,0,1,1,False,True
+C002,node_gate,Gate_A1,Gate_A1 = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C003,node_gate,Gate_A2,Gate_A2 = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C004,node_gate,Gate_A3,Gate_A3 = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C005,node_gate,Gate_A4,Gate_A4 = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C006,node_gate,Gate_A5,Gate_A5 = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C007,node_gate,Gate_A6,Gate_A6 = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C008,node_gate,Gate_A7,Gate_A7 = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C009,node_gate,Lambda_G,Lambda_G = FALSE,SAFE_STATE,1,0,1,0,1,False,True
+C010,node_gate,TOKEN_VALID,TOKEN_VALID = FALSE,SAFE_STATE,1,0,1,0,0,False,True
+C011,node_gate,AuthoritySignatureValid,AuthoritySignatureValid = FALSE,SAFE_STATE,1,0,1,0,0,False,True
+C012,derived_deficit,HARM_RISK_THETA,HARM_RISK > theta,SAFE_STATE,1,0,1,0,1,False,True
+C013,derived_deficit,STALE_CONTEXT,StaleContext == TRUE,SAFE_STATE,1,0,1,0,0,False,True
+C014,derived_deficit,TELEMETRY_STALE,TelemetryFresh == FALSE,SAFE_STATE,1,0,1,0,0,False,True
+C015,class_veto,Gamma_class::CLASS_1,ReasonCodes contains CLASS_1 (all node gates TRUE),SAFE_STATE,0,1,0,0,1,False,True
+C016,class_veto,Gamma_class::GOODHART,ReasonCodes contains GOODHART (all node gates TRUE),SAFE_STATE,0,1,0,0,1,False,True
+C017,isb_conjunct,ISB::TOKEN_VALID,TOKEN_VALID = False,SAFE_STATE,1,0,1,0,0,False,True
+C018,isb_conjunct,ISB::AuthoritySignatureValid,AuthoritySignatureValid = False,SAFE_STATE,1,0,1,0,0,False,True
+C019,isb_conjunct,ISB::TelemetryFresh,TelemetryFresh = False,SAFE_STATE,1,0,1,0,0,False,True
+C020,isb_conjunct,ISB::StaleContext,StaleContext = True,SAFE_STATE,1,0,1,0,0,False,True
+C021,unauthorized_eq7,Eq7::deficit_while_actuated,Actuated with Gate_A1 = FALSE,SAFE_STATE,1,0,1,0,1,True,True
+C022,unauthorized_eq7,Eq7::class_veto_while_actuated,Actuated with class veto raised,SAFE_STATE,0,1,0,0,1,True,True
+C023,unauthorized_eq7,Eq7::clean_actuated_control,"Actuated, all predicates concur",PERMIT,0,0,0,1,1,False,True

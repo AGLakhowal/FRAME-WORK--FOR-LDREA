@@ -1,0 +1,11 @@
+tool,permit,deny
+post_webpage,2,1
+send_money,2,0
+reschedule_calendar_event,2,0
+schedule_transaction,1,0
+get_webpage,1,0
+invite_user_to_slack,0,1
+send_direct_message,1,0
+add_user_to_channel,1,0
+reserve_hotel,1,0
+add_calendar_event_participants,0,1

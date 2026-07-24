@@ -1,0 +1,90 @@
+{
+  "manifest_type": "agentdojo_version_freeze",
+  "manifest_status": "PHASE1_DRAFT — real fields verified from source; PENDING fields require an installed pinned environment (not yet provisioned)",
+  "spec_reference": "AGENTDOJO_LDREA_EXTERNAL_VALIDATION_DESIGN_V2.md Part 2; SCIENTIFIC_CONSISTENCY_VERIFICATION.md Part 5 (Version Manifest, leaf #6)",
+  "governing_rule": "Interposition-only. No modification to AgentDojo source. No modification to Gamma/L-DREA. Real data only; no fabricated hashes, counts, or results.",
+
+  "benchmark": {
+    "name": "AgentDojo",
+    "citation": "E. Debenedetti et al., 'AgentDojo: A dynamic environment to evaluate prompt injection attacks and defenses for LLM agents,' NeurIPS Datasets & Benchmarks Track, 2024 (paper ref [1]).",
+    "repository": "https://github.com/ethz-spylab/agentdojo",
+    "release_tag": "v0.1.35",
+    "commit_sha": "a75aba7631d3ca5fb7ab938965c97ead2f9ff84b",
+    "tag_type": "lightweight (object sha == commit sha)",
+    "license": "MIT",
+    "verified_via": "GitHub API git/refs/tags + raw.githubusercontent pyproject.toml + source files",
+    "verified_on": "2026-07-06",
+    "verified_fields_are_real": true
+  },
+
+  "benchmark_version_pin": {
+    "note": "AgentDojo v0.1.35 ships MULTIPLE benchmark suite versions; the pre-registration MUST pin the exact benchmark_version, not only the code tag. This is the D-9 (79/629) reconciliation surface.",
+    "available_suite_versions": ["v1", "v1_1", "v1_1_1", "v1_1_2", "v1_2", "v1_2_1", "v1_2_2"],
+    "selected_benchmark_version": "PENDING — to be pinned to the version whose (user task, injection case) counts reconcile to the paper's 79 tasks / 629 injection cases, OR the paper's §IX-F counts updated to the pinned version with an explicit reconciliation note.",
+    "suites": ["workspace", "banking", "travel", "slack"]
+  },
+
+  "interception_point_verified": {
+    "file": "src/agentdojo/agent_pipeline/tool_execution.py",
+    "class": "ToolsExecutor",
+    "method": "query",
+    "call_site_line_at_v0.1.35": 103,
+    "call": "runtime.run_function(env, tool_call.function, tool_call.args)",
+    "dispatcher": "src/agentdojo/functions_runtime.py :: FunctionsRuntime.run_function (def at line 246)",
+    "return_contract": "(FunctionReturnType result, error) — enables interposition: on SAFE_STATE return (deny_sentinel, deny_error) WITHOUT invoking the real function; on PERMIT call through unchanged.",
+    "maps_to_spec": "V2 Part 1 (sole chokepoint => complete mediation, Definition 2(i)); this is the ONLY sanctioned interception site."
+  },
+
+  "runtime_requirements": {
+    "requires_python": ">= 3.10",
+    "declared_dependencies": [
+      "openai>=1.59.7",
+      "pydantic[email]>=2.7.1",
+      "docstring-parser>=0.15",
+      "tenacity>=8.2.3",
+      "langchain>=0.1.17",
+      "typing-extensions>=4.11.0",
+      "anthropic>=0.47.0",
+      "cohere>=5.3.4",
+      "pyyaml>=6.0.1",
+      "click>=8.1.7",
+      "deepdiff>=8.6.1",
+      "rich>=13.7.1",
+      "python-dotenv>=1.0.1",
+      "google-genai>=1.15.0"
+    ],
+    "optional_dependencies": {"transformers": ["transformers>=4.41.2", "torch>=2.2.1"]},
+    "build_backend": "hatchling",
+    "dependency_lock": "PENDING — resolved '==version + sha256' lockfile must be produced by installing the pin in a Python 3.11 venv with pip hash-checking mode.",
+    "reference_python_version_for_run": "3.11.x (per spec acceptance band 3.10-3.12)"
+  },
+
+  "reproducibility_pending_fields": {
+    "tool_registry_sha256": "PENDING — SHA-256 over the enumerated tool set of the pinned benchmark_version; requires an installed release.",
+    "suite_inventory_counts": {
+      "user_task_count": "PENDING (installed release)",
+      "injection_task_count": "PENDING (installed release)",
+      "injection_case_count": "PENDING (target 629; reconcile per benchmark_version_pin)"
+    },
+    "run_host_env": "PENDING — captured at run time (OS, CPU, python, pip freeze)."
+  },
+
+  "ldrea_config_manifest_root": {
+    "status": "NOT YET AUTHORED — Merkle root over the 6 leaf manifests (Predicate, Threshold, Tool-Mapping, Recipient-Derivation, Evaluation, Version) per SCIENTIFIC_CONSISTENCY_VERIFICATION.md Part 5.",
+    "blocking_rule": "MUST be blind-authored from frozen paper Section X action-class semantics and hash-committed BEFORE any AgentDojo run. This freeze manifest is leaf #6 (Version Manifest)."
+  },
+
+  "environment_blockers_confirmed_2026_07_06": [
+    "BLOCKER-1: host Python is 3.9.6; AgentDojo requires >=3.10. A Python 3.11 venv must be provisioned. Existing ./.venv is 3.9.6 and unusable for AgentDojo.",
+    "BLOCKER-2: AgentDojo is not installed in any interpreter on this host.",
+    "BLOCKER-3: no LLM API credentials present (no OPENAI/ANTHROPIC/GOOGLE/COHERE keys). AgentDojo runs live frontier models; the paired with/without design (V2 D-4, >=2 models) cannot execute without credentials.",
+    "CONSEQUENCE: the interposition layer and pre-registered manifests can be AUTHORED against the real pinned API, but the benchmark cannot be EXECUTED in this environment. No run will be fabricated and no synthetic harness will be built (that approach was already rejected)."
+  ],
+
+  "prior_attempt_finding": {
+    "location": "external_validation/",
+    "verdict": "REJECTED SYNTHETIC HARNESS — quarantine in a later phase, do not reuse.",
+    "evidence": "external_validation/MIGRATION_REPORT.md states 'this workspace does not contain an AgentDojo source tree, so the integration is implemented as a self-contained harness'; agentdojo_adapter.py invents a non-L-DREA 'sensitivity==high -> SAFE_STATE' gate and hardcodes false_permit_rate=0.0 over two toy scenarios.",
+    "contamination": "Prior attempt modified run_all.py and gamma_report_page.py (Gamma reporting pipeline) to wire in the synthetic harness; these must be reverted/replaced in a later phase (not in Phase 1)."
+  }
+}

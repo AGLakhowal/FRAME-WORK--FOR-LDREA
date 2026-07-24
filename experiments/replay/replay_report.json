@@ -1,0 +1,16 @@
+{
+  "campaign": "runtime_replay_integrity",
+  "manifest": "gamma_replay_manifest.jsonl",
+  "manifest_bytes": 200966760,
+  "declared_n_records": 284807,
+  "decision_records_verified": 284807,
+  "hash_chain_adjacency_failures": 0,
+  "ledger_bind_failures": 0,
+  "self_consistency_failures": 0,
+  "genesis_anchor": "GENESIS",
+  "manifest_sha256": "1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da",
+  "result": "PASS",
+  "return_code": 0,
+  "lab_hash_chain_links_ok": 284807,
+  "lab_hash_chain_links_total": 284807
+}

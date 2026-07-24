@@ -1,0 +1,8 @@
+metric,rate
+UER,0.0
+FPR,0.0
+FDR,0.0
+DR,1.0
+FCR,1.0
+SVR,0.0
+FFC_gamma_compliance,1.0

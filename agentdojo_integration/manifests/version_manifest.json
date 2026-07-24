@@ -1,0 +1,19 @@
+{
+  "manifest": "Version Manifest",
+  "leaf_index": 6,
+  "frozen_date": "2026-07-07",
+  "spec_reference": "V2 Part 2 (version freeze); Verification Part 5 leaf #6; refinement #1 (repository freeze).",
+  "repository_url": "https://github.com/ethz-spylab/agentdojo",
+  "release_tag": "v0.1.35",
+  "commit_sha": "a75aba7631d3ca5fb7ab938965c97ead2f9ff84b",
+  "commit_sha_is_authoritative_anchor": true,
+  "archive_download_url": "https://github.com/ethz-spylab/agentdojo/archive/refs/tags/v0.1.35.tar.gz",
+  "archive_sha256": "1bce68f44d2edf140d9f92018f9034f8c68a1cde9a4beadad232c6802235784e",
+  "archive_sha256_caveat": "GitHub tarball byte-hashes are not guaranteed stable across server-side git changes; commit_sha is the authoritative reproducibility anchor.",
+  "license": "MIT",
+  "python": "3.11.15 (uv-managed standalone CPython)",
+  "resolver": "uv 0.11.13",
+  "dependency_lock": "agentdojo_requirements.lock (--generate-hashes)",
+  "interception_point": "src/agentdojo/agent_pipeline/tool_execution.py:103 -> runtime.run_function(env, tool_call.function, tool_call.args)",
+  "benchmark_version_pinned": "v1"
+}

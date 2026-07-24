@@ -1,0 +1,12 @@
+[dataset-eval] UNSW-NB15  dataset/ieee-fraud-detection/CSV Files/Training and Testing Sets/UNSW_NB15_testing-set.csv
+[dataset-eval]   n=61,749 prev=55.06% | P=0.8574 R=0.6608 F1=0.7464 MCC=0.5315 AUROC=0.7610
+[dataset-eval]   TP=22366 FN=11479 FP=3721 TN=24183 | chain_ok=True
+[dataset-eval] ULB        dataset/ieee-fraud-detection/creditcard.csv
+[dataset-eval]   n=75,000 prev=0.22% | P=0.1099 R=0.8296 F1=0.1941 MCC=0.2993 AUROC=0.9116
+[dataset-eval]   TP=112 FN=23 FP=907 TN=73958 | chain_ok=True
+[dataset-eval] IEEE-CIS   dataset/ieee-fraud-detection/train_transaction.csv
+[dataset-eval]   n=75,000 prev=2.56% | P=0.0654 R=0.3488 F1=0.1101 MCC=0.1022 AUROC=0.6110
+[dataset-eval]   TP=646 FN=1206 FP=9232 TN=63916 | chain_ok=True
+[dataset-eval] 3 datasets evaluated; wrote production_evidence/datasets/
+
+---STDERR---

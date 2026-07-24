@@ -1,0 +1,1970 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gamma — Runtime Authorization Plane</title>
+<style>
+  :root{
+    color-scheme: light dark;
+    --ground:#FBFBFD; --ground-2:#F4F5F9; --surface:#FFFFFF; --surface-2:#FAFBFF;
+    --ink:#0E1220; --ink-2:#3B455C; --muted:#697488; --hairline:rgba(15,23,42,.09);
+    --hairline-2:rgba(15,23,42,.06); --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06);
+    --shadow-lg:0 2px 6px rgba(16,24,40,.06),0 24px 60px rgba(16,24,40,.12);
+    --accent:#4F46E5; --accent-2:#6366F1; --accent-soft:rgba(79,70,229,.10); --accent-line:rgba(79,70,229,.28);
+    --pass:#059669; --pass-soft:rgba(5,150,105,.10); --pass-line:rgba(5,150,105,.30);
+    --fail:#E11D48; --fail-soft:rgba(225,29,72,.10); --fail-line:rgba(225,29,72,.30);
+    --hold:#B45309; --hold-soft:rgba(180,83,9,.10); --hold-line:rgba(180,83,9,.30);
+    --idle:#AEB6C6; --idle-soft:rgba(120,131,153,.10);
+    --radius:16px; --radius-sm:11px;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","Menlo",Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#0A0D14; --ground-2:#0F131C; --surface:#141926; --surface-2:#10151F;
+      --ink:#EAEDF4; --ink-2:#B4BDD0; --muted:#8A93A6; --hairline:rgba(255,255,255,.09);
+      --hairline-2:rgba(255,255,255,.05); --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+      --shadow-lg:0 2px 8px rgba(0,0,0,.5),0 30px 70px rgba(0,0,0,.5);
+      --accent:#7C83FF; --accent-2:#8B90FF; --accent-soft:rgba(124,131,255,.14); --accent-line:rgba(124,131,255,.34);
+      --pass:#34D399; --pass-soft:rgba(52,211,153,.13); --pass-line:rgba(52,211,153,.32);
+      --fail:#FB7185; --fail-soft:rgba(251,113,133,.14); --fail-line:rgba(251,113,133,.32);
+      --hold:#FBBF24; --hold-soft:rgba(251,191,36,.13); --hold-line:rgba(251,191,36,.30);
+      --idle:#59637A; --idle-soft:rgba(120,131,153,.14);
+    }
+  }
+  :root[data-theme="light"]{
+    color-scheme:light;
+    --ground:#FBFBFD; --ground-2:#F4F5F9; --surface:#FFFFFF; --surface-2:#FAFBFF;
+    --ink:#0E1220; --ink-2:#3B455C; --muted:#697488; --hairline:rgba(15,23,42,.09); --hairline-2:rgba(15,23,42,.06);
+    --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06); --shadow-lg:0 2px 6px rgba(16,24,40,.06),0 24px 60px rgba(16,24,40,.12);
+    --accent:#4F46E5; --accent-2:#6366F1; --accent-soft:rgba(79,70,229,.10); --accent-line:rgba(79,70,229,.28);
+    --pass:#059669; --pass-soft:rgba(5,150,105,.10); --pass-line:rgba(5,150,105,.30);
+    --fail:#E11D48; --fail-soft:rgba(225,29,72,.10); --fail-line:rgba(225,29,72,.30);
+    --hold:#B45309; --hold-soft:rgba(180,83,9,.10); --hold-line:rgba(180,83,9,.30); --idle:#AEB6C6; --idle-soft:rgba(120,131,153,.10);
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --ground:#0A0D14; --ground-2:#0F131C; --surface:#141926; --surface-2:#10151F;
+    --ink:#EAEDF4; --ink-2:#B4BDD0; --muted:#8A93A6; --hairline:rgba(255,255,255,.09); --hairline-2:rgba(255,255,255,.05);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35); --shadow-lg:0 2px 8px rgba(0,0,0,.5),0 30px 70px rgba(0,0,0,.5);
+    --accent:#7C83FF; --accent-2:#8B90FF; --accent-soft:rgba(124,131,255,.14); --accent-line:rgba(124,131,255,.34);
+    --pass:#34D399; --pass-soft:rgba(52,211,153,.13); --pass-line:rgba(52,211,153,.32);
+    --fail:#FB7185; --fail-soft:rgba(251,113,133,.14); --fail-line:rgba(251,113,133,.32);
+    --hold:#FBBF24; --hold-soft:rgba(251,191,36,.13); --hold-line:rgba(251,191,36,.30); --idle:#59637A; --idle-soft:rgba(120,131,153,.14);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:
+      radial-gradient(1200px 600px at 82% -10%,var(--accent-soft),transparent 60%),
+      var(--ground);
+    color:var(--ink);font-family:var(--sans);line-height:1.5;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
+  .wrap{max-width:1240px;margin:0 auto;padding:26px 22px 72px}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  /* ---------- header ---------- */
+  header.top{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:flex-start;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto;
+    background:linear-gradient(150deg,var(--accent),var(--accent-2));box-shadow:var(--shadow);}
+  .mark svg{width:22px;height:22px;display:block}
+  .brand .name{font-size:19px;font-weight:680;letter-spacing:-.01em}
+  .brand .sub{font-size:12.5px;color:var(--muted);margin-top:1px;letter-spacing:.01em}
+  .theme{margin-left:2px}
+  .btn-ghost{appearance:none;border:1px solid var(--hairline);background:var(--surface);color:var(--ink-2);
+    border-radius:10px;padding:8px 12px;font-size:13px;font-weight:560;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+  .btn-ghost:hover{border-color:var(--accent-line);color:var(--ink)}
+
+  .thesis{max-width:620px}
+  .thesis h1{font-size:clamp(21px,2.4vw,27px);line-height:1.18;margin:2px 0 0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+  .thesis h1 em{font-style:normal;color:var(--accent)}
+  .notchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .notchip{font-size:11.5px;font-weight:560;color:var(--muted);border:1px dashed var(--hairline);
+    border-radius:999px;padding:4px 10px;background:var(--surface-2);display:inline-flex;align-items:center;gap:6px}
+  .notchip s{opacity:.55;text-decoration-thickness:1.5px}
+
+  /* ---------- controls ---------- */
+  .controls{margin-top:24px;display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:stretch}
+  .card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .transfer{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+  .transfer .lbl{font-size:11px;font-weight:640;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .money-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .money{font-size:34px;font-weight:730;letter-spacing:-.02em}
+  .corridor{font-size:12.5px;color:var(--ink-2);border:1px solid var(--hairline);border-radius:999px;padding:4px 11px;background:var(--surface-2);font-weight:560}
+  .route{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .acct{display:flex;flex-direction:column;gap:1px}
+  .acct b{font-size:14px;font-weight:620}
+  .acct span{font-size:12px;color:var(--muted);font-family:var(--mono)}
+  .arrow-h{color:var(--muted);flex:0 0 auto}
+  .who{font-size:12px;color:var(--muted)}
+  .who b{color:var(--ink-2);font-weight:600}
+  .gov{display:flex;flex-wrap:wrap;gap:7px;padding-top:12px;border-top:1px dashed var(--hairline)}
+  .gov .gv2{font-size:11.5px;color:var(--ink-2);border:1px solid var(--hairline-2);border-radius:7px;
+    padding:3px 9px;background:var(--surface-2);font-weight:540}
+  .gov .gv2 b{color:var(--muted);font-weight:640;letter-spacing:.04em;text-transform:uppercase;font-size:10px;margin-right:5px}
+  .gov .gv2.crit{border-color:var(--fail-line);background:var(--fail-soft);color:var(--fail);font-weight:700}
+  .gov .gv2.crit b{color:var(--fail);opacity:.8}
+
+  .runbox{padding:18px 20px;display:flex;flex-direction:column;gap:14px;justify-content:space-between}
+  .seg-lbl{font-size:11px;font-weight:640;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .segments{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:var(--ground-2);
+    border:1px solid var(--hairline);border-radius:12px;padding:5px}
+  .seg{appearance:none;border:0;background:transparent;cursor:pointer;border-radius:8px;padding:9px 6px;
+    font-family:inherit;color:var(--ink-2);font-weight:600;font-size:12.5px;transition:.18s;line-height:1.15;display:flex;flex-direction:column;gap:2px;align-items:center}
+  .seg small{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.01em}
+  .seg[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+  .seg[aria-pressed="true"] small{color:var(--accent)}
+  .seg:hover:not([aria-pressed="true"]){color:var(--ink)}
+  .actions{display:flex;gap:10px}
+  .btn{appearance:none;border:0;border-radius:11px;padding:12px 18px;font-family:inherit;font-size:14px;font-weight:640;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:transform .12s,filter .15s,box-shadow .15s}
+  .btn.primary{background:linear-gradient(150deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 6px 18px var(--accent-soft),var(--shadow);flex:1}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn.primary:active{transform:translateY(1px)}
+  .btn.primary:disabled{opacity:.5;cursor:not-allowed;filter:none;transform:none}
+  .btn.sec{background:var(--surface);border:1px solid var(--hairline);color:var(--ink-2)}
+  .btn.sec:hover{border-color:var(--accent-line);color:var(--ink)}
+  .btn .spin{width:15px;height:15px;border-radius:50%;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ---------- boundary banner ---------- */
+  .boundary{margin-top:26px;display:flex;align-items:center;gap:14px}
+  .boundary .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent-line),transparent)}
+  .boundary .tag{font-size:12px;font-weight:660;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+  .boundary .tag svg{width:16px;height:16px}
+
+  /* ---------- grid ---------- */
+  .grid{margin-top:22px;display:grid;grid-template-columns:1fr 372px;gap:22px;align-items:start}
+
+  /* ---------- pipeline ---------- */
+  .flowtop{display:flex;flex-direction:column;gap:0;margin-bottom:2px}
+  .mini{display:flex;align-items:center;gap:10px;padding:2px 0}
+  .mini .dotm{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:0 0 auto;margin-left:9px}
+  .mini .txt{font-size:13px;color:var(--ink-2)}
+  .mini .txt b{color:var(--ink);font-weight:620}
+  .mini .conn{width:1px;height:16px;background:var(--hairline);margin-left:13px}
+
+  .steps{display:flex;flex-direction:column}
+  .step{display:grid;grid-template-columns:30px 1fr;gap:14px;position:relative}
+  .rail{display:flex;flex-direction:column;align-items:center}
+  .node{width:28px;height:28px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+    background:var(--surface);border:2px solid var(--idle);color:var(--idle);z-index:1;transition:.25s;font-size:12px;font-weight:700}
+  .node svg{width:14px;height:14px}
+  .line{width:2px;flex:1;background:var(--hairline);min-height:16px;transition:background .3s}
+  .step:last-child .line{display:none}
+
+  .stepcard{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius-sm);
+    margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden;transition:border-color .25s,box-shadow .25s,transform .25s,opacity .25s;opacity:.72}
+  .stephead{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;user-select:none}
+  .stephead:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:var(--radius-sm)}
+  .stepidx{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:600;flex:0 0 auto}
+  .steptitle{flex:1;min-width:0}
+  .steptitle b{display:block;font-size:14.5px;font-weight:630;letter-spacing:-.01em}
+  .steptitle span{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+  .pill{font-size:11px;font-weight:660;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px;
+    background:var(--idle-soft);color:var(--muted);white-space:nowrap;flex:0 0 auto;transition:.25s}
+  .chev{color:var(--muted);transition:transform .25s;flex:0 0 auto}
+  .stepcard.open .chev{transform:rotate(180deg)}
+
+  .stepbody{max-height:0;overflow:hidden;transition:max-height .34s ease}
+  .stepbody-inner{padding:2px 15px 15px;border-top:1px solid var(--hairline-2)}
+  .kv{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0 4px}
+  .kv .k{font-size:11px;font-family:var(--mono);color:var(--ink-2);background:var(--ground-2);border:1px solid var(--hairline-2);
+    border-radius:7px;padding:3px 8px}
+  .kv .k b{color:var(--muted);font-weight:600}
+  .plabel{font-size:10.5px;font-weight:640;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 8px}
+  .preds{display:flex;flex-direction:column;gap:6px}
+  .pred{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-2)}
+  .pcode{font-family:var(--mono);font-size:11px;color:var(--muted);flex:0 0 34px}
+  .pname{flex:1}
+  .ptag{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:2px 8px;border-radius:6px}
+  .ptag.ok{color:var(--pass);background:var(--pass-soft)}
+  .ptag.no{color:var(--fail);background:var(--fail-soft)}
+  .ptag.sk{color:var(--muted);background:var(--idle-soft)}
+  .ptok{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.01em;flex:0 0 auto;
+    background:var(--ground-2);border:1px solid var(--hairline-2);border-radius:5px;padding:2px 6px}
+  @media (max-width:520px){.ptok{display:none}}
+  .srcline{margin-top:11px;font-size:11.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .srcline b{font-size:10.5px;font-weight:640;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .srcline span{border:1px solid var(--hairline-2);border-radius:6px;padding:2px 8px;background:var(--surface-2);color:var(--ink-2);font-weight:540}
+  .note-inline{margin-top:12px;font-size:12px;color:var(--ink-2);background:var(--accent-soft);
+    border:1px solid var(--accent-line);border-radius:9px;padding:9px 11px;display:flex;gap:8px}
+  .note-inline svg{width:15px;height:15px;flex:0 0 auto;color:var(--accent);margin-top:1px}
+
+  /* evidence quad grid */
+  .quad{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .quad .q{border:1px solid var(--hairline);border-radius:9px;padding:10px 11px;background:var(--surface-2)}
+  .quad .q .qk{font-size:10px;font-weight:660;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .quad .q .qv{font-size:12px;color:var(--ink);margin-top:3px;font-family:var(--mono);word-break:break-all}
+
+  /* state coloring */
+  .step[data-state="active"] .node{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 5px var(--accent-soft);animation:pulse 1.1s ease-in-out infinite}
+  .step[data-state="active"] .stepcard{opacity:1;border-color:var(--accent-line);box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+  .step[data-state="active"] .pill{background:var(--accent-soft);color:var(--accent)}
+  @keyframes pulse{50%{box-shadow:0 0 0 9px transparent}}
+  .step[data-state="pass"] .node{border-color:var(--pass);color:#fff;background:var(--pass)}
+  .step[data-state="pass"] .line{background:var(--pass-line)}
+  .step[data-state="pass"] .stepcard{opacity:1;border-color:var(--pass-line)}
+  .step[data-state="pass"] .pill{background:var(--pass-soft);color:var(--pass)}
+  .step[data-state="sealed"] .node{border-color:var(--accent);color:#fff;background:var(--accent)}
+  .step[data-state="sealed"] .line{background:var(--accent-line)}
+  .step[data-state="sealed"] .stepcard{opacity:1;border-color:var(--accent-line)}
+  .step[data-state="sealed"] .pill{background:var(--accent-soft);color:var(--accent)}
+  .step[data-state="fail"] .node{border-color:var(--fail);color:#fff;background:var(--fail);animation:shake .4s}
+  .step[data-state="fail"] .line{background:var(--fail-line)}
+  .step[data-state="fail"] .stepcard{opacity:1;border-color:var(--fail-line);box-shadow:0 0 0 3px var(--fail-soft),var(--shadow)}
+  .step[data-state="fail"] .pill{background:var(--fail-soft);color:var(--fail)}
+  .step[data-state="skip"] .stepcard{opacity:.5}
+  .step[data-state="skip"] .pill{background:var(--idle-soft);color:var(--muted)}
+  @keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
+  /* terminal */
+  .terminal{margin-top:6px;border-radius:var(--radius);padding:20px;border:1px solid var(--hairline);background:var(--surface);
+    box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.4s}
+  .terminal.show{opacity:1;transform:none}
+  .terminal.permit{border-color:var(--pass-line);background:linear-gradient(180deg,var(--pass-soft),var(--surface))}
+  .terminal.safe{border-color:var(--hold-line);background:linear-gradient(180deg,var(--hold-soft),var(--surface))}
+  .term-top{display:flex;align-items:center;gap:14px}
+  .term-badge{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;color:#fff}
+  .terminal.permit .term-badge{background:var(--pass)}
+  .terminal.safe .term-badge{background:var(--hold)}
+  .term-badge svg{width:24px;height:24px}
+  .term-txt b{font-size:18px;font-weight:700;letter-spacing:-.01em;display:block}
+  .terminal.permit .term-txt b{color:var(--pass)}
+  .terminal.safe .term-txt b{color:var(--hold)}
+  .term-txt span{font-size:13px;color:var(--ink-2)}
+  .term-flow{margin-top:14px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-2);
+    border-top:1px dashed var(--hairline);padding-top:13px}
+  .term-flow .dest{font-weight:640;color:var(--ink)}
+
+  /* ---------- right panel ---------- */
+  .panel{position:sticky;top:18px;display:flex;flex-direction:column;gap:16px}
+  .paneltitle{font-size:11px;font-weight:660;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;justify-content:space-between}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--idle);display:inline-block;margin-right:6px}
+  .live-dot.on{background:var(--pass);box-shadow:0 0 0 3px var(--pass-soft);animation:blip 1.4s infinite}
+  @keyframes blip{50%{opacity:.4}}
+  .ledger{padding:8px 8px 10px}
+  .lrow{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-radius:9px;transition:background .2s}
+  .lrow+.lrow{border-top:1px solid var(--hairline-2)}
+  .lrow .ln{font-size:13px;color:var(--ink-2);font-weight:540}
+  .lrow.cur{background:var(--accent-soft)}
+  .lrow.cur .ln{color:var(--ink);font-weight:600}
+  .st{font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:6px;background:var(--idle-soft);color:var(--muted);min-width:52px;text-align:center}
+  .st.ok{background:var(--pass-soft);color:var(--pass)}
+  .st.no{background:var(--fail-soft);color:var(--fail)}
+  .st.run{background:var(--accent-soft);color:var(--accent)}
+
+  .decision{padding:16px 16px 18px}
+  .dbadge{display:flex;align-items:center;gap:12px;border-radius:12px;padding:14px;border:1px solid var(--hairline)}
+  .dbadge.permit{background:var(--pass-soft);border-color:var(--pass-line)}
+  .dbadge.safe{background:var(--hold-soft);border-color:var(--hold-line)}
+  .dbadge.idle{background:var(--ground-2)}
+  .dbadge .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:0 0 auto;background:var(--idle)}
+  .dbadge.permit .ic{background:var(--pass)} .dbadge.safe .ic{background:var(--hold)}
+  .dbadge .ic svg{width:20px;height:20px}
+  .dbadge .dt b{font-size:16px;font-weight:720;letter-spacing:.01em;display:block}
+  .dbadge.permit .dt b{color:var(--pass)} .dbadge.safe .dt b{color:var(--hold)} .dbadge.idle .dt b{color:var(--muted)}
+  .dbadge .dt span{font-size:12px;color:var(--ink-2)}
+  .gam{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+  .gcell{border:1px solid var(--hairline);border-radius:10px;padding:11px 10px;text-align:center;background:var(--surface-2)}
+  .gcell .gk{font-size:10px;font-weight:640;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .gcell .gv{font-size:22px;font-weight:730;margin-top:3px;font-family:var(--mono)}
+  .gcell.z .gv{color:var(--pass)} .gcell.nz .gv{color:var(--fail)} .gcell.neutral .gv{color:var(--ink)}
+  .reason{margin-top:14px}
+  .reason .rl{font-size:10.5px;font-weight:640;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .rcodes{display:flex;flex-wrap:wrap;gap:6px}
+  .rcode{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:7px;background:var(--ground-2);border:1px solid var(--hairline-2);color:var(--ink-2)}
+  .rcode.no{background:var(--fail-soft);color:var(--fail);border-color:var(--fail-line)}
+  .rcode.ok{background:var(--pass-soft);color:var(--pass);border-color:var(--pass-line)}
+  .rtext{margin-top:11px;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+
+  .replay{padding:15px 16px 16px}
+  .replay .rt{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+  .replay .rt b{font-size:13px;font-weight:640}
+  .repbadge{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:6px;background:var(--idle-soft);color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+  .repbadge.on{background:var(--pass-soft);color:var(--pass)}
+  .hash{display:flex;flex-direction:column;gap:3px;margin-bottom:9px}
+  .hash .hk{font-size:11px;color:var(--muted);font-weight:560;display:flex;justify-content:space-between}
+  .hash .hv{font-family:var(--mono);font-size:11px;color:var(--ink-2);word-break:break-all;background:var(--ground-2);
+    border:1px solid var(--hairline-2);border-radius:7px;padding:6px 8px;min-height:27px;transition:color .2s}
+  .hash .hv.set{color:var(--ink)}
+  .verify{margin-top:4px;width:100%;justify-content:center}
+
+  footer{margin-top:34px;text-align:center;color:var(--muted);font-size:12px;line-height:1.6}
+  footer b{color:var(--ink-2);font-weight:600}
+
+  @media (max-width:940px){
+    .controls{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .panel{position:static}
+    .money{font-size:30px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.08s!important}
+  }
+
+  /* ---------- v2: execution-authority additions ---------- */
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* six scenarios */
+  .segments{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:560px){.segments{grid-template-columns:repeat(3,1fr)}}
+
+  /* governance registration strip */
+  .gov{display:flex;flex-wrap:wrap;gap:7px;padding-top:12px;border-top:1px dashed var(--hairline)}
+  .gov .gv2{font-size:11.5px;color:var(--ink-2);border:1px solid var(--hairline-2);border-radius:7px;
+    padding:3px 9px;background:var(--surface-2);font-weight:540}
+  .gov .gv2 b{color:var(--muted);font-weight:640;letter-spacing:.04em;text-transform:uppercase;font-size:10px;margin-right:5px}
+  .gov .gv2.crit{border-color:var(--fail-line);background:var(--fail-soft);color:var(--fail);font-weight:700}
+  .gov .gv2.crit b{color:var(--fail);opacity:.8}
+  .enfprof{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .enfprof span{font-size:10.5px;font-family:var(--mono);color:var(--muted);border:1px solid var(--hairline-2);
+    border-radius:6px;padding:2px 7px;background:var(--ground-2)}
+
+  /* predicate rows */
+  .ptok{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.01em;flex:0 0 auto;
+    background:var(--ground-2);border:1px solid var(--hairline-2);border-radius:5px;padding:2px 6px}
+  @media (max-width:560px){.ptok{display:none}}
+  .pmore{appearance:none;border:0;background:transparent;color:var(--muted);cursor:pointer;
+    font-family:var(--mono);font-size:12px;line-height:1;padding:3px 6px;border-radius:5px;flex:0 0 auto}
+  .pmore:hover{color:var(--accent);background:var(--accent-soft)}
+  .pmore:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .pmeta{display:none;margin:0 0 4px 43px;padding:9px 11px;border:1px dashed var(--hairline);
+    border-radius:9px;background:var(--surface-2)}
+  .pmeta.open{display:block}
+  .pmeta .mrow{display:flex;gap:9px;font-size:11.5px;color:var(--ink-2);padding:1px 0}
+  .pmeta .mrow b{color:var(--muted);font-weight:640;flex:0 0 96px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+  .pmeta .mrow span{font-family:var(--mono);font-size:11px;word-break:break-word}
+  @media (max-width:560px){.pmeta{margin-left:0}.pmeta .mrow{flex-direction:column;gap:0}.pmeta .mrow b{flex:none}}
+
+  /* policy / control provenance lines */
+  .srcline{margin-top:11px;font-size:11.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .srcline b{font-size:10.5px;font-weight:640;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .srcline span{border:1px solid var(--hairline-2);border-radius:6px;padding:2px 8px;background:var(--surface-2);color:var(--ink-2);font-weight:540}
+
+  /* record key/value rows (CTR, permit, receipt, ledger) */
+  .kvrows{display:flex;flex-direction:column;gap:4px;margin-top:11px;padding:11px 12px;
+    border:1px solid var(--hairline-2);border-radius:10px;background:var(--ground-2)}
+  .kvrows:empty{display:none}
+  .kvrow{display:flex;gap:10px;align-items:baseline;font-size:11.5px;line-height:1.45}
+  .kvrow .kk{font-family:var(--mono);color:var(--muted);flex:0 0 132px}
+  .kvrow .kvv{font-family:var(--mono);color:var(--ink);word-break:break-all;flex:1}
+  .kvrow .kvv.ok{color:var(--pass)}.kvrow .kvv.no{color:var(--fail)}.kvrow .kvv.hold{color:var(--hold)}
+  @media (max-width:560px){.kvrow{flex-direction:column;gap:0}.kvrow .kk{flex:none}}
+
+  /* enforcement status */
+  .subhead{font-size:10.5px;font-weight:660;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:16px 0 9px}
+  .enf{display:flex;flex-direction:column;gap:6px}
+  .enfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink-2)}
+  .enfval{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:3px 8px;border-radius:6px;
+    background:var(--idle-soft);color:var(--muted);min-width:62px;text-align:center;flex:0 0 auto}
+  .enfval.ok{background:var(--pass-soft);color:var(--pass)}
+  .enfval.no{background:var(--fail-soft);color:var(--fail)}
+  .enfval.hold{background:var(--hold-soft);color:var(--hold)}
+
+  /* permit-to-act */
+  .permit{padding:15px 16px 16px}
+  .prow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .prow b{font-size:13px;font-weight:640}
+  .pstate{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:6px;background:var(--idle-soft);color:var(--muted)}
+  .pstate.active{background:var(--accent-soft);color:var(--accent)}
+  .pstate.consumed{background:var(--pass-soft);color:var(--pass)}
+  .pstate.none,.pstate.revoked,.pstate.expired{background:var(--fail-soft);color:var(--fail)}
+  .plife{display:flex;align-items:center;gap:6px;margin-top:11px;font-family:var(--mono);font-size:10.5px;color:var(--muted);flex-wrap:wrap}
+  .plife i{font-style:normal}
+  .plife i.on{color:var(--ink);font-weight:700}
+  .plife i.on.ok{color:var(--pass)}
+  .plife i.on.no{color:var(--fail)}
+
+  /* ledger record */
+  .ledrec{margin-top:13px;padding-top:13px;border-top:1px solid var(--hairline-2)}
+
+  /* replay verification lines */
+  .vlines{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+  .vline{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-2)}
+  .vline .vv{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--idle-soft);color:var(--muted)}
+  .vline .vv.ok{background:var(--pass-soft);color:var(--pass)}
+  .vline .vv.no{background:var(--fail-soft);color:var(--fail)}
+  .algo{margin-top:10px;font-size:10.5px;font-family:var(--mono);color:var(--muted)}
+
+  /* stage: blocked / not-performed */
+  .step.flash .stepcard{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),var(--shadow-lg)}
+  .step[data-state="blocked"] .node{border-color:var(--hold);color:#fff;background:var(--hold)}
+  .step[data-state="blocked"] .line{background:var(--hold-line)}
+  .step[data-state="blocked"] .stepcard{opacity:1;border-color:var(--hold-line)}
+  .step[data-state="blocked"] .pill{background:var(--hold-soft);color:var(--hold)}
+  .note-inline.warn{background:var(--hold-soft);border-color:var(--hold-line)}
+  .note-inline.warn svg{color:var(--hold)}
+  .note-inline.bad{background:var(--fail-soft);border-color:var(--fail-line)}
+  .note-inline.bad svg{color:var(--fail)}
+
+  /* terminal extras */
+  .term-note{margin-top:13px;padding-top:12px;border-top:1px dashed var(--hairline);display:flex;flex-direction:column;gap:5px}
+  .term-note .tk{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .term-note .tk b{color:var(--ink-2);font-weight:600}
+
+
+  @media (max-width:760px){.boundary .tag{white-space:normal;text-align:center;line-height:1.4}}
+
+
+  /* "how it works" — 28-stage map */
+  .howto{margin-top:20px}
+  .howbtn{appearance:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;
+    background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:14px 18px;display:flex;align-items:center;gap:12px;color:var(--ink);transition:.18s}
+  .howbtn:hover{border-color:var(--accent-line)}
+  .howbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .howbtn .hi{width:17px;height:17px;color:var(--accent);flex:0 0 auto}
+  .howbtn b{font-size:14px;font-weight:640}
+  .howbtn .hs{font-size:12px;color:var(--muted);margin-left:auto;text-align:right}
+  .howbtn .chev2{width:15px;height:15px;color:var(--muted);flex:0 0 auto;transition:transform .25s}
+  .howbtn[aria-expanded="true"] .chev2{transform:rotate(180deg)}
+  @media (max-width:640px){.howbtn .hs{display:none}}
+  .howpanel{margin-top:14px}
+  .sband{display:flex;align-items:center;gap:12px;margin:0 0 12px;flex-wrap:wrap}
+  .sband:not(:first-child){margin-top:24px}
+  .sband .sk{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+  .sband .sk svg{width:15px;height:15px}
+  .sband .srange{font-family:var(--mono);font-size:10.5px;color:var(--muted);border:1px solid var(--hairline-2);
+    border-radius:6px;padding:2px 7px;background:var(--surface-2)}
+  .sband .sl{flex:1;min-width:20px;height:1px;background:var(--hairline)}
+  .sband .so{font-family:var(--mono);font-size:10.5px;color:var(--ink-2);border:1px solid var(--hairline-2);
+    border-radius:7px;padding:4px 9px;background:var(--surface-2)}
+  .sband.gov .sk{color:var(--accent)} .sband.gov .sl{background:linear-gradient(90deg,var(--accent-line),transparent)}
+  .sband.rt  .sk{color:var(--pass)}   .sband.rt  .sl{background:linear-gradient(90deg,var(--pass-line),transparent)}
+  .sband.ops .sk{color:var(--hold)}   .sband.ops .sl{background:linear-gradient(90deg,var(--hold-line),transparent)}
+  .s28{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  @media (max-width:820px){.s28{grid-template-columns:1fr}}
+  .s28 .st{appearance:none;font-family:inherit;text-align:left;cursor:pointer;width:100%;
+    display:flex;gap:11px;padding:11px 13px;border:1px solid var(--hairline);border-radius:var(--radius-sm);
+    background:var(--surface);box-shadow:var(--shadow);transition:.18s}
+  .s28 .st:hover{border-color:var(--accent-line);transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+  .s28 .st:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .s28 .sn{font-family:var(--mono);font-size:11px;font-weight:700;width:25px;height:25px;border-radius:7px;
+    display:grid;place-items:center;flex:0 0 auto;background:var(--accent-soft);color:var(--accent)}
+  .s28 .st.rt  .sn{background:var(--pass-soft);color:var(--pass)}
+  .s28 .st.ops .sn{background:var(--hold-soft);color:var(--hold)}
+  .s28 .sx b{font-size:13px;font-weight:640;display:block;letter-spacing:-.01em;color:var(--ink)}
+  .s28 .sx span{font-size:11.5px;color:var(--muted);display:block;margin-top:2px;line-height:1.45}
+  .s28 .st.key{border-color:var(--accent-line)}
+  .s28 .st.rt.key{border-color:var(--pass-line)}
+
+  /* plane bands (governance / runtime / operations) */
+  .band{position:relative;padding:20px 0 14px 44px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .band::before{content:"";position:absolute;left:14px;top:0;bottom:0;width:2px;background:var(--hairline)}
+  .band .bicon{width:17px;height:17px;flex:0 0 auto;color:var(--accent)}
+  .band .btx{flex:1;min-width:180px}
+  .band .btx b{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .band .btx span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+  .band .bout{font-family:var(--mono);font-size:10.5px;color:var(--ink-2);border:1px solid var(--hairline-2);
+    border-radius:7px;padding:4px 9px;background:var(--surface-2);white-space:nowrap}
+  .band.gov .btx b{color:var(--accent)}
+  .band.rt  .btx b{color:var(--pass)} .band.rt .bicon{color:var(--pass)}
+  .band.rt::after{content:"";position:absolute;left:0;right:0;top:8px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--pass-line),transparent)}
+  .band.ops .btx b{color:var(--hold)}
+  @media (max-width:560px){.band{padding-left:0}.band::before{display:none}.band .bout{white-space:normal}}
+
+  /* sticky panel that can exceed the viewport */
+  .panel{max-height:calc(100vh - 36px);overflow-y:auto;scrollbar-width:thin;padding-right:2px}
+  @media (max-width:940px){.panel{max-height:none;overflow:visible}}
+
+  /* header actions */
+  .top-actions{display:flex;gap:8px;align-items:center}
+  .theme{margin-left:0}
+  .btn-ghost{text-decoration:none;white-space:nowrap}
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v5.2c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.5L12 2.5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 12.1l2.3 2.3 4.5-4.6" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="name">Gamma</div>
+          <div class="sub">Runtime Authorization Plane</div>
+        </div>
+      </div>
+      <div class="thesis">
+        <h1>An AI proposal carries <em>zero execution authority</em>. Gamma decides whether it becomes an external effect.</h1>
+        <div class="notchips">
+          <span class="notchip"><s>Fraud detection</s></span>
+          <span class="notchip"><s>AML screening</s></span>
+          <span class="notchip"><s>Compliance engine</s></span>
+          <span class="notchip"><s>Policy management</s></span>
+          <span class="notchip">Execution authority — <b style="color:var(--ink-2);font-weight:600;margin-left:3px">PERMIT or SAFE_STATE</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="btn-ghost" href="gamma-overview.html">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span>How it works &#8599;</span>
+      </a>
+      <button class="btn-ghost theme" id="themeBtn" aria-label="Toggle color theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span id="themeLbl">Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="controls">
+    <div class="card transfer">
+      <div>
+        <div class="lbl">AI-proposed action &#183; cross-border payment</div>
+        <div class="money-row">
+          <div class="money tnum">$250,000</div>
+          <div class="corridor">International Wire &#183; USD &#8594; EUR</div>
+        </div>
+      </div>
+      <div class="route">
+        <div class="acct"><b>Business Account A</b><span>ACC-4471-BUS</span></div>
+        <svg class="arrow-h" width="26" height="14" viewBox="0 0 26 14" fill="none"><path d="M1 7h22m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="acct"><b>Supplier B</b><span>DE89&#183;3704&#183;0044&#183;05</span></div>
+      </div>
+      <div class="who">Prepared by <b>AI Banking Assistant</b> &#183; zero inherent execution authority &#183; funds have <b>not</b> moved.</div>
+      <div>
+        <div class="gov">
+          <span class="gv2"><b>Use case</b>International Wire Transfer</span>
+          <span class="gv2"><b>Owner</b>Treasury Operations</span>
+          <span class="gv2"><b>Critical asset</b>Customer Funds</span>
+          <span class="gv2 crit"><b>Risk class</b>TIER 4 &#183; CRITICAL</span>
+        </div>
+        <div class="enfprof">
+          <span>complete_mediation</span><span>permit_ttl=5s</span><span>dual_authorization</span>
+          <span>class_veto</span><span>commit_before_actuate</span><span>no_degraded_execution</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card runbox">
+      <div>
+        <div class="seg-lbl">Scenario</div>
+        <div class="segments" role="group" aria-label="Choose scenario">
+          <button class="seg" data-sc="A" aria-pressed="true">A<small>Permit</small></button>
+          <button class="seg" data-sc="B" aria-pressed="false">B<small>Country</small></button>
+          <button class="seg" data-sc="C" aria-pressed="false">C<small>Approval</small></button>
+          <button class="seg" data-sc="D" aria-pressed="false">D<small>Beneficiary</small></button>
+          <button class="seg" data-sc="E" aria-pressed="false">E<small>Commit</small></button>
+          <button class="seg" data-sc="F" aria-pressed="false">F<small>Class veto</small></button>
+        </div>
+        <div class="who" id="scenNote" style="margin-top:11px">All action-level and class-level predicates concur.</div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="runBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 4.5l13 7.5-13 7.5V4.5z" fill="currentColor"/></svg>
+          <span id="runLbl">Run Authorization</span>
+        </button>
+        <button class="btn sec" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="howto">
+    <button class="howbtn" id="howBtn" type="button" aria-expanded="false" aria-controls="howPanel">
+      <svg class="hi" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <b>How it works &#8212; the 28-stage operating model</b>
+      <span class="hs">3 planes &#183; governance &#8594; runtime authorization &#8594; assurance</span>
+      <svg class="chev2" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="howpanel" id="howPanel" hidden><div class="flow28" id="flow28"></div></div>
+  </section>
+
+  <div class="boundary">
+    <div class="ln"></div>
+    <div class="tag"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v5.2c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.5L12 2.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>End-to-end operating flow &#183; governance &#8594; runtime authorization &#8594; assurance</div>
+    <div class="ln"></div>
+  </div>
+
+  <div class="grid">
+    <div class="pipeline">
+      <div class="flowtop">
+        <div class="mini"><span class="dotm"></span><span class="txt"><b>Customer</b> requests transfer</span></div>
+        <div class="conn"></div>
+        <div class="mini"><span class="dotm"></span><span class="txt"><b>AI Banking Assistant</b> prepares a candidate action</span></div>
+        <div class="conn"></div>
+        <div class="mini"><span class="dotm"></span><span class="txt"><b>Proposal</b> is intercepted at the Gamma Boundary</span></div>
+        <div class="conn"></div>
+      </div>
+      <div class="steps" id="steps"></div>
+      <div class="terminal" id="terminal" role="status" aria-live="polite" hidden></div>
+    </div>
+
+    <aside class="panel">
+      <div class="card ledger">
+        <div class="paneltitle" style="padding:8px 11px 4px"><span><span class="live-dot" id="liveDot"></span>Authorization lifecycle</span><span id="liveState" style="color:var(--muted);font-weight:600">idle</span></div>
+        <div id="ledger"></div>
+      </div>
+
+      <div class="card decision">
+        <div class="paneltitle" style="margin-bottom:12px">Authorization decision</div>
+        <div class="dbadge idle" id="dbadge">
+          <div class="ic" id="dIc"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="1.6"/></svg></div>
+          <div class="dt"><b id="dText">Awaiting run</b><span id="dSub">No decision yet</span></div>
+        </div>
+        <div class="gam">
+          <div class="gcell neutral" id="gG"><div class="gk">&#915;_G</div><div class="gv">&#8212;</div></div>
+          <div class="gcell neutral" id="gC"><div class="gk">&#915;_class</div><div class="gv">&#8212;</div></div>
+          <div class="gcell neutral" id="gP"><div class="gk">&#928;</div><div class="gv">&#8212;</div></div>
+        </div>
+
+        <div class="subhead">Enforcement status</div>
+        <div class="enf" id="enf"></div>
+
+        <div class="reason">
+          <div class="rl">Reason codes</div>
+          <div class="rcodes" id="rcodes"><span class="rcode">&#8212;</span></div>
+          <div class="rtext" id="rtext">Gamma aggregates predicate deficits non-compensatorily: <b>&#915;_G = max(action deficits)</b>, <b>&#915;_class = max(class deficits)</b>. A single mandatory failure forces SAFE_STATE &#8212; concurring predicates never compensate for a failing one.</div>
+        </div>
+      </div>
+
+      <div class="card permit">
+        <div class="prow"><b>Permit-to-Act</b><span class="pstate none" id="ptState">NOT ISSUED</span></div>
+        <div id="ptBody" style="font-size:12.5px;color:var(--muted)">No execution credential has been issued for this action.</div>
+        <div class="plife" id="ptLife">
+          <i>ISSUED</i><span>&#8594;</span><i>ACTIVE</i><span>&#8594;</span><i>CONSUMED</i><span>&#183;</span><i>EXPIRED</i><span>&#183;</span><i>REVOKED</i>
+        </div>
+        <div class="ledrec">
+          <div class="prow" style="margin-bottom:8px"><b>Hydra Ledger record</b><span class="pstate none" id="ldState">PENDING</span></div>
+          <div id="ldBody" style="font-size:12.5px;color:var(--muted)">No authorization record committed yet.</div>
+        </div>
+      </div>
+
+      <div class="card replay">
+        <div class="rt"><b>Replay digest</b><span class="repbadge" id="repBadge">pending</span></div>
+        <div class="hash"><div class="hk"><span>Action hash</span></div><div class="hv" id="hAction">&#8212;</div></div>
+        <div class="hash"><div class="hk"><span>Evidence hash</span></div><div class="hv" id="hEvid">&#8212;</div></div>
+        <div class="hash"><div class="hk"><span>Ledger hash</span></div><div class="hv" id="hLedger">&#8212;</div></div>
+        <div class="hash"><div class="hk"><span>Replay hash</span></div><div class="hv" id="hRep">&#8212;</div></div>
+        <div class="hash" id="hReceiptWrap" hidden><div class="hk"><span>Receipt hash</span></div><div class="hv" id="hReceipt">&#8212;</div></div>
+        <div class="vlines" id="vlines" hidden></div>
+        <div class="algo" id="algoLbl">digest: pending</div>
+        <button class="btn sec verify" id="verifyBtn" disabled>Re-run replay</button>
+      </div>
+    </aside>
+  </div>
+
+  <p class="sr" id="announce" role="status" aria-live="polite"></p>
+
+  <footer>
+    <b>Gamma does not replace fraud detection, AML screening, compliance or policy management.</b> Those systems define controls and produce authoritative signals.<br>
+    Gamma evaluates the approved predicate manifest, binds the result to one exact action, and releases execution only when authorization, evidence commitment and runtime health all concur.<br>
+    Every PERMIT or SAFE_STATE decision is sealed into tamper-evident, independently replayable authorization evidence.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function(s,r){ return (r||document).querySelector(s); };
+  function esc(v){ return String(v).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+  /* ========== fixed epochs & sealed timestamps (never read the wall clock) ========== */
+  var POLICY_EPOCH   = "POL-EPOCH-774";
+  var RUNTIME_EPOCH  = "RT-EPOCH-229";
+  var METHOD_VERSION = "GAMMA-G0-DEMO-2.0";
+  var SPEC_CLAUSE    = "L-DREA § 6.4 — execution authority";
+  var EVAL_ID        = "GAMMA-DEMO-WIRE-001";
+  var ISSUED_AT      = "2026-07-23T10:24:00.310Z";
+  var EXPIRES_AT     = "2026-07-23T10:24:05.310Z";
+  var PREV_LEDGER    = "17a25225c0e4b8d13f7a90b6ee2c4418d5a7f0c93b18e6a2f4d0c7b5e9a13d62";
+
+  /* ========== canonical serialization + digest ========== */
+  function canonicalize(v){
+    if(v===undefined) return "null";
+    if(v===null || typeof v!=="object") return JSON.stringify(v);
+    if(Array.isArray(v)) return "["+v.map(canonicalize).join(",")+"]";
+    return "{"+Object.keys(v).sort().map(function(k){
+      return JSON.stringify(k)+":"+canonicalize(v[k]); }).join(",")+"}";
+  }
+  function xmur3(str){ var h=1779033703^str.length;
+    for(var i=0;i<str.length;i++){ h=Math.imul(h^str.charCodeAt(i),3432918353); h=(h<<13)|(h>>>19); }
+    return function(){ h=Math.imul(h^(h>>>16),2246822507); h=Math.imul(h^(h>>>13),3266489909); return (h^=(h>>>16))>>>0; }; }
+  function demoDigest(s){ var r=xmur3(s),o=""; for(var i=0;i<8;i++){ o+=("00000000"+r().toString(16)).slice(-8); } return o; }
+
+  var subtle = (typeof crypto!=="undefined" && crypto.subtle && crypto.subtle.digest) ? crypto.subtle : null;
+  var ALGO   = subtle ? "SHA-256 · Web Crypto" : "deterministic demo digest (SHA-256 unavailable)";
+  function digest(value){
+    var s = (typeof value==="string") ? value : canonicalize(value);
+    if(!subtle) return Promise.resolve(demoDigest(s));
+    return subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function(buf){
+      return Array.prototype.map.call(new Uint8Array(buf),function(b){ return ("0"+b.toString(16)).slice(-2); }).join("");
+    }).catch(function(){ subtle=null; ALGO="deterministic demo digest (SHA-256 unavailable)"; paintAlgo(); return demoDigest(s); });
+  }
+  function paintAlgo(){ $("#algoLbl").textContent = "digest: "+ALGO; }
+
+  /* ========== approved predicate manifest ==========
+     P(id, plain question, machine token, policy source, evidence source, freshness, owner) */
+  function P(id,q,token,policy,source,fresh,owner){
+    return {id:id,q:q,token:token,policy:policy,source:source,fresh:fresh,owner:owner};
+  }
+
+  var M = {
+    sufficiency:[
+      P("CTX-001","Schema complete","SCHEMA_COMPLETE","Gateway Standard","Action schema registry","per request","Platform Engineering"),
+      P("CTX-002","Mandatory fields present","MANDATORY_FIELDS_PRESENT","Gateway Standard","Action Envelope","per request","Platform Engineering"),
+      P("CTX-003","Context fresh","CONTEXT_FRESH","Runtime Policy","Context Translation Record","≤ 5 s","Platform Engineering"),
+      P("CTX-004","Evidence resolvable","EVIDENCE_RESOLVABLE","Evidence Policy","Evidence pointers","per request","Governance Engineering"),
+      P("CTX-005","Action class recognized","ACTION_CLASS_RECOGNIZED","Enforcement Profile","Action class registry","per epoch","Risk Governance"),
+      P("CTX-006","Uncertainty bounded","UNCERTAINTY_BOUNDED","Runtime Policy","Translation confidence","per request","Governance Engineering")
+    ],
+    identity:[
+      P("POL-IDN-001","Customer authenticated","CUSTOMER_AUTHENTICATED","Identity Policy","Identity Provider","≤ 15 min","Identity & Access"),
+      P("POL-IDN-002","MFA completed","MFA_COMPLETE","Access Policy","Step-up Auth Service","≤ 15 min","Identity & Access"),
+      P("POL-IDN-003","Session valid","SESSION_VALID","Access Policy","Session Service","live","Identity & Access"),
+      P("POL-IDN-004","Device trusted","DEVICE_TRUSTED","Device Policy","Device Attestation","≤ 24 h","Identity & Access"),
+      P("POL-IDN-005","Identity evidence fresh","IDENTITY_EVIDENCE_FRESH","Evidence Policy","Identity Provider","≤ 15 min","Identity & Access"),
+      P("POL-IDN-006","Principal authorized for source account","PRINCIPAL_AUTHORIZED_FOR_ACCOUNT","Access Policy","Entitlement Service","≤ 1 h","Treasury Operations")
+    ],
+    account:[
+      P("POL-ACC-001","Account exists","ACCOUNT_EXISTS","Treasury Policy","Core Banking","live","Treasury Operations"),
+      P("POL-ACC-002","Account active","ACCOUNT_ACTIVE","Treasury Policy","Core Banking","live","Treasury Operations"),
+      P("POL-ACC-003","Balance available","BALANCE_AVAILABLE","Treasury Policy","Core Banking","live","Treasury Operations"),
+      P("POL-ACC-004","Account not frozen","ACCOUNT_NOT_FROZEN","Treasury Policy","Core Banking","live","Financial Crime Compliance"),
+      P("POL-ACC-005","No applicable legal hold","NO_LEGAL_HOLD","Legal Hold Policy","Legal Hold Register","≤ 1 h","Legal"),
+      P("POL-ACC-006","Transaction class enabled","TRANSACTION_CLASS_ENABLED","Treasury Standard","Product Control","per epoch","Treasury Operations")
+    ],
+    beneficiary:[
+      P("POL-BEN-001","Beneficiary exists","BENEFICIARY_EXISTS","KYC Policy","Beneficiary Register","live","Treasury Operations"),
+      P("POL-BEN-002","Beneficiary approved","BENEFICIARY_APPROVED","KYC Policy","Beneficiary Register","live","Treasury Operations"),
+      P("POL-BEN-003","IBAN valid","IBAN_VALID","Payment Operations","IBAN Validation Service","per request","Payment Operations"),
+      P("POL-BEN-004","Destination bank recognized","DESTINATION_BANK_RECOGNIZED","Payment Operations","BIC Directory","≤ 24 h","Payment Operations"),
+      P("POL-BEN-005","Beneficiary ownership verified","BENEFICIARY_OWNERSHIP_VERIFIED","KYC Policy","Account Ownership Check","≤ 30 d","Financial Crime Compliance"),
+      P("POL-BEN-006","Beneficiary change sufficiently aged","BENEFICIARY_CHANGE_AGED","Fraud Policy","Beneficiary Register","≥ 7 d","Financial Crime Compliance")
+    ],
+    policy:[
+      P("POL-TRS-001","Within transfer limit","WITHIN_LIMIT","Treasury Standard","Limit Service","live","Treasury Operations"),
+      P("POL-TRS-002","Within operating window","WITHIN_OPERATING_WINDOW","Payment Operations","Operating Calendar","live","Payment Operations"),
+      P("POL-DUA-001","Two approvals complete","APPROVAL_COUNT ≥ 2","Dual Authorization Policy","Approval Workflow","live","Treasury Operations"),
+      P("POL-AML-002","Country permitted","COUNTRY_ALLOWED","AML Policy","Country Restriction List","≤ 24 h","Financial Crime Compliance"),
+      P("POL-TRS-003","Currency permitted","CURRENCY_ALLOWED","Treasury Standard","Product Control","per epoch","Treasury Operations"),
+      P("POL-AML-001","Sanctions result fresh and clear","SANCTIONS_CLEAR","AML Policy","Sanctions Screening Service","≤ 24 h","Financial Crime Compliance"),
+      P("POL-KYC-001","KYC current","KYC_CURRENT","KYC Policy","Customer Due Diligence","≤ 12 mo","Financial Crime Compliance"),
+      P("POL-OPS-001","ERP invoice matches","ERP_INVOICE_MATCHED","Payment Operations","ERP Accounts Payable","live","Finance Operations"),
+      P("POL-DUA-002","Dual-control attestation valid","DUAL_CONTROL_ATTESTATION_VALID","Dual Authorization Policy","Approval Workflow","≤ 1 h","Treasury Operations")
+    ],
+    risk:[
+      P("POL-FRD-001","Fraud assessment available","FRAUD_ASSESSMENT_AVAILABLE","Fraud Policy","Fraud Decision Service","per request","Financial Crime Compliance"),
+      P("POL-FRD-002","Fraud signal fresh","FRAUD_SIGNAL_FRESH","Fraud Policy","Fraud Decision Service","≤ 60 s","Financial Crime Compliance"),
+      P("POL-FRD-003","Risk within policy bound","FRAUD_RISK_WITHIN_POLICY_BOUND","Fraud Policy","Fraud Decision Service","per request","Risk Governance"),
+      P("POL-BHV-001","Velocity normal","VELOCITY_NORMAL","Behavior Policy","Behavioural Analytics","≤ 60 s","Financial Crime Compliance"),
+      P("POL-BHV-002","Geography consistent","GEOGRAPHY_CONSISTENT","Behavior Policy","Behavioural Analytics","≤ 60 s","Financial Crime Compliance"),
+      P("POL-BHV-003","Beneficiary established","BENEFICIARY_ESTABLISHED","Behavior Policy","Beneficiary Register","live","Financial Crime Compliance"),
+      P("POL-BHV-004","Device unchanged","DEVICE_UNCHANGED","Device Policy","Device Attestation","≤ 24 h","Identity & Access"),
+      P("POL-BHV-005","Behavior consistent","BEHAVIOR_CONSISTENT","Behavior Policy","Behavioural Analytics","≤ 60 s","Financial Crime Compliance"),
+      P("POL-ATO-001","No account-takeover indicator","NO_ACCOUNT_TAKEOVER_INDICATOR","Fraud Policy","ATO Detection Service","≤ 60 s","Financial Crime Compliance")
+    ],
+    sourceEvidence:[
+      P("EVS-001","Identity evidence bound","IDENTITY_EVIDENCE_BOUND","Evidence Policy","Identity Provider","at bind","Governance Engineering"),
+      P("EVS-002","Account state bound","ACCOUNT_STATE_BOUND","Evidence Policy","Core Banking","at bind","Governance Engineering"),
+      P("EVS-003","Beneficiary state bound","BENEFICIARY_STATE_BOUND","Evidence Policy","Beneficiary Register","at bind","Governance Engineering"),
+      P("EVS-004","Policy snapshot bound","POLICY_SNAPSHOT_BOUND","Evidence Policy","Signed Predicate Manifest","policy epoch","Governance Engineering"),
+      P("EVS-005","Runtime context available","RUNTIME_CONTEXT_AVAILABLE","Evidence Policy","Context Translation Record","≤ 5 s","Governance Engineering"),
+      P("EVS-006","Upstream risk signals bound","RISK_SIGNALS_BOUND","Evidence Policy","Fraud / AML services","at bind","Governance Engineering"),
+      P("EVS-007","Source signatures valid","SOURCE_SIGNATURES_VALID","Evidence Policy","Signing authorities","at bind","Governance Engineering")
+    ],
+    classControls:[
+      P("CLS-001","WIRE_TRANSFER class active","WIRE_TRANSFER_CLASS_ACTIVE","Enforcement Profile","Class Control Registry","per epoch","Risk Governance"),
+      P("CLS-002","US→DE corridor not suspended","CORRIDOR_CLASS_ACTIVE","AML Standard","Corridor Control Registry","live","Financial Crime Compliance"),
+      P("CLS-003","No fleet-wide revocation","NO_FLEET_REVOCATION","Revocation Policy","Revocation Service","live","Risk Governance"),
+      P("CLS-004","Counterparty drift within bound","COUNTERPARTY_DRIFT_WITHIN_BOUND","Risk Standard","Portfolio Monitoring","≤ 1 h","Risk Governance"),
+      P("CLS-005","Autonomy band within policy","AUTONOMY_BAND_WITHIN_POLICY","AI Governance Policy","Autonomy Controller","per epoch","Risk Governance"),
+      P("CLS-006","No persistent class veto","NO_PERSISTENT_CLASS_VETO","Enforcement Profile","Class Control Registry","live","Risk Governance")
+    ],
+    revalidate:[
+      P("RVL-001","Permit signature valid","PERMIT_SIGNATURE_VALID","Authority Policy","Epoch Key Service","at use","Governance Engineering"),
+      P("RVL-002","Permit active","PERMIT_ACTIVE","Authority Policy","Permit Service","at use","Governance Engineering"),
+      P("RVL-003","Permit unconsumed","PERMIT_UNCONSUMED","Authority Policy","Permit Service","at use","Governance Engineering"),
+      P("RVL-004","Permit not revoked","PERMIT_NOT_REVOKED","Revocation Policy","Revocation Service","at use","Risk Governance"),
+      P("RVL-005","Action hash unchanged","ACTION_HASH_UNCHANGED","Authority Policy","Action Envelope","at use","Governance Engineering"),
+      P("RVL-006","Policy epoch unchanged","POLICY_EPOCH_UNCHANGED","Authority Policy","Policy Epoch Service","at use","Risk Governance"),
+      P("RVL-007","Runtime context within TTL","CONTEXT_WITHIN_TTL","Runtime Policy","Context Translation Record","≤ 5 s","Platform Engineering"),
+      P("RVL-008","No new account freeze","NO_NEW_ACCOUNT_FREEZE","Treasury Policy","Core Banking","at use","Treasury Operations"),
+      P("RVL-009","No new class veto","NO_NEW_CLASS_VETO","Enforcement Profile","Class Control Registry","at use","Risk Governance")
+    ]
+  };
+
+  var ACTION_STAGES = ["sufficiency","identity","account","beneficiary","policy","risk","sourceEvidence"];
+  var CLASS_STAGES  = ["classControls"];
+
+  /* ========== plane bands (master operating model) ========== */
+  var BANDS = {
+    register:  {cls:"gov", t:"Governance plane", d:"“What must be true” · Business · Risk · Legal · Compliance",
+                o:"Output → Signed Predicate Manifest"},
+    intercept: {cls:"rt",  t:"Gamma Boundary · Runtime authorization plane", d:"“Whether execution is allowed” · complete mediation",
+                o:"Output → PERMIT / SAFE_STATE + sealed evidence", shield:true},
+    monitoring:{cls:"ops", t:"Governance operations plane", d:"“Assurance over time” · Audit · SecOps · Policy lifecycle",
+                o:"Output → monitoring · incidents · next policy epoch"}
+  };
+
+  /* ========== pipeline stages (numbered to the master operating model) ========== */
+  var STAGES = [
+    /* ---------- governance plane 1–5 ---------- */
+    {id:"register", n:"01", title:"Use-Case Registration", sub:"Register the AI system, its external action and the critical asset.", rows:true},
+    {id:"classify", n:"02", title:"Impact &amp; Risk Classification", sub:"Score each impact dimension; derive the enforcement profile.", rows:true,
+     note:{t:"info", html:"A risk class is not a label. <b>Tier 4 / CRITICAL compiles into concrete enforcement</b> — complete mediation, short permit TTL, dual authorization, class veto, commit-before-actuate."}},
+    {id:"mapping",  n:"03", title:"Policy → Control Mapping", sub:"Each applicable policy yields required runtime controls.", rows:true},
+    {id:"generate", n:"04", title:"Control → Predicate Generation", sub:"Each required control becomes machine-checkable predicates.", rows:true},
+    {id:"sign",     n:"05", title:"Manifest Approval &amp; Signing", sub:"Owners approve; the manifest is signed and pinned to a policy epoch.", rows:true,
+     note:{t:"info", html:"Gamma does not author this manifest — it <b>evaluates</b> what the policy owners approved and signed. The manifest hash is bound into every decision made under this epoch."}},
+
+    /* ---------- runtime authorization plane 6–24 ---------- */
+    {id:"intercept", n:"06", title:"AI Proposal &amp; Boundary Interception", sub:"The proposal arrives with zero inherent authority.",
+     kv:["proposer=AI Banking Assistant","channel=tool_invoke","inherent_authority=none","mediation=complete"],
+     note:{t:"warn", html:"A proposal is a request, not a right. <b>Capability ≠ authority</b> — nothing externally effective may bypass this boundary."}},
+
+    {id:"context", n:"07", title:"Action Envelope &amp; Context Translation Record", sub:"Fix exactly what is being authorized.", ctr:true},
+
+    {id:"sufficiency", n:"08", title:"Interpretive Sufficiency &amp; Freshness", sub:"Is the request even authorizable?", preds:M.sufficiency,
+     note:{t:"info", html:"Gamma never guesses around incomplete or stale context. <b>Insufficient context is itself a deficit</b> and forces SAFE_STATE."}},
+
+    {id:"identity", n:"09", title:"Identity Verification", sub:"Is the requester who they claim to be?", preds:M.identity,
+     kv:["user_id=U-8821","session_id=S-6f3a…","device_id=D-macbook-12","mfa=totp"],
+     controls:["Identity Policy","Access Policy","Device Policy"]},
+
+    {id:"account", n:"10", title:"Account Verification", sub:"Can the source account act?", preds:M.account,
+     kv:["account=ACC-4471-BUS","status=active","balance=$4.20M","holds=none"],
+     controls:["Treasury Policy","Legal Hold Policy"]},
+
+    {id:"beneficiary", n:"11", title:"Beneficiary Verification", sub:"Is the destination valid and approved?", preds:M.beneficiary,
+     kv:["beneficiary=BEN-SUPPLIER-B","iban=DE89·3704…","approval_ref=BA-2231","age=41d"],
+     controls:["KYC Policy","Payment Operations","Fraud Policy"]},
+
+    {id:"policy", n:"12", title:"Governance Control Evaluation", sub:"Do the signed policy controls permit this transfer?", preds:M.policy,
+     kv:["amount_minor=25000000","corridor=US→DE","approvals=2 of 2","sanctions=clear"],
+     controls:["Treasury","AML","KYC","Dual Authorization","Currency","Country"],
+     sources:["Treasury Standard","AML Standard","Payment Operations","Dual Authorization Policy"]},
+
+    {id:"risk", n:"13", title:"Upstream Risk Context", sub:"Gamma consumes risk signals; it does not compute fraud.", preds:M.risk,
+     kv:["fraud_assessment=available","fraud_age=12s","velocity=nominal","geography=consistent"],
+     controls:["Fraud Policy","Behavior Policy"],
+     note:{t:"info", html:"Risk assessments are produced <b>upstream</b>. Gamma reads them as predicate inputs — it never computes a fraud probability, and a service merely returning a result never implies authorization."}},
+
+    {id:"sourceEvidence", n:"14", title:"Source Evidence Binding", sub:"Bind authoritative inputs before the decision.", preds:M.sourceEvidence,
+     note:{t:"info", html:"<b>Source evidence is bound before the decision.</b> Predicate results, Γ values and decision metadata do not exist yet — they are committed after the decision and before any action."}},
+
+    {id:"classControls", n:"15", title:"Class-Level Control Evaluation", sub:"Is the broader action class clear of persistent vetoes?", preds:M.classControls,
+     kv:["action_class=WIRE_TRANSFER","corridor_class=US→DE","fleet_revocation=none"],
+     note:{t:"info", html:"One action can look clean while its action class is unsafe. Class deficits feed <b>Γ_class</b>, which vetoes independently of Γ_G."}},
+
+    {id:"decision", n:"16", title:"Deterministic Authorization", sub:"Compute Γ_G, Γ_class and Π.", decision:true},
+
+    {id:"binding", n:"17", title:"Execution Binding", sub:"Bind the result to this exact account, beneficiary, amount and context.", binding:true},
+
+    {id:"permit", n:"18", title:"Permit-to-Act Issuance", sub:"Issue a signed, scoped, short-lived, single-use execution token.", permit:true},
+
+    {id:"commit", n:"19", title:"Authorization Proof Commitment", sub:"Serialize the ERTuple, anchor the Evidence Quad, append the ledger.", commit:true},
+
+    {id:"interlock", n:"20", title:"Three-Signal Interlock", sub:"Release only if SIG_GAMMA, SIG_COMMIT and SIG_WATCHDOG all assert.", interlock:true},
+
+    {id:"revalidate", n:"21", title:"Last-Moment Revalidation", sub:"Re-check freshness, revocation, action hash and token state immediately before use.", preds:M.revalidate},
+
+    {id:"execution", n:"22", title:"Atomic Consumption &amp; Execution", sub:"Consume the permit atomically and release the instruction — or keep the path closed.", execution:true},
+
+    {id:"receipt", n:"23", title:"Execution Receipt Closure", sub:"Bind the executor response and permit-consumption result.", receipt:true},
+
+    {id:"replay", n:"24", title:"Independent Replay &amp; Verification", sub:"Recompute using the original evidence, policy epoch and method version.", replay:true},
+
+    /* ---------- governance operations plane 25–28 ---------- */
+    {id:"monitoring", n:"25", title:"Audit &amp; Runtime Monitoring", sub:"Telemetry from this decision enters the assurance plane.", rows:true},
+    {id:"incident",   n:"26", title:"SAFE_STATE &amp; Incident Operations", sub:"Absorb, triage and re-attest whenever the boundary refuses.", rows:true},
+    {id:"evolution",  n:"27", title:"Policy Evolution &amp; Reclassification", sub:"Findings feed control changes and risk reclassification.", rows:true},
+    {id:"epoch",      n:"28", title:"Signed Policy Epoch Activation", sub:"A new epoch re-signs the manifest — history still replays under its own.", rows:true,
+     note:{t:"info", html:"The feedback loop closes here: a new epoch re-signs the manifest for <b>future</b> actions. <b>Historical decisions always replay under their original policy epoch and method version.</b>"}}
+  ];
+
+  /* stage -> lifecycle row in the side panel */
+  var LIFECYCLE = [
+    ["sign","Signed manifest"],
+    ["sufficiency","Context"],["identity","Identity"],["account","Account"],["beneficiary","Beneficiary"],
+    ["policy","Policy"],["risk","Risk context"],["classControls","Class controls"],["decision","Decision"],
+    ["permit","Permit"],["commit","Commit"],["interlock","Interlock"],["execution","Execution"],["receipt","Receipt"],
+    ["monitoring","Monitoring"],["epoch","Policy epoch"]
+  ];
+
+  /* ========== scenarios ========== */
+  var SCEN = {
+    A:{name:"All action-level and class-level predicates concur.", fail:[], commitOk:true, watchdogOk:true},
+    B:{name:"An AML country control does not permit this destination.", fail:["COUNTRY_ALLOWED"], commitOk:true, watchdogOk:true,
+       reason:"COUNTRY_NOT_PERMITTED",
+       stageNote:{policy:"Destination country restriction active for this corridor under POL-AML-002."},
+       text:"A mandatory action-level predicate fails, so Γ_G = 1 and Π = 0. No Permit-to-Act is issued; the denial proof is committed and the execution path stays closed."},
+    C:{name:"Dual authorization is incomplete for this amount.", fail:["APPROVAL_COUNT ≥ 2"], commitOk:true, watchdogOk:true,
+       reason:"DUAL_AUTHORIZATION_INCOMPLETE",
+       stageNote:{policy:"Approval count observed = 1, required = 2 (Dual Authorization Policy)."},
+       text:"Dual authorization requires two approvals at this amount; one is present. Non-compensatory aggregation forces SAFE_STATE — the concurring predicates cannot make up the deficit."},
+    D:{name:"The destination is not an approved beneficiary.", fail:["BENEFICIARY_APPROVED"], commitOk:true, watchdogOk:true,
+       reason:"BENEFICIARY_NOT_APPROVED",
+       stageNote:{beneficiary:"Beneficiary BEN-SUPPLIER-B is present in the register but not in an approved state."},
+       text:"Gamma cannot bind execution authority to an unapproved recipient. No permit is issued and no instruction is released."},
+    E:{name:"Predicates concur, but the authorization proof fails to commit.", fail:[], commitOk:false, watchdogOk:true,
+       reason:"EVIDENCE_COMMIT_FAILED",
+       stageNote:{commit:"Ledger append failed — the authorization record is not durable."},
+       text:"The authorization calculation is PERMIT (Γ_G = 0, Γ_class = 0, Π = 1), but the completed proof never became durable. SIG_COMMIT = 0, so P<sub>phys</sub> = 0 and the instruction never reached the network. <b>A logical PERMIT is necessary but not sufficient for actuation.</b>"},
+    F:{name:"The transfer is clean, but its action class is under veto.", fail:["CORRIDOR_CLASS_ACTIVE","NO_PERSISTENT_CLASS_VETO"], commitOk:true, watchdogOk:true,
+       reason:"CLASS_LEVEL_VETO_ACTIVE",
+       stageNote:{classControls:"US→DE corridor suspended by a persistent class-level control."},
+       text:"The individual transfer appears valid — Γ_G = 0 — but a persistent class-level control has suspended this corridor, so Γ_class = 1. Action-level passes cannot override a class veto."}
+  };
+
+  /* ========== dwell timing (normal run ≈ 7 s; reduced motion < 2 s) ========== */
+  var DWELL = {
+    register:180, classify:230, mapping:200, generate:210, sign:280,
+    intercept:260, context:360, sufficiency:300, identity:270, account:250, beneficiary:250,
+    policy:380, risk:320, sourceEvidence:320, classControls:340, decision:560,
+    binding:260, permit:440, commit:460, interlock:540, revalidate:360, execution:460,
+    receipt:320, replay:340,
+    monitoring:280, incident:280, evolution:280, epoch:320
+  };
+
+  /* ========== runtime state ========== */
+  var runtime = null;
+  function freshRuntime(scenarioId){
+    return {
+      scenarioId: scenarioId,
+      manifest: null,
+      action: null,
+      context: null,
+      predicates: { action: [], klass: [] },
+      results: {},
+      decision: { gammaGlobal:null, gammaClass:null, pi:null, result:null, reasonCodes:[] },
+      permit: { issued:false, tokenId:null, state:"NOT_ISSUED", actionHash:null, policyEpoch:POLICY_EPOCH,
+                expiresAt:null, signatureValid:false, consumed:false },
+      evidence: { sourceBound:false, erTuple:null, evidenceQuad:null, ledgerCommitted:false, hashes:{} },
+      interlock: { sigGamma:0, sigCommit:0, sigWatchdog:0, pphys:0, evaluated:false },
+      execution: { released:false, permitConsumed:false, networkReference:null, receipt:null },
+      replay: { verified:false, decisionMatch:null, evidenceMatch:null, ledgerValid:null, executionVerified:null },
+      finalState: null
+    };
+  }
+
+  /* ========== pure decision logic ========== */
+  function computeGamma(predicates){ return predicates.some(function(p){ return !p.pass; }) ? 1 : 0; }
+  function computeDecision(actionPredicates, classPredicates){
+    var gammaGlobal = computeGamma(actionPredicates);
+    var gammaClass  = computeGamma(classPredicates);
+    var pi = (gammaGlobal===0 && gammaClass===0) ? 1 : 0;
+    return { gammaGlobal:gammaGlobal, gammaClass:gammaClass, pi:pi, result: pi===1 ? "PERMIT" : "SAFE_STATE" };
+  }
+  function computeInterlock(o){
+    var sigGamma    = o.decision.pi===1 ? 1 : 0;
+    var sigCommit   = o.committed ? 1 : 0;
+    var sigWatchdog = o.watchdogHealthy ? 1 : 0;
+    return { sigGamma:sigGamma, sigCommit:sigCommit, sigWatchdog:sigWatchdog,
+             pphys: (sigGamma && sigCommit && sigWatchdog) ? 1 : 0 };
+  }
+  function finalRuntimeState(decision, interlock){
+    if(decision.pi===0) return "SAFE_STATE";
+    if(interlock.pphys===0) return "SAFE_STATE";
+    return "PERMIT";
+  }
+
+  /* ========== record builders ========== */
+  function manifestCounts(){
+    var action=0, klass=0, reval=M.revalidate.length;
+    ACTION_STAGES.forEach(function(sid){ action += (M[sid]||[]).length; });
+    CLASS_STAGES.forEach(function(sid){ klass += (M[sid]||[]).length; });
+    return {action:action, klass:klass, reval:reval, total:action+klass+reval};
+  }
+  function buildManifest(){
+    var tokens=[];
+    Object.keys(M).forEach(function(k){ M[k].forEach(function(pr){ tokens.push(pr.id+":"+pr.token); }); });
+    return { policy_epoch:POLICY_EPOCH, method_version:METHOD_VERSION, action_class:"WIRE_TRANSFER",
+             risk_class:"TIER_4_CRITICAL", predicates:tokens.sort(),
+             enforcement:["complete_mediation","permit_ttl_5s","dual_authorization","class_veto",
+                          "commit_before_actuate","enhanced_retention","no_degraded_execution"] };
+  }
+  function buildActionEnvelope(){
+    return { action_id:"ACT-WIRE-20260723-001", action_class:"WIRE_TRANSFER", principal:"U-8821",
+             account:"ACC-4471-BUS", beneficiary:"BEN-SUPPLIER-B", amount_minor:25000000, currency:"USD",
+             corridor:"US→DE", executor:"BANK_PAYMENT_GATEWAY" };
+  }
+  function buildContextRecord(actionHash){
+    return { action_hash:actionHash, policy_snapshot:runtime.evidence.hashes.manifest,
+             policy_epoch:POLICY_EPOCH, runtime_epoch:RUNTIME_EPOCH,
+             method_version:METHOD_VERSION, ttl_seconds:5, sealed_at:ISSUED_AT,
+             identity:{user:"U-8821",session:"S-6f3a",device:"D-macbook-12",mfa:"totp"},
+             evidence_sources:["identity_provider","core_banking","beneficiary_register","sanctions_service","fraud_service"] };
+  }
+  function predicateVector(){
+    var out = [];
+    ACTION_STAGES.concat(CLASS_STAGES).forEach(function(sid){
+      (M[sid]||[]).forEach(function(p){
+        out.push({ id:p.id, token:p.token, level:(CLASS_STAGES.indexOf(sid)>=0?"class":"action"),
+                   pass: runtime.results[p.token]===true });
+      });
+    });
+    return out;
+  }
+  function buildERTuple(){
+    return {
+      action: runtime.action,
+      context: runtime.context,
+      predicate_results: predicateVector(),
+      gamma_g: runtime.decision.gammaGlobal,
+      gamma_class: runtime.decision.gammaClass,
+      pi: runtime.decision.pi,
+      decision: runtime.decision.result,
+      reason_codes: runtime.decision.reasonCodes.map(function(c){ return c[0]; }),
+      permit: runtime.permit.issued ? {
+        token_id: runtime.permit.tokenId, action_hash: runtime.permit.actionHash,
+        scope:"WIRE_TRANSFER", policy_epoch:POLICY_EPOCH, runtime_epoch:RUNTIME_EPOCH,
+        issued_at:ISSUED_AT, expires_at:EXPIRES_AT, single_use:true, revocable:true
+      } : null,
+      method_version: METHOD_VERSION,
+      sealed_at: ISSUED_AT
+    };
+  }
+  function buildEvidenceQuad(ledgerHash){
+    return { specification_clause:SPEC_CLAUSE, evaluation_id:EVAL_ID,
+             method_version:METHOD_VERSION, ledger_hash:ledgerHash };
+  }
+
+  /* ========== DOM: build stages ========== */
+  var stepsEl = $("#steps"), ledgerEl = $("#ledger"), current = "A", running = false, sealedRecord = null;
+
+  function buildSteps(){
+    stepsEl.innerHTML = "";
+    STAGES.forEach(function(s,i){
+      var band = BANDS[s.id];
+      if(band){
+        var bd = document.createElement("div");
+        bd.className = "band "+band.cls;
+        bd.innerHTML = (band.shield
+            ? '<svg class="bicon" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v5.2c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.5L12 2.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>'
+            : '')+
+          '<div class="btx"><b>'+band.t+'</b><span>'+band.d+'</span></div>'+
+          '<div class="bout">'+band.o+'</div>';
+        stepsEl.appendChild(bd);
+      }
+      var step = document.createElement("div");
+      step.className = "step"; step.dataset.state = "idle"; step.dataset.id = s.id;
+      var idx = s.n || ("0"+(i+1)).slice(-2);
+      step.innerHTML =
+        '<div class="rail"><div class="node">'+parseInt(idx,10)+'</div><div class="line"></div></div>'+
+        '<div class="stepcard">'+
+          '<div class="stephead" tabindex="0" role="button" aria-expanded="false">'+
+            '<span class="stepidx">'+idx+'</span>'+
+            '<span class="steptitle"><b>'+s.title+'</b><span>'+s.sub+'</span></span>'+
+            '<span class="pill">idle</span>'+
+            '<svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+          '</div>'+
+          '<div class="stepbody"><div class="stepbody-inner" data-body></div></div>'+
+        '</div>';
+      stepsEl.appendChild(step);
+      var head = $(".stephead", step);
+      head.addEventListener("click", function(){ toggle(step); });
+      head.addEventListener("keydown", function(e){
+        if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(step); } });
+      renderBody(step, s);
+    });
+  }
+  function toggle(step, force){
+    var card=$(".stepcard",step), body=$(".stepbody",step), head=$(".stephead",step);
+    var open = (force===undefined) ? card.classList.toggle("open") : (force ? (card.classList.add("open"),true) : (card.classList.remove("open"),false));
+    head.setAttribute("aria-expanded", open?"true":"false");
+    body.style.maxHeight = open ? (body.firstElementChild.scrollHeight+8)+"px" : "0px";
+  }
+  function refreshOpen(step){
+    var card=$(".stepcard",step), body=$(".stepbody",step);
+    if(card.classList.contains("open")) body.style.maxHeight=(body.firstElementChild.scrollHeight+8)+"px";
+  }
+  function stepEl(id){ return stepsEl.querySelector('.step[data-id="'+id+'"]'); }
+
+  function kvHtml(list){
+    return '<div class="kv">'+list.map(function(kv){
+      var p = kv.split("="); return '<span class="k"><b>'+esc(p[0])+'</b> '+esc(p[1]||"")+'</span>'; }).join("")+'</div>';
+  }
+  function noteHtml(n){
+    var ic = n.t==="warn"||n.t==="bad"
+      ? '<path d="M12 8v5m0 3h.01M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'
+      : '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8h.01M11 12h1v4h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    return '<div class="note-inline '+(n.t==="info"?"":n.t)+'"><svg viewBox="0 0 24 24" fill="none">'+ic+'</svg><span>'+n.html+'</span></div>';
+  }
+  function predsHtml(preds){
+    return '<div class="plabel">Predicates</div><div class="preds">'+ preds.map(function(p,idx){
+      return '<div class="pred" data-pred="'+idx+'" data-token="'+esc(p.token)+'">'+
+               '<span class="pcode">P'+(idx+1)+'</span>'+
+               '<span class="pname">'+esc(p.q)+'</span>'+
+               '<span class="ptok">'+esc(p.token)+'</span>'+
+               '<button class="pmore" type="button" aria-expanded="false" aria-label="Policy metadata for '+esc(p.id)+'">&#9432;</button>'+
+               '<span class="ptag sk">&#8212;</span>'+
+             '</div>'+
+             '<div class="pmeta">'+
+               mrow("Predicate", p.id) + mrow("Token", p.token) + mrow("Policy source", p.policy) +
+               mrow("Evidence", p.source) + mrow("Freshness", p.fresh) + mrow("Owner", p.owner) +
+               mrow("Failure", "SAFE_STATE") + mrow("Policy epoch", POLICY_EPOCH) +
+             '</div>';
+    }).join("")+'</div>';
+  }
+  function mrow(k,v){ return '<div class="mrow"><b>'+esc(k)+'</b><span>'+esc(v)+'</span></div>'; }
+
+  function renderBody(step, s){
+    var body = $("[data-body]", step), html = "";
+    if(s.kv) html += kvHtml(s.kv);
+    if(s.ctr)  html += '<div class="kvrows" data-ctr></div>';
+    if(s.rows) html += '<div class="kvrows" data-rows></div>';
+    if(s.decision){
+      html += '<div class="kv"><span class="k"><b>rule</b> Π = 1[max_i d_i = 0 ∧ Γ_class = 0]</span>'+
+              '<span class="k"><b>aggregation</b> non-compensatory</span></div>'+
+              '<div class="kvrows" data-decision></div>';
+    }
+    if(s.binding)   html += '<div class="kvrows" data-binding></div>';
+    if(s.permit)    html += '<div class="kvrows" data-permit></div>';
+    if(s.commit)    html += '<div class="kvrows" data-commit></div>';
+    if(s.interlock) html += '<div class="plabel">Interlock signals</div><div class="preds" data-interlock></div>'+
+                            '<div class="kv" style="margin-top:10px"><span class="k"><b>rule</b> P_phys = SIG_COMMIT ∧ SIG_GAMMA ∧ SIG_WATCHDOG</span></div>';
+    if(s.execution) html += '<div class="kvrows" data-execution></div>';
+    if(s.receipt)   html += '<div class="kvrows" data-receipt></div>';
+    if(s.replay)    html += '<div class="kv"><span class="k"><b>scope</b> '+POLICY_EPOCH+'</span><span class="k"><b>method</b> '+METHOD_VERSION+'</span></div>'+
+                            '<div class="kvrows" data-replay></div>';
+    if(s.preds)    html += predsHtml(s.preds);
+    if(s.controls) html += '<div class="srcline"><b>Controls</b>'+s.controls.map(function(c){ return '<span>'+esc(c)+'</span>'; }).join("")+'</div>';
+    if(s.sources)  html += '<div class="srcline"><b>Policy sources</b>'+s.sources.map(function(c){ return '<span>'+esc(c)+'</span>'; }).join("")+'</div>';
+    if(s.note)     html += noteHtml(s.note);
+    html += '<div data-scennote></div>';
+    body.innerHTML = html;
+
+    body.querySelectorAll(".pmore").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        var meta = btn.closest(".pred").nextElementSibling;
+        var open = meta.classList.toggle("open");
+        btn.setAttribute("aria-expanded", open?"true":"false");
+        refreshOpen(step);
+      });
+    });
+  }
+
+  function setRows(step, sel, rows){
+    var host = step.querySelector(sel); if(!host) return;
+    host.innerHTML = rows.map(function(r){
+      return '<div class="kvrow"><span class="kk">'+esc(r[0])+'</span><span class="kvv '+(r[2]||"")+'">'+esc(r[1])+'</span></div>';
+    }).join("");
+    refreshOpen(step);
+  }
+  function setSignals(step, sigs){
+    var host = step.querySelector("[data-interlock]"); if(!host) return;
+    host.innerHTML = sigs.map(function(s){
+      var st = s[1]===null ? "sk" : (s[1] ? "ok" : "no");
+      return '<div class="pred"><span class="pcode"></span><span class="pname">'+esc(s[0])+'</span>'+
+             '<span class="ptag '+st+'">'+(s[1]===null?"&#8212;":s[1])+'</span></div>';
+    }).join("");
+    refreshOpen(step);
+  }
+  function scenNote(step, text, kind){
+    var host = step.querySelector("[data-scennote]"); if(!host) return;
+    host.innerHTML = text ? noteHtml({t:kind||"bad", html:esc(text)}) : "";
+    refreshOpen(step);
+  }
+  function paintPreds(step, s){
+    if(!s.preds) return;
+    step.querySelectorAll("[data-pred]").forEach(function(n){
+      var token = n.dataset.token, res = runtime ? runtime.results[token] : undefined;
+      var tag = $(".ptag", n), st = res===true ? "ok" : res===false ? "no" : "sk";
+      tag.className = "ptag "+st;
+      tag.innerHTML = st==="ok" ? "PASS" : st==="no" ? "FAIL" : "&#8212;";
+    });
+    refreshOpen(step);
+  }
+
+  /* ========== lifecycle list ========== */
+  function buildLifecycle(){
+    ledgerEl.innerHTML = LIFECYCLE.map(function(r){
+      return '<div class="lrow" data-l="'+r[0]+'"><span class="ln">'+r[1]+'</span><span class="st">&#8212;</span></div>';
+    }).join("");
+  }
+  function setLifecycle(id, state, cur){
+    var row = ledgerEl.querySelector('[data-l="'+id+'"]'); if(!row) return;
+    if(cur) ledgerEl.querySelectorAll(".lrow").forEach(function(r){ r.classList.remove("cur"); });
+    if(cur) row.classList.add("cur");
+    var st = $(".st", row);
+    st.className = "st "+(state==="ok"?"ok":state==="no"?"no":state==="run"?"run":"");
+    st.innerHTML = state==="ok"?"PASS":state==="no"?"FAIL":state==="run"?"···":state==="skip"?"—":"&#8212;";
+  }
+
+  /* ========== side panel ========== */
+  var ENF = [
+    ["Permit issued","permitIssued"],["Evidence committed","committed"],["Watchdog healthy","watchdog"],
+    ["P_phys","pphys"],["Action released","released"],["Permit consumed","consumed"],["Receipt closed","receipt"]
+  ];
+  function paintEnforcement(){
+    var r = runtime, v = {};
+    if(!r){ ENF.forEach(function(e){ v[e[1]]=null; }); }
+    else {
+      v.permitIssued = r.permit.issued ? true : (r.decision.pi===null ? null : false);
+      v.committed    = r.evidence.ledgerCommitted ? true : (r.evidence.erTuple ? false : null);
+      v.watchdog     = !r.interlock.evaluated ? null : (r.interlock.sigWatchdog===1);
+      v.pphys        = !r.interlock.evaluated ? null : (r.interlock.pphys===1);
+      v.released     = r.execution.released ? true : (r.finalState ? false : null);
+      v.consumed     = r.execution.permitConsumed ? true : (r.finalState ? false : null);
+      v.receipt      = r.execution.receipt ? true : (r.finalState ? false : null);
+    }
+    $("#enf").innerHTML = ENF.map(function(e){
+      var val = v[e[1]];
+      var cls = val===null||val===undefined ? "" : val ? "ok" : "no";
+      var txt = val===null||val===undefined ? "—" : val ? "YES" : "NO";
+      if(e[1]==="pphys" && val!==null && val!==undefined) txt = val ? "1" : "0";
+      return '<div class="enfrow"><span>'+e[0]+'</span><span class="enfval '+cls+'">'+txt+'</span></div>';
+    }).join("");
+  }
+  function setGam(sel,val,zero){
+    var c=$(sel); c.className="gcell "+(val==="—"?"neutral":zero?"z":"nz");
+    $(".gv",c).innerHTML = val==="—" ? "&#8212;" : val;
+  }
+  function setDecisionPanel(kind, codes, reasonText){
+    var db=$("#dbadge"), ic=$("#dIc");
+    db.className = "dbadge "+(kind==="PERMIT"?"permit":kind==="SAFE_STATE"?"safe":"idle");
+    $("#dText").textContent = kind || "Awaiting run";
+    $("#dSub").textContent = kind==="PERMIT" ? "Authorization calculation: PERMIT"
+                            : kind==="SAFE_STATE" ? "Authorization calculation: SAFE_STATE" : "No decision yet";
+    ic.innerHTML = kind==="PERMIT"
+      ? '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : kind==="SAFE_STATE"
+      ? '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v5.2c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.5L12 2.5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 8.5v4M12 15.5h.01" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="1.6"/></svg>';
+    var rc=$("#rcodes");
+    rc.innerHTML = (codes && codes.length)
+      ? codes.map(function(c){ return '<span class="rcode '+(c[1]||"")+'">'+esc(c[0])+'</span>'; }).join("")
+      : '<span class="rcode">&#8212;</span>';
+    if(reasonText) $("#rtext").innerHTML = reasonText;
+  }
+  function setPermitPanel(){
+    var p = runtime ? runtime.permit : null;
+    var st = $("#ptState"), body = $("#ptBody"), life = $("#ptLife");
+    if(!p || !p.issued){
+      st.className = "pstate none"; st.textContent = "NOT ISSUED";
+      body.innerHTML = '<span style="color:var(--muted)">No execution credential has been issued for this action.</span>';
+      life.innerHTML = '<i>ISSUED</i><span>&#8594;</span><i>ACTIVE</i><span>&#8594;</span><i>CONSUMED</i><span>&#183;</span><i>EXPIRED</i><span>&#183;</span><i>REVOKED</i>';
+      return;
+    }
+    var cls = p.state==="CONSUMED" ? "consumed" : p.state==="REVOKED" ? "revoked" : "active";
+    st.className = "pstate "+cls; st.textContent = p.state;
+    body.innerHTML = [
+      ["Token", p.tokenId], ["Scope","WIRE_TRANSFER"], ["Action hash", p.actionHash.slice(0,12)+"…"],
+      ["Policy epoch", POLICY_EPOCH], ["TTL","5s · expires "+EXPIRES_AT.slice(11,23)],
+      ["Single-use","yes"], ["Revocable","yes"], ["Signature", p.signatureValid?"Ed25519 · valid":"invalid"]
+    ].map(function(r){
+      return '<div class="kvrow"><span class="kk">'+esc(r[0])+'</span><span class="kvv">'+esc(r[1])+'</span></div>';
+    }).join("");
+    var seq = ["ISSUED","ACTIVE", p.state==="REVOKED" ? "REVOKED" : "CONSUMED"];
+    var reached = p.state==="CONSUMED" ? 3 : p.state==="REVOKED" ? 3 : 2;
+    life.innerHTML = seq.map(function(n,i){
+      var on = i<reached ? " on" : "";
+      var tone = (i===2 && p.state==="REVOKED") ? " no" : (i===2 ? " ok" : "");
+      return '<i class="'+(on+(on?tone:"")).trim()+'">'+n+'</i>';
+    }).join('<span>&#8594;</span>');
+  }
+  function setLedgerPanel(){
+    var st=$("#ldState"), body=$("#ldBody");
+    if(!runtime || !runtime.evidence.erTuple){
+      st.className="pstate none"; st.textContent="PENDING";
+      body.innerHTML='<span style="color:var(--muted)">No authorization record committed yet.</span>'; return;
+    }
+    var ok = runtime.evidence.ledgerCommitted;
+    st.className = "pstate "+(ok?"consumed":"revoked"); st.textContent = ok?"COMMITTED":"COMMIT FAILED";
+    body.innerHTML = [
+      ["Record", ok ? "TXN_000042" : "—"],
+      ["Previous", PREV_LEDGER.slice(0,12)+"…"],
+      ["Decision", runtime.decision.result],
+      ["Action hash", (runtime.evidence.hashes.action||"").slice(0,12)+"…"],
+      ["Ledger hash", ok ? (runtime.evidence.hashes.ledger||"").slice(0,12)+"…" : "not appended"],
+      ["Status", ok ? "COMMITTED" : "APPEND FAILED"]
+    ].map(function(r){
+      var tone = (r[0]==="Status") ? (ok?"ok":"no") : "";
+      return '<div class="kvrow"><span class="kk">'+esc(r[0])+'</span><span class="kvv '+tone+'">'+esc(r[1])+'</span></div>';
+    }).join("");
+  }
+  function revealHash(sel,val){
+    var e=$(sel); e.classList.add("set");
+    if(reduce){ e.textContent=val; return; }
+    var hex="0123456789abcdef", frames=7, f=0;
+    var iv=setInterval(function(){
+      var out=""; for(var i=0;i<val.length;i++){
+        out += (f>=frames || i<Math.floor(val.length*(f/frames))) ? val[i] : hex[(Math.random()*16)|0]; }
+      e.textContent=out; if(++f>frames){ clearInterval(iv); e.textContent=val; }
+    },35);
+  }
+  function announce(msg){ $("#announce").textContent = msg; }
+
+  /* ========== reset ========== */
+  function resetVisual(){
+    runtime = null; sealedRecord = null;
+    STAGES.forEach(function(s){
+      var el = stepEl(s.id);
+      el.dataset.state = "idle";
+      $(".pill", el).textContent = "idle";
+      toggle(el, false);
+      ["[data-ctr]","[data-rows]","[data-decision]","[data-binding]","[data-permit]","[data-commit]","[data-execution]","[data-receipt]","[data-replay]"]
+        .forEach(function(sel){ var h=el.querySelector(sel); if(h) h.innerHTML=""; });
+      if(s.interlock) setSignals(el, [["SIG_GAMMA",null],["SIG_COMMIT",null],["SIG_WATCHDOG",null],["P_phys",null]]);
+      scenNote(el, null);
+      paintPreds(el, s);
+    });
+    buildLifecycle();
+    setDecisionPanel(null, null, "Gamma aggregates predicate deficits non-compensatorily: <b>Γ_G = max(action deficits)</b>, <b>Γ_class = max(class deficits)</b>. A single mandatory failure forces SAFE_STATE — concurring predicates never compensate for a failing one.");
+    setGam("#gG","—",false); setGam("#gC","—",false); setGam("#gP","—",false);
+    paintEnforcement(); setPermitPanel(); setLedgerPanel();
+    ["#hAction","#hEvid","#hLedger","#hRep","#hReceipt"].forEach(function(s){
+      var e=$(s); e.innerHTML="&#8212;"; e.classList.remove("set"); });
+    $("#hReceiptWrap").hidden = true;
+    $("#vlines").hidden = true; $("#vlines").innerHTML = "";
+    $("#repBadge").className="repbadge"; $("#repBadge").textContent="pending";
+    $("#verifyBtn").disabled = true;
+    var t=$("#terminal"); t.hidden=true; t.classList.remove("show","permit","safe");
+    $("#liveDot").classList.remove("on"); $("#liveState").textContent="idle";
+    paintAlgo();
+  }
+
+  /* ========== run ========== */
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, reduce?Math.min(ms,50):ms); }); }
+  function setState(id,state){
+    var el = stepEl(id); if(!el) return;
+    el.dataset.state = state;
+    $(".pill", el).textContent =
+      state==="active"?"evaluating": state==="pass"?"pass": state==="fail"?"fail":
+      state==="sealed"?"sealed": state==="blocked"?"blocked": state==="skip"?"not performed":"idle";
+  }
+  async function enter(id){
+    setState(id,"active");
+    setLifecycle(id,"run",true);
+    await sleep(DWELL[id]||300);
+  }
+
+  async function run(){
+    if(running) return;
+    running = true;
+    var btn=$("#runBtn"); btn.disabled=true; $("#runLbl").textContent="Authorizing";
+    btn.querySelector("svg").outerHTML='<span class="spin"></span>';
+    document.querySelectorAll(".seg").forEach(function(b){ b.disabled=true; });
+    resetVisual();
+    runtime = freshRuntime(current);
+    var sc = SCEN[current], failSet = {}; sc.fail.forEach(function(t){ failSet[t]=true; });
+    $("#liveDot").classList.add("on"); $("#liveState").textContent="evaluating";
+    announce("Authorization run started for scenario "+current+".");
+
+    /* ============ governance plane 1–5 ============ */
+    await enter("register");
+    setRows(stepEl("register"), "[data-rows]", [
+      ["use_case","International Wire Transfer"], ["business_owner","Treasury Operations"],
+      ["ai_system","AI Banking Assistant"], ["external_action","Cross-border Payment"],
+      ["critical_asset","Customer Funds"],
+      ["regulations","AML · KYC · Privacy · Payment Regs · AI Governance · Operational Risk"],
+      ["status","REGISTERED","ok"]
+    ]);
+    setState("register","sealed");
+
+    await enter("classify");
+    setRows(stepEl("classify"), "[data-rows]", [
+      ["financial_impact","HIGH","no"], ["customer_impact","HIGH","no"],
+      ["regulatory_impact","HIGH","no"], ["operational_impact","HIGH","no"],
+      ["safety_impact","LOW","ok"],
+      ["risk_class","TIER 4 · CRITICAL","no"],
+      ["enforcement_profile","complete_mediation · permit_ttl=5s · dual_authorization · class_veto · commit_before_actuate · no_degraded_execution"]
+    ]);
+    setState("classify","sealed");
+
+    await enter("mapping");
+    setRows(stepEl("mapping"), "[data-rows]", [
+      ["Identity Policy","→ customer authentication"], ["Access Policy","→ MFA required"],
+      ["Treasury Policy","→ transfer limit"], ["AML Policy","→ country restrictions · sanctions"],
+      ["KYC Policy","→ customer & beneficiary freshness"], ["Dual Authorization Policy","→ two approvals"],
+      ["Fraud Policy","→ risk within policy bound"], ["Behavior Policy","→ velocity monitoring"],
+      ["Evidence Policy","→ audit evidence required"], ["Enforcement Profile","→ class-level controls"]
+    ]);
+    setState("mapping","sealed");
+
+    await enter("generate");
+    var counts = manifestCounts();
+    setRows(stepEl("generate"), "[data-rows]", [
+      ["action_predicates", String(counts.action)+" (Γ_G)"],
+      ["class_predicates", String(counts.klass)+" (Γ_class)"],
+      ["revalidation_checks", String(counts.reval)],
+      ["total", String(counts.total)+" machine-checkable predicates","ok"],
+      ["example","POL-AML-001 → SANCTIONS_CLEAR · owner Financial Crime Compliance · freshness ≤ 24 h"],
+      ["failure_mode","every predicate fails closed to SAFE_STATE"]
+    ]);
+    setState("generate","sealed");
+
+    await enter("sign");
+    runtime.manifest = buildManifest();
+    var manifestHash = await digest(runtime.manifest);
+    runtime.evidence.hashes.manifest = manifestHash;
+    setRows(stepEl("sign"), "[data-rows]", [
+      ["approvers","Treasury Ops · Financial Crime Compliance · Risk Governance · Legal"],
+      ["manifest_hash", manifestHash.slice(0,20)+"…"],
+      ["policy_epoch", POLICY_EPOCH], ["method_version", METHOD_VERSION],
+      ["signature","Ed25519 · epoch key","ok"],
+      ["status","APPROVED · SIGNED · ACTIVE","ok"]
+    ]);
+    setState("sign","sealed"); setLifecycle("sign","ok",false);
+
+    /* ============ runtime authorization plane 6–24 ============ */
+    await enter("intercept");
+    setState("intercept","pass");
+
+    /* 2 — canonicalization: fix exactly what is being authorized */
+    await enter("context");
+    runtime.action = buildActionEnvelope();
+    var actionHash = await digest(runtime.action);
+    runtime.context = buildContextRecord(actionHash);
+    var contextHash = await digest(runtime.context);
+    runtime.evidence.hashes.action = actionHash;
+    runtime.evidence.hashes.context = contextHash;
+    runtime.permit.actionHash = actionHash;
+    setRows(stepEl("context"), "[data-ctr]", [
+      ["action_id", runtime.action.action_id], ["action_class", runtime.action.action_class],
+      ["principal", runtime.action.principal], ["account", runtime.action.account],
+      ["beneficiary", runtime.action.beneficiary], ["amount_minor", "25000000 USD"],
+      ["corridor", runtime.action.corridor], ["policy_epoch", POLICY_EPOCH],
+      ["runtime_epoch", RUNTIME_EPOCH], ["ttl", "5 s"],
+      ["policy_snapshot", runtime.evidence.hashes.manifest.slice(0,20)+"…"],
+      ["action_hash", actionHash.slice(0,20)+"…"], ["context_hash", "ctr@"+contextHash.slice(0,16)+"…"]
+    ]);
+    revealHash("#hAction", actionHash);
+    setState("context","pass");
+
+    /* 8 — interpretive sufficiency & freshness */
+    await enter("sufficiency");
+    evaluateStage("sufficiency", failSet); paintStage("sufficiency");
+    finishPredicateStage("sufficiency");
+
+    /* 3–8 — action-level predicate stages */
+    var seq = ["identity","account","beneficiary","policy","risk","sourceEvidence"];
+    for(let i=0;i<seq.length;i++){
+      let sid = seq[i];
+      await enter(sid);
+      evaluateStage(sid, failSet); paintStage(sid);
+      if(sc.stageNote && sc.stageNote[sid]) scenNote(stepEl(sid), sc.stageNote[sid], "bad");
+      finishPredicateStage(sid);
+    }
+    runtime.evidence.sourceBound = ACTION_STAGES.every(function(sid){
+      return (M[sid]||[]).every(function(p){ return runtime.results[p.token]===true; }); });
+
+    /* 9 — class-level controls */
+    await enter("classControls");
+    evaluateStage("classControls", failSet); paintStage("classControls");
+    if(sc.stageNote && sc.stageNote.classControls) scenNote(stepEl("classControls"), sc.stageNote.classControls, "bad");
+    finishPredicateStage("classControls");
+
+    /* 10 — deterministic authorization */
+    await enter("decision");
+    var actionPreds = [], classPreds = [];
+    ACTION_STAGES.forEach(function(sid){ (M[sid]||[]).forEach(function(p){
+      actionPreds.push({token:p.token, pass: runtime.results[p.token]===true}); }); });
+    CLASS_STAGES.forEach(function(sid){ (M[sid]||[]).forEach(function(p){
+      classPreds.push({token:p.token, pass: runtime.results[p.token]===true}); }); });
+    runtime.predicates.action = actionPreds;
+    runtime.predicates.klass  = classPreds;
+    var d = computeDecision(actionPreds, classPreds);
+    runtime.decision.gammaGlobal = d.gammaGlobal;
+    runtime.decision.gammaClass  = d.gammaClass;
+    runtime.decision.pi          = d.pi;
+    runtime.decision.result      = d.result;
+    setGam("#gG", d.gammaGlobal, d.gammaGlobal===0);
+    setGam("#gC", d.gammaClass,  d.gammaClass===0);
+    setGam("#gP", d.pi,          d.pi===1);
+    setRows(stepEl("decision"), "[data-decision]", [
+      ["Γ_G", String(d.gammaGlobal), d.gammaGlobal===0?"ok":"no"],
+      ["Γ_class", String(d.gammaClass), d.gammaClass===0?"ok":"no"],
+      ["Π", String(d.pi), d.pi===1?"ok":"no"],
+      ["decision", d.result, d.pi===1?"ok":"no"],
+      ["failed_predicates", sc.fail.length ? sc.fail.join(", ") : "none", sc.fail.length?"no":"ok"]
+    ]);
+    setState("decision", d.pi===1 ? "sealed" : "fail");
+    setLifecycle("decision", d.pi===1 ? "ok" : "no", false);
+    announce("Authorization decision "+d.result+".");
+
+    /* 11 — execution binding */
+    await enter("binding");
+    if(d.pi===1){
+      setRows(stepEl("binding"), "[data-binding]", [
+        ["bound_action", actionHash.slice(0,20)+"…"], ["account","ACC-4471-BUS"],
+        ["beneficiary","BEN-SUPPLIER-B"], ["amount_minor","25000000 USD"],
+        ["context_hash","ctr@"+contextHash.slice(0,16)+"…"], ["scope","WIRE_TRANSFER"]
+      ]);
+      setState("binding","pass");
+    } else {
+      setRows(stepEl("binding"), "[data-binding]", [["status","not performed — no authorization to bind","no"]]);
+      setState("binding","skip");
+    }
+
+    /* 12 — Permit-to-Act issuance */
+    await enter("permit");
+    if(d.pi===1){
+      var tokenSeed = await digest({t:"pta", action:actionHash, epoch:POLICY_EPOCH, scenario:current});
+      runtime.permit.issued = true;
+      runtime.permit.tokenId = "PTA-"+tokenSeed.slice(0,4)+"-"+tokenSeed.slice(4,8);
+      runtime.permit.state = "ACTIVE";
+      runtime.permit.expiresAt = EXPIRES_AT;
+      runtime.permit.signatureValid = true;
+      setRows(stepEl("permit"), "[data-permit]", [
+        ["token_id", runtime.permit.tokenId], ["action_hash", actionHash.slice(0,20)+"…"],
+        ["scope","WIRE_TRANSFER"], ["principal","U-8821"], ["policy_epoch",POLICY_EPOCH],
+        ["runtime_epoch",RUNTIME_EPOCH], ["issued_at",ISSUED_AT], ["expires_at",EXPIRES_AT],
+        ["single_use","true"], ["revocable","true"], ["signature","Ed25519 · sig@"+tokenSeed.slice(8,14)+"…"],
+        ["state","ACTIVE","ok"]
+      ]);
+      setState("permit","sealed"); setLifecycle("permit","ok",false);
+    } else {
+      runtime.permit.state = "NOT_ISSUED";
+      setRows(stepEl("permit"), "[data-permit]", [
+        ["state","NOT_ISSUED","no"],
+        ["reason", sc.reason || "SAFE_STATE_ENFORCED","no"],
+        ["note","no execution credential exists for this action"]
+      ]);
+      setState("permit","blocked"); setLifecycle("permit","no",false);
+    }
+    setPermitPanel(); paintEnforcement();
+
+    /* 13 — authorization proof commitment (denials are committed too) */
+    await enter("commit");
+    runtime.decision.reasonCodes = buildReasonCodes(sc, d, null);
+    runtime.evidence.erTuple = buildERTuple();
+    var evidenceHash = await digest(runtime.evidence.erTuple);
+    var ledgerHash   = await digest({prev:PREV_LEDGER, ertuple:evidenceHash, method:METHOD_VERSION});
+    runtime.evidence.hashes.evidence = evidenceHash;
+    runtime.evidence.ledgerCommitted = !!sc.commitOk;
+    if(sc.commitOk){
+      runtime.evidence.hashes.ledger = ledgerHash;
+      runtime.evidence.evidenceQuad = buildEvidenceQuad(ledgerHash);
+    }
+    setRows(stepEl("commit"), "[data-commit]", [
+      ["ertuple","action + context + predicate results + Γ + decision + reason codes"],
+      ["permit_metadata", runtime.permit.issued ? runtime.permit.tokenId : "none (denial record)"],
+      ["evidence_hash", evidenceHash.slice(0,20)+"…"],
+      ["quad.spec_clause", SPEC_CLAUSE],
+      ["quad.evaluation_id", EVAL_ID],
+      ["quad.method_version", METHOD_VERSION],
+      ["quad.ledger_hash", sc.commitOk ? ledgerHash.slice(0,20)+"…" : "NOT APPENDED", sc.commitOk?"":"no"],
+      ["ledger_append", sc.commitOk ? "COMMITTED" : "FAILED", sc.commitOk?"ok":"no"]
+    ]);
+    if(sc.stageNote && sc.stageNote.commit) scenNote(stepEl("commit"), sc.stageNote.commit, "bad");
+    revealHash("#hEvid", evidenceHash);
+    if(sc.commitOk) revealHash("#hLedger", ledgerHash); else $("#hLedger").textContent="commit failed";
+    setState("commit", sc.commitOk ? "sealed" : "fail");
+    setLifecycle("commit", sc.commitOk ? "ok" : "no", false);
+    setLedgerPanel(); paintEnforcement();
+
+    /* 14 — three-signal interlock */
+    await enter("interlock");
+    runtime.interlock = computeInterlock({
+      decision: runtime.decision, committed: runtime.evidence.ledgerCommitted, watchdogHealthy: !!sc.watchdogOk });
+    runtime.interlock.evaluated = true;
+    setSignals(stepEl("interlock"), [
+      ["SIG_GAMMA", runtime.interlock.sigGamma],
+      ["SIG_COMMIT", runtime.interlock.sigCommit],
+      ["SIG_WATCHDOG", runtime.interlock.sigWatchdog],
+      ["P_phys", runtime.interlock.pphys]
+    ]);
+    setState("interlock", runtime.interlock.pphys===1 ? "pass" : "fail");
+    setLifecycle("interlock", runtime.interlock.pphys===1 ? "ok" : "no", false);
+    paintEnforcement();
+
+    /* 15 — last-moment revalidation */
+    await enter("revalidate");
+    if(runtime.interlock.pphys===1){
+      M.revalidate.forEach(function(p){ runtime.results[p.token]=true; });
+      paintStage("revalidate");
+      setState("revalidate","pass");
+    } else {
+      M.revalidate.forEach(function(p){ runtime.results[p.token]=undefined; });
+      paintStage("revalidate");
+      scenNote(stepEl("revalidate"), "Not performed — the interlock never released the actuation path.", "warn");
+      setState("revalidate","skip");
+    }
+
+    /* 16 — execution or SAFE_STATE */
+    await enter("execution");
+    if(runtime.interlock.pphys===1){
+      runtime.permit.state = "CONSUMED";
+      runtime.permit.consumed = true;
+      runtime.execution.permitConsumed = true;
+      runtime.execution.released = true;
+      runtime.execution.networkReference = "SWIFT-REF-881420";
+      setRows(stepEl("execution"), "[data-execution]", [
+        ["permit_state","ACTIVE → CONSUMED","ok"],
+        ["consumption","atomic · single-use","ok"],
+        ["actuation_path","RELEASED","ok"],
+        ["submitted_action_hash", actionHash.slice(0,20)+"…"],
+        ["executor","Bank Payment Gateway"]
+      ]);
+      setState("execution","pass");
+    } else {
+      if(runtime.permit.issued){ runtime.permit.state = "REVOKED"; }
+      setRows(stepEl("execution"), "[data-execution]", [
+        ["actuation_path","CLOSED","no"],
+        ["permit_state", runtime.permit.issued ? "ACTIVE → REVOKED (never consumed)" : "NOT_ISSUED","no"],
+        ["instruction","never submitted","no"],
+        ["funds","not moved","no"]
+      ]);
+      setState("execution","fail");
+    }
+    setLifecycle("execution", runtime.execution.released ? "ok":"no", false);
+    setPermitPanel(); paintEnforcement();
+
+    /* 17 — receipt closure */
+    await enter("receipt");
+    if(runtime.execution.released){
+      var receiptHash = await digest({ref:runtime.execution.networkReference, action:actionHash, permit:runtime.permit.tokenId});
+      runtime.execution.receipt = { network_reference:runtime.execution.networkReference,
+        submission_status:"ACCEPTED_FOR_SETTLEMENT", permit_state:"CONSUMED",
+        submitted_action_hash:actionHash, receipt_hash:receiptHash };
+      runtime.evidence.hashes.receipt = receiptHash;
+      setRows(stepEl("receipt"), "[data-receipt]", [
+        ["network_reference", runtime.execution.networkReference],
+        ["submission_status","ACCEPTED_FOR_SETTLEMENT","ok"],
+        ["permit_state","CONSUMED","ok"],
+        ["submitted_action_hash", actionHash.slice(0,20)+"…"],
+        ["receipt_hash","rcpt@"+receiptHash.slice(0,16)+"…"]
+      ]);
+      $("#hReceiptWrap").hidden = false; revealHash("#hReceipt", receiptHash);
+      setState("receipt","sealed"); setLifecycle("receipt","ok",false);
+    } else {
+      setRows(stepEl("receipt"), "[data-receipt]", [
+        ["external_receipt","none","no"],
+        ["reason","the action was never released"]
+      ]);
+      setState("receipt","skip"); setLifecycle("receipt","skip",false);
+    }
+
+    /* final runtime state */
+    runtime.finalState = finalRuntimeState(runtime.decision, runtime.interlock);
+    runtime.decision.reasonCodes = buildReasonCodes(sc, d, runtime);
+    setDecisionPanel(runtime.decision.result, runtime.decision.reasonCodes,
+      current==="A" ? "Every mandatory action-level and class-level predicate concurs, the authorization proof committed and all three interlock signals asserted."
+                    : sc.text);
+    paintEnforcement();
+
+    /* 18 — independent replay */
+    await enter("replay");
+    sealedRecord = { erTuple: runtime.evidence.erTuple, hashes: JSON.parse(JSON.stringify(runtime.evidence.hashes)),
+      decision: JSON.parse(JSON.stringify(runtime.decision)), committed: runtime.evidence.ledgerCommitted,
+      executed: runtime.execution.released, permitConsumed: runtime.execution.permitConsumed,
+      receipt: runtime.execution.receipt, scenarioId: current };
+    var replayHash = await digest({ertuple:runtime.evidence.hashes.evidence, policy_epoch:POLICY_EPOCH, method:METHOD_VERSION});
+    runtime.evidence.hashes.replay = replayHash;
+    sealedRecord.hashes.replay = replayHash;
+    setRows(stepEl("replay"), "[data-replay]", [
+      ["recomputes","predicates · Γ_G · Γ_class · Π · decision · reason codes"],
+      ["scope", POLICY_EPOCH+" · "+METHOD_VERSION],
+      ["replay_hash", replayHash.slice(0,20)+"…"],
+      ["excluded","wall-clock time · current policy · live external systems"]
+    ]);
+    revealHash("#hRep", replayHash);
+    $("#repBadge").className="repbadge on";
+    $("#repBadge").innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>sealed';
+    $("#verifyBtn").disabled = false;
+    setState("replay","sealed");
+
+    /* ============ governance operations plane 25–28 ============ */
+    var safe = runtime.finalState !== "PERMIT";
+
+    await enter("monitoring");
+    setRows(stepEl("monitoring"), "[data-rows]", [
+      ["permit_lifecycle", runtime.permit.issued ? "issued → "+runtime.permit.state : "not issued"],
+      ["permit_revocations", runtime.permit.state==="REVOKED" ? "1" : "0", runtime.permit.state==="REVOKED"?"no":"ok"],
+      ["replay_attempts","1 · decision reproduced","ok"],
+      ["predicate_failures", sc.fail.length ? sc.fail.join(", ") : "none", sc.fail.length?"no":"ok"],
+      ["class_level_vetoes", String(runtime.decision.gammaClass), runtime.decision.gammaClass?"no":"ok"],
+      ["hash_chain_health", runtime.evidence.ledgerCommitted ? "continuous" : "GAP — record not appended", runtime.evidence.ledgerCommitted?"ok":"no"],
+      ["evidence_commit_failures", runtime.evidence.ledgerCommitted ? "0" : "1", runtime.evidence.ledgerCommitted?"ok":"no"],
+      ["watchdog_failures", runtime.interlock.sigWatchdog ? "0" : "1", runtime.interlock.sigWatchdog?"ok":"no"],
+      ["safe_state_events", safe ? "1" : "0", safe?"no":"ok"],
+      ["control_cycle","within budget","ok"]
+    ]);
+    setState("monitoring","sealed"); setLifecycle("monitoring","ok",false);
+
+    await enter("incident");
+    if(safe){
+      setRows(stepEl("incident"), "[data-rows]", [
+        ["incident","INC-2026-0723-"+current, "no"],
+        ["trigger", sc.reason || "SAFE_STATE_ENFORCED", "no"],
+        ["absorption","SAFE_STATE held · no external effect","ok"],
+        ["runbook", runtime.decision.pi===1
+            ? "restore ledger durability → re-attest → re-propose"
+            : "route to human review → remediate control input → re-propose"],
+        ["re_attestation","required before the action class resumes autonomy","no"],
+        ["evidence","sealed denial record available to audit","ok"]
+      ]);
+      setState("incident","fail");
+    } else {
+      setRows(stepEl("incident"), "[data-rows]", [
+        ["incident","none opened","ok"],
+        ["safe_state_events","0","ok"],
+        ["note","the authorization completed and the receipt closed cleanly"]
+      ]);
+      setState("incident","sealed");
+    }
+
+    await enter("evolution");
+    var PROPOSAL = {
+      A:["no control change proposed","monitoring baseline updated for this corridor"],
+      B:["review AML country control POL-AML-002","confirm corridor coverage and restriction currency"],
+      C:["reaffirm dual-authorization threshold POL-DUA-001","approval SLA review for Treasury Operations"],
+      D:["tighten beneficiary approval workflow POL-BEN-002","shorten BENEFICIARY_CHANGE_AGED window"],
+      E:["raise ledger durability SLO","add a commit pre-flight probe before permit issuance"],
+      F:["schedule corridor class review","confirm veto expiry and re-attestation criteria"]
+    }[current];
+    setRows(stepEl("evolution"), "[data-rows]", [
+      ["finding", safe ? (sc.reason || "SAFE_STATE_ENFORCED") : "clean authorization"],
+      ["proposed_change", PROPOSAL[0]],
+      ["follow_up", PROPOSAL[1]],
+      ["risk_reclassification", "TIER 4 · CRITICAL — unchanged"],
+      ["owner_review", "Risk Governance · Financial Crime Compliance"]
+    ]);
+    setState("evolution","sealed");
+
+    await enter("epoch");
+    var nextEpoch = "POL-EPOCH-775";
+    setRows(stepEl("epoch"), "[data-rows]", [
+      ["current_epoch", POLICY_EPOCH+" (active)","ok"],
+      ["proposed_epoch", nextEpoch+" (draft)"],
+      ["manifest_resign", "required — new epoch key"],
+      ["applies_to", "future actions only"],
+      ["this_decision", "replays under "+POLICY_EPOCH+" · "+METHOD_VERSION, "ok"],
+      ["feedback_loop", "epoch activation → re-sign manifest → stage 05"]
+    ]);
+    setState("epoch","sealed"); setLifecycle("epoch","ok",false);
+
+    showTerminal();
+    $("#liveState").textContent = runtime.finalState==="PERMIT" ? "permit" : "safe_state";
+    $("#liveDot").classList.remove("on");
+    announce("Final runtime state "+runtime.finalState+".");
+
+    /* single, post-run disclosure of the decisive stage */
+    var focusStage = runtime.finalState==="PERMIT" ? null
+      : (sc.fail.length ? stageOfToken(sc.fail[0]) : (!sc.commitOk ? "commit" : "interlock"));
+    if(focusStage) toggle(stepEl(focusStage), true);
+
+    running=false; btn.disabled=false;
+    document.querySelectorAll(".seg").forEach(function(b){ b.disabled=false; });
+    $("#runLbl").textContent="Run again";
+    btn.querySelector(".spin").outerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 4.5l13 7.5-13 7.5V4.5z" fill="currentColor"/></svg>';
+  }
+
+  function stageOfToken(token){
+    var found=null;
+    Object.keys(M).forEach(function(sid){ M[sid].forEach(function(p){ if(p.token===token) found=sid; }); });
+    return found;
+  }
+  function evaluateStage(sid, failSet){
+    (M[sid]||[]).forEach(function(p){ runtime.results[p.token] = !failSet[p.token]; });
+  }
+  function paintStage(sid){
+    var s = STAGES.filter(function(x){ return x.id===sid; })[0];
+    paintPreds(stepEl(sid), s);
+  }
+  function finishPredicateStage(sid){
+    var failed = (M[sid]||[]).some(function(p){ return runtime.results[p.token]===false; });
+    setState(sid, failed ? "fail" : "pass");
+    setLifecycle(sid, failed ? "no" : "ok", false);
+  }
+
+  function buildReasonCodes(sc, d, r){
+    var codes = [];
+    var contextOk = M.sufficiency.every(function(p){ return runtime.results[p.token]===true; });
+    codes.push(contextOk ? ["CONTEXT_SUFFICIENT","ok"] : ["CONTEXT_INSUFFICIENT","no"]);
+    if(d.gammaGlobal===0 && d.gammaClass===0) codes.push(["ALL_MANDATORY_PREDICATES_CONCUR","ok"]);
+    if(d.gammaClass===0)  codes.push(["CLASS_LEVEL_CONTROLS_CLEAR","ok"]); else codes.push(["CLASS_LEVEL_VETO_ACTIVE","no"]);
+    if(sc.reason && sc.reason!=="CLASS_LEVEL_VETO_ACTIVE" && sc.reason!=="EVIDENCE_COMMIT_FAILED") codes.push([sc.reason,"no"]);
+    codes.push(["NON_COMPENSATORY",""]);
+    if(!r) return codes;
+    if(r.permit.issued) codes.push(["PERMIT_ISSUED","ok"]); else codes.push(["PERMIT_NOT_ISSUED","no"]);
+    if(r.evidence.ledgerCommitted) codes.push(["AUTHORIZATION_RECORD_COMMITTED","ok"]);
+    else codes.push(["EVIDENCE_COMMIT_FAILED","no"]);
+    if(r.interlock.pphys===1) codes.push(["INTERLOCK_RELEASED","ok"]);
+    if(r.execution.permitConsumed) codes.push(["PERMIT_CONSUMED","ok"]);
+    else if(r.permit.issued) codes.push(["PERMIT_REVOKED","no"]);
+    if(r.execution.receipt) codes.push(["EXECUTION_RECEIPT_BOUND","ok"]);
+    if(r.finalState==="SAFE_STATE") codes.push(["SAFE_STATE_ENFORCED","no"]);
+    return codes;
+  }
+
+  /* ========== terminal card ========== */
+  function showTerminal(){
+    var t=$("#terminal"), r=runtime;
+    var permitPath = r.finalState==="PERMIT";
+    var interlockDenied = r.decision.pi===1 && r.interlock.pphys===0;
+    t.className = "terminal "+(permitPath?"permit":"safe"); t.hidden=false;
+
+    var badge = permitPath
+      ? '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v5.2c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.5L12 2.5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M15.5 8.5l-7 7M8.5 8.5l7 7" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>';
+
+    var head, body;
+    if(permitPath){
+      head = "PERMIT — action released";
+      body = "Gamma issued a scoped Permit-to-Act, committed the authorization proof, validated all three interlock signals, consumed the permit atomically and released the exact payment instruction to the Bank Payment Network.";
+    } else if(interlockDenied){
+      head = "SAFE_STATE — permit calculation did not become actuation authority";
+      body = "The predicates concurred, but proof commitment or watchdog health failed. P_phys remained 0, so the payment instruction never reached the bank network.";
+    } else {
+      head = "SAFE_STATE — no permit issued";
+      body = "A mandatory predicate failed. Gamma committed the denial proof, kept the execution path closed and did not release funds.";
+    }
+
+    var flow = permitPath
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="color:var(--pass)"><path d="M4 12h16m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Actuation path released &#183; authorized payment instruction submitted &#183; permit consumed atomically.</span>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="color:var(--hold)"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.6"/></svg><span><span class="dest">Execution path closed.</span> Routed to human review — funds never moved.</span>';
+
+    var rows = [
+      ["Authorization calculation", r.decision.result],
+      ["Execution authority released", r.execution.released ? "YES" : "NO"],
+      ["Operational result", r.finalState]
+    ];
+    if(r.execution.receipt) rows.push(["Settlement reference", r.execution.receipt.network_reference]);
+    else rows.push(["External receipt", "none — action was never released"]);
+
+    t.innerHTML =
+      '<div class="term-top"><div class="term-badge">'+badge+'</div>'+
+        '<div class="term-txt"><b>'+esc(head)+'</b><span>'+esc(body)+'</span></div></div>'+
+      '<div class="term-flow">'+flow+'</div>'+
+      '<div class="term-note">'+rows.map(function(x){
+        return '<span class="tk">'+esc(x[0])+': <b>'+esc(x[1])+'</b></span>'; }).join("")+'</div>';
+    requestAnimationFrame(function(){
+      t.classList.add("show");
+      t.scrollIntoView({behavior: reduce?"auto":"smooth", block:"nearest"});
+    });
+  }
+
+  /* ========== replay verification ========== */
+  $("#verifyBtn").addEventListener("click", async function(){
+    if(!sealedRecord) return;
+    var btn = this; btn.disabled = true; btn.textContent = "Replaying…";
+
+    /* recompute strictly from the sealed record — no clock, no live systems */
+    var evidenceHash = await digest(sealedRecord.erTuple);
+    var replayHash   = await digest({ertuple:evidenceHash, policy_epoch:POLICY_EPOCH, method:METHOD_VERSION});
+    var recomputed   = computeDecision(
+      sealedRecord.erTuple.predicate_results.filter(function(p){ return p.level==="action"; }),
+      sealedRecord.erTuple.predicate_results.filter(function(p){ return p.level==="class"; }));
+
+    var decisionMatch = recomputed.result===sealedRecord.decision.result &&
+                        recomputed.gammaGlobal===sealedRecord.decision.gammaGlobal &&
+                        recomputed.gammaClass===sealedRecord.decision.gammaClass &&
+                        recomputed.pi===sealedRecord.decision.pi;
+    var evidenceMatch = evidenceHash===sealedRecord.hashes.evidence;
+    var replayMatch   = replayHash===sealedRecord.hashes.replay;
+    var ledgerValid   = sealedRecord.committed;
+
+    var lines = [
+      ["Authorization replay", decisionMatch && evidenceMatch && replayMatch ? "MATCH" : "MISMATCH"],
+      ["Decision match", decisionMatch ? "YES" : "NO"],
+      ["Evidence hash match", evidenceMatch ? "YES" : "NO"],
+      ["Ledger link valid", ledgerValid ? "YES" : "NO"]
+    ];
+    if(sealedRecord.executed){
+      lines.push(["— Execution verification", ""]);
+      lines.push(["Permit consumed", sealedRecord.permitConsumed ? "YES" : "NO"]);
+      lines.push(["Submitted action hash match", sealedRecord.receipt.submitted_action_hash===sealedRecord.hashes.action ? "YES" : "NO"]);
+      lines.push(["Receipt bound", sealedRecord.receipt ? "YES" : "NO"]);
+    } else {
+      lines.push(["Execution verification", "N/A — no action released"]);
+    }
+
+    var v=$("#vlines"); v.hidden=false;
+    v.innerHTML = lines.map(function(l){
+      if(l[1]==="") return '<div class="vline" style="margin-top:6px"><span style="font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:640">'+esc(l[0].replace("— ",""))+'</span></div>';
+      var cls = /YES|MATCH/.test(l[1]) ? "ok" : /NO|MISMATCH/.test(l[1]) ? "no" : "";
+      return '<div class="vline"><span>'+esc(l[0])+'</span><span class="vv '+cls+'">'+esc(l[1])+'</span></div>';
+    }).join("");
+
+    var b=$("#repBadge"); b.className="repbadge on";
+    b.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+      (decisionMatch && evidenceMatch && replayMatch ? "IDENTICAL" : "MISMATCH");
+    ["#hEvid","#hRep"].forEach(function(s){
+      var e=$(s); e.style.background="var(--pass-soft)"; setTimeout(function(){ e.style.background=""; },420); });
+    announce("Replay complete: "+(decisionMatch?"decision reproduced identically.":"decision mismatch."));
+    btn.disabled=false; btn.textContent="Re-run replay";
+  });
+
+  /* ========== controls ========== */
+  document.querySelectorAll(".seg").forEach(function(b){
+    b.addEventListener("click", function(){
+      if(running) return;
+      document.querySelectorAll(".seg").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+      b.setAttribute("aria-pressed","true");
+      current = b.dataset.sc;
+      $("#scenNote").textContent = SCEN[current].name;
+      resetVisual();
+      $("#runLbl").textContent="Run Authorization";
+    });
+  });
+  $("#runBtn").addEventListener("click", run);
+  $("#resetBtn").addEventListener("click", function(){
+    if(running) return; resetVisual(); $("#runLbl").textContent="Run Authorization"; });
+
+  $("#themeBtn").addEventListener("click", function(){
+    var root=document.documentElement, cur=root.getAttribute("data-theme");
+    var dark = cur ? cur==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.setAttribute("data-theme", dark?"light":"dark");
+    $("#themeLbl").textContent = dark?"Light":"Dark";
+  });
+
+  /* ========== "how it works": the 28-stage map, built from STAGES itself ========== */
+  var MAP_BANDS = [
+    {cls:"gov", from:0,  to:5,  label:"Governance plane", range:"stages 1–5",
+     out:"Output → Signed Predicate Manifest"},
+    {cls:"rt",  from:5,  to:24, label:"Gamma boundary · Runtime authorization plane", range:"stages 6–24",
+     out:"Output → PERMIT / SAFE_STATE + sealed evidence", shield:true},
+    {cls:"ops", from:24, to:28, label:"Governance operations plane", range:"stages 25–28",
+     out:"Output → monitoring · incidents · next policy epoch"}
+  ];
+  var KEY_STAGES = {sign:1, decision:1, permit:1, interlock:1};
+
+  function buildMap(){
+    var shield='<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v5.2c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.5L12 2.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+    $("#flow28").innerHTML = MAP_BANDS.map(function(b){
+      return '<div class="sband '+b.cls+'">'+
+               '<span class="sk">'+(b.shield?shield:'')+esc(b.label)+'</span>'+
+               '<span class="srange">'+esc(b.range)+'</span>'+
+               '<span class="sl"></span>'+
+               '<span class="so">'+esc(b.out)+'</span>'+
+             '</div>'+
+             '<div class="s28">'+ STAGES.slice(b.from, b.to).map(function(st){
+               return '<button class="st '+b.cls+(KEY_STAGES[st.id]?" key":"")+'" type="button" data-goto="'+st.id+'">'+
+                        '<span class="sn">'+parseInt(st.n,10)+'</span>'+
+                        '<span class="sx"><b>'+st.title+'</b><span>'+st.sub+'</span></span>'+
+                      '</button>';
+             }).join("")+'</div>';
+    }).join("");
+
+    /* each map entry jumps to — and opens — that stage in the live pipeline */
+    $("#flow28").querySelectorAll("[data-goto]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var el = stepEl(btn.dataset.goto); if(!el) return;
+        toggle(el, true);
+        el.scrollIntoView({behavior: reduce?"auto":"smooth", block:"center"});
+        el.classList.add("flash");
+        setTimeout(function(){ el.classList.remove("flash"); }, 1200);
+      });
+    });
+  }
+
+  $("#howBtn").addEventListener("click", function(){
+    var panel=$("#howPanel"), open = this.getAttribute("aria-expanded")==="true";
+    this.setAttribute("aria-expanded", open?"false":"true");
+    panel.hidden = open;
+  });
+
+  /* ========== init ========== */
+  buildSteps(); buildLifecycle(); buildMap(); resetVisual();
+  $("#scenNote").textContent = SCEN[current].name;
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "evidence_level": "Measured Runtime",
+  "renamed_from": "PTP Synchronization",
+  "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md.",
+  "clock_source": "CLOCK_MONOTONIC",
+  "timestamp_resolution_ns": 41,
+  "samples": 20000,
+  "sampling_jitter_ns": {
+    "n": 20000,
+    "unit": "ns",
+    "mean": 275.7479,
+    "min": 166,
+    "max": 12625,
+    "p50": 250,
+    "p95": 333,
+    "p99": 417
+  },
+  "monotonic_consistency": true,
+  "non_monotonic_observations": 0,
+  "wall_vs_monotonic_drift_ppm": -18.17884346197895,
+  "wall_vs_monotonic_note": "small nonzero drift is expected: the wall clock is NTP-disciplined while the monotonic clock is not"
+}

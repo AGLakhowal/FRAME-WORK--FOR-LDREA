@@ -1,0 +1,33 @@
+{
+  "execution_trace.csv": [
+    "event_id",
+    "episode_id",
+    "timestamp",
+    "step_number",
+    "event_type",
+    "runtime_component",
+    "processing_time_ms",
+    "detail(json)"
+  ],
+  "decisions.csv": [
+    "episode",
+    "step",
+    "tool",
+    "class",
+    "gamma_global",
+    "gamma_class",
+    "pi",
+    "deficit_count",
+    "decision",
+    "blocking_predicate",
+    "executed",
+    "harm_threshold"
+  ],
+  "predicates.csv": [
+    "episode",
+    "step",
+    "predicate",
+    "deficit",
+    "status"
+  ]
+}

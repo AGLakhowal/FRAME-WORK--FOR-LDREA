@@ -1,0 +1,20 @@
+{
+  "campaign": "runtime_context_and_replay_profiling",
+  "n_rows": 5000,
+  "runtime_context": {
+    "isolation": "wrapped FreshnessClock + CommitActuateJournal (timers only)",
+    "rcl_calls": 35000,
+    "latency_ms_per_row": 0.01059101287391968,
+    "total_s": 0.052955064369598404,
+    "pct_of_end_to_end": 5.911608617887955
+  },
+  "replay": {
+    "isolation": "frozen write_replay_manifest (write_pipeline_manifest)",
+    "latency_ms_per_row": 0.014995891800208484,
+    "total_s": 0.07497945900104241,
+    "pct_of_end_to_end": 8.370289438258318
+  },
+  "full_pipeline_ms_per_row_measured": 0.16416029999963938,
+  "end_to_end_incl_replay_ms_per_row": 0.17915619179984787,
+  "note": "Runtime Context here = the RCL plane-B operations (freshness/velocity/commit-actuate ordering) that ablation `without_runtime_context` disables; measured by wrapping the frozen FreshnessClock/CommitActuateJournal with timers. Replay = the frozen ERTuple manifest emitter. No frozen logic modified."
+}

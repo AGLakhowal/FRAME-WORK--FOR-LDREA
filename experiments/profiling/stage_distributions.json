@@ -1,0 +1,41 @@
+{
+  "source": "recorded AgentDojo execution traces (engine-emitted timings)",
+  "stages": {
+    "predicate_evaluation": {
+      "count": 108,
+      "mean_ms": 0.008503703703703704,
+      "median_ms": 0.00845,
+      "p95_ms": 0.0125,
+      "p99_ms": 0.0169,
+      "std_ms": 0.004499302665095523,
+      "note": "p95\u2248q3, p99\u2248max from recorded-trace descriptive stats"
+    },
+    "gamma_intercept": {
+      "count": 42,
+      "mean_ms": 0.013466666666666667,
+      "median_ms": 0.0052,
+      "p95_ms": 0.011325,
+      "p99_ms": 0.1472,
+      "std_ms": 0.02465972985299645,
+      "note": "p95\u2248q3, p99\u2248max from recorded-trace descriptive stats"
+    },
+    "gamma_computation": {
+      "count": 14,
+      "mean_ms": 0.021592857142857143,
+      "median_ms": 0.0172,
+      "p95_ms": 0.027925000000000002,
+      "p99_ms": 0.0587,
+      "std_ms": 0.014352028228989597,
+      "note": "p95\u2248q3, p99\u2248max from recorded-trace descriptive stats"
+    },
+    "authorization_actuation": {
+      "count": 42,
+      "mean_ms": 0.4474142857142857,
+      "median_ms": 0.1945,
+      "p95_ms": 0.429825,
+      "p99_ms": 4.8342,
+      "std_ms": 0.8173406157961107,
+      "note": "p95\u2248q3, p99\u2248max from recorded-trace descriptive stats"
+    }
+  }
+}

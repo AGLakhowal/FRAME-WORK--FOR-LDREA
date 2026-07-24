@@ -1,0 +1,36 @@
+LICENSE — NOT YET DECLARED
+==========================
+
+This file is a PLACEHOLDER. No license has been declared for this repository yet.
+
+Until a license is chosen and this file is replaced, **all rights are reserved** by the copyright
+holder(s). Absent an explicit license, the default position under copyright law is that no permission
+is granted to copy, modify, redistribute or make derivative use of this work — even though the source
+is publicly readable.
+
+Why this matters for the artifact
+---------------------------------
+This repository is the reproducibility artifact accompanying an IEEE Access submission. Artifact
+evaluators and independent reviewers must be able to *run* the code to verify the paper's claims. An
+undeclared license is a practical blocker: a careful reviewer may decline to execute or redistribute
+code they have no explicit permission to use.
+
+**Declaring a license before the public v1.0-paper release is strongly recommended.**
+
+Common choices for a research artifact of this kind:
+
+  - MIT               — maximally permissive, shortest text, most common for research code.
+  - Apache-2.0        — permissive, adds an explicit patent grant and a NOTICE mechanism.
+  - BSD-3-Clause      — permissive, includes a no-endorsement clause.
+  - CC-BY-4.0         — for the documentation/data portions, often paired with a code license.
+
+To finalize:
+  1. Replace the entire contents of this file with the chosen license text.
+  2. Update the License badge in README.md (it currently reads "NOT YET DECLARED" — which is accurate).
+  3. Update `license` and `license-url` in CITATION.cff.
+
+Note on third-party components
+------------------------------
+Datasets used by the experiments (ULB Credit Card Fraud, IEEE-CIS, UNSW-NB15) and the AgentDojo
+benchmark carry their OWN licenses and are NOT redistributed by this repository — they are fetched
+from their original sources. Their terms are unaffected by whatever license is chosen here.

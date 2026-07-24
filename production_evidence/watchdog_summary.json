@@ -1,0 +1,55 @@
+{
+  "evidence_level": "Measured Runtime",
+  "supervisor": "real threading.Thread in the coordinator process",
+  "monitors": "per-worker liveness (a shared queue hides a single stalled worker from a global progress monitor)",
+  "heartbeat_target_ms": 20.0,
+  "heartbeats": 311,
+  "heartbeat_latency_ms": {
+    "n": 311,
+    "unit": "ms",
+    "mean": 3.1654501607717043,
+    "min": 0.05000000000000071,
+    "max": 6.925999999999998,
+    "p50": 3.3329999999999984,
+    "p95": 5.088999999999999,
+    "p99": 5.135000000000002,
+    "stdev": 1.5664190149746813
+  },
+  "stall_threshold_ms": 250.0,
+  "injected_stalls": 1,
+  "injected_stall_worker": 2,
+  "injected_stall_seconds": 0.6,
+  "stalls_detected_on_injected_worker": 1,
+  "detection_rate": 1.0,
+  "recovery_latency_ms": {
+    "n": 1,
+    "unit": "ms",
+    "mean": 209.617,
+    "min": 209.617,
+    "max": 209.617,
+    "p50": 209.617,
+    "p95": 209.617,
+    "p99": 209.617,
+    "stdev": 0.0
+  },
+  "false_triggers": 0,
+  "false_trigger_workers": [],
+  "detections": [
+    {
+      "worker_id": 2,
+      "detected_mono_ns": 303150485983000,
+      "quiet_ms": 270.228,
+      "recovered_mono_ns": 303150695600000,
+      "recovery_latency_ms": 209.617
+    }
+  ],
+  "monitored": [
+    "cpu_user_s",
+    "maxrss_bytes",
+    "queue_depth",
+    "ledger_blocks",
+    "ms_since_progress"
+  ],
+  "cpu_user_s_final": 13.927737,
+  "maxrss_bytes_final": 59621376
+}

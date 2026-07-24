@@ -1,0 +1,152 @@
+[
+  {
+    "step": 1,
+    "events": []
+  },
+  {
+    "step": 2,
+    "events": [
+      {
+        "event_type": "TOOL_CALL_PROPOSED",
+        "tool_name": "reschedule_calendar_event"
+      },
+      {
+        "event_type": "GAMMA_INTERCEPT",
+        "policy_class": "CALENDAR_MUTATION"
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "CTR_ISB",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GAMMA",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GATE_ownership",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GATE_recipient_recognition",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GATE_scope",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "AUTH_TOKEN",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "TRACE",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "INTERLOCK",
+        "deficit": 0
+      },
+      {
+        "event_type": "\u0393 COMPUTATION",
+        "gamma_global": 0
+      },
+      {
+        "event_type": "\u03a0 COMPUTATION",
+        "final_pi": 1
+      },
+      {
+        "event_type": "PERMIT_DECISION",
+        "decision": "PERMIT"
+      },
+      {
+        "event_type": "TOOL_EXECUTION",
+        "executed": false
+      }
+    ]
+  },
+  {
+    "step": 3,
+    "events": []
+  },
+  {
+    "step": 4,
+    "events": [
+      {
+        "event_type": "TOOL_CALL_PROPOSED",
+        "tool_name": "reschedule_calendar_event"
+      },
+      {
+        "event_type": "GAMMA_INTERCEPT",
+        "policy_class": "CALENDAR_MUTATION"
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "CTR_ISB",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GAMMA",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GATE_ownership",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GATE_recipient_recognition",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "GATE_scope",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "AUTH_TOKEN",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "TRACE",
+        "deficit": 0
+      },
+      {
+        "event_type": "PREDICATE_EVALUATION",
+        "predicate_name": "INTERLOCK",
+        "deficit": 0
+      },
+      {
+        "event_type": "\u0393 COMPUTATION",
+        "gamma_global": 0
+      },
+      {
+        "event_type": "\u03a0 COMPUTATION",
+        "final_pi": 1
+      },
+      {
+        "event_type": "PERMIT_DECISION",
+        "decision": "PERMIT"
+      },
+      {
+        "event_type": "TOOL_EXECUTION",
+        "executed": false
+      }
+    ]
+  },
+  {
+    "step": 5,
+    "events": []
+  }
+]

@@ -1,0 +1,582 @@
+{
+  "package": "L-DREA Combined Component Ablation \u2014 IEEE Access publication package",
+  "generated_utc": "2026-07-11T14:13:45Z",
+  "n_artifacts": 57,
+  "n_passed": 57,
+  "n_missing": 0,
+  "n_invalid": 0,
+  "n_required_failing": 0,
+  "package_complete": true,
+  "artifacts": [
+    {
+      "artifact": "paper_tables/table_combined_ablation.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_combined_ablation.tex",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "06d1e299dd0f5148383c40e685ca5dd7cddb2e2d10b5e28fa784b966581d545b",
+      "size_bytes": 3714
+    },
+    {
+      "artifact": "paper_tables/table_statistics.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_statistics.tex",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "67465df20a1026f2f3b20cdd98551e29a37a83afc2c7f9043a2f65d295073be3",
+      "size_bytes": 3953
+    },
+    {
+      "artifact": "paper_tables/table_interactions.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_interactions.tex",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "79972758bb9235ad526b011baa005e39e8d9bdaace4c08d79c2eb99a64a489cd",
+      "size_bytes": 2613
+    },
+    {
+      "artifact": "paper_tables/table_threshold_sensitivity.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_threshold_sensitivity.tex",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "8ac5614f904213ee20ee777c9201c30dc965539a37d7ea340a01a5357fbdeeb8",
+      "size_bytes": 1879
+    },
+    {
+      "artifact": "paper_tables/table_cross_dataset.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_cross_dataset.tex",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "b2c0978cdcc7cfde4381fddb33542c9d3b2bf2085ae0e5abbae798185e2a2976",
+      "size_bytes": 2205
+    },
+    {
+      "artifact": "paper_tables/table_combined_ablation_A.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_combined_ablation_A.tex",
+      "required": false,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "b389fca76fa5d494bc800016f8f41c84011077f8e07100ca0a5d69aa9b503eae",
+      "size_bytes": 4167
+    },
+    {
+      "artifact": "paper_tables/table_combined_ablation_B.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_combined_ablation_B.tex",
+      "required": false,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "68e623fbc3081f6af843ee23eb912de6ae91161cf7d39aaedb824b1fe40f829d",
+      "size_bytes": 1730
+    },
+    {
+      "artifact": "paper_tables/table_combined_ablation_C.tex",
+      "package_location": "PUBLICATION_PACKAGE/latex/table_combined_ablation_C.tex",
+      "required": false,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "balanced, 3 env types",
+      "sha256": "5a5bb6b53adf3047a20db4bf97fd9b50a71f2a9f8c992b2f59148cb260b39b6c",
+      "size_bytes": 1617
+    },
+    {
+      "artifact": "paper_tables/table_combined_ablation_A.md",
+      "package_location": "PUBLICATION_PACKAGE/tables/table_combined_ablation_A.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "4,043 chars, 30 lines",
+      "sha256": "a6faaf70bded74b7d16ce1843d5390d7e4b2f6581e69589cc73b69d87494481d",
+      "size_bytes": 4056
+    },
+    {
+      "artifact": "paper_tables/table_combined_ablation_B.md",
+      "package_location": "PUBLICATION_PACKAGE/tables/table_combined_ablation_B.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "1,574 chars, 24 lines",
+      "sha256": "cfc3c8d7b142cf25d78ddb0c63e6a26a0137b8da68dea98c0ee396b0d96f4f0a",
+      "size_bytes": 1584
+    },
+    {
+      "artifact": "paper_tables/table_combined_ablation_C.md",
+      "package_location": "PUBLICATION_PACKAGE/tables/table_combined_ablation_C.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "1,447 chars, 20 lines",
+      "sha256": "fca3d716cb968339b72477ebe0d612a17ae2ff65696cf0dca19873357ee56815",
+      "size_bytes": 1473
+    },
+    {
+      "artifact": "experiments/combined_ablation/combined_ablation.csv",
+      "package_location": "PUBLICATION_PACKAGE/csv/combined_ablation.csv",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "19 data rows x 14 cols",
+      "sha256": "29462051776fc69acd377900bb4f048e38bc3506ec4662b57dad8e969bbc3bcc",
+      "size_bytes": 2756
+    },
+    {
+      "artifact": "experiments/combined_ablation/combined_ablation_matrix.csv",
+      "package_location": "PUBLICATION_PACKAGE/csv/combined_ablation_matrix.csv",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "19 data rows x 8 cols",
+      "sha256": "46e7975c4aeaff7e7f3d1d28eec4724ec1ca9f8f0e584028bb5bac5c260307fa",
+      "size_bytes": 1072
+    },
+    {
+      "artifact": "experiments/combined_ablation/combined_statistics.csv",
+      "package_location": "PUBLICATION_PACKAGE/csv/combined_statistics.csv",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "323 data rows x 21 cols",
+      "sha256": "99c15607c4d09dc34265cf153c1be3ade0dfa1d1258950590d94e1d72147a5ee",
+      "size_bytes": 73441
+    },
+    {
+      "artifact": "experiments/combined_ablation/threshold_sensitivity.csv",
+      "package_location": "PUBLICATION_PACKAGE/csv/threshold_sensitivity.csv",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "30 data rows x 13 cols",
+      "sha256": "044e32e8d8cc59e9da1034f7cc86ecd6e109d95c52e53004fa3589f52aaa026f",
+      "size_bytes": 5751
+    },
+    {
+      "artifact": "experiments/combined_ablation/cross_dataset_summary.csv",
+      "package_location": "PUBLICATION_PACKAGE/csv/cross_dataset_summary.csv",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "57 data rows x 11 cols",
+      "sha256": "8158042e628ca179263e42ec7eb279615eb296370d681779f0dad27760e28162",
+      "size_bytes": 4853
+    },
+    {
+      "artifact": "experiments/combined_ablation/combined_ablation.json",
+      "package_location": "PUBLICATION_PACKAGE/json/combined_ablation.json",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 166,801 B",
+      "sha256": "c7958a3a6ae8dd1af0209e43114daf19703473b745e0c2d27212da3f3b7bc96a",
+      "size_bytes": 166801
+    },
+    {
+      "artifact": "experiments/combined_ablation/combined_statistics.json",
+      "package_location": "PUBLICATION_PACKAGE/json/combined_statistics.json",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 399,636 B",
+      "sha256": "9026b4496d800383ee9c2ad3a6691a3c7bca04f7d833c60f55b3c32f8d61821a",
+      "size_bytes": 399636
+    },
+    {
+      "artifact": "experiments/combined_ablation/threshold_sensitivity.json",
+      "package_location": "PUBLICATION_PACKAGE/json/threshold_sensitivity.json",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 24,388 B",
+      "sha256": "da19b57a669a946c681202a070905cd504b2009aba18c6dc499457a6954da5f6",
+      "size_bytes": 24388
+    },
+    {
+      "artifact": "experiments/combined_ablation/cross_dataset_ablation.json",
+      "package_location": "PUBLICATION_PACKAGE/json/cross_dataset_ablation.json",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 178,530 B",
+      "sha256": "a6610706887e24c48ff971c8d378119e9ffcea1f2dc071697380c82ba03865a0",
+      "size_bytes": 178530
+    },
+    {
+      "artifact": "COMPONENT_REGISTRY.json",
+      "package_location": "PUBLICATION_PACKAGE/json/COMPONENT_REGISTRY.json",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 4,799 B",
+      "sha256": "8a83f5efa102bf491feec75e3a3eb3cf1aa35bc0feedca4062ff28b586094937",
+      "size_bytes": 4799
+    },
+    {
+      "artifact": "COMBINED_ABLATION_ANALYSIS.md",
+      "package_location": "PUBLICATION_PACKAGE/markdown/COMBINED_ABLATION_ANALYSIS.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "5,300 chars, 49 lines",
+      "sha256": "a6a5f46fee9564bac777b58aa6728062fa748f09baba6e1b80493dacb7004120",
+      "size_bytes": 5385
+    },
+    {
+      "artifact": "GRACEFUL_DEGRADATION_ANALYSIS.md",
+      "package_location": "PUBLICATION_PACKAGE/markdown/GRACEFUL_DEGRADATION_ANALYSIS.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "2,291 chars, 31 lines",
+      "sha256": "7f27be36c7f475c13bcfecb34e8df9ebf26bdff12039b5b8ce3f141808835fcc",
+      "size_bytes": 2299
+    },
+    {
+      "artifact": "COMBINED_ABLATION_IMPLEMENTATION_REPORT.md",
+      "package_location": "PUBLICATION_PACKAGE/markdown/COMBINED_ABLATION_IMPLEMENTATION_REPORT.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "5,544 chars, 99 lines",
+      "sha256": "e8a6391d801a0ef5d44ca7ed0f257f5e8921a493f484eab2f8f79151e32001c1",
+      "size_bytes": 5612
+    },
+    {
+      "artifact": "COMPONENT_DEPENDENCY_GRAPH.md",
+      "package_location": "PUBLICATION_PACKAGE/markdown/COMPONENT_DEPENDENCY_GRAPH.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "1,749 chars, 39 lines",
+      "sha256": "a1db9b0fba1be39163d5b9090d92d653e9ed602b0404adf0c39a47bb5dd80fc7",
+      "size_bytes": 1820
+    },
+    {
+      "artifact": "experiments/combined_ablation/combined_statistics.md",
+      "package_location": "PUBLICATION_PACKAGE/markdown/combined_statistics.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "69,583 chars, 486 lines",
+      "sha256": "ba50885d7b59f0ee78cecb363356def17cdbaca565adff8848b414c4109038fa",
+      "size_bytes": 70470
+    },
+    {
+      "artifact": "experiments/combined_ablation/threshold_sensitivity.md",
+      "package_location": "PUBLICATION_PACKAGE/markdown/threshold_sensitivity.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "5,359 chars, 69 lines",
+      "sha256": "ec2b3a59074ff3d9ad1d7aeda67ce42b239ee4c70ecacb5d0af521cfa908dd26",
+      "size_bytes": 5378
+    },
+    {
+      "artifact": "experiments/combined_ablation/cross_dataset_summary.md",
+      "package_location": "PUBLICATION_PACKAGE/markdown/cross_dataset_summary.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "8,242 chars, 93 lines",
+      "sha256": "b8e86c2cafc9c05bfd222c5a8f186aadf28235cfafc78f4177e49f43f0937e99",
+      "size_bytes": 8274
+    },
+    {
+      "artifact": "COMBINED_ABLATION_THREATS_TO_VALIDITY.md",
+      "package_location": "PUBLICATION_PACKAGE/threats/COMBINED_ABLATION_THREATS_TO_VALIDITY.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "21,576 chars, 189 lines",
+      "sha256": "eeae79474c8613d22db1b2d8301891055a33abb071f4ec1fd4f1800208181301",
+      "size_bytes": 21691
+    },
+    {
+      "artifact": "THREATS_TO_VALIDITY.md",
+      "package_location": "PUBLICATION_PACKAGE/threats/THREATS_TO_VALIDITY.md",
+      "required": false,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "3,464 chars, 33 lines",
+      "sha256": "8e24d07394ab63757054149ce7d17fbb65c339395ef99a09bfd9b3220372aea7",
+      "size_bytes": 3470
+    },
+    {
+      "artifact": "reviewer_mapping.md",
+      "package_location": "PUBLICATION_PACKAGE/reviewer_mapping/reviewer_mapping.md",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "10,083 chars, 93 lines",
+      "sha256": "8c25667fc40ad1408763ea88c7018440ff8f020dfb05203ac2b102ca3a76a5ae",
+      "size_bytes": 10258
+    },
+    {
+      "artifact": "metadata/PROVENANCE_MANIFEST.json",
+      "package_location": "PUBLICATION_PACKAGE/metadata/PROVENANCE_MANIFEST.json",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 18,105 B",
+      "sha256": "193af79d5e024cd327d33c8a6536c6e5801a6367ccdcef4de41f709e3b27810d",
+      "size_bytes": 18105
+    },
+    {
+      "artifact": "metadata/COMPONENT_REGISTRY.json",
+      "package_location": "PUBLICATION_PACKAGE/metadata/COMPONENT_REGISTRY.json",
+      "required": false,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 4,799 B",
+      "sha256": "8a83f5efa102bf491feec75e3a3eb3cf1aa35bc0feedca4062ff28b586094937",
+      "size_bytes": 4799
+    },
+    {
+      "artifact": "metadata/combined_ablation_run_metadata.json",
+      "package_location": "PUBLICATION_PACKAGE/metadata/combined_ablation_run_metadata.json",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 958 B",
+      "sha256": "89ea9747335a4f1867b954031e248b2706272e854d40f72840cc980d4262f832",
+      "size_bytes": 958
+    },
+    {
+      "artifact": "metadata/dataset_hashes.json",
+      "package_location": "PUBLICATION_PACKAGE/metadata/dataset_hashes.json",
+      "required": false,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid JSON, 974 B",
+      "sha256": "b5cdcf361a43a3ce77970162204749a6fc3955d67e9faeeb78ca2fff3a7a2eab",
+      "size_bytes": 974
+    },
+    {
+      "artifact": "paper_figures/combined_ablation_matrix.svg",
+      "package_location": "PUBLICATION_PACKAGE/figures/combined_ablation_matrix.svg",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "parses as XML",
+      "sha256": "313b38db7a9a0119813e3a425984f44f32d651937a9695a3fc8c91e95500b9ae",
+      "size_bytes": 40744
+    },
+    {
+      "artifact": "paper_figures/combined_ablation_matrix.pdf",
+      "package_location": "PUBLICATION_PACKAGE/figures/combined_ablation_matrix.pdf",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PDF, 3,794 B",
+      "sha256": "978cd0dfd9a4a4b1a9d9a09f759b84291d96fbcab96ff620f4d1c234db1b387f",
+      "size_bytes": 3794
+    },
+    {
+      "artifact": "paper_figures/combined_ablation_matrix.png",
+      "package_location": "PUBLICATION_PACKAGE/figures/combined_ablation_matrix.png",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PNG, 55,592 B",
+      "sha256": "29498747eb59246d86a8c217c9dd37215e989e4a41cd8e017fc7e42da1503cec",
+      "size_bytes": 55592
+    },
+    {
+      "artifact": "paper_figures/interaction_graph.svg",
+      "package_location": "PUBLICATION_PACKAGE/figures/interaction_graph.svg",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "parses as XML",
+      "sha256": "fa46a06bb15037b73c5535643801d66d37c249dd54e635b821b0235633db1ec7",
+      "size_bytes": 13802
+    },
+    {
+      "artifact": "paper_figures/interaction_graph.pdf",
+      "package_location": "PUBLICATION_PACKAGE/figures/interaction_graph.pdf",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PDF, 2,218 B",
+      "sha256": "eef96e578ffc7ac14f8f9e5994a5512617946a11986ef97460f87fd98c4d426c",
+      "size_bytes": 2218
+    },
+    {
+      "artifact": "paper_figures/interaction_graph.png",
+      "package_location": "PUBLICATION_PACKAGE/figures/interaction_graph.png",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PNG, 37,923 B",
+      "sha256": "09045627907b52d0d3434c1ecd62f472d2a92c1881d53356391c73950db035af",
+      "size_bytes": 37923
+    },
+    {
+      "artifact": "paper_figures/threshold_heatmap.svg",
+      "package_location": "PUBLICATION_PACKAGE/figures/threshold_heatmap.svg",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "parses as XML",
+      "sha256": "753d61411bed71ee6d2c8a29d640441aaf16793f3e15da133cab2349643c8db0",
+      "size_bytes": 19558
+    },
+    {
+      "artifact": "paper_figures/threshold_heatmap.pdf",
+      "package_location": "PUBLICATION_PACKAGE/figures/threshold_heatmap.pdf",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PDF, 2,852 B",
+      "sha256": "0304295eaa26c17810e43fdefd1df1ff2c424668e37878f9c764fec47c5f3e03",
+      "size_bytes": 2852
+    },
+    {
+      "artifact": "paper_figures/threshold_heatmap.png",
+      "package_location": "PUBLICATION_PACKAGE/figures/threshold_heatmap.png",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PNG, 34,681 B",
+      "sha256": "3e7e1b02704ebb31808a7dbc0f9b3c92f2818b1380e42ad9a785de85ccd8b9ab",
+      "size_bytes": 34681
+    },
+    {
+      "artifact": "paper_figures/dataset_comparison.svg",
+      "package_location": "PUBLICATION_PACKAGE/figures/dataset_comparison.svg",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "parses as XML",
+      "sha256": "e4947ee6267af575d9243548da19bb5c4c6f6f9c09e50209f6a422f46865e83a",
+      "size_bytes": 7476
+    },
+    {
+      "artifact": "paper_figures/dataset_comparison.pdf",
+      "package_location": "PUBLICATION_PACKAGE/figures/dataset_comparison.pdf",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PDF, 1,881 B",
+      "sha256": "12a19b46cdb679bb8c0b85db43af545cc048f854826b90df30f3c3a88cd3ba9b",
+      "size_bytes": 1881
+    },
+    {
+      "artifact": "paper_figures/dataset_comparison.png",
+      "package_location": "PUBLICATION_PACKAGE/figures/dataset_comparison.png",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PNG, 36,676 B",
+      "sha256": "ae735601fac3b197edee606b01c14fffa05b50dbb38917eebf4f2d07c177d73c",
+      "size_bytes": 36676
+    },
+    {
+      "artifact": "paper_figures/runtime_integrity.svg",
+      "package_location": "PUBLICATION_PACKAGE/figures/runtime_integrity.svg",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "parses as XML",
+      "sha256": "6b739640a4b08ba6a843fc5b3d7c782cb4124c53374725741e36583746c4a350",
+      "size_bytes": 14685
+    },
+    {
+      "artifact": "paper_figures/runtime_integrity.pdf",
+      "package_location": "PUBLICATION_PACKAGE/figures/runtime_integrity.pdf",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PDF, 2,352 B",
+      "sha256": "405a06d18ec3dae2e52aa7e58da0b65682cc6455d8e2e9d702c2a7a240df159d",
+      "size_bytes": 2352
+    },
+    {
+      "artifact": "paper_figures/runtime_integrity.png",
+      "package_location": "PUBLICATION_PACKAGE/figures/runtime_integrity.png",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PNG, 53,271 B",
+      "sha256": "10a94755042add2a5de54c266a059c708953f8c05c046d4f9cb5bc2959a03988",
+      "size_bytes": 53271
+    },
+    {
+      "artifact": "paper_figures/graceful_degradation.svg",
+      "package_location": "PUBLICATION_PACKAGE/figures/graceful_degradation.svg",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "parses as XML",
+      "sha256": "fef4f46f18d9c42aeb8c6287401a6d8acef600d9e029956aa7f081a75cc38484",
+      "size_bytes": 11687
+    },
+    {
+      "artifact": "paper_figures/graceful_degradation.pdf",
+      "package_location": "PUBLICATION_PACKAGE/figures/graceful_degradation.pdf",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PDF, 3,243 B",
+      "sha256": "ffbbbd43bc372cc7211ae256d3ae7343ec523dd1759c6973dd251f98d81ea16c",
+      "size_bytes": 3243
+    },
+    {
+      "artifact": "paper_figures/graceful_degradation.png",
+      "package_location": "PUBLICATION_PACKAGE/figures/graceful_degradation.png",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PNG, 35,728 B",
+      "sha256": "16a1456eb624eeefe48730825d91d156fdba6664044a5b8e10c4ee11594d2ca6",
+      "size_bytes": 35728
+    },
+    {
+      "artifact": "paper_figures/dependency_graph.svg",
+      "package_location": "PUBLICATION_PACKAGE/figures/dependency_graph.svg",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "parses as XML",
+      "sha256": "3c5b8d2015634e8bb52cf9ac043608579950bcbd268a4e4bfbcd05b9c0792e7f",
+      "size_bytes": 11703
+    },
+    {
+      "artifact": "paper_figures/dependency_graph.pdf",
+      "package_location": "PUBLICATION_PACKAGE/figures/dependency_graph.pdf",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PDF, 3,187 B",
+      "sha256": "efc59a5411f883c3a25027f6eb4c157fcb609164cdc9f717473a87acdda8179a",
+      "size_bytes": 3187
+    },
+    {
+      "artifact": "paper_figures/dependency_graph.png",
+      "package_location": "PUBLICATION_PACKAGE/figures/dependency_graph.png",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "valid PNG, 67,600 B",
+      "sha256": "2d6ae67cdb502bdbd15e33b6ea6e2b9cfec3309c053a9f268891b30839b23d53",
+      "size_bytes": 67600
+    },
+    {
+      "artifact": "dashboard/combined_runtime_ablation.html",
+      "package_location": "PUBLICATION_PACKAGE/dashboard/combined_runtime_ablation.html",
+      "required": true,
+      "status": "PRESENT",
+      "passed": true,
+      "detail": "13,191 B",
+      "sha256": "dbf465c2df62bb63c04573169498ce0da38afa3b8b282749f169fbaf30487fc9",
+      "size_bytes": 13191
+    }
+  ]
+}

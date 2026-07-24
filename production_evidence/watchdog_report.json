@@ -1,0 +1,21 @@
+{
+  "evidence_level": "Repository Simulation",
+  "why_simulated": "An in-process loop stands in for a supervisor daemon. The heartbeat INTERVALS are measured with perf_counter; the timeouts are injected.",
+  "ticks": 200,
+  "heartbeat_interval_ms": {
+    "n": 200,
+    "unit": "ms",
+    "mean": 0.00268646,
+    "min": 0.002416,
+    "max": 0.011,
+    "p50": 0.0025,
+    "p95": 0.003583,
+    "p99": 0.005917,
+    "stdev": 0.0008813961983126544,
+    "evidence_level": "Measured Runtime"
+  },
+  "timeouts": 5,
+  "recoveries": 5,
+  "fail_closed_activations": 5,
+  "safe_state_transitions": 5
+}

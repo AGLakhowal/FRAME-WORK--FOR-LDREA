@@ -1,0 +1,148 @@
+{
+  "discovery_method": "importlib + inspect probing of live runtime symbols; a component is listed only if its symbol resolves. Dependencies inferred from (1) call order in run_runtime_stack.main and (2) signature-token scanning of each component's own source.",
+  "n_components": 9,
+  "execution_order": [
+    "PE",
+    "RV",
+    "EQ",
+    "LG",
+    "HC",
+    "WD",
+    "FT",
+    "CK",
+    "RD"
+  ],
+  "components": [
+    {
+      "name": "Predicate Engine",
+      "short": "PE",
+      "implementation_file": "experiments/runtime_stack.py",
+      "responsible_function": "RuntimeContext.generate",
+      "source_line": 219,
+      "execution_plane": "authorization",
+      "role": "generates the runtime predicate vector Gamma aggregates non-compensatorily",
+      "dependencies": [],
+      "can_be_disabled": true,
+      "in_ablation_matrix": true,
+      "executed_every_config_as_stage": false
+    },
+    {
+      "name": "Runtime Revocation",
+      "short": "RV",
+      "implementation_file": "experiments/runtime_stack.py",
+      "responsible_function": "PermitAuthority",
+      "source_line": 456,
+      "execution_plane": "enforcement",
+      "role": "issues Permit-to-Act tokens and withdraws already-granted authority",
+      "dependencies": [],
+      "can_be_disabled": true,
+      "in_ablation_matrix": true,
+      "executed_every_config_as_stage": false
+    },
+    {
+      "name": "Evidence Quad",
+      "short": "EQ",
+      "implementation_file": "experiments/runtime_stack.py",
+      "responsible_function": "build_ertuple",
+      "source_line": 297,
+      "execution_plane": "evidence",
+      "role": "emits the signed ERTuple (method/policy/ledger/replay evidence) per decision",
+      "dependencies": [
+        "PE"
+      ],
+      "can_be_disabled": true,
+      "in_ablation_matrix": true,
+      "executed_every_config_as_stage": false
+    },
+    {
+      "name": "Runtime Ledger",
+      "short": "LG",
+      "implementation_file": "experiments/runtime_stack.py",
+      "responsible_function": "Ledger.append",
+      "source_line": 342,
+      "execution_plane": "ledger",
+      "role": "chains evidence into an append-only Merkle-rooted ledger",
+      "dependencies": [
+        "EQ"
+      ],
+      "can_be_disabled": true,
+      "in_ablation_matrix": true,
+      "executed_every_config_as_stage": false
+    },
+    {
+      "name": "Hash Chain",
+      "short": "HC",
+      "implementation_file": "experiments/runtime_stack.py",
+      "responsible_function": "Ledger.verify",
+      "source_line": 363,
+      "execution_plane": "ledger",
+      "role": "links each ledger block to its predecessor (tamper-evident ordering)",
+      "dependencies": [
+        "EQ",
+        "LG"
+      ],
+      "can_be_disabled": true,
+      "in_ablation_matrix": true,
+      "executed_every_config_as_stage": false
+    },
+    {
+      "name": "Runtime Risk Detection",
+      "short": "RD",
+      "implementation_file": "experiments/runtime_attacks.py",
+      "responsible_function": "run",
+      "source_line": 45,
+      "execution_plane": "risk",
+      "role": "fires real adversarial artifacts at the enforcement surface and measures refusal",
+      "dependencies": [
+        "PE",
+        "RV"
+      ],
+      "can_be_disabled": false,
+      "in_ablation_matrix": false,
+      "executed_every_config_as_stage": true
+    },
+    {
+      "name": "Runtime Watchdog",
+      "short": "WD",
+      "implementation_file": "experiments/runtime_fleet.py",
+      "responsible_function": "Watchdog",
+      "source_line": 151,
+      "execution_plane": "governance",
+      "role": "supervisor thread detecting per-worker stalls and driving fail-closed recovery",
+      "dependencies": [],
+      "can_be_disabled": false,
+      "in_ablation_matrix": false,
+      "executed_every_config_as_stage": true
+    },
+    {
+      "name": "Fleet Telemetry",
+      "short": "FT",
+      "implementation_file": "experiments/runtime_fleet.py",
+      "responsible_function": "run_fleet",
+      "source_line": 234,
+      "execution_plane": "governance",
+      "role": "multi-process Gamma fleet with per-worker CPU/RSS/throughput telemetry",
+      "dependencies": [
+        "PE",
+        "RV",
+        "WD"
+      ],
+      "can_be_disabled": false,
+      "in_ablation_matrix": false,
+      "executed_every_config_as_stage": true
+    },
+    {
+      "name": "Clock Consistency (single-host PTP)",
+      "short": "CK",
+      "implementation_file": "experiments/run_runtime_stack.py",
+      "responsible_function": "measure_clock_consistency",
+      "source_line": 376,
+      "execution_plane": "timing",
+      "role": "single-host monotonic-clock characterisation (resolution, jitter, drift)",
+      "dependencies": [],
+      "can_be_disabled": false,
+      "in_ablation_matrix": false,
+      "executed_every_config_as_stage": true
+    }
+  ]
+}

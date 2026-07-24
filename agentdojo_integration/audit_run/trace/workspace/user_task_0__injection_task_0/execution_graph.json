@@ -1,0 +1,112 @@
+{
+  "nodes": [
+    {
+      "id": "evt-000001",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000002",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000003",
+      "type": "TOOL_CALL_PROPOSED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 2
+    },
+    {
+      "id": "evt-000004",
+      "type": "GAMMA_INTERCEPT",
+      "component": "GammaGovernedRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000005",
+      "type": "TOOL_EXECUTION",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000006",
+      "type": "TOOL_RESULT",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000007",
+      "type": "OBSERVATION_RETURNED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 2
+    },
+    {
+      "id": "evt-000008",
+      "type": "LLM_NEXT_CONTEXT",
+      "component": "AgentDojo.pipeline",
+      "step": 3
+    },
+    {
+      "id": "evt-000009",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 3
+    },
+    {
+      "id": "evt-000010",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 3
+    },
+    {
+      "id": "evt-000011",
+      "type": "EPISODE_FINISHED",
+      "component": "AgentDojo.benchmark",
+      "step": 3
+    }
+  ],
+  "edges": [
+    {
+      "from": "evt-000001",
+      "to": "evt-000002"
+    },
+    {
+      "from": "evt-000002",
+      "to": "evt-000003"
+    },
+    {
+      "from": "evt-000003",
+      "to": "evt-000004"
+    },
+    {
+      "from": "evt-000004",
+      "to": "evt-000005"
+    },
+    {
+      "from": "evt-000005",
+      "to": "evt-000006"
+    },
+    {
+      "from": "evt-000006",
+      "to": "evt-000007"
+    },
+    {
+      "from": "evt-000007",
+      "to": "evt-000008"
+    },
+    {
+      "from": "evt-000008",
+      "to": "evt-000009"
+    },
+    {
+      "from": "evt-000009",
+      "to": "evt-000010"
+    },
+    {
+      "from": "evt-000010",
+      "to": "evt-000011"
+    }
+  ]
+}

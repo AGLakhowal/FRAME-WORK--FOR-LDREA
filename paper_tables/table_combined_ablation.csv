@@ -1,0 +1,8 @@
+component,latency_ms_per_row,source
+Runtime Context (RCL),0.01059101287391968,runtime_profile.json
+Replay (ERTuple),0.014995891800208484,runtime_profile.json
+stage:build,0.07436287200000535,PERFORMANCE_RESULTS.json:7_performance.per_stage_ms
+stage:bind,0.10181792999998507,PERFORMANCE_RESULTS.json:7_performance.per_stage_ms
+stage:adapt,0.0021988295000294755,PERFORMANCE_RESULTS.json:7_performance.per_stage_ms
+stage:eval,0.0016904199999654423,PERFORMANCE_RESULTS.json:7_performance.per_stage_ms
+stage:emit,0.01674282900003199,PERFORMANCE_RESULTS.json:7_performance.per_stage_ms

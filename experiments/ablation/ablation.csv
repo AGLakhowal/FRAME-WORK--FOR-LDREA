@@ -1,0 +1,5 @@
+config,permits,denials,leaked_permits,leaked_rate,throughput_dec_s,lat_mean_ms,lat_p95_ms,lat_p99_ms,replay_consistent
+baseline_full_LDREA,15000,45000,0,0.000000,1164068,0.000769,0.000792,0.000875,True
+remove_class_veto,30000,30000,15000,0.250000,1198663,0.000752,0.000792,0.000875,True
+remove_noncompensatory_gamma,30000,30000,15000,0.250000,1364603,0.000648,0.000708,0.000750,True
+remove_authorization_layer,60000,0,45000,0.750000,5874050,0.000078,0.000084,0.000125,True

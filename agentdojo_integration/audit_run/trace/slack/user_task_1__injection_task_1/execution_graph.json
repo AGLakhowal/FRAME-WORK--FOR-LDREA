@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "evt-000001",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000002",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000003",
+      "type": "EPISODE_FINISHED",
+      "component": "AgentDojo.benchmark",
+      "step": 1
+    }
+  ],
+  "edges": [
+    {
+      "from": "evt-000001",
+      "to": "evt-000002"
+    },
+    {
+      "from": "evt-000002",
+      "to": "evt-000003"
+    }
+  ]
+}

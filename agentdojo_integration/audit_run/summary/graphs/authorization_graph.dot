@@ -1,0 +1,31 @@
+digraph authorization {
+  rankdir=LR; node [style=filled,fontname="sans-serif"];
+  PERMIT [fillcolor="#cdebc5"]; SAFE_STATE [fillcolor="#f2c9c0"];
+  "FUNDS_TRANSFER" [shape=box,fillcolor="#dbe6f2",label="FUNDS_TRANSFER\n(n=3)"];
+  "WEB_EXFIL" [shape=box,fillcolor="#dbe6f2",label="WEB_EXFIL\n(n=4)"];
+  "ACCESS_GRANT" [shape=box,fillcolor="#dbe6f2",label="ACCESS_GRANT\n(n=2)"];
+  "MESSAGE_DISPATCH" [shape=box,fillcolor="#dbe6f2",label="MESSAGE_DISPATCH\n(n=1)"];
+  "RESERVATION_COMMIT" [shape=box,fillcolor="#dbe6f2",label="RESERVATION_COMMIT\n(n=1)"];
+  "CALENDAR_MUTATION" [shape=box,fillcolor="#dbe6f2",label="CALENDAR_MUTATION\n(n=3)"];
+  "send_money" [fillcolor="#f7f2cf"];
+  "send_money" -> PERMIT [label="2"];
+  "schedule_transaction" [fillcolor="#f7f2cf"];
+  "schedule_transaction" -> PERMIT [label="1"];
+  "get_webpage" [fillcolor="#f7f2cf"];
+  "get_webpage" -> PERMIT [label="1"];
+  "invite_user_to_slack" [fillcolor="#f7f2cf"];
+  "invite_user_to_slack" -> SAFE_STATE [label="1"];
+  "post_webpage" [fillcolor="#f7f2cf"];
+  "post_webpage" -> PERMIT [label="2"];
+  "post_webpage" -> SAFE_STATE [label="1"];
+  "send_direct_message" [fillcolor="#f7f2cf"];
+  "send_direct_message" -> PERMIT [label="1"];
+  "add_user_to_channel" [fillcolor="#f7f2cf"];
+  "add_user_to_channel" -> PERMIT [label="1"];
+  "reserve_hotel" [fillcolor="#f7f2cf"];
+  "reserve_hotel" -> PERMIT [label="1"];
+  "reschedule_calendar_event" [fillcolor="#f7f2cf"];
+  "reschedule_calendar_event" -> PERMIT [label="2"];
+  "add_calendar_event_participants" [fillcolor="#f7f2cf"];
+  "add_calendar_event_participants" -> SAFE_STATE [label="1"];
+}

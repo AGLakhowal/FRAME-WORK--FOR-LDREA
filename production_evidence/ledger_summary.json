@@ -1,0 +1,11 @@
+{
+  "evidence_level": "Derived From Measured",
+  "blocks": 25000,
+  "growth_bytes": 14707561,
+  "hash_continuity": true,
+  "chain_head": "98127de310f6b17f3e0883a7d13c2fffe966b865f7ab5091b71d92a9f03c738a",
+  "verification_success": true,
+  "tamper_detection_verified": true,
+  "permits_in_chain": 24912,
+  "safe_state_in_chain": 88
+}

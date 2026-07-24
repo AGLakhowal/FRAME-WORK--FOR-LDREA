@@ -1,0 +1,6 @@
+{
+  "campaign": "runtime_context_and_replay_profiling",
+  "n_rows": 5000,
+  "full_pipeline_ms_per_row_measured": 0.2379377166,
+  "end_to_end_incl_replay_ms_per_row": 0.24810450820000002,
+  "note": "Runtime Context here = the RCL plane-B operations (freshness/velocity/commit-actuate ordering) that ablation `without_runtime_context` disables; measured by wrapping the frozen FreshnessClock/CommitActu

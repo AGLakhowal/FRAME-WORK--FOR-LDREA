@@ -1,0 +1,40 @@
+{
+  "evidence_level": "Measured Runtime",
+  "generators": [
+    "TOKEN_VALID (Ed25519 + exp + subject binding)",
+    "AuthoritySignatureValid (kid bound to authority key)",
+    "TelemetryFresh (clock delta)",
+    "StaleContext (context age)",
+    "amount_within_daily_limit (24h rolling window)",
+    "destination_account_recognized (vendor registry lookup)",
+    "velocity_check (60s sliding window)",
+    "behaviour_anomaly (robust modified z-score vs learned baseline)",
+    "policy_consistency (policy hash comparison)",
+    "impossible_travel_absent (haversine speed)"
+  ],
+  "predicates_per_decision": 10,
+  "decisions": 6000,
+  "predicate_generation_latency_ms": {
+    "n": 6000,
+    "unit": "ms",
+    "mean": 1.0688736258333333,
+    "min": 0.10975,
+    "max": 2.690334,
+    "p50": 0.944958,
+    "p95": 1.588083,
+    "p99": 1.667042
+  },
+  "authorization_latency_ms": {
+    "n": 6000,
+    "unit": "ms",
+    "mean": 0.002161864166666667,
+    "min": 0.001083,
+    "max": 0.05075,
+    "p50": 0.001917,
+    "p95": 0.004042,
+    "p99": 0.007125
+  },
+  "vendor_registry_size": 40,
+  "registry_learned_from": "warmup observations only, never labels",
+  "no_dataset_column_read": true
+}

@@ -1,0 +1,28 @@
+{
+  "evidence_level": "Derived From Measured",
+  "blocks": 94,
+  "ertuples": 6000,
+  "batch_size": 64,
+  "hash_continuity": true,
+  "verify_error": null,
+  "merkle_root_head": "4bf6ebd5b5d1517e02563ca7a5acd47e1728fe2af3a3a9dba4315b934777ae2b",
+  "chain_head": "5e92d4676e570e1e319c308fd891163c180c1f53b4c8dc61929067da69efe5a6",
+  "tamper_detected": true,
+  "fork_detected": true,
+  "replay_mismatch_detection": true,
+  "block_fields": [
+    "chain_index",
+    "current_hash",
+    "ertuple_hashes",
+    "evidence_hash",
+    "execution_ids",
+    "merkle_root",
+    "permit_ids",
+    "policy_hash",
+    "previous_hash",
+    "replay_hash",
+    "signature",
+    "timestamp_ns",
+    "worker_ids"
+  ]
+}

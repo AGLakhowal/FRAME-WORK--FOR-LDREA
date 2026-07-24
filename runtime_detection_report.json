@@ -1,0 +1,9 @@
+{
+  "experiment": "E11_blind_runtime_detection",
+  "status": "BLOCKED",
+  "evidence_level": "Not executed",
+  "reason": "raw ULB dataset not found at creditcard.csv. Blind runtime detection requires the observable features (Time, V1..V28, Amount) with Class withheld.",
+  "why_the_mapped_corpus_cannot_be_used": "GAMMA_G0_CREDITCARD_FULL_mapped.csv discarded V1..V28 and Amount, and constructs 5 of the engine's 12 inputs from the label (see label_leakage_audit.json). Running this experiment on it would measure the label, not the features.",
+  "metrics": null,
+  "to_unblock": "place creditcard.csv at /Users/sukhmangill/Documents/GitHub/Independent Benchmark and Reviewer-Closure Framework for L-DREA/creditcard.csv and re-run this program"
+}

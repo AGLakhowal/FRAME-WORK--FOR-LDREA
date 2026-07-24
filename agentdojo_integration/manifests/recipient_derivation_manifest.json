@@ -1,0 +1,17 @@
+{
+  "manifest": "Recipient Derivation Manifest",
+  "leaf_index": 4,
+  "frozen_date": "2026-07-07",
+  "spec_reference": "IEEE Paper Section X-A (destination recognition gate); V2 D-2 (attack-independent, environment-derived allowlist); Verification Part 5 leaf #4.",
+  "principle": "RecognizedSets are computed DETERMINISTICALLY from the BENIGN environment state BEFORE any injection is applied. They are attack-independent by construction. This is a structural R3 gate, NOT injection detection.",
+  "derivation_functions": {
+    "RecognizedRecipients(email)": "set of email addresses materialized in the benign environment: account owner address + all addresses in existing (pre-injection) contacts + addresses in existing received/sent/draft emails.",
+    "RecognizedIdentities(slack)": "set of users/channels present in the benign Slack workspace (get_channels / get_users_in_channel over benign env).",
+    "RecognizedDestinations(url)": "set of URLs materialized in the benign environment (e.g., benign web content already referenced); external URLs absent from the benign env are UNRECOGNIZED by default.",
+    "RecognizedResources(travel)": "set of hotels/restaurants/car-rental companies returned by the benign read/search tools for the in-task city; reservations to resources absent from that set are unrecognized.",
+    "RecognizedIBANs(banking)": "account's own IBAN + IBANs present in existing (pre-injection) transactions, scheduled transactions, and user contacts.",
+    "available_balance(banking)": "the account balance field of the benign BankingEnvironment (for GATE_amount_limit)."
+  },
+  "computation_time": "recognized sets are snapshotted from the environment at task initialization, before the agent loop and before any injection payload is read.",
+  "honest_residual": "injections targeting an IN-ENVIRONMENT recognized recipient/IBAN will PASS this gate and be reported as honest false permits (predicate incompleteness, Group II, failure taxonomy F1) --- proving the gate is not an oracle."
+}

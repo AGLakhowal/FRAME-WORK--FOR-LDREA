@@ -1,0 +1,4877 @@
+{
+  "experiment": "combined_component_ablation",
+  "evidence_level": "Synthetic Runtime",
+  "purpose": "Reviewer requested interaction-effect analysis between runtime components. This framework executes the FULL L-DREA runtime under every requested combination and MEASURES the result; no value is analytically estimated; the frozen Gamma engine is unmodified.",
+  "seed": 20260710,
+  "workload_n": 6000,
+  "n_configurations": 19,
+  "component_registry": {
+    "discovery_method": "importlib + inspect probing of live runtime symbols; a component is listed only if its symbol resolves. Dependencies inferred from (1) call order in run_runtime_stack.main and (2) signature-token scanning of each component's own source.",
+    "n_components": 9,
+    "execution_order": [
+      "PE",
+      "RV",
+      "EQ",
+      "LG",
+      "HC",
+      "WD",
+      "FT",
+      "CK",
+      "RD"
+    ],
+    "components": [
+      {
+        "name": "Predicate Engine",
+        "short": "PE",
+        "implementation_file": "experiments/runtime_stack.py",
+        "responsible_function": "RuntimeContext.generate",
+        "source_line": 219,
+        "execution_plane": "authorization",
+        "role": "generates the runtime predicate vector Gamma aggregates non-compensatorily",
+        "dependencies": [],
+        "can_be_disabled": true,
+        "in_ablation_matrix": true,
+        "executed_every_config_as_stage": false
+      },
+      {
+        "name": "Runtime Revocation",
+        "short": "RV",
+        "implementation_file": "experiments/runtime_stack.py",
+        "responsible_function": "PermitAuthority",
+        "source_line": 456,
+        "execution_plane": "enforcement",
+        "role": "issues Permit-to-Act tokens and withdraws already-granted authority",
+        "dependencies": [],
+        "can_be_disabled": true,
+        "in_ablation_matrix": true,
+        "executed_every_config_as_stage": false
+      },
+      {
+        "name": "Evidence Quad",
+        "short": "EQ",
+        "implementation_file": "experiments/runtime_stack.py",
+        "responsible_function": "build_ertuple",
+        "source_line": 297,
+        "execution_plane": "evidence",
+        "role": "emits the signed ERTuple (method/policy/ledger/replay evidence) per decision",
+        "dependencies": [
+          "PE"
+        ],
+        "can_be_disabled": true,
+        "in_ablation_matrix": true,
+        "executed_every_config_as_stage": false
+      },
+      {
+        "name": "Runtime Ledger",
+        "short": "LG",
+        "implementation_file": "experiments/runtime_stack.py",
+        "responsible_function": "Ledger.append",
+        "source_line": 342,
+        "execution_plane": "ledger",
+        "role": "chains evidence into an append-only Merkle-rooted ledger",
+        "dependencies": [
+          "EQ"
+        ],
+        "can_be_disabled": true,
+        "in_ablation_matrix": true,
+        "executed_every_config_as_stage": false
+      },
+      {
+        "name": "Hash Chain",
+        "short": "HC",
+        "implementation_file": "experiments/runtime_stack.py",
+        "responsible_function": "Ledger.verify",
+        "source_line": 363,
+        "execution_plane": "ledger",
+        "role": "links each ledger block to its predecessor (tamper-evident ordering)",
+        "dependencies": [
+          "EQ",
+          "LG"
+        ],
+        "can_be_disabled": true,
+        "in_ablation_matrix": true,
+        "executed_every_config_as_stage": false
+      },
+      {
+        "name": "Runtime Risk Detection",
+        "short": "RD",
+        "implementation_file": "experiments/runtime_attacks.py",
+        "responsible_function": "run",
+        "source_line": 45,
+        "execution_plane": "risk",
+        "role": "fires real adversarial artifacts at the enforcement surface and measures refusal",
+        "dependencies": [
+          "PE",
+          "RV"
+        ],
+        "can_be_disabled": false,
+        "in_ablation_matrix": false,
+        "executed_every_config_as_stage": true
+      },
+      {
+        "name": "Runtime Watchdog",
+        "short": "WD",
+        "implementation_file": "experiments/runtime_fleet.py",
+        "responsible_function": "Watchdog",
+        "source_line": 151,
+        "execution_plane": "governance",
+        "role": "supervisor thread detecting per-worker stalls and driving fail-closed recovery",
+        "dependencies": [],
+        "can_be_disabled": false,
+        "in_ablation_matrix": false,
+        "executed_every_config_as_stage": true
+      },
+      {
+        "name": "Fleet Telemetry",
+        "short": "FT",
+        "implementation_file": "experiments/runtime_fleet.py",
+        "responsible_function": "run_fleet",
+        "source_line": 234,
+        "execution_plane": "governance",
+        "role": "multi-process Gamma fleet with per-worker CPU/RSS/throughput telemetry",
+        "dependencies": [
+          "PE",
+          "RV",
+          "WD"
+        ],
+        "can_be_disabled": false,
+        "in_ablation_matrix": false,
+        "executed_every_config_as_stage": true
+      },
+      {
+        "name": "Clock Consistency (single-host PTP)",
+        "short": "CK",
+        "implementation_file": "experiments/run_runtime_stack.py",
+        "responsible_function": "measure_clock_consistency",
+        "source_line": 376,
+        "execution_plane": "timing",
+        "role": "single-host monotonic-clock characterisation (resolution, jitter, drift)",
+        "dependencies": [],
+        "can_be_disabled": false,
+        "in_ablation_matrix": false,
+        "executed_every_config_as_stage": true
+      }
+    ]
+  },
+  "metric_definitions": {
+    "undetected_risk_rate": {
+      "formula": "FN / (TP + FN)  =  1 - blind_risk_detection_recall",
+      "population": "label-positive (fraud/attack) items of the BLIND stream",
+      "means": "fraction of withheld-label positives the runtime PERMITTED, under unsupervised anomaly-bound predicates",
+      "NOT_the_same_as": "the paper's False Permit Rate (Table 12: 0/492 = 0.000; Table 18: 0/62 = 0.000), which is AUTHORIZATION SOUNDNESS -- permitting an action the authorization oracle says DENY. That metric is ZERO and is not measured, changed or contradicted by this experiment.",
+      "renamed_from": "false_permit_rate"
+    },
+    "benign_flag_rate": {
+      "formula": "FP / (TN + FP)  =  1 - specificity",
+      "population": "label-negative (legitimate) items of the BLIND stream",
+      "means": "fraction of legitimate items the runtime DENIED (a detection false alarm)",
+      "NOT_the_same_as": "the paper's False Denial Rate (Table 12: 0/284,315 = 0.000), which is denial of an action the authorization oracle says PERMIT.",
+      "renamed_from": "false_denial_rate"
+    },
+    "blind_risk_detection_recall": {
+      "formula": "TP / (TP + FN)",
+      "means": "recall of the blind unsupervised anomaly-bound predicates on the stream",
+      "NOT_the_same_as": "the paper's 'Runtime Risk Detection' (Tables 15/18: 2394/2394 = 1.000), which is the refusal rate of INJECTED ATTACKS against the enforcement surface (runtime_attacks.py) -- a different experiment.",
+      "renamed_from": "runtime_risk_detection_rate"
+    },
+    "blind_decision_accuracy": {
+      "formula": "(TP + TN) / N",
+      "means": "agreement of the runtime decision with the WITHHELD FRAUD LABEL",
+      "NOT_the_same_as": "authorization conformance against the golden-oracle trace (E1)",
+      "renamed_from": "authorization_accuracy"
+    },
+    "runtime_integrity_score": {
+      "formula": "mean of six health planes, normalized so the intact stack = 1.000",
+      "means": "composite introduced by THIS experiment (E5b); appears in no other paper table"
+    },
+    "baseline_URR_is_not_a_defect": "The baseline undetected_risk_rate is > 0 BY CONSTRUCTION: ~40% of synthetic positives are stealthy and observably identical to negatives (run_runtime_stack.synth_stream). It characterises the GENERATOR and the blind predicate floor -- NOT an authorization failure. The paper's zero-event authorization claim is untouched by it."
+  },
+  "runtime_integrity_score_definition": "mean of six [0,1] health indicators normalized so the intact baseline scores 1.0 (authz recall/baseline, revocation, evidence, ledger, hash-chain, replay). Four of six planes are audit/provenance, so RIS is audit-weighted by construction; the security axis is also reported separately.",
+  "baseline_runtime_integrity_score": 1.0,
+  "baseline_absolute_recall": 0.4810126582278481,
+  "configs": [
+    {
+      "config": "baseline_full_LDREA",
+      "disabled_components": [],
+      "disabled_codes": [],
+      "n_disabled": 0,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 1.0,
+      "replay_anchored": true,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": 1.0,
+      "hash_chain_links_ok": 71,
+      "hash_chain_links_total": 71,
+      "ledger_integrity": 1.0,
+      "ledger_blocks": 71,
+      "ledger_verify_error": null,
+      "ertuples": 4500,
+      "tamper_detected": true,
+      "fork_detected": true,
+      "latency_mean_ms": 1.5271577419999969,
+      "latency_median_ms": 1.524125,
+      "latency_p95_ms": 1.613167,
+      "latency_p99_ms": 1.928458,
+      "latency_max_ms": 7.297625,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.5271577419999969,
+        "median": 1.524125,
+        "min": 0.387,
+        "max": 7.297625,
+        "p50": 1.524125,
+        "p95": 1.613167,
+        "p99": 1.928458,
+        "stdev": 0.13310390045668455,
+        "bootstrap95_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 654.6138398395176,
+      "runtime_overhead_ms": 0.0014085397777777787,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0014085397777777787,
+        "median": 0.001334,
+        "min": 0.001125,
+        "max": 0.022792,
+        "p50": 0.001334,
+        "p95": 0.001708,
+        "p99": 0.002792,
+        "stdev": 0.0004885109328652119,
+        "bootstrap95_ci": {
+          "stat": 0.0014085397777777776,
+          "low": 0.0013949942111111111,
+          "high": 0.0014238276333333332,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 6.8743,
+      "runtime_integrity_score": 1.0,
+      "overall_runtime_verdict": "BASELINE (full L-DREA)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 86,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 255.004
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1358.1974004101758,
+          "queue_delay_p95_ms": 527.363,
+          "busy_fraction_mean": 0.2000172151683185,
+          "load_imbalance_cv": 0.6105067718858804
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 51.867,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "note": "baseline (reference); no self-comparison"
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_PE",
+      "disabled_components": [
+        "predicate_engine"
+      ],
+      "disabled_codes": [
+        "PE"
+      ],
+      "n_disabled": 1,
+      "confusion_matrix": {
+        "tp_fraud_denied": 0,
+        "fn_fraud_permitted": 79,
+        "fp_legit_denied": 0,
+        "tn_legit_permitted": 4421,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4500,
+      "safe_state": 0,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.9824444444444445,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.9824444444444445,
+        "low": 0.9781754796419792,
+        "high": 0.9858904271399457,
+        "n": 4500,
+        "successes": 4421
+      },
+      "undetected_risk_rate": 1.0,
+      "undetected_risk_rate_wilson95": {
+        "p": 1.0,
+        "low": 0.9536287883460772,
+        "high": 1.0,
+        "n": 79,
+        "successes": 79
+      },
+      "benign_flag_rate": 0.0,
+      "benign_flag_rate_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.0008681573919527388,
+        "n": 4421,
+        "successes": 0
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 1.0,
+      "replay_anchored": true,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 225,
+      "predicate_coverage": 0.0,
+      "predicate_pass_rate": 1.0,
+      "predicate_note": "engine disabled: no predicate evaluated (every action vacuously passes)",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.0,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.04637121165392266,
+        "n": 79,
+        "successes": 0
+      },
+      "blind_balanced_accuracy": 0.5,
+      "specificity": 1.0,
+      "hash_chain_integrity": 1.0,
+      "hash_chain_links_ok": 71,
+      "hash_chain_links_total": 71,
+      "ledger_integrity": 1.0,
+      "ledger_blocks": 71,
+      "ledger_verify_error": null,
+      "ertuples": 4500,
+      "tamper_detected": true,
+      "fork_detected": true,
+      "latency_mean_ms": 0.6284732664444439,
+      "latency_median_ms": 0.604667,
+      "latency_p95_ms": 0.824416,
+      "latency_p99_ms": 0.979416,
+      "latency_max_ms": 1.391833,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.6284732664444439,
+        "median": 0.604667,
+        "min": 0.591542,
+        "max": 1.391833,
+        "p50": 0.604667,
+        "p95": 0.824416,
+        "p99": 0.979416,
+        "stdev": 0.0754057931689919,
+        "bootstrap95_ci": {
+          "stat": 0.6284732664444445,
+          "low": 0.6262248794944444,
+          "high": 0.6306459781944445,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 1590.180365137194,
+      "runtime_overhead_ms": 0.0007454879999999885,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0007454879999999885,
+        "median": 0.000709,
+        "min": 0.000625,
+        "max": 0.011083,
+        "p50": 0.000709,
+        "p95": 0.000958,
+        "p99": 0.001042,
+        "stdev": 0.00022839081142832538,
+        "bootstrap95_ci": {
+          "stat": 0.000745488,
+          "low": 0.0007397935333333334,
+          "high": 0.0007527537777777778,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 2.8299,
+      "runtime_integrity_score": 0.833333,
+      "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 81,
+          "injected_stalls": 1,
+          "stalls_detected": 0,
+          "detection_rate": 0.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": null
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1467.0404903175327,
+          "queue_delay_p95_ms": 60.37,
+          "busy_fraction_mean": 0.00020222138029769678,
+          "load_imbalance_cv": 0.618941749188798
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 79.158,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -8.3069,
+          "magnitude": "large",
+          "mean_a": 0.6284732664444439,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 10357.0,
+          "z": -82.0698,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.999,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 0.6284732664444445,
+          "low": 0.6262248794944444,
+          "high": 0.6306459781944445,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": 0.481013,
+          "p1": 1.0,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": -7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.481013,
+          "p1": 0.0,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": -12.6427,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.035512,
+          "p1": 0.0,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_RV",
+      "disabled_components": [
+        "runtime_revocation"
+      ],
+      "disabled_codes": [
+        "RV"
+      ],
+      "n_disabled": 1,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 1.0,
+      "replay_anchored": true,
+      "revocation_compliance": 0.0,
+      "false_permits_after_revocation": 215,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": 1.0,
+      "hash_chain_links_ok": 71,
+      "hash_chain_links_total": 71,
+      "ledger_integrity": 1.0,
+      "ledger_blocks": 71,
+      "ledger_verify_error": null,
+      "ertuples": 4500,
+      "tamper_detected": true,
+      "fork_detected": true,
+      "latency_mean_ms": 1.3175700506666672,
+      "latency_median_ms": 1.26,
+      "latency_p95_ms": 1.745334,
+      "latency_p99_ms": 2.224416,
+      "latency_max_ms": 14.373,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.3175700506666672,
+        "median": 1.26,
+        "min": 0.378625,
+        "max": 14.373,
+        "p50": 1.26,
+        "p95": 1.745334,
+        "p99": 2.224416,
+        "stdev": 0.2658434227669874,
+        "bootstrap95_ci": {
+          "stat": 1.3175700506666665,
+          "low": 1.3109427171777777,
+          "high": 1.3266902922722221,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 758.6916773134459,
+      "runtime_overhead_ms": 0.001527330444444454,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.001527330444444454,
+        "median": 0.001375,
+        "min": 0.001125,
+        "max": 0.016917,
+        "p50": 0.001375,
+        "p95": 0.002375,
+        "p99": 0.003625,
+        "stdev": 0.0006519634948248613,
+        "bootstrap95_ci": {
+          "stat": 0.0015273304444444445,
+          "low": 0.0015085427777777778,
+          "high": 0.0015475693944444445,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 5.9313,
+      "runtime_integrity_score": 0.833333,
+      "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 83,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 295.868
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1390.5970914889278,
+          "queue_delay_p95_ms": 537.12,
+          "busy_fraction_mean": 0.19476183343519496,
+          "load_imbalance_cv": 0.6105431704334779
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 53.447,
+          "false_permits_after_revocation": 20,
+          "compliance_rate": 0.0,
+          "probe_has_power": false
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -0.9969,
+          "magnitude": "large",
+          "mean_a": 1.3175700506666672,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 2318930.0,
+          "z": -63.3381,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.771,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.3175700506666665,
+          "low": 1.3109427171777777,
+          "high": 1.3266902922722221,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ",
+      "disabled_components": [
+        "evidence_quad"
+      ],
+      "disabled_codes": [
+        "EQ"
+      ],
+      "n_disabled": 1,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no evidence to chain",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.2524024173333337,
+      "latency_median_ms": 1.230833,
+      "latency_p95_ms": 1.423166,
+      "latency_p99_ms": 2.049083,
+      "latency_max_ms": 6.003667,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.2524024173333337,
+        "median": 1.230833,
+        "min": 0.083208,
+        "max": 6.003667,
+        "p50": 1.230833,
+        "p95": 1.423166,
+        "p99": 2.049083,
+        "stdev": 0.18246854558168665,
+        "bootstrap95_ci": {
+          "stat": 1.2524024173333335,
+          "low": 1.2468926107000002,
+          "high": 1.2579900989166668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 798.225391270211,
+      "runtime_overhead_ms": 0.0014110906666666696,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0014110906666666696,
+        "median": 0.001292,
+        "min": 0.001083,
+        "max": 0.057292,
+        "p50": 0.001292,
+        "p95": 0.002,
+        "p99": 0.003458,
+        "stdev": 0.001072601569912871,
+        "bootstrap95_ci": {
+          "stat": 0.0014110906666666666,
+          "low": 0.0013849915111111112,
+          "high": 0.0014478954055555555,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 5.6375,
+      "runtime_integrity_score": 0.333333,
+      "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 82,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 110.968
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1383.43414469184,
+          "queue_delay_p95_ms": 388.124,
+          "busy_fraction_mean": 0.1520277915814182,
+          "load_imbalance_cv": 0.610482504981829
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.319,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -1.7202,
+          "magnitude": "large",
+          "mean_a": 1.2524024173333337,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 1056116.5,
+          "z": -73.5845,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.8957,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.2524024173333335,
+          "low": 1.2468926107000002,
+          "high": 1.2579900989166668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_LG",
+      "disabled_components": [
+        "runtime_ledger"
+      ],
+      "disabled_codes": [
+        "LG"
+      ],
+      "n_disabled": 1,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no ledger",
+      "ertuples": 4500,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.6891873055555517,
+      "latency_median_ms": 1.567875,
+      "latency_p95_ms": 2.347042,
+      "latency_p99_ms": 3.099042,
+      "latency_max_ms": 71.519084,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.6891873055555517,
+        "median": 1.567875,
+        "min": 0.373125,
+        "max": 71.519084,
+        "p50": 1.567875,
+        "p95": 2.347042,
+        "p99": 3.099042,
+        "stdev": 1.1704709796290333,
+        "bootstrap95_ci": {
+          "stat": 1.6891873055555555,
+          "low": 1.6626871681722224,
+          "high": 1.7305352708222221,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 591.7691746293635,
+      "runtime_overhead_ms": 0.0035623606666666846,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0035623606666666846,
+        "median": 0.001542,
+        "min": 0.001084,
+        "max": 7.134833,
+        "p50": 0.001542,
+        "p95": 0.003625,
+        "p99": 0.006958,
+        "stdev": 0.10635970693880653,
+        "bootstrap95_ci": {
+          "stat": 0.0035623606666666664,
+          "low": 0.001916035644444444,
+          "high": 0.008255006866666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 7.6043,
+      "runtime_integrity_score": 0.5,
+      "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 85,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 274.47
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1349.6693310139015,
+          "queue_delay_p95_ms": 541.907,
+          "busy_fraction_mean": 0.19748974966051747,
+          "load_imbalance_cv": 0.610482504981829
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.36,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": 0.1945,
+          "magnitude": "negligible",
+          "mean_a": 1.6891873055555517,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 6193285.5,
+          "z": -31.9018,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": 0.3883,
+          "cliffs_magnitude": "medium"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.6891873055555555,
+          "low": 1.6626871681722224,
+          "high": 1.7305352708222221,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_HC",
+      "disabled_components": [
+        "hash_chain"
+      ],
+      "disabled_codes": [
+        "HC"
+      ],
+      "n_disabled": 1,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": 0.014084507042253521,
+      "hash_chain_links_ok": 1,
+      "hash_chain_links_total": 71,
+      "ledger_integrity": 0.0,
+      "ledger_blocks": 71,
+      "ledger_verify_error": "chain break at 1",
+      "ertuples": 4500,
+      "tamper_detected": true,
+      "fork_detected": true,
+      "latency_mean_ms": 1.6893213166666667,
+      "latency_median_ms": 1.5755,
+      "latency_p95_ms": 2.306916,
+      "latency_p99_ms": 2.826416,
+      "latency_max_ms": 25.766375,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.6893213166666667,
+        "median": 1.5755,
+        "min": 0.391917,
+        "max": 25.766375,
+        "p50": 1.5755,
+        "p95": 2.306916,
+        "p99": 2.826416,
+        "stdev": 0.4824113609134819,
+        "bootstrap95_ci": {
+          "stat": 1.6893213166666667,
+          "low": 1.6769919171999998,
+          "high": 1.705552412261111,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 591.7118786196188,
+      "runtime_overhead_ms": 0.0019443228888889068,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0019443228888889068,
+        "median": 0.001583,
+        "min": 0.001166,
+        "max": 0.151334,
+        "p50": 0.001583,
+        "p95": 0.0035,
+        "p99": 0.005334,
+        "stdev": 0.0025807036940356854,
+        "bootstrap95_ci": {
+          "stat": 0.0019443228888888888,
+          "low": 0.001883570338888889,
+          "high": 0.0020386994388888885,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 7.6051,
+      "runtime_integrity_score": 0.502347,
+      "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 80,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 131.097
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1394.795244058172,
+          "queue_delay_p95_ms": 383.011,
+          "busy_fraction_mean": 0.15162039968627722,
+          "load_imbalance_cv": 0.6104703711680642
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.169,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": 0.4582,
+          "magnitude": "small",
+          "mean_a": 1.6893213166666667,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 4938372.0,
+          "z": -42.0841,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": 0.5123,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.6893213166666667,
+          "low": 1.6769919171999998,
+          "high": 1.705552412261111,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_PE+RV",
+      "disabled_components": [
+        "predicate_engine",
+        "runtime_revocation"
+      ],
+      "disabled_codes": [
+        "PE",
+        "RV"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 0,
+        "fn_fraud_permitted": 79,
+        "fp_legit_denied": 0,
+        "tn_legit_permitted": 4421,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4500,
+      "safe_state": 0,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.9824444444444445,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.9824444444444445,
+        "low": 0.9781754796419792,
+        "high": 0.9858904271399457,
+        "n": 4500,
+        "successes": 4421
+      },
+      "undetected_risk_rate": 1.0,
+      "undetected_risk_rate_wilson95": {
+        "p": 1.0,
+        "low": 0.9536287883460772,
+        "high": 1.0,
+        "n": 79,
+        "successes": 79
+      },
+      "benign_flag_rate": 0.0,
+      "benign_flag_rate_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.0008681573919527388,
+        "n": 4421,
+        "successes": 0
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 1.0,
+      "replay_anchored": true,
+      "revocation_compliance": 0.0,
+      "false_permits_after_revocation": 225,
+      "revocation_probe_n": 225,
+      "predicate_coverage": 0.0,
+      "predicate_pass_rate": 1.0,
+      "predicate_note": "engine disabled: no predicate evaluated (every action vacuously passes)",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.0,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.04637121165392266,
+        "n": 79,
+        "successes": 0
+      },
+      "blind_balanced_accuracy": 0.5,
+      "specificity": 1.0,
+      "hash_chain_integrity": 1.0,
+      "hash_chain_links_ok": 71,
+      "hash_chain_links_total": 71,
+      "ledger_integrity": 1.0,
+      "ledger_blocks": 71,
+      "ledger_verify_error": null,
+      "ertuples": 4500,
+      "tamper_detected": true,
+      "fork_detected": true,
+      "latency_mean_ms": 0.3594120744444454,
+      "latency_median_ms": 0.341041,
+      "latency_p95_ms": 0.434417,
+      "latency_p99_ms": 0.728333,
+      "latency_max_ms": 10.440417,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.3594120744444454,
+        "median": 0.341041,
+        "min": 0.272208,
+        "max": 10.440417,
+        "p50": 0.341041,
+        "p95": 0.434417,
+        "p99": 0.728333,
+        "stdev": 0.16463924267331223,
+        "bootstrap95_ci": {
+          "stat": 0.35941207444444445,
+          "low": 0.3557991363333333,
+          "high": 0.3649601434722223,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 2779.144978149781,
+      "runtime_overhead_ms": 0.00081494155555556,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.00081494155555556,
+        "median": 0.000709,
+        "min": 0.000625,
+        "max": 0.015208,
+        "p50": 0.000709,
+        "p95": 0.001291,
+        "p99": 0.002333,
+        "stdev": 0.000519720656085579,
+        "bootstrap95_ci": {
+          "stat": 0.0008149415555555556,
+          "low": 0.0008004572444444445,
+          "high": 0.0008310437777777779,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 1.6192,
+      "runtime_integrity_score": 0.666667,
+      "overall_runtime_verdict": "SECURITY-DEGRADED (authorization/enforcement weakened)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 85,
+          "injected_stalls": 1,
+          "stalls_detected": 0,
+          "detection_rate": 0.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": null
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1460.6761632256923,
+          "queue_delay_p95_ms": 108.302,
+          "busy_fraction_mean": 0.00036082750641971663,
+          "load_imbalance_cv": 0.6106523530588385
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 58.539,
+          "false_permits_after_revocation": 20,
+          "compliance_rate": 0.0,
+          "probe_has_power": false
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -7.7995,
+          "magnitude": "large",
+          "mean_a": 0.3594120744444454,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 5757.0,
+          "z": -82.1071,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.9994,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 0.35941207444444445,
+          "low": 0.3557991363333333,
+          "high": 0.3649601434722223,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": 0.481013,
+          "p1": 1.0,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": -7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.481013,
+          "p1": 0.0,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": -12.6427,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.035512,
+          "p1": 0.0,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ+PE",
+      "disabled_components": [
+        "evidence_quad",
+        "predicate_engine"
+      ],
+      "disabled_codes": [
+        "EQ",
+        "PE"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 0,
+        "fn_fraud_permitted": 79,
+        "fp_legit_denied": 0,
+        "tn_legit_permitted": 4421,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4500,
+      "safe_state": 0,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.9824444444444445,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.9824444444444445,
+        "low": 0.9781754796419792,
+        "high": 0.9858904271399457,
+        "n": 4500,
+        "successes": 4421
+      },
+      "undetected_risk_rate": 1.0,
+      "undetected_risk_rate_wilson95": {
+        "p": 1.0,
+        "low": 0.9536287883460772,
+        "high": 1.0,
+        "n": 79,
+        "successes": 79
+      },
+      "benign_flag_rate": 0.0,
+      "benign_flag_rate_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.0008681573919527388,
+        "n": 4421,
+        "successes": 0
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 225,
+      "predicate_coverage": 0.0,
+      "predicate_pass_rate": 1.0,
+      "predicate_note": "engine disabled: no predicate evaluated (every action vacuously passes)",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.0,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.04637121165392266,
+        "n": 79,
+        "successes": 0
+      },
+      "blind_balanced_accuracy": 0.5,
+      "specificity": 1.0,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no evidence to chain",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 0.38344195288888866,
+      "latency_median_ms": 0.333375,
+      "latency_p95_ms": 0.597625,
+      "latency_p99_ms": 0.842458,
+      "latency_max_ms": 2.774916,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.38344195288888866,
+        "median": 0.333375,
+        "min": 0.253875,
+        "max": 2.774916,
+        "p50": 0.333375,
+        "p95": 0.597625,
+        "p99": 0.842458,
+        "stdev": 0.12827200046106538,
+        "bootstrap95_ci": {
+          "stat": 0.38344195288888894,
+          "low": 0.3796920719222222,
+          "high": 0.38726620497222225,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 2604.4390310028043,
+      "runtime_overhead_ms": 0.0010627304444444485,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0010627304444444485,
+        "median": 0.00075,
+        "min": 0.000584,
+        "max": 0.036834,
+        "p50": 0.00075,
+        "p95": 0.0025,
+        "p99": 0.0045,
+        "stdev": 0.0011320700298351307,
+        "bootstrap95_ci": {
+          "stat": 0.0010627304444444446,
+          "low": 0.001032364238888889,
+          "high": 0.001098447038888889,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 1.7278,
+      "runtime_integrity_score": 0.166667,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 80,
+          "injected_stalls": 1,
+          "stalls_detected": 0,
+          "detection_rate": 0.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": null
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1465.063127942335,
+          "queue_delay_p95_ms": 71.617,
+          "busy_fraction_mean": 0.0002533763114705765,
+          "load_imbalance_cv": 0.616086814469327
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.238,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -8.749,
+          "magnitude": "large",
+          "mean_a": 0.38344195288888866,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 35011.5,
+          "z": -81.8697,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.9965,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 0.38344195288888894,
+          "low": 0.3796920719222222,
+          "high": 0.38726620497222225,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": 0.481013,
+          "p1": 1.0,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": -7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.481013,
+          "p1": 0.0,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": -12.6427,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.035512,
+          "p1": 0.0,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_LG+PE",
+      "disabled_components": [
+        "predicate_engine",
+        "runtime_ledger"
+      ],
+      "disabled_codes": [
+        "LG",
+        "PE"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 0,
+        "fn_fraud_permitted": 79,
+        "fp_legit_denied": 0,
+        "tn_legit_permitted": 4421,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4500,
+      "safe_state": 0,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.9824444444444445,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.9824444444444445,
+        "low": 0.9781754796419792,
+        "high": 0.9858904271399457,
+        "n": 4500,
+        "successes": 4421
+      },
+      "undetected_risk_rate": 1.0,
+      "undetected_risk_rate_wilson95": {
+        "p": 1.0,
+        "low": 0.9536287883460772,
+        "high": 1.0,
+        "n": 79,
+        "successes": 79
+      },
+      "benign_flag_rate": 0.0,
+      "benign_flag_rate_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.0008681573919527388,
+        "n": 4421,
+        "successes": 0
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 225,
+      "predicate_coverage": 0.0,
+      "predicate_pass_rate": 1.0,
+      "predicate_note": "engine disabled: no predicate evaluated (every action vacuously passes)",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.0,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.04637121165392266,
+        "n": 79,
+        "successes": 0
+      },
+      "blind_balanced_accuracy": 0.5,
+      "specificity": 1.0,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no ledger",
+      "ertuples": 4500,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 0.6525072082222225,
+      "latency_median_ms": 0.611167,
+      "latency_p95_ms": 0.841125,
+      "latency_p99_ms": 1.043,
+      "latency_max_ms": 10.285542,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.6525072082222225,
+        "median": 0.611167,
+        "min": 0.476792,
+        "max": 10.285542,
+        "p50": 0.611167,
+        "p95": 0.841125,
+        "p99": 1.043,
+        "stdev": 0.23665152435922876,
+        "bootstrap95_ci": {
+          "stat": 0.6525072082222222,
+          "low": 0.6463383496444444,
+          "high": 0.6600225299555555,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 1531.6040971245507,
+      "runtime_overhead_ms": 0.000883772888888889,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.000883772888888889,
+        "median": 0.00075,
+        "min": 0.000625,
+        "max": 0.032125,
+        "p50": 0.00075,
+        "p95": 0.001458,
+        "p99": 0.002875,
+        "stdev": 0.0007501710240401399,
+        "bootstrap95_ci": {
+          "stat": 0.0008837728888888888,
+          "low": 0.0008630409166666668,
+          "high": 0.000906619772222222,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 2.9381,
+      "runtime_integrity_score": 0.333333,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 80,
+          "injected_stalls": 1,
+          "stalls_detected": 0,
+          "detection_rate": 0.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": null
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1454.8863976204525,
+          "queue_delay_p95_ms": 60.548,
+          "busy_fraction_mean": 0.00021753809861600133,
+          "load_imbalance_cv": 0.6105916984550497
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.299,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -4.5552,
+          "magnitude": "large",
+          "mean_a": 0.6525072082222225,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 56764.5,
+          "z": -81.6932,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.9944,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 0.6525072082222222,
+          "low": 0.6463383496444444,
+          "high": 0.6600225299555555,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": 0.481013,
+          "p1": 1.0,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": -7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.481013,
+          "p1": 0.0,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": -12.6427,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.035512,
+          "p1": 0.0,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_HC+PE",
+      "disabled_components": [
+        "hash_chain",
+        "predicate_engine"
+      ],
+      "disabled_codes": [
+        "HC",
+        "PE"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 0,
+        "fn_fraud_permitted": 79,
+        "fp_legit_denied": 0,
+        "tn_legit_permitted": 4421,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4500,
+      "safe_state": 0,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.9824444444444445,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.9824444444444445,
+        "low": 0.9781754796419792,
+        "high": 0.9858904271399457,
+        "n": 4500,
+        "successes": 4421
+      },
+      "undetected_risk_rate": 1.0,
+      "undetected_risk_rate_wilson95": {
+        "p": 1.0,
+        "low": 0.9536287883460772,
+        "high": 1.0,
+        "n": 79,
+        "successes": 79
+      },
+      "benign_flag_rate": 0.0,
+      "benign_flag_rate_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.0008681573919527388,
+        "n": 4421,
+        "successes": 0
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 225,
+      "predicate_coverage": 0.0,
+      "predicate_pass_rate": 1.0,
+      "predicate_note": "engine disabled: no predicate evaluated (every action vacuously passes)",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.0,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.04637121165392266,
+        "n": 79,
+        "successes": 0
+      },
+      "blind_balanced_accuracy": 0.5,
+      "specificity": 1.0,
+      "hash_chain_integrity": 0.014084507042253521,
+      "hash_chain_links_ok": 1,
+      "hash_chain_links_total": 71,
+      "ledger_integrity": 0.0,
+      "ledger_blocks": 71,
+      "ledger_verify_error": "chain break at 1",
+      "ertuples": 4500,
+      "tamper_detected": true,
+      "fork_detected": true,
+      "latency_mean_ms": 0.6314183611111119,
+      "latency_median_ms": 0.610292,
+      "latency_p95_ms": 0.742458,
+      "latency_p99_ms": 0.999625,
+      "latency_max_ms": 12.339625,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.6314183611111119,
+        "median": 0.610292,
+        "min": 0.485667,
+        "max": 12.339625,
+        "p50": 0.610292,
+        "p95": 0.742458,
+        "p99": 0.999625,
+        "stdev": 0.18888540996860986,
+        "bootstrap95_ci": {
+          "stat": 0.6314183611111112,
+          "low": 0.6272549188111111,
+          "high": 0.6382443454444444,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 1582.5948330388821,
+      "runtime_overhead_ms": 0.0008616546666666704,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0008616546666666704,
+        "median": 0.00075,
+        "min": 0.000625,
+        "max": 0.024292,
+        "p50": 0.00075,
+        "p95": 0.0015,
+        "p99": 0.002583,
+        "stdev": 0.00058364547902758,
+        "bootstrap95_ci": {
+          "stat": 0.0008616546666666666,
+          "low": 0.0008459641055555554,
+          "high": 0.0008786755999999999,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 2.8434,
+      "runtime_integrity_score": 0.335681,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 79,
+          "injected_stalls": 1,
+          "stalls_detected": 0,
+          "detection_rate": 0.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": null
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1440.2880576115224,
+          "queue_delay_p95_ms": 99.427,
+          "busy_fraction_mean": 0.00033167255390517686,
+          "load_imbalance_cv": 0.6282309082447902
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.147,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -5.4815,
+          "magnitude": "large",
+          "mean_a": 0.6314183611111119,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 22212.0,
+          "z": -81.9736,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.9978,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 0.6314183611111112,
+          "low": 0.6272549188111111,
+          "high": 0.6382443454444444,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": 0.481013,
+          "p1": 1.0,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": -7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.481013,
+          "p1": 0.0,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": -12.6427,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.035512,
+          "p1": 0.0,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ+RV",
+      "disabled_components": [
+        "evidence_quad",
+        "runtime_revocation"
+      ],
+      "disabled_codes": [
+        "EQ",
+        "RV"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 0.0,
+      "false_permits_after_revocation": 215,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no evidence to chain",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.140469299777775,
+      "latency_median_ms": 1.043958,
+      "latency_p95_ms": 1.643416,
+      "latency_p99_ms": 2.025666,
+      "latency_max_ms": 22.187125,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.140469299777775,
+        "median": 1.043958,
+        "min": 0.09375,
+        "max": 22.187125,
+        "p50": 1.043958,
+        "p95": 1.643416,
+        "p99": 2.025666,
+        "stdev": 0.4801008767863124,
+        "bootstrap95_ci": {
+          "stat": 1.140469299777778,
+          "low": 1.1272981321277777,
+          "high": 1.1557738025444446,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 876.37143394911,
+      "runtime_overhead_ms": 0.0024027164444444748,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0024027164444444748,
+        "median": 0.001666,
+        "min": 0.001083,
+        "max": 1.437333,
+        "p50": 0.001666,
+        "p95": 0.003791,
+        "p99": 0.007416,
+        "stdev": 0.021502440327740492,
+        "bootstrap95_ci": {
+          "stat": 0.0024027164444444444,
+          "low": 0.002035459205555556,
+          "high": 0.0030946912999999993,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 5.1348,
+      "runtime_integrity_score": 0.166667,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 80,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 114.506
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1392.559400394868,
+          "queue_delay_p95_ms": 386.676,
+          "busy_fraction_mean": 0.15164791957416648,
+          "load_imbalance_cv": 0.6104703711680642
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 51.851,
+          "false_permits_after_revocation": 20,
+          "compliance_rate": 0.0,
+          "probe_has_power": false
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -1.0975,
+          "magnitude": "large",
+          "mean_a": 1.140469299777775,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 1598907.0,
+          "z": -69.1804,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.8421,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.140469299777778,
+          "low": 1.1272981321277777,
+          "high": 1.1557738025444446,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_LG+RV",
+      "disabled_components": [
+        "runtime_ledger",
+        "runtime_revocation"
+      ],
+      "disabled_codes": [
+        "LG",
+        "RV"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 0.0,
+      "false_permits_after_revocation": 215,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no ledger",
+      "ertuples": 4500,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.3968097035555525,
+      "latency_median_ms": 1.308333,
+      "latency_p95_ms": 1.897459,
+      "latency_p99_ms": 2.29975,
+      "latency_max_ms": 11.613292,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.3968097035555525,
+        "median": 1.308333,
+        "min": 0.434459,
+        "max": 11.613292,
+        "p50": 1.308333,
+        "p95": 1.897459,
+        "p99": 2.29975,
+        "stdev": 0.2832080080180692,
+        "bootstrap95_ci": {
+          "stat": 1.3968097035555556,
+          "low": 1.3889805148555556,
+          "high": 1.4059377447722223,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 715.5855527252381,
+      "runtime_overhead_ms": 0.0018731668888889033,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0018731668888889033,
+        "median": 0.001541,
+        "min": 0.001125,
+        "max": 0.024791,
+        "p50": 0.001541,
+        "p95": 0.003458,
+        "p99": 0.005542,
+        "stdev": 0.0012209642526086089,
+        "bootstrap95_ci": {
+          "stat": 0.001873166888888889,
+          "low": 0.0018395251944444448,
+          "high": 0.0019096706333333335,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 6.2886,
+      "runtime_integrity_score": 0.333333,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 82,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 135.097
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1384.7879504984467,
+          "queue_delay_p95_ms": 388.879,
+          "busy_fraction_mean": 0.15127056664670888,
+          "load_imbalance_cv": 0.6104703711680642
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 51.938,
+          "false_permits_after_revocation": 20,
+          "compliance_rate": 0.0,
+          "probe_has_power": false
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -0.589,
+          "magnitude": "medium",
+          "mean_a": 1.3968097035555525,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 3825442.0,
+          "z": -51.1143,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.6222,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.3968097035555556,
+          "low": 1.3889805148555556,
+          "high": 1.4059377447722223,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_HC+RV",
+      "disabled_components": [
+        "hash_chain",
+        "runtime_revocation"
+      ],
+      "disabled_codes": [
+        "HC",
+        "RV"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 0.0,
+      "false_permits_after_revocation": 215,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": 0.014084507042253521,
+      "hash_chain_links_ok": 1,
+      "hash_chain_links_total": 71,
+      "ledger_integrity": 0.0,
+      "ledger_blocks": 71,
+      "ledger_verify_error": "chain break at 1",
+      "ertuples": 4500,
+      "tamper_detected": true,
+      "fork_detected": true,
+      "latency_mean_ms": 1.2787212371111085,
+      "latency_median_ms": 1.258583,
+      "latency_p95_ms": 1.434291,
+      "latency_p99_ms": 1.731875,
+      "latency_max_ms": 2.266709,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.2787212371111085,
+        "median": 1.258583,
+        "min": 0.379584,
+        "max": 2.266709,
+        "p50": 1.258583,
+        "p95": 1.434291,
+        "p99": 1.731875,
+        "stdev": 0.1064970625531824,
+        "bootstrap95_ci": {
+          "stat": 1.2787212371111112,
+          "low": 1.2755862958666666,
+          "high": 1.2818123228666667,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 781.7669988031203,
+      "runtime_overhead_ms": 0.0014103688888889051,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0014103688888889051,
+        "median": 0.001375,
+        "min": 0.001083,
+        "max": 0.023042,
+        "p50": 0.001375,
+        "p95": 0.00175,
+        "p99": 0.002375,
+        "stdev": 0.00038776516078805695,
+        "bootstrap95_ci": {
+          "stat": 0.0014103688888888889,
+          "low": 0.0014010036444444443,
+          "high": 0.0014238184055555556,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 5.7562,
+      "runtime_integrity_score": 0.335681,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 87,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 256.004
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1332.2773801505473,
+          "queue_delay_p95_ms": 536.167,
+          "busy_fraction_mean": 0.19310708960393852,
+          "load_imbalance_cv": 0.6105916984550497
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 51.744,
+          "false_permits_after_revocation": 20,
+          "compliance_rate": 0.0,
+          "probe_has_power": false
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -2.0609,
+          "magnitude": "large",
+          "mean_a": 1.2787212371111085,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 1387620.5,
+          "z": -70.8947,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.863,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.2787212371111112,
+          "low": 1.2755862958666666,
+          "high": 1.2818123228666667,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ+LG",
+      "disabled_components": [
+        "evidence_quad",
+        "runtime_ledger"
+      ],
+      "disabled_codes": [
+        "EQ",
+        "LG"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no ledger",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.2419900864444466,
+      "latency_median_ms": 1.226,
+      "latency_p95_ms": 1.380166,
+      "latency_p99_ms": 1.671458,
+      "latency_max_ms": 14.805083,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.2419900864444466,
+        "median": 1.226,
+        "min": 0.083,
+        "max": 14.805083,
+        "p50": 1.226,
+        "p95": 1.380166,
+        "p99": 1.671458,
+        "stdev": 0.2614678762836857,
+        "bootstrap95_ci": {
+          "stat": 1.2419900864444446,
+          "low": 1.2354783807944443,
+          "high": 1.2504444136388888,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 804.8931421628663,
+      "runtime_overhead_ms": 0.0014787108888889018,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0014787108888889018,
+        "median": 0.001292,
+        "min": 0.001041,
+        "max": 0.113792,
+        "p50": 0.001292,
+        "p95": 0.00225,
+        "p99": 0.00375,
+        "stdev": 0.0017991791437496308,
+        "bootstrap95_ci": {
+          "stat": 0.001478710888888889,
+          "low": 0.0014400175166666665,
+          "high": 0.001540031572222222,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 5.5908,
+      "runtime_integrity_score": 0.333333,
+      "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 82,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 129.678
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1394.7541745767307,
+          "queue_delay_p95_ms": 390.451,
+          "busy_fraction_mean": 0.15170086525725093,
+          "load_imbalance_cv": 0.6105431704334779
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.267,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -1.3744,
+          "magnitude": "large",
+          "mean_a": 1.2419900864444466,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 721185.0,
+          "z": -76.3022,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.9288,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.2419900864444446,
+          "low": 1.2354783807944443,
+          "high": 1.2504444136388888,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ+HC",
+      "disabled_components": [
+        "evidence_quad",
+        "hash_chain"
+      ],
+      "disabled_codes": [
+        "EQ",
+        "HC"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no evidence to chain",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.2301251780000022,
+      "latency_median_ms": 1.231625,
+      "latency_p95_ms": 1.330292,
+      "latency_p99_ms": 1.5095,
+      "latency_max_ms": 3.654584,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.2301251780000022,
+        "median": 1.231625,
+        "min": 0.085375,
+        "max": 3.654584,
+        "p50": 1.231625,
+        "p95": 1.330292,
+        "p99": 1.5095,
+        "stdev": 0.10912792452807385,
+        "bootstrap95_ci": {
+          "stat": 1.230125178,
+          "low": 1.2271114960277778,
+          "high": 1.2332655325611113,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 812.6706857207536,
+      "runtime_overhead_ms": 0.0014243417777777658,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0014243417777777658,
+        "median": 0.001292,
+        "min": 0.001083,
+        "max": 0.025417,
+        "p50": 0.001292,
+        "p95": 0.002041,
+        "p99": 0.003292,
+        "stdev": 0.0006512691159652612,
+        "bootstrap95_ci": {
+          "stat": 0.0014243417777777777,
+          "low": 0.0014065014222222224,
+          "high": 0.001444974011111111,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 5.5373,
+      "runtime_integrity_score": 0.333333,
+      "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 83,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 109.696
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1391.1344546907508,
+          "queue_delay_p95_ms": 386.71,
+          "busy_fraction_mean": 0.15199323858570726,
+          "load_imbalance_cv": 0.6105067718858804
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.191,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -2.4403,
+          "magnitude": "large",
+          "mean_a": 1.2301251780000022,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 590506.5,
+          "z": -77.3625,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.9417,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.230125178,
+          "low": 1.2271114960277778,
+          "high": 1.2332655325611113,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_HC+LG",
+      "disabled_components": [
+        "hash_chain",
+        "runtime_ledger"
+      ],
+      "disabled_codes": [
+        "HC",
+        "LG"
+      ],
+      "n_disabled": 2,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 1.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no ledger",
+      "ertuples": 4500,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.5605615942222248,
+      "latency_median_ms": 1.527792,
+      "latency_p95_ms": 1.757083,
+      "latency_p99_ms": 2.588917,
+      "latency_max_ms": 5.690375,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.5605615942222248,
+        "median": 1.527792,
+        "min": 0.386459,
+        "max": 5.690375,
+        "p50": 1.527792,
+        "p95": 1.757083,
+        "p99": 2.588917,
+        "stdev": 0.18933900791692196,
+        "bootstrap95_ci": {
+          "stat": 1.5605615942222224,
+          "low": 1.5551353805555554,
+          "high": 1.5664072672500002,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 640.6264281876457,
+      "runtime_overhead_ms": 0.0014882395555555611,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0014882395555555611,
+        "median": 0.001375,
+        "min": 0.001125,
+        "max": 0.037333,
+        "p50": 0.001375,
+        "p95": 0.002209,
+        "p99": 0.00375,
+        "stdev": 0.0007132717321936073,
+        "bootstrap95_ci": {
+          "stat": 0.0014882395555555555,
+          "low": 0.0014694680777777777,
+          "high": 0.0015108166944444441,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 7.0244,
+      "runtime_integrity_score": 0.5,
+      "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 88,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 222.211
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1333.2622260146127,
+          "queue_delay_p95_ms": 495.831,
+          "busy_fraction_mean": 0.18100096252166212,
+          "load_imbalance_cv": 0.6104703711680642
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 52.178,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": 0.2041,
+          "magnitude": "small",
+          "mean_a": 1.5605615942222248,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 9262970.5,
+          "z": -6.9945,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": 0.0851,
+          "cliffs_magnitude": "negligible"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.5605615942222224,
+          "low": 1.5551353805555554,
+          "high": 1.5664072672500002,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ+PE+RV",
+      "disabled_components": [
+        "evidence_quad",
+        "predicate_engine",
+        "runtime_revocation"
+      ],
+      "disabled_codes": [
+        "EQ",
+        "PE",
+        "RV"
+      ],
+      "n_disabled": 3,
+      "confusion_matrix": {
+        "tp_fraud_denied": 0,
+        "fn_fraud_permitted": 79,
+        "fp_legit_denied": 0,
+        "tn_legit_permitted": 4421,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4500,
+      "safe_state": 0,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.9824444444444445,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.9824444444444445,
+        "low": 0.9781754796419792,
+        "high": 0.9858904271399457,
+        "n": 4500,
+        "successes": 4421
+      },
+      "undetected_risk_rate": 1.0,
+      "undetected_risk_rate_wilson95": {
+        "p": 1.0,
+        "low": 0.9536287883460772,
+        "high": 1.0,
+        "n": 79,
+        "successes": 79
+      },
+      "benign_flag_rate": 0.0,
+      "benign_flag_rate_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.0008681573919527388,
+        "n": 4421,
+        "successes": 0
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 0.0,
+      "false_permits_after_revocation": 225,
+      "revocation_probe_n": 225,
+      "predicate_coverage": 0.0,
+      "predicate_pass_rate": 1.0,
+      "predicate_note": "engine disabled: no predicate evaluated (every action vacuously passes)",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.0,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.04637121165392266,
+        "n": 79,
+        "successes": 0
+      },
+      "blind_balanced_accuracy": 0.5,
+      "specificity": 1.0,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no evidence to chain",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 0.05625243088888896,
+      "latency_median_ms": 0.05575,
+      "latency_p95_ms": 0.063708,
+      "latency_p99_ms": 0.068625,
+      "latency_max_ms": 1.082958,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.05625243088888896,
+        "median": 0.05575,
+        "min": 0.047417,
+        "max": 1.082958,
+        "p50": 0.05575,
+        "p95": 0.063708,
+        "p99": 0.068625,
+        "stdev": 0.01715062781414855,
+        "bootstrap95_ci": {
+          "stat": 0.05625243088888889,
+          "low": 0.05586684274444445,
+          "high": 0.05685247307777777,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 17695.168308340395,
+      "runtime_overhead_ms": 0.0006356668888888697,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0006356668888888697,
+        "median": 0.000625,
+        "min": 0.000541,
+        "max": 0.006667,
+        "p50": 0.000625,
+        "p95": 0.000667,
+        "p99": 0.000709,
+        "stdev": 0.00011062878836345191,
+        "bootstrap95_ci": {
+          "stat": 0.0006356668888888889,
+          "low": 0.0006329929277777778,
+          "high": 0.0006392443444444445,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 0.2543,
+      "runtime_integrity_score": 0.0,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 79,
+          "injected_stalls": 1,
+          "stalls_detected": 0,
+          "detection_rate": 0.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": null
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1443.5291400415736,
+          "queue_delay_p95_ms": 62.483,
+          "busy_fraction_mean": 0.00022132776355431917,
+          "load_imbalance_cv": 0.6108100268404971
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 51.873,
+          "false_permits_after_revocation": 20,
+          "compliance_rate": 0.0,
+          "probe_has_power": false
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -15.4983,
+          "magnitude": "large",
+          "mean_a": 0.05625243088888896,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 5.0,
+          "z": -82.1538,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -1.0,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 0.05625243088888889,
+          "low": 0.05586684274444445,
+          "high": 0.05685247307777777,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": 0.481013,
+          "p1": 1.0,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": -7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.481013,
+          "p1": 0.0,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": -12.6427,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.035512,
+          "p1": 0.0,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ+HC+LG",
+      "disabled_components": [
+        "evidence_quad",
+        "hash_chain",
+        "runtime_ledger"
+      ],
+      "disabled_codes": [
+        "EQ",
+        "HC",
+        "LG"
+      ],
+      "n_disabled": 3,
+      "confusion_matrix": {
+        "tp_fraud_denied": 38,
+        "fn_fraud_permitted": 41,
+        "fp_legit_denied": 157,
+        "tn_legit_permitted": 4264,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4305,
+      "safe_state": 195,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.956,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.956,
+        "low": 0.9496086568735477,
+        "high": 0.9616134715080781,
+        "n": 4500,
+        "successes": 4302
+      },
+      "undetected_risk_rate": 0.5189873417721519,
+      "undetected_risk_rate_wilson95": {
+        "p": 0.5189873417721519,
+        "low": 0.4105110559940594,
+        "high": 0.6257026954621209,
+        "n": 79,
+        "successes": 41
+      },
+      "benign_flag_rate": 0.035512327527708665,
+      "benign_flag_rate_wilson95": {
+        "p": 0.035512327527708665,
+        "low": 0.030447665585278238,
+        "high": 0.041383486282794577,
+        "n": 4421,
+        "successes": 157
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 1.0,
+      "false_permits_after_revocation": 0,
+      "revocation_probe_n": 215,
+      "predicate_coverage": 0.7,
+      "predicate_pass_rate": 0.9954666666666667,
+      "predicate_note": "44796/45000 evaluations passed; 7/10 predicates exercised in both polarities",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.4810126582278481,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.4810126582278481,
+        "low": 0.37429730453787924,
+        "high": 0.5894889440059407,
+        "n": 79,
+        "successes": 38
+      },
+      "blind_balanced_accuracy": 0.7227501653500698,
+      "specificity": 0.9644876724722914,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no ledger",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 1.242473599999999,
+      "latency_median_ms": 1.230334,
+      "latency_p95_ms": 1.398292,
+      "latency_p99_ms": 1.699542,
+      "latency_max_ms": 2.415417,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 1.242473599999999,
+        "median": 1.230334,
+        "min": 0.078583,
+        "max": 2.415417,
+        "p50": 1.230334,
+        "p95": 1.398292,
+        "p99": 1.699542,
+        "stdev": 0.12428420160342718,
+        "bootstrap95_ci": {
+          "stat": 1.2424736,
+          "low": 1.2387264223833334,
+          "high": 1.2458971384722222,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 804.6006169275225,
+      "runtime_overhead_ms": 0.0013641071111111294,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0013641071111111294,
+        "median": 0.00125,
+        "min": 0.001041,
+        "max": 0.025542,
+        "p50": 0.00125,
+        "p95": 0.001875,
+        "p99": 0.003041,
+        "stdev": 0.0006159219164747075,
+        "bootstrap95_ci": {
+          "stat": 0.001364107111111111,
+          "low": 0.0013473708000000001,
+          "high": 0.0013841026722222224,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 5.5928,
+      "runtime_integrity_score": 0.333333,
+      "overall_runtime_verdict": "AUDIT-DEGRADED (evidence/ledger integrity lost; authorization intact)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 82,
+          "injected_stalls": 1,
+          "stalls_detected": 1,
+          "detection_rate": 1.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": 190.419
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1364.0187022119835,
+          "queue_delay_p95_ms": 465.95,
+          "busy_fraction_mean": 0.17910807300042286,
+          "load_imbalance_cv": 0.6104703711680642
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 53.384,
+          "false_permits_after_revocation": 0,
+          "compliance_rate": 1.0,
+          "probe_has_power": true
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -2.2106,
+          "magnitude": "large",
+          "mean_a": 1.242473599999999,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 816321.5,
+          "z": -75.5302,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -0.9194,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 1.2424736,
+          "low": 1.2387264223833334,
+          "high": 1.2458971384722222,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.518987,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.481013,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": 0.0,
+          "p_value": 1.0,
+          "significant": false,
+          "delta": 0.0,
+          "p1": 0.035512,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    },
+    {
+      "config": "remove_EQ+HC+LG+PE+RV",
+      "disabled_components": [
+        "evidence_quad",
+        "hash_chain",
+        "predicate_engine",
+        "runtime_ledger",
+        "runtime_revocation"
+      ],
+      "disabled_codes": [
+        "EQ",
+        "HC",
+        "LG",
+        "PE",
+        "RV"
+      ],
+      "n_disabled": 5,
+      "confusion_matrix": {
+        "tp_fraud_denied": 0,
+        "fn_fraud_permitted": 79,
+        "fp_legit_denied": 0,
+        "tn_legit_permitted": 4421,
+        "n_fraud": 79,
+        "n_legit": 4421
+      },
+      "permits": 4500,
+      "safe_state": 0,
+      "evaluated": 4500,
+      "warmup_excluded": 1500,
+      "blind_decision_accuracy": 0.9824444444444445,
+      "blind_decision_accuracy_wilson95": {
+        "p": 0.9824444444444445,
+        "low": 0.9781754796419792,
+        "high": 0.9858904271399457,
+        "n": 4500,
+        "successes": 4421
+      },
+      "undetected_risk_rate": 1.0,
+      "undetected_risk_rate_wilson95": {
+        "p": 1.0,
+        "low": 0.9536287883460772,
+        "high": 1.0,
+        "n": 79,
+        "successes": 79
+      },
+      "benign_flag_rate": 0.0,
+      "benign_flag_rate_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.0008681573919527388,
+        "n": 4421,
+        "successes": 0
+      },
+      "replay_determinism_rate": 1.0,
+      "replay_integrity": 0.0,
+      "replay_anchored": false,
+      "revocation_compliance": 0.0,
+      "false_permits_after_revocation": 225,
+      "revocation_probe_n": 225,
+      "predicate_coverage": 0.0,
+      "predicate_pass_rate": 1.0,
+      "predicate_note": "engine disabled: no predicate evaluated (every action vacuously passes)",
+      "evidence_completeness": 0.0,
+      "blind_risk_detection_recall": 0.0,
+      "blind_risk_detection_recall_wilson95": {
+        "p": 0.0,
+        "low": 0.0,
+        "high": 0.04637121165392266,
+        "n": 79,
+        "successes": 0
+      },
+      "blind_balanced_accuracy": 0.5,
+      "specificity": 1.0,
+      "hash_chain_integrity": null,
+      "hash_chain_links_ok": 0,
+      "hash_chain_links_total": 0,
+      "ledger_integrity": null,
+      "ledger_blocks": 0,
+      "ledger_verify_error": "no ledger",
+      "ertuples": 0,
+      "tamper_detected": null,
+      "fork_detected": null,
+      "latency_mean_ms": 0.05705253422222233,
+      "latency_median_ms": 0.056584,
+      "latency_p95_ms": 0.064334,
+      "latency_p99_ms": 0.07,
+      "latency_max_ms": 0.544958,
+      "latency_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.05705253422222233,
+        "median": 0.056584,
+        "min": 0.048958,
+        "max": 0.544958,
+        "p50": 0.056584,
+        "p95": 0.064334,
+        "p99": 0.07,
+        "stdev": 0.010191909424721049,
+        "bootstrap95_ci": {
+          "stat": 0.05705253422222222,
+          "low": 0.05678879286111111,
+          "high": 0.05738295422222221,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "throughput_decisions_per_s": 17446.577126955755,
+      "runtime_overhead_ms": 0.0006531706666666468,
+      "runtime_overhead_full": {
+        "n": 4500,
+        "unit": "ms",
+        "mean": 0.0006531706666666468,
+        "median": 0.000666,
+        "min": 0.000583,
+        "max": 0.007791,
+        "p50": 0.000666,
+        "p95": 0.000708,
+        "p99": 0.00075,
+        "stdev": 0.00014105934049028995,
+        "bootstrap95_ci": {
+          "stat": 0.0006531706666666667,
+          "low": 0.0006498654722222223,
+          "high": 0.0006582785888888889,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        }
+      },
+      "execution_time_s": 0.2579,
+      "runtime_integrity_score": 0.0,
+      "overall_runtime_verdict": "CRITICAL (security AND audit both degraded)",
+      "governance": {
+        "note": "fleet/telemetry honor PE and RV ablation (PE-off eliminates predicate work \u2192 lower busy fraction; RV-off stops revocation enforcement \u2192 revoked permits execute); EQ/LG/HC do not touch the fleet worker path so their fleet numbers are config-invariant. Watchdog stall-DETECTION is timing-sensitive in a small per-config fleet (the saturation-guarded detector only fires when the queue stays deep during the stall); the authoritative 6-scenario watchdog proof is E11b watchdog_scenarios_report.json. Governance is EXCLUDED from the interaction analysis because it is orthogonal to the decision-path toggles.",
+        "watchdog_events": {
+          "heartbeats": 80,
+          "injected_stalls": 1,
+          "stalls_detected": 0,
+          "detection_rate": 0.0,
+          "false_triggers": 0,
+          "recovery_latency_ms": null
+        },
+        "fleet_telemetry": {
+          "nodes": 3,
+          "throughput_decisions_per_s": 1448.37508408622,
+          "queue_delay_p95_ms": 62.464,
+          "busy_fraction_mean": 0.00022411593279373577,
+          "load_imbalance_cv": 0.6282309082447902
+        },
+        "fleet_revocation": {
+          "acks": "60/60",
+          "propagation_p95_ms": 51.781,
+          "false_permits_after_revocation": 20,
+          "compliance_rate": 0.0,
+          "probe_has_power": false
+        },
+        "risk_detection": {
+          "families": 12,
+          "total_attacks": 2394,
+          "attacks_detected": 2394,
+          "detection_rate": 1.0,
+          "detection_precision": 1.0,
+          "suite_has_power": true
+        },
+        "ptp_offset_single_host": {
+          "clock_source": "CLOCK_MONOTONIC",
+          "timestamp_resolution_ns": 41,
+          "sampling_jitter_p95_ns": 333,
+          "monotonic_consistency": true,
+          "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+          "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+        }
+      },
+      "statistics": {
+        "latency_cohens_d": {
+          "d": -15.5724,
+          "magnitude": "large",
+          "mean_a": 0.05705253422222233,
+          "mean_b": 1.5271577419999969,
+          "n_a": 4500,
+          "n_b": 4500
+        },
+        "latency_mann_whitney": {
+          "U": 3.0,
+          "z": -82.1538,
+          "p_value": 0.0,
+          "significant": true,
+          "cliffs_delta": -1.0,
+          "cliffs_magnitude": "large"
+        },
+        "latency_baseline_ci": {
+          "stat": 1.527157742,
+          "low": 1.5236048752888889,
+          "high": 1.5313171598666668,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "latency_config_ci": {
+          "stat": 0.05705253422222222,
+          "low": 0.05678879286111111,
+          "high": 0.05738295422222221,
+          "n": 4500,
+          "n_boot": 2000,
+          "seed": 12345
+        },
+        "fpr_two_proportion_z": {
+          "z": 7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": 0.481013,
+          "p1": 1.0,
+          "p2": 0.518987
+        },
+        "recall_two_proportion_z": {
+          "z": -7.0734,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.481013,
+          "p1": 0.0,
+          "p2": 0.481013
+        },
+        "fdr_two_proportion_z": {
+          "z": -12.6427,
+          "p_value": 0.0,
+          "significant": true,
+          "delta": -0.035512,
+          "p1": 0.0,
+          "p2": 0.035512
+        },
+        "degradation_statistically_significant": true
+      },
+      "threshold_scale": 1.0
+    }
+  ],
+  "interactions": [
+    {
+      "combination": "remove_EQ+HC+LG+PE+RV",
+      "disabled_components": [
+        "evidence_quad",
+        "hash_chain",
+        "predicate_engine",
+        "runtime_ledger",
+        "runtime_revocation"
+      ],
+      "order": 5,
+      "runtime_integrity_score": 0.0,
+      "single_degradations": {
+        "EQ": 0.666667,
+        "HC": 0.497653,
+        "PE": 0.166667,
+        "LG": 0.5,
+        "RV": 0.166667
+      },
+      "additive_prediction": 1.997654,
+      "observed_degradation": 1.0,
+      "interaction_effect": -0.997654,
+      "interaction_class": "Redundant (saturated)",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.481013,
+        "risk_detection_rate_delta": -0.481013,
+        "revocation_compliance_delta": -1.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -1.470105,
+        "throughput_delta": 16791.963287
+      },
+      "evidence_loss": 1.0,
+      "replay_impact": 1.0,
+      "why": "Planes: EQ (evidence plane); HC (ledger plane); PE (authorization plane); LG (ledger plane); RV (enforcement plane). Dependency within the set: HC depends on LG, HC depends on EQ, LG depends on EQ. The single removals predict a degradation exceeding the whole stack (additive > baseline 1.0), but integrity floors at 0 \u2014 the combination is saturated, not mutually redundant on independent planes."
+    },
+    {
+      "combination": "remove_EQ+PE+RV",
+      "disabled_components": [
+        "evidence_quad",
+        "predicate_engine",
+        "runtime_revocation"
+      ],
+      "order": 3,
+      "runtime_integrity_score": 0.0,
+      "single_degradations": {
+        "EQ": 0.666667,
+        "PE": 0.166667,
+        "RV": 0.166667
+      },
+      "additive_prediction": 1.000001,
+      "observed_degradation": 1.0,
+      "interaction_effect": -1e-06,
+      "interaction_class": "Redundant (saturated)",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.481013,
+        "risk_detection_rate_delta": -0.481013,
+        "revocation_compliance_delta": -1.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -1.470905,
+        "throughput_delta": 17040.554469
+      },
+      "evidence_loss": 1.0,
+      "replay_impact": 1.0,
+      "why": "Planes: EQ (evidence plane); PE (authorization plane); RV (enforcement plane). The single removals predict a degradation exceeding the whole stack (additive > baseline 1.0), but integrity floors at 0 \u2014 the combination is saturated, not mutually redundant on independent planes."
+    },
+    {
+      "combination": "remove_EQ+PE",
+      "disabled_components": [
+        "evidence_quad",
+        "predicate_engine"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.166667,
+      "single_degradations": {
+        "EQ": 0.666667,
+        "PE": 0.166667
+      },
+      "additive_prediction": 0.833334,
+      "observed_degradation": 0.833333,
+      "interaction_effect": -1e-06,
+      "interaction_class": "Additive",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.481013,
+        "risk_detection_rate_delta": -0.481013,
+        "revocation_compliance_delta": 0.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -1.143716,
+        "throughput_delta": 1949.825191
+      },
+      "evidence_loss": 1.0,
+      "replay_impact": 1.0,
+      "why": "Planes: EQ (evidence plane); PE (authorization plane). The components act on independent planes (authorization, evidence); neither masks the other, so the composite degradation is the sum of the parts."
+    },
+    {
+      "combination": "remove_EQ+RV",
+      "disabled_components": [
+        "evidence_quad",
+        "runtime_revocation"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.166667,
+      "single_degradations": {
+        "EQ": 0.666667,
+        "RV": 0.166667
+      },
+      "additive_prediction": 0.833334,
+      "observed_degradation": 0.833333,
+      "interaction_effect": -1e-06,
+      "interaction_class": "Additive",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.0,
+        "risk_detection_rate_delta": 0.0,
+        "revocation_compliance_delta": -1.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.386688,
+        "throughput_delta": 221.757594
+      },
+      "evidence_loss": 1.0,
+      "replay_impact": 1.0,
+      "why": "Planes: EQ (evidence plane); RV (enforcement plane). The components act on independent planes (enforcement, evidence); neither masks the other, so the composite degradation is the sum of the parts."
+    },
+    {
+      "combination": "remove_EQ+HC",
+      "disabled_components": [
+        "evidence_quad",
+        "hash_chain"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.333333,
+      "single_degradations": {
+        "EQ": 0.666667,
+        "HC": 0.497653
+      },
+      "additive_prediction": 1.16432,
+      "observed_degradation": 0.666667,
+      "interaction_effect": -0.497653,
+      "interaction_class": "Critical Dependency",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.0,
+        "risk_detection_rate_delta": 0.0,
+        "revocation_compliance_delta": 0.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.297033,
+        "throughput_delta": 158.056846
+      },
+      "evidence_loss": 1.0,
+      "replay_impact": 1.0,
+      "why": "Planes: EQ (evidence plane); HC (ledger plane). Dependency within the set: HC depends on EQ. The upstream component is a prerequisite of the downstream one, so the downstream integrity was already destroyed by the upstream removal alone \u2014 the combined effect equals the upstream single effect, not their sum."
+    },
+    {
+      "combination": "remove_EQ+HC+LG",
+      "disabled_components": [
+        "evidence_quad",
+        "hash_chain",
+        "runtime_ledger"
+      ],
+      "order": 3,
+      "runtime_integrity_score": 0.333333,
+      "single_degradations": {
+        "EQ": 0.666667,
+        "HC": 0.497653,
+        "LG": 0.5
+      },
+      "additive_prediction": 1.66432,
+      "observed_degradation": 0.666667,
+      "interaction_effect": -0.997653,
+      "interaction_class": "Critical Dependency",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.0,
+        "risk_detection_rate_delta": 0.0,
+        "revocation_compliance_delta": 0.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.284684,
+        "throughput_delta": 149.986777
+      },
+      "evidence_loss": 1.0,
+      "replay_impact": 1.0,
+      "why": "Planes: EQ (evidence plane); HC (ledger plane); LG (ledger plane). Dependency within the set: HC depends on LG, HC depends on EQ, LG depends on EQ. The upstream component is a prerequisite of the downstream one, so the downstream integrity was already destroyed by the upstream removal alone \u2014 the combined effect equals the upstream single effect, not their sum."
+    },
+    {
+      "combination": "remove_EQ+LG",
+      "disabled_components": [
+        "evidence_quad",
+        "runtime_ledger"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.333333,
+      "single_degradations": {
+        "EQ": 0.666667,
+        "LG": 0.5
+      },
+      "additive_prediction": 1.166667,
+      "observed_degradation": 0.666667,
+      "interaction_effect": -0.5,
+      "interaction_class": "Critical Dependency",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.0,
+        "risk_detection_rate_delta": 0.0,
+        "revocation_compliance_delta": 0.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.285168,
+        "throughput_delta": 150.279302
+      },
+      "evidence_loss": 1.0,
+      "replay_impact": 1.0,
+      "why": "Planes: EQ (evidence plane); LG (ledger plane). Dependency within the set: LG depends on EQ. The upstream component is a prerequisite of the downstream one, so the downstream integrity was already destroyed by the upstream removal alone \u2014 the combined effect equals the upstream single effect, not their sum."
+    },
+    {
+      "combination": "remove_LG+PE",
+      "disabled_components": [
+        "predicate_engine",
+        "runtime_ledger"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.333333,
+      "single_degradations": {
+        "PE": 0.166667,
+        "LG": 0.5
+      },
+      "additive_prediction": 0.666667,
+      "observed_degradation": 0.666667,
+      "interaction_effect": 0.0,
+      "interaction_class": "Additive",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.481013,
+        "risk_detection_rate_delta": -0.481013,
+        "revocation_compliance_delta": 0.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.874651,
+        "throughput_delta": 876.990257
+      },
+      "evidence_loss": 0.0,
+      "replay_impact": 1.0,
+      "why": "Planes: PE (authorization plane); LG (ledger plane). The components act on independent planes (authorization, ledger); neither masks the other, so the composite degradation is the sum of the parts."
+    },
+    {
+      "combination": "remove_LG+RV",
+      "disabled_components": [
+        "runtime_ledger",
+        "runtime_revocation"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.333333,
+      "single_degradations": {
+        "LG": 0.5,
+        "RV": 0.166667
+      },
+      "additive_prediction": 0.666667,
+      "observed_degradation": 0.666667,
+      "interaction_effect": 0.0,
+      "interaction_class": "Additive",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.0,
+        "risk_detection_rate_delta": 0.0,
+        "revocation_compliance_delta": -1.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.130348,
+        "throughput_delta": 60.971713
+      },
+      "evidence_loss": 0.0,
+      "replay_impact": 1.0,
+      "why": "Planes: LG (ledger plane); RV (enforcement plane). The components act on independent planes (enforcement, ledger); neither masks the other, so the composite degradation is the sum of the parts."
+    },
+    {
+      "combination": "remove_HC+PE",
+      "disabled_components": [
+        "hash_chain",
+        "predicate_engine"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.335681,
+      "single_degradations": {
+        "HC": 0.497653,
+        "PE": 0.166667
+      },
+      "additive_prediction": 0.66432,
+      "observed_degradation": 0.664319,
+      "interaction_effect": -1e-06,
+      "interaction_class": "Additive",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.481013,
+        "risk_detection_rate_delta": -0.481013,
+        "revocation_compliance_delta": 0.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.895739,
+        "throughput_delta": 927.980993
+      },
+      "evidence_loss": 0.0,
+      "replay_impact": 1.0,
+      "why": "Planes: HC (ledger plane); PE (authorization plane). The components act on independent planes (authorization, ledger); neither masks the other, so the composite degradation is the sum of the parts."
+    },
+    {
+      "combination": "remove_HC+RV",
+      "disabled_components": [
+        "hash_chain",
+        "runtime_revocation"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.335681,
+      "single_degradations": {
+        "HC": 0.497653,
+        "RV": 0.166667
+      },
+      "additive_prediction": 0.66432,
+      "observed_degradation": 0.664319,
+      "interaction_effect": -1e-06,
+      "interaction_class": "Additive",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.0,
+        "risk_detection_rate_delta": 0.0,
+        "revocation_compliance_delta": -1.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -0.248437,
+        "throughput_delta": 127.153159
+      },
+      "evidence_loss": 0.0,
+      "replay_impact": 1.0,
+      "why": "Planes: HC (ledger plane); RV (enforcement plane). The components act on independent planes (enforcement, ledger); neither masks the other, so the composite degradation is the sum of the parts."
+    },
+    {
+      "combination": "remove_HC+LG",
+      "disabled_components": [
+        "hash_chain",
+        "runtime_ledger"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.5,
+      "single_degradations": {
+        "HC": 0.497653,
+        "LG": 0.5
+      },
+      "additive_prediction": 0.997653,
+      "observed_degradation": 0.5,
+      "interaction_effect": -0.497653,
+      "interaction_class": "Critical Dependency",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.0,
+        "risk_detection_rate_delta": 0.0,
+        "revocation_compliance_delta": 0.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": 0.033404,
+        "throughput_delta": -13.987412
+      },
+      "evidence_loss": 0.0,
+      "replay_impact": 1.0,
+      "why": "Planes: HC (ledger plane); LG (ledger plane). Dependency within the set: HC depends on LG. The upstream component is a prerequisite of the downstream one, so the downstream integrity was already destroyed by the upstream removal alone \u2014 the combined effect equals the upstream single effect, not their sum."
+    },
+    {
+      "combination": "remove_PE+RV",
+      "disabled_components": [
+        "predicate_engine",
+        "runtime_revocation"
+      ],
+      "order": 2,
+      "runtime_integrity_score": 0.666667,
+      "single_degradations": {
+        "PE": 0.166667,
+        "RV": 0.166667
+      },
+      "additive_prediction": 0.333334,
+      "observed_degradation": 0.333333,
+      "interaction_effect": -1e-06,
+      "interaction_class": "Additive",
+      "security_degradation": {
+        "undetected_risk_rate_delta": 0.481013,
+        "risk_detection_rate_delta": -0.481013,
+        "revocation_compliance_delta": -1.0
+      },
+      "performance_degradation": {
+        "latency_mean_ms_delta": -1.167746,
+        "throughput_delta": 2124.531138
+      },
+      "evidence_loss": 0.0,
+      "replay_impact": 0.0,
+      "why": "Planes: PE (authorization plane); RV (enforcement plane). The components act on independent planes (authorization, enforcement); neither masks the other, so the composite degradation is the sum of the parts."
+    }
+  ],
+  "governance_shared": {
+    "risk_detection": {
+      "families": 12,
+      "total_attacks": 2394,
+      "attacks_detected": 2394,
+      "detection_rate": 1.0,
+      "detection_precision": 1.0,
+      "suite_has_power": true
+    },
+    "ptp_offset_single_host": {
+      "clock_source": "CLOCK_MONOTONIC",
+      "timestamp_resolution_ns": 41,
+      "sampling_jitter_p95_ns": 333,
+      "monotonic_consistency": true,
+      "wall_vs_monotonic_drift_ppm": -36.349757365369584,
+      "why_not_ptp": "PTP synchronises clocks across separate physical hosts against a grandmaster. On a single machine there is exactly one system clock, so there is nothing to synchronise. Distributed clock skew and PTP bounds require >=2 hosts and a PTP grandmaster; see FINAL_GAP_ANALYSIS.md."
+    }
+  },
+  "host": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "python": "3.9.6",
+    "machine": "arm64"
+  },
+  "duration_s": 152.41
+}

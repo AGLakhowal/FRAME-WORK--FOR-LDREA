@@ -1,0 +1,62 @@
+{
+  "evidence_level": "Synthetic Runtime",
+  "pipeline": [
+    "observation",
+    "predicate_generation",
+    "gamma_authorization",
+    "permit",
+    "execution",
+    "evidence",
+    "ledger",
+    "replay",
+    "REVEAL_LABELS"
+  ],
+  "decisions_committed_before_label_reveal": 6000,
+  "decision_before_label_pct": 100.0,
+  "blindness_violations": 0,
+  "leakage_violations": 0,
+  "structural_guarantee": "Observation is a frozen dataclass with no `label` field; Observation(..., label=1) raises TypeError. score() is the only call site that opens labels, invoked after every ERTuple chained.",
+  "latency_breakdown_ms": {
+    "predicate": {
+      "n": 6000,
+      "unit": "ms",
+      "mean": 1.0688736258333333,
+      "min": 0.10975,
+      "max": 2.690334,
+      "p50": 0.944958,
+      "p95": 1.588083,
+      "p99": 1.667042
+    },
+    "authorization": {
+      "n": 6000,
+      "unit": "ms",
+      "mean": 0.002161864166666667,
+      "min": 0.001083,
+      "max": 0.05075,
+      "p50": 0.001917,
+      "p95": 0.004042,
+      "p99": 0.007125
+    },
+    "execution": {
+      "n": 6000,
+      "unit": "ms",
+      "mean": 0.024560625333333336,
+      "min": 0.000125,
+      "max": 0.521416,
+      "p50": 0.025542,
+      "p95": 0.034542,
+      "p99": 0.048416
+    },
+    "end_to_end": {
+      "n": 6000,
+      "unit": "ms",
+      "mean": 1.7872572354999998,
+      "min": 0.424792,
+      "max": 10.199417,
+      "p50": 1.600709,
+      "p95": 2.605625,
+      "p99": 2.780667
+    }
+  },
+  "not_the_real_ulb_result": "runtime_detection_report.json (root) is BLOCKED; see it for real data."
+}

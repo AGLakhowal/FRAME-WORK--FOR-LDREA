@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="920" height="570" viewBox="0 0 920 570">
+<rect x="0" y="0" width="920" height="570" fill="#ffffff"/>
+<text x="24" y="34" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#111111" font-weight="bold" text-anchor="start">Threshold sensitivity: conclusions are STABLE under +/-20% threshold perturbation</text>
+<text x="24" y="51" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#555555" text-anchor="start">Every ablation conclusion holds at every threshold scale. Cell = runtime integrity score (colour + top line); undetected-risk rate (URR) below it.</text>
+<text x="24" y="72" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">30 executions = 6 configurations x 5 threshold scales; 4 stability checks evaluated at every scale.</text>
+<text x="282" y="110" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" font-weight="bold" text-anchor="middle">-20%</text>
+<text x="386" y="110" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" font-weight="bold" text-anchor="middle">-10%</text>
+<text x="490" y="110" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" font-weight="bold" text-anchor="middle">+0%</text>
+<text x="594" y="110" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" font-weight="bold" text-anchor="middle">+10%</text>
+<text x="698" y="110" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" font-weight="bold" text-anchor="middle">+20%</text>
+<text x="490" y="92" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="middle">threshold perturbation</text>
+<text x="220" y="148.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" font-weight="bold" text-anchor="end">baseline (full L-DREA)</text>
+<rect x="230" y="122" width="104" height="46" fill="#08306b" stroke="#ffffff" stroke-width="1"/>
+<text x="282" y="141" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 1.000</text>
+<text x="282" y="155" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.468</text>
+<rect x="334" y="122" width="104" height="46" fill="#08306b" stroke="#ffffff" stroke-width="1"/>
+<text x="386" y="141" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 1.000</text>
+<text x="386" y="155" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.494</text>
+<rect x="438" y="122" width="104" height="46" fill="#08306b" stroke="#ffffff" stroke-width="1"/>
+<text x="490" y="141" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 1.000</text>
+<text x="490" y="155" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.519</text>
+<rect x="542" y="122" width="104" height="46" fill="#08306b" stroke="#ffffff" stroke-width="1"/>
+<text x="594" y="141" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 1.000</text>
+<text x="594" y="155" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.532</text>
+<rect x="646" y="122" width="104" height="46" fill="#08306b" stroke="#ffffff" stroke-width="1"/>
+<text x="698" y="141" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 1.000</text>
+<text x="698" y="155" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.532</text>
+<text x="220" y="194.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-PE</text>
+<rect x="230" y="168" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="282" y="187" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="282" y="201" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 1.000</text>
+<rect x="334" y="168" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="386" y="187" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="386" y="201" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 1.000</text>
+<rect x="438" y="168" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="490" y="187" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="490" y="201" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 1.000</text>
+<rect x="542" y="168" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="594" y="187" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="594" y="201" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 1.000</text>
+<rect x="646" y="168" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="698" y="187" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="698" y="201" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 1.000</text>
+<text x="220" y="240.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-RV</text>
+<rect x="230" y="214" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="282" y="233" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="282" y="247" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.468</text>
+<rect x="334" y="214" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="386" y="233" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="386" y="247" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.494</text>
+<rect x="438" y="214" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="490" y="233" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="490" y="247" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.519</text>
+<rect x="542" y="214" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="594" y="233" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="594" y="247" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.532</text>
+<rect x="646" y="214" width="104" height="46" fill="#195b9c" stroke="#ffffff" stroke-width="1"/>
+<text x="698" y="233" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RIS 0.833</text>
+<text x="698" y="247" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#ffffff" text-anchor="middle">FPR 0.532</text>
+<text x="220" y="286.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-EQ</text>
+<rect x="230" y="260" width="104" height="46" fill="#a8cce7" stroke="#ffffff" stroke-width="1"/>
+<text x="282" y="279" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.333</text>
+<text x="282" y="293" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.468</text>
+<rect x="334" y="260" width="104" height="46" fill="#a8cce7" stroke="#ffffff" stroke-width="1"/>
+<text x="386" y="279" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.333</text>
+<text x="386" y="293" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.494</text>
+<rect x="438" y="260" width="104" height="46" fill="#a8cce7" stroke="#ffffff" stroke-width="1"/>
+<text x="490" y="279" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.333</text>
+<text x="490" y="293" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.519</text>
+<rect x="542" y="260" width="104" height="46" fill="#a8cce7" stroke="#ffffff" stroke-width="1"/>
+<text x="594" y="279" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.333</text>
+<text x="594" y="293" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.532</text>
+<rect x="646" y="260" width="104" height="46" fill="#a8cce7" stroke="#ffffff" stroke-width="1"/>
+<text x="698" y="279" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.333</text>
+<text x="698" y="293" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.532</text>
+<text x="220" y="332.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-LG</text>
+<rect x="230" y="306" width="104" height="46" fill="#6baed6" stroke="#ffffff" stroke-width="1"/>
+<text x="282" y="325" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.500</text>
+<text x="282" y="339" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.468</text>
+<rect x="334" y="306" width="104" height="46" fill="#6baed6" stroke="#ffffff" stroke-width="1"/>
+<text x="386" y="325" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.500</text>
+<text x="386" y="339" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.494</text>
+<rect x="438" y="306" width="104" height="46" fill="#6baed6" stroke="#ffffff" stroke-width="1"/>
+<text x="490" y="325" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.500</text>
+<text x="490" y="339" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.519</text>
+<rect x="542" y="306" width="104" height="46" fill="#6baed6" stroke="#ffffff" stroke-width="1"/>
+<text x="594" y="325" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.500</text>
+<text x="594" y="339" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.532</text>
+<rect x="646" y="306" width="104" height="46" fill="#6baed6" stroke="#ffffff" stroke-width="1"/>
+<text x="698" y="325" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.500</text>
+<text x="698" y="339" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.532</text>
+<text x="220" y="378.5" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#111111" text-anchor="end">-HC</text>
+<rect x="230" y="352" width="104" height="46" fill="#6aadd6" stroke="#ffffff" stroke-width="1"/>
+<text x="282" y="371" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.502</text>
+<text x="282" y="385" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.468</text>
+<rect x="334" y="352" width="104" height="46" fill="#6aadd6" stroke="#ffffff" stroke-width="1"/>
+<text x="386" y="371" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.502</text>
+<text x="386" y="385" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.494</text>
+<rect x="438" y="352" width="104" height="46" fill="#6aadd6" stroke="#ffffff" stroke-width="1"/>
+<text x="490" y="371" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.502</text>
+<text x="490" y="385" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.519</text>
+<rect x="542" y="352" width="104" height="46" fill="#6aadd6" stroke="#ffffff" stroke-width="1"/>
+<text x="594" y="371" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.502</text>
+<text x="594" y="385" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.532</text>
+<rect x="646" y="352" width="104" height="46" fill="#6aadd6" stroke="#ffffff" stroke-width="1"/>
+<text x="698" y="371" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="middle">RIS 0.502</text>
+<text x="698" y="385" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">FPR 0.532</text>
+<rect x="230" y="122" width="520" height="276" fill="none" stroke="#9a9a9a" stroke-width="0.8"/>
+<rect x="230" y="432" width="3.725" height="12" fill="#f7fbff"/>
+<rect x="233.125" y="432" width="3.725" height="12" fill="#f4f9fe"/>
+<rect x="236.25" y="432" width="3.725" height="12" fill="#f1f7fd"/>
+<rect x="239.375" y="432" width="3.725" height="12" fill="#eef5fc"/>
+<rect x="242.5" y="432" width="3.725" height="12" fill="#ebf3fb"/>
+<rect x="245.625" y="432" width="3.725" height="12" fill="#e7f1fa"/>
+<rect x="248.75" y="432" width="3.725" height="12" fill="#e4eff9"/>
+<rect x="251.875" y="432" width="3.725" height="12" fill="#e1edf8"/>
+<rect x="255" y="432" width="3.725" height="12" fill="#deebf7"/>
+<rect x="258.125" y="432" width="3.725" height="12" fill="#dbe9f6"/>
+<rect x="261.25" y="432" width="3.725" height="12" fill="#d8e7f5"/>
+<rect x="264.375" y="432" width="3.725" height="12" fill="#d5e5f4"/>
+<rect x="267.5" y="432" width="3.725" height="12" fill="#d2e3f3"/>
+<rect x="270.625" y="432" width="3.725" height="12" fill="#cfe1f2"/>
+<rect x="273.75" y="432" width="3.725" height="12" fill="#cbdff1"/>
+<rect x="276.875" y="432" width="3.725" height="12" fill="#c8ddf0"/>
+<rect x="280" y="432" width="3.725" height="12" fill="#c5daef"/>
+<rect x="283.125" y="432" width="3.725" height="12" fill="#bfd7ed"/>
+<rect x="286.25" y="432" width="3.725" height="12" fill="#b9d5eb"/>
+<rect x="289.375" y="432" width="3.725" height="12" fill="#b3d2ea"/>
+<rect x="292.5" y="432" width="3.725" height="12" fill="#adcfe8"/>
+<rect x="295.625" y="432" width="3.725" height="12" fill="#a8cce7"/>
+<rect x="298.75" y="432" width="3.725" height="12" fill="#a2c9e5"/>
+<rect x="301.875" y="432" width="3.725" height="12" fill="#9cc6e3"/>
+<rect x="305" y="432" width="3.725" height="12" fill="#96c3e2"/>
+<rect x="308.125" y="432" width="3.725" height="12" fill="#91c1e0"/>
+<rect x="311.25" y="432" width="3.725" height="12" fill="#8bbedf"/>
+<rect x="314.375" y="432" width="3.725" height="12" fill="#85bbdd"/>
+<rect x="317.5" y="432" width="3.725" height="12" fill="#7fb8dc"/>
+<rect x="320.625" y="432" width="3.725" height="12" fill="#79b5da"/>
+<rect x="323.75" y="432" width="3.725" height="12" fill="#74b2d8"/>
+<rect x="326.875" y="432" width="3.725" height="12" fill="#6eafd7"/>
+<rect x="330" y="432" width="3.725" height="12" fill="#69acd5"/>
+<rect x="333.125" y="432" width="3.725" height="12" fill="#64a8d3"/>
+<rect x="336.25" y="432" width="3.725" height="12" fill="#5fa4d1"/>
+<rect x="339.375" y="432" width="3.725" height="12" fill="#5ba0cf"/>
+<rect x="342.5" y="432" width="3.725" height="12" fill="#569dcd"/>
+<rect x="345.625" y="432" width="3.725" height="12" fill="#5199ca"/>
+<rect x="348.75" y="432" width="3.725" height="12" fill="#4c95c8"/>
+<rect x="351.875" y="432" width="3.725" height="12" fill="#4891c6"/>
+<rect x="355" y="432" width="3.725" height="12" fill="#438dc4"/>
+<rect x="358.125" y="432" width="3.725" height="12" fill="#3e89c2"/>
+<rect x="361.25" y="432" width="3.725" height="12" fill="#3a85c0"/>
+<rect x="364.375" y="432" width="3.725" height="12" fill="#3581be"/>
+<rect x="367.5" y="432" width="3.725" height="12" fill="#307ebc"/>
+<rect x="370.625" y="432" width="3.725" height="12" fill="#2c7aba"/>
+<rect x="373.75" y="432" width="3.725" height="12" fill="#2776b8"/>
+<rect x="376.875" y="432" width="3.725" height="12" fill="#2272b6"/>
+<rect x="380" y="432" width="3.725" height="12" fill="#206eb1"/>
+<rect x="383.125" y="432" width="3.725" height="12" fill="#1e6aad"/>
+<rect x="386.25" y="432" width="3.725" height="12" fill="#1d66a8"/>
+<rect x="389.375" y="432" width="3.725" height="12" fill="#1b62a3"/>
+<rect x="392.5" y="432" width="3.725" height="12" fill="#195d9f"/>
+<rect x="395.625" y="432" width="3.725" height="12" fill="#18599a"/>
+<rect x="398.75" y="432" width="3.725" height="12" fill="#165595"/>
+<rect x="401.875" y="432" width="3.725" height="12" fill="#155191"/>
+<rect x="405" y="432" width="3.725" height="12" fill="#134d8c"/>
+<rect x="408.125" y="432" width="3.725" height="12" fill="#124987"/>
+<rect x="411.25" y="432" width="3.725" height="12" fill="#104582"/>
+<rect x="414.375" y="432" width="3.725" height="12" fill="#0e417e"/>
+<rect x="417.5" y="432" width="3.725" height="12" fill="#0d3c79"/>
+<rect x="420.625" y="432" width="3.725" height="12" fill="#0b3874"/>
+<rect x="423.75" y="432" width="3.725" height="12" fill="#0a3470"/>
+<rect x="426.875" y="432" width="3.725" height="12" fill="#08306b"/>
+<rect x="230" y="432" width="200" height="12" fill="none" stroke="#9a9a9a" stroke-width="0.7"/>
+<text x="230" y="454" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#555555" text-anchor="middle">0.0</text>
+<text x="430" y="454" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#555555" text-anchor="middle">1.0</text>
+<text x="330" y="427" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" text-anchor="middle">runtime integrity score</text>
+<text x="24" y="484" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">RIS is invariant to the threshold scale (every row is flat): the ablation ranking does not depend on where the decision</text>
+<text x="24" y="496" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">thresholds sit.  Only the undetected-risk rate (URR) moves with the threshold, and it moves for the baseline and the ablations alike.</text>
+</svg>

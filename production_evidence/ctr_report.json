@@ -1,0 +1,39 @@
+{
+  "evidence_level": "Derived From Measured",
+  "ctr_records": 25000,
+  "schema_fields": [
+    "ctr_id",
+    "decision",
+    "decision_id",
+    "ertuple_hash",
+    "evidence_hash",
+    "gamma",
+    "isb",
+    "ledger_hash",
+    "permit_id",
+    "policy_hash",
+    "replay_hash"
+  ],
+  "required_fields": [
+    "ctr_id",
+    "decision_id",
+    "ertuple_hash",
+    "replay_hash",
+    "ledger_hash",
+    "policy_hash"
+  ],
+  "schema_validation_passed": 25000,
+  "missing_field_detected": 0,
+  "invalid_schema_rejected": 1,
+  "invalid_schema_probe": "one CTR with `ledger_hash` removed; validator must reject it",
+  "isb_pass": 25000,
+  "isb_fail": 0,
+  "isb_pass_rate": 1.0,
+  "isb_wilson95": {
+    "p": 1.0,
+    "low": 0.9998463652544344,
+    "high": 1.0,
+    "n": 25000,
+    "successes": 25000
+  }
+}

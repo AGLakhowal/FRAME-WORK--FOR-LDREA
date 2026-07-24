@@ -1,0 +1,91 @@
+{
+  "experiment": "E12_production_evidence_layer",
+  "decision_source": "gamma_test_runner.evaluate_decision (frozen, imported not modified)",
+  "corpus": "GAMMA_G0_CREDITCARD_FULL_mapped.csv",
+  "rows_processed": 25000,
+  "corpus_caveat": "This corpus derives 5 of 12 engine inputs from the label (label_leakage_audit.json). The artifacts here measure the EVIDENCE MACHINERY, not detection capability.",
+  "evidence_levels": {
+    "Measured Runtime": [
+      "decision latency",
+      "signing latency",
+      "verification latency",
+      "verification success rate",
+      "TOCTOU window",
+      "heartbeat intervals",
+      "local rejection latency",
+      "Ed25519 signatures"
+    ],
+    "Derived From Measured": [
+      "permits",
+      "ERTuples",
+      "CTRs",
+      "ledger blocks",
+      "hashes",
+      "bindings"
+    ],
+    "Repository Simulation": [
+      "key custody",
+      "fleet propagation",
+      "clock skew",
+      "watchdog daemon"
+    ]
+  },
+  "production_evidence": "NONE. No artifact in this repository is production evidence. No live deployment, no HSM, no real fleet, no third-party audit.",
+  "counts": {
+    "decisions": 25000,
+    "permits": 24912,
+    "safe_state": 88,
+    "ledger_blocks": 25000,
+    "ctrs": 25000,
+    "signatures": 24912,
+    "revocations": 200
+  },
+  "invariants": {
+    "one_permit_per_permit_decision": true,
+    "hash_chain_valid": true,
+    "tamper_detected": true,
+    "all_signatures_verify": true,
+    "all_negative_tests_rejected": true,
+    "negative_suite_has_power_positive_control": true,
+    "single_use_enforced": true,
+    "replay_rejection_complete": true,
+    "policy_mismatch_detected": true,
+    "replay_mismatch_detected": true,
+    "invalid_schema_rejected": true,
+    "no_false_permits_after_revocation": true,
+    "reference_ed25519_interop": true
+  },
+  "negative_tests_summary": {
+    "tampered_signature": "BAD_SIGNATURE",
+    "altered_scope": "BAD_SIGNATURE",
+    "modified_payload": "BAD_SIGNATURE",
+    "wrong_key": "BAD_SIGNATURE",
+    "missing_signature": "MISSING_SIGNATURE",
+    "expired_key_epoch": "KEY_EPOCH_INACTIVE",
+    "expired_permit": "EXPIRED",
+    "policy_mismatch": "POLICY_MISMATCH",
+    "reused_nonce": "NONCE_REUSED",
+    "revoked_permit": "REVOKED"
+  },
+  "artifacts": [
+    "authority_key_metadata.json",
+    "clock_skew_report.json",
+    "ctr_records.jsonl",
+    "ctr_report.json",
+    "evidence_binding_report.json",
+    "ledger.jsonl",
+    "ledger_summary.json",
+    "permit_lifecycle_events.jsonl",
+    "permit_lifecycle_report.json",
+    "permit_tokens.jsonl",
+    "production_evidence_summary.json",
+    "revocation_events.jsonl",
+    "revocation_report.json",
+    "runtime_timestamps.jsonl",
+    "runtime_timestamps_report.json",
+    "signature_verification_events.jsonl",
+    "signature_verification_report.json",
+    "watchdog_events.jsonl",
+    "watchdog_report.json"
+  ]
+}

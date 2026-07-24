@@ -1,0 +1,612 @@
+{
+  "nodes": [
+    {
+      "id": "evt-000001",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000002",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000003",
+      "type": "TOOL_CALL_PROPOSED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 2
+    },
+    {
+      "id": "evt-000004",
+      "type": "GAMMA_INTERCEPT",
+      "component": "GammaGovernedRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000005",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000006",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000007",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000008",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000009",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000010",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000011",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000012",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000013",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000014",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000015",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000016",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000017",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000018",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000019",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000020",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 2
+    },
+    {
+      "id": "evt-000021",
+      "type": "GLOBAL_POLICY_EVALUATION",
+      "component": "GammaBridge",
+      "step": 2
+    },
+    {
+      "id": "evt-000022",
+      "type": "CLASS_POLICY_EVALUATION",
+      "component": "GammaBridge",
+      "step": 2
+    },
+    {
+      "id": "evt-000023",
+      "type": "\u0393 COMPUTATION",
+      "component": "gamma_test_runner.evaluate_decision",
+      "step": 2
+    },
+    {
+      "id": "evt-000024",
+      "type": "\u03a0 COMPUTATION",
+      "component": "gamma_test_runner.evaluate_decision",
+      "step": 2
+    },
+    {
+      "id": "evt-000025",
+      "type": "PERMIT_DECISION",
+      "component": "GammaGovernedRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000026",
+      "type": "TOOL_EXECUTION",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000027",
+      "type": "TOOL_RESULT",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000028",
+      "type": "OBSERVATION_RETURNED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 2
+    },
+    {
+      "id": "evt-000029",
+      "type": "LLM_NEXT_CONTEXT",
+      "component": "AgentDojo.pipeline",
+      "step": 3
+    },
+    {
+      "id": "evt-000030",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 3
+    },
+    {
+      "id": "evt-000031",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 3
+    },
+    {
+      "id": "evt-000032",
+      "type": "TOOL_CALL_PROPOSED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 4
+    },
+    {
+      "id": "evt-000033",
+      "type": "GAMMA_INTERCEPT",
+      "component": "GammaGovernedRuntime",
+      "step": 4
+    },
+    {
+      "id": "evt-000034",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000035",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000036",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000037",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000038",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000039",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000040",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000041",
+      "type": "PREDICATE_EXTRACTION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000042",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000043",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000044",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000045",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000046",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000047",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000048",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000049",
+      "type": "PREDICATE_EVALUATION",
+      "component": "PredicateEvaluator",
+      "step": 4
+    },
+    {
+      "id": "evt-000050",
+      "type": "GLOBAL_POLICY_EVALUATION",
+      "component": "GammaBridge",
+      "step": 4
+    },
+    {
+      "id": "evt-000051",
+      "type": "CLASS_POLICY_EVALUATION",
+      "component": "GammaBridge",
+      "step": 4
+    },
+    {
+      "id": "evt-000052",
+      "type": "\u0393 COMPUTATION",
+      "component": "gamma_test_runner.evaluate_decision",
+      "step": 4
+    },
+    {
+      "id": "evt-000053",
+      "type": "\u03a0 COMPUTATION",
+      "component": "gamma_test_runner.evaluate_decision",
+      "step": 4
+    },
+    {
+      "id": "evt-000054",
+      "type": "PERMIT_DECISION",
+      "component": "GammaGovernedRuntime",
+      "step": 4
+    },
+    {
+      "id": "evt-000055",
+      "type": "TOOL_EXECUTION",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 4
+    },
+    {
+      "id": "evt-000056",
+      "type": "TOOL_RESULT",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 4
+    },
+    {
+      "id": "evt-000057",
+      "type": "OBSERVATION_RETURNED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 4
+    },
+    {
+      "id": "evt-000058",
+      "type": "LLM_NEXT_CONTEXT",
+      "component": "AgentDojo.pipeline",
+      "step": 5
+    },
+    {
+      "id": "evt-000059",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 5
+    },
+    {
+      "id": "evt-000060",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 5
+    },
+    {
+      "id": "evt-000061",
+      "type": "EPISODE_FINISHED",
+      "component": "AgentDojo.benchmark",
+      "step": 5
+    }
+  ],
+  "edges": [
+    {
+      "from": "evt-000001",
+      "to": "evt-000002"
+    },
+    {
+      "from": "evt-000002",
+      "to": "evt-000003"
+    },
+    {
+      "from": "evt-000003",
+      "to": "evt-000004"
+    },
+    {
+      "from": "evt-000004",
+      "to": "evt-000005"
+    },
+    {
+      "from": "evt-000005",
+      "to": "evt-000006"
+    },
+    {
+      "from": "evt-000006",
+      "to": "evt-000007"
+    },
+    {
+      "from": "evt-000007",
+      "to": "evt-000008"
+    },
+    {
+      "from": "evt-000008",
+      "to": "evt-000009"
+    },
+    {
+      "from": "evt-000009",
+      "to": "evt-000010"
+    },
+    {
+      "from": "evt-000010",
+      "to": "evt-000011"
+    },
+    {
+      "from": "evt-000011",
+      "to": "evt-000012"
+    },
+    {
+      "from": "evt-000012",
+      "to": "evt-000013"
+    },
+    {
+      "from": "evt-000013",
+      "to": "evt-000014"
+    },
+    {
+      "from": "evt-000014",
+      "to": "evt-000015"
+    },
+    {
+      "from": "evt-000015",
+      "to": "evt-000016"
+    },
+    {
+      "from": "evt-000016",
+      "to": "evt-000017"
+    },
+    {
+      "from": "evt-000017",
+      "to": "evt-000018"
+    },
+    {
+      "from": "evt-000018",
+      "to": "evt-000019"
+    },
+    {
+      "from": "evt-000019",
+      "to": "evt-000020"
+    },
+    {
+      "from": "evt-000020",
+      "to": "evt-000021"
+    },
+    {
+      "from": "evt-000021",
+      "to": "evt-000022"
+    },
+    {
+      "from": "evt-000022",
+      "to": "evt-000023"
+    },
+    {
+      "from": "evt-000023",
+      "to": "evt-000024"
+    },
+    {
+      "from": "evt-000024",
+      "to": "evt-000025"
+    },
+    {
+      "from": "evt-000025",
+      "to": "evt-000026"
+    },
+    {
+      "from": "evt-000026",
+      "to": "evt-000027"
+    },
+    {
+      "from": "evt-000027",
+      "to": "evt-000028"
+    },
+    {
+      "from": "evt-000028",
+      "to": "evt-000029"
+    },
+    {
+      "from": "evt-000029",
+      "to": "evt-000030"
+    },
+    {
+      "from": "evt-000030",
+      "to": "evt-000031"
+    },
+    {
+      "from": "evt-000031",
+      "to": "evt-000032"
+    },
+    {
+      "from": "evt-000032",
+      "to": "evt-000033"
+    },
+    {
+      "from": "evt-000033",
+      "to": "evt-000034"
+    },
+    {
+      "from": "evt-000034",
+      "to": "evt-000035"
+    },
+    {
+      "from": "evt-000035",
+      "to": "evt-000036"
+    },
+    {
+      "from": "evt-000036",
+      "to": "evt-000037"
+    },
+    {
+      "from": "evt-000037",
+      "to": "evt-000038"
+    },
+    {
+      "from": "evt-000038",
+      "to": "evt-000039"
+    },
+    {
+      "from": "evt-000039",
+      "to": "evt-000040"
+    },
+    {
+      "from": "evt-000040",
+      "to": "evt-000041"
+    },
+    {
+      "from": "evt-000041",
+      "to": "evt-000042"
+    },
+    {
+      "from": "evt-000042",
+      "to": "evt-000043"
+    },
+    {
+      "from": "evt-000043",
+      "to": "evt-000044"
+    },
+    {
+      "from": "evt-000044",
+      "to": "evt-000045"
+    },
+    {
+      "from": "evt-000045",
+      "to": "evt-000046"
+    },
+    {
+      "from": "evt-000046",
+      "to": "evt-000047"
+    },
+    {
+      "from": "evt-000047",
+      "to": "evt-000048"
+    },
+    {
+      "from": "evt-000048",
+      "to": "evt-000049"
+    },
+    {
+      "from": "evt-000049",
+      "to": "evt-000050"
+    },
+    {
+      "from": "evt-000050",
+      "to": "evt-000051"
+    },
+    {
+      "from": "evt-000051",
+      "to": "evt-000052"
+    },
+    {
+      "from": "evt-000052",
+      "to": "evt-000053"
+    },
+    {
+      "from": "evt-000053",
+      "to": "evt-000054"
+    },
+    {
+      "from": "evt-000054",
+      "to": "evt-000055"
+    },
+    {
+      "from": "evt-000055",
+      "to": "evt-000056"
+    },
+    {
+      "from": "evt-000056",
+      "to": "evt-000057"
+    },
+    {
+      "from": "evt-000057",
+      "to": "evt-000058"
+    },
+    {
+      "from": "evt-000058",
+      "to": "evt-000059"
+    },
+    {
+      "from": "evt-000059",
+      "to": "evt-000060"
+    },
+    {
+      "from": "evt-000060",
+      "to": "evt-000061"
+    }
+  ]
+}

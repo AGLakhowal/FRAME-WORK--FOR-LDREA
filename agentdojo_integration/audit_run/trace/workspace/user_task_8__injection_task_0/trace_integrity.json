@@ -1,0 +1,11 @@
+{
+  "trace_file": "agentdojo_integration/audit_run/trace/workspace/user_task_8__injection_task_0/execution_trace.jsonl",
+  "n_events": 32,
+  "chain_root": "ebf19728812446986a968b7304b46be3d9caefb12431e58f8ca2b350d6204a58",
+  "chain_sidecar": "agentdojo_integration/audit_run/trace/workspace/user_task_8__injection_task_0/execution_trace_chained.jsonl",
+  "event_id_monotonic_unique": true,
+  "step_non_decreasing": true,
+  "timestamp_non_decreasing": true,
+  "append_only_ok": true,
+  "integrity_ok": true
+}

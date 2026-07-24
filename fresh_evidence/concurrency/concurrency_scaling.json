@@ -1,0 +1,239 @@
+{
+  "campaign": "concurrency_scaling",
+  "host": {
+    "cpu_count": 10,
+    "rss_units": "bytes(macos)"
+  },
+  "workload": {
+    "n_decisions": 200000,
+    "reference_permits": 100000,
+    "reference_denies": 100000,
+    "reference_ledger_sha256": "3034e5e64c6d567446b9ed38b3293ab749f215dbb05d8f9877ea38d090a841ae"
+  },
+  "concurrency_model": "python threads (GIL-bound reference decision path)",
+  "thread_counts": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "levels": [
+    {
+      "n_threads": 1,
+      "n_decisions": 200000,
+      "wall_time_s": 0.8543823749999999,
+      "throughput_decisions_per_s": 234087.2258747145,
+      "latency_ms": {
+        "p50": 0.0022920000000148377,
+        "p95": 0.0025409999997449972,
+        "p99": 0.0027920000000847267,
+        "mean": 0.0022642750100000508,
+        "max": 0.09679199999990118
+      },
+      "queue_delay_ms": {
+        "mean": 575.6303873118,
+        "p95": 832.6336857499999,
+        "max": 850.7837090000002
+      },
+      "cpu_time_s": 0.8599999999999999,
+      "cpu_utilization": 1.0065750712612722,
+      "peak_rss_bytes": 156581888,
+      "authorization_correct": true,
+      "false_permits": 0,
+      "false_denials": 0,
+      "ledger_consistent": true,
+      "replay_consistent": true,
+      "permits": 100000,
+      "denials": 100000,
+      "scaling_efficiency": 1.0,
+      "speedup_vs_1thread": 1.0
+    },
+    {
+      "n_threads": 2,
+      "n_decisions": 200000,
+      "wall_time_s": 0.8719548750000001,
+      "throughput_decisions_per_s": 229369.6677824067,
+      "latency_ms": {
+        "p50": 0.0023329999998544793,
+        "p95": 0.002542000000271827,
+        "p99": 0.0030830000001813573,
+        "mean": 0.0046918579749999694,
+        "max": 12.520624999999619
+      },
+      "queue_delay_ms": {
+        "mean": 576.3145678744099,
+        "p95": 836.7985743999997,
+        "max": 868.7756670000005
+      },
+      "cpu_time_s": 0.8800000000000001,
+      "cpu_utilization": 1.0092265382425896,
+      "peak_rss_bytes": 162627584,
+      "authorization_correct": true,
+      "false_permits": 0,
+      "false_denials": 0,
+      "ledger_consistent": true,
+      "replay_consistent": true,
+      "permits": 100000,
+      "denials": 100000,
+      "scaling_efficiency": 0.489923503782234,
+      "speedup_vs_1thread": 0.979847007564468
+    },
+    {
+      "n_threads": 4,
+      "n_decisions": 200000,
+      "wall_time_s": 0.9279501670000001,
+      "throughput_decisions_per_s": 215528.81513733265,
+      "latency_ms": {
+        "p50": 0.002334000000381309,
+        "p95": 0.002750000000162345,
+        "p99": 0.003666999999651921,
+        "mean": 0.007189136824999431,
+        "max": 37.50166700000079
+      },
+      "queue_delay_ms": {
+        "mean": 600.0380187401751,
+        "p95": 885.9848607499997,
+        "max": 926.1223329999995
+      },
+      "cpu_time_s": 0.98,
+      "cpu_utilization": 1.05609119417293,
+      "peak_rss_bytes": 166772736,
+      "authorization_correct": true,
+      "false_permits": 0,
+      "false_denials": 0,
+      "ledger_consistent": true,
+      "replay_consistent": true,
+      "permits": 100000,
+      "denials": 100000,
+      "scaling_efficiency": 0.23018002619746275,
+      "speedup_vs_1thread": 0.920720104789851
+    },
+    {
+      "n_threads": 8,
+      "n_decisions": 200000,
+      "wall_time_s": 2.8197045839999992,
+      "throughput_decisions_per_s": 70929.4162001476,
+      "latency_ms": {
+        "p50": 0.002624999999589761,
+        "p95": 0.00445800000026253,
+        "p99": 0.005124999999495117,
+        "mean": 0.00607423300999951,
+        "max": 66.3783750000002
+      },
+      "queue_delay_ms": {
+        "mean": 1675.5828327527952,
+        "p95": 2628.13630975,
+        "max": 2817.6028329999995
+      },
+      "cpu_time_s": 4.4799999999999995,
+      "cpu_utilization": 1.588818922883306,
+      "peak_rss_bytes": 169590784,
+      "authorization_correct": true,
+      "false_permits": 0,
+      "false_denials": 0,
+      "ledger_consistent": true,
+      "replay_consistent": true,
+      "permits": 100000,
+      "denials": 100000,
+      "scaling_efficiency": 0.037875526919028485,
+      "speedup_vs_1thread": 0.3030042153522279
+    },
+    {
+      "n_threads": 16,
+      "n_decisions": 200000,
+      "wall_time_s": 3.7197155419999994,
+      "throughput_decisions_per_s": 53767.55231462267,
+      "latency_ms": {
+        "p50": 0.003292000000598705,
+        "p95": 0.004667000000679877,
+        "p99": 0.0055420000002470715,
+        "mean": 0.0040303800750016985,
+        "max": 18.614999999998716
+      },
+      "queue_delay_ms": {
+        "mean": 2001.421426509085,
+        "p95": 3589.1281583500004,
+        "max": 3717.4559999999983
+      },
+      "cpu_time_s": 6.16,
+      "cpu_utilization": 1.6560406112903783,
+      "peak_rss_bytes": 172802048,
+      "authorization_correct": true,
+      "false_permits": 0,
+      "false_denials": 0,
+      "ledger_consistent": true,
+      "replay_consistent": true,
+      "permits": 100000,
+      "denials": 100000,
+      "scaling_efficiency": 0.014355640326407518,
+      "speedup_vs_1thread": 0.2296902452225203
+    },
+    {
+      "n_threads": 32,
+      "n_decisions": 200000,
+      "wall_time_s": 4.10529225,
+      "throughput_decisions_per_s": 48717.60347877791,
+      "latency_ms": {
+        "p50": 0.0035000000000451337,
+        "p95": 0.004750000002218258,
+        "p99": 0.0056659999998487365,
+        "mean": 0.003556900039998121,
+        "max": 0.05100000000091143
+      },
+      "queue_delay_ms": {
+        "mean": 2161.7319686246997,
+        "p95": 3906.795152099998,
+        "max": 4102.758416999999
+      },
+      "cpu_time_s": 6.840000000000001,
+      "cpu_utilization": 1.6661420389742048,
+      "peak_rss_bytes": 180879360,
+      "authorization_correct": true,
+      "false_permits": 0,
+      "false_denials": 0,
+      "ledger_consistent": true,
+      "replay_consistent": true,
+      "permits": 100000,
+      "denials": 100000,
+      "scaling_efficiency": 0.0065036659007041454,
+      "speedup_vs_1thread": 0.20811730882253265
+    },
+    {
+      "n_threads": 64,
+      "n_decisions": 200000,
+      "wall_time_s": 3.9957874160000024,
+      "throughput_decisions_per_s": 50052.71281428949,
+      "latency_ms": {
+        "p50": 0.0034169999985067534,
+        "p95": 0.004917000001825045,
+        "p99": 0.006750000000721457,
+        "mean": 0.004395862640001783,
+        "max": 37.73016599999934
+      },
+      "queue_delay_ms": {
+        "mean": 1935.8092085278445,
+        "p95": 3802.4172850999994,
+        "max": 3990.4928329999975
+      },
+      "cpu_time_s": 6.6,
+      "cpu_utilization": 1.651739522871553,
+      "peak_rss_bytes": 189251584,
+      "authorization_correct": true,
+      "false_permits": 0,
+      "false_denials": 0,
+      "ledger_consistent": true,
+      "replay_consistent": true,
+      "permits": 100000,
+      "denials": 100000,
+      "scaling_efficiency": 0.0033409496601144984,
+      "speedup_vs_1thread": 0.2138207782473279
+    }
+  ],
+  "all_authorization_correct": true,
+  "all_ledger_consistent": true,
+  "total_false_permits": 0,
+  "total_false_denials": 0
+}

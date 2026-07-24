@@ -1,0 +1,19 @@
+==========================================================================
+  E7 — AGENTDOJO EXTERNAL VALIDATION (offline, no LLM, no API credential)
+==========================================================================
+  scenarios (episodes)        : 33  suites=['banking', 'slack', 'travel', 'workspace']
+  tool calls                  : 42
+  authorized / denied         : 11 / 3
+  false permit rate (sound.)  : 0.0  (0/62)
+  false denial rate           : 0.0
+  replay determinism          : 1.0
+  predicate pass rate         : 0.9722 (105/108)
+  runtime risk detection      : 1.0  (62/62)
+  evidence quad completeness  : 1.0  (14/14)
+  hash chain integrity        : 1.0  (33/33)
+  ledger integrity            : 1.0  (33/33)
+  Gamma intercept latency ms  : mean=0.0135 p95=0.0440 p99=0.1472 (n=42)
+  predicate eval latency ms   : mean=0.0085 p95=0.0169 p99=0.0169 (n=108)
+  failures / warnings         : 0 / 0
+  VERDICT                     : PASS
+  wrote experiments/agentdojo/e7_metrics.json

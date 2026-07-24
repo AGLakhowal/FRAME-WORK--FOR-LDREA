@@ -1,0 +1,11 @@
+{
+  "evidence_level": "Measured Runtime",
+  "n": 6000,
+  "signal_fire_counts": {
+    "outside_business_hours": 3823,
+    "unknown_destination": 83,
+    "large_amount": 21,
+    "behaviour_drift": 45
+  },
+  "note": "signals are advisory context; they do not enter the Gamma decision"
+}

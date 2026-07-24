@@ -1,0 +1,166 @@
+{
+  "evidence_level": "Synthetic Runtime",
+  "confusion_matrix": {
+    "tp_fraud_denied": 48,
+    "fn_fraud_permitted": 68,
+    "fp_legit_denied": 189,
+    "tn_legit_permitted": 5695
+  },
+  "n": 6000,
+  "positives": 116,
+  "negatives": 5884,
+  "precision": 0.20253164556962025,
+  "recall_detection_rate": 0.41379310344827586,
+  "specificity": 0.9678789938817132,
+  "f1": 0.27195467422096314,
+  "balanced_accuracy": 0.6908360486649945,
+  "matthews_corrcoef": 0.2698095112612521,
+  "auroc": 0.6921502496542348,
+  "auprc": 0.23469693001600467,
+  "roc_curve": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0003399048266485384,
+      0.08620689655172414
+    ],
+    [
+      0.03212100611828688,
+      0.41379310344827586
+    ],
+    [
+      1.0,
+      1.0
+    ]
+  ],
+  "pr_curve": [
+    [
+      0.08620689655172414,
+      0.8333333333333334
+    ],
+    [
+      0.41379310344827586,
+      0.20253164556962025
+    ],
+    [
+      1.0,
+      0.019333333333333334
+    ]
+  ],
+  "false_permit_rate": {
+    "metric": "false_permit_rate",
+    "value": 0.5862068965517241,
+    "wilson95": {
+      "p": 0.5862068965517241,
+      "low": 0.4952220073322584,
+      "high": 0.6716651467195278,
+      "n": 116,
+      "successes": 68
+    },
+    "defined": true,
+    "note": null
+  },
+  "false_deny_rate": {
+    "metric": "false_deny_rate",
+    "value": 0.03212100611828688,
+    "wilson95": {
+      "p": 0.03212100611828688,
+      "low": 0.02791217634751876,
+      "high": 0.03694036112164996,
+      "n": 5884,
+      "successes": 189
+    },
+    "caveat": "recognized-set legitimate class overlaps the gate; near-tautological"
+  },
+  "recall_wilson95": {
+    "p": 0.41379310344827586,
+    "low": 0.32833485328047207,
+    "high": 0.5047779926677415,
+    "n": 116,
+    "successes": 48
+  },
+  "precision_wilson95": {
+    "p": 0.20253164556962025,
+    "low": 0.1562992323966758,
+    "high": 0.25825339201266995,
+    "n": 237,
+    "successes": 48
+  },
+  "calibration_by_gamma": {
+    "0": {
+      "n": 5763,
+      "positives": 68,
+      "empirical_rate": 0.011799410029498525
+    },
+    "1": {
+      "n": 225,
+      "positives": 38,
+      "empirical_rate": 0.1688888888888889
+    },
+    "2": {
+      "n": 12,
+      "positives": 10,
+      "empirical_rate": 0.8333333333333334
+    }
+  },
+  "cost_model": {
+    "fp_cost": 1.0,
+    "fn_cost": 20.0,
+    "total_cost": 1549.0,
+    "note": "costs are a stated modelling assumption, not a measurement"
+  },
+  "calibration": {
+    "evidence_level": "Measured Runtime",
+    "method": "unsupervised quantiles (99.5) over the unlabeled warmup prefix; daily_cap uses the second half of warmup, after the 24h window has filled, because the rolling sum is non-stationary while it warms",
+    "warmup_rows": 2000,
+    "daily_cap": 13154.99,
+    "velocity_cap": 3,
+    "stale_context_ms": 6164163.499593735,
+    "anomaly_z": 6.0,
+    "max_kmh": 900.0,
+    "max_kmh_rationale": "physical constant (commercial aviation), not tuned",
+    "vendor_registry_size": 40,
+    "vendor_registry_source": "operational vendor master file, not learned, not a label"
+  },
+  "stream": {
+    "evidence_level": "Synthetic Runtime",
+    "n_total": 8000,
+    "warmup_excluded": 2000,
+    "evaluated": 6000,
+    "kind_counts": {
+      "fraud_bad_token": 2,
+      "fraud_burst": 13,
+      "fraud_large_amount": 13,
+      "fraud_stealthy": 55,
+      "fraud_unknown_vendor": 33,
+      "legit": 5802,
+      "legit_new_vendor": 50,
+      "legit_spike": 32
+    },
+    "generator_note": "40% of positives are stealthy by construction and are observably identical to negatives. They MUST appear as false negatives. A perfect score would mean the generator leaked."
+  },
+  "decision_latency_ms": {
+    "n": 6000,
+    "unit": "ms",
+    "mean": 0.002161864166666667,
+    "min": 0.001083,
+    "max": 0.05075,
+    "p50": 0.001917,
+    "p95": 0.004042,
+    "p99": 0.007125
+  },
+  "detection_latency_ms": {
+    "n": 6000,
+    "unit": "ms",
+    "mean": 1.7872572354999998,
+    "min": 0.424792,
+    "max": 10.199417,
+    "p50": 1.600709,
+    "p95": 2.605625,
+    "p99": 2.780667
+  },
+  "blindness_enforcement": "Observation has no label field; predicates are generated from it alone; score() is called after every ERTuple is chained.",
+  "not_the_real_ulb_result": "The real-ULB blind detection report lives at runtime_detection_report.json in the repository root and is status=BLOCKED (raw creditcard.csv absent). This file is a SYNTHETIC-stream result and must never be cited in its place."
+}

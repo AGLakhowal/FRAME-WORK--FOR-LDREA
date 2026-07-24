@@ -1,0 +1,23 @@
+{
+  "candidate_actions_replayed": 1,
+  "traced_decision_stream": [
+    [
+      "add_user_to_channel",
+      "ACCESS_GRANT",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "replay_decision_stream": [
+    [
+      "add_user_to_channel",
+      "ACCESS_GRANT",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "identical": true,
+  "n_decisions": 1
+}

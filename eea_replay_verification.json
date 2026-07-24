@@ -1,0 +1,8 @@
+{
+  "scope": "DET-1 authorization-decision determinism",
+  "n_candidate_actions_replayed": 0,
+  "n_authorization_decisions": 0,
+  "replay_deterministic": true,
+  "verdict": "PASS (trivial)",
+  "note": "0 candidate actions and 0 Gamma decisions to replay; the empty decision stream reproduced identically. No EEA authorization path exercised."
+}

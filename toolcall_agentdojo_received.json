@@ -1,0 +1,28 @@
+{
+  "id": "chatcmpl-527",
+  "model": "llama3.1:8b",
+  "choices[0].finish_reason": "tool_calls",
+  "message.role": "assistant",
+  "message.content": "",
+  "message.tool_calls_is_None": false,
+  "message.tool_calls": [
+    {
+      "id": "call_wqvwwsxz",
+      "function": {
+        "arguments": "{\"query\":\"\",\"date\":\"2024-05-19\"}",
+        "name": "search_calendar_events"
+      },
+      "type": "function",
+      "index": 0
+    },
+    {
+      "id": "call_ntqxavvt",
+      "function": {
+        "arguments": "{\"description\":\"Catch up over lunch.\",\"location\":\"\",\"participants\":\"['sarah.connor@gmail.com']\",\"event_id\":\"\",\"start_time\":\"2024-05-19 12:00:00\",\"end_time\":\"null\",\"title\":\"Lunch\"}",
+        "name": "search_calendar_events"
+      },
+      "type": "function",
+      "index": 1
+    }
+  ]
+}

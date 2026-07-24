@@ -1,0 +1,23 @@
+{
+  "candidate_actions_replayed": 2,
+  "traced_decision_stream": [
+    [
+      "send_direct_message",
+      "MESSAGE_DISPATCH",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "replay_decision_stream": [
+    [
+      "send_direct_message",
+      "MESSAGE_DISPATCH",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "identical": true,
+  "n_decisions": 1
+}

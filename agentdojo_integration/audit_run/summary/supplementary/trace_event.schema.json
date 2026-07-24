@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "L-DREA execution trace event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "episode_id",
+    "timestamp",
+    "step_number",
+    "event_type",
+    "runtime_component",
+    "processing_time_ms"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt-[0-9]{6}$"
+    },
+    "episode_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "step_number": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "LLM_REQUEST",
+        "LLM_RESPONSE",
+        "TOOL_CALL_PROPOSED",
+        "GAMMA_INTERCEPT",
+        "PREDICATE_EXTRACTION",
+        "PREDICATE_EVALUATION",
+        "GLOBAL_POLICY_EVALUATION",
+        "CLASS_POLICY_EVALUATION",
+        "\u0393 COMPUTATION",
+        "\u03a0 COMPUTATION",
+        "PERMIT_DECISION",
+        "DENY_DECISION",
+        "TOOL_EXECUTION",
+        "TOOL_RESULT",
+        "OBSERVATION_RETURNED",
+        "LLM_NEXT_CONTEXT",
+        "EPISODE_FINISHED"
+      ]
+    },
+    "runtime_component": {
+      "type": "string"
+    },
+    "processing_time_ms": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

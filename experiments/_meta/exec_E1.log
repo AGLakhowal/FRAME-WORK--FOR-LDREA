@@ -1,0 +1,37 @@
+[full_spec] loading corpus with telemetry columns ...
+[full_spec] enforcing full conjunctive gate on 284807 rows ...
+  supplementary: full_spec_conformance_report.json ok
+[FCR] loading corpus ...
+  supplementary: fcr_test_report.json ok
+  supplementary: stress_test_report.json ok
+[load] reading GAMMA_G0_CREDITCARD_FULL_mapped.csv ...
+[load] rows=284807  should-deny(y*=0)=492
+[L1] scoring every row ...
+[L2] synthetic adversarial families + adaptive attacker ...
+[contam] salting + canary leakage check ...
+[L3] simulated 5-node fleet consistency ...
+[L4] replay stats + Evidence Quad + independent verifier ...
+[ASB] building temporally-ordered scenario event streams ...
+
+==================================================================
+  CONCURBENCH FULL CONFORMANCE PACKET
+==================================================================
+  wrote                : concurbench_full_report.json
+  total_instances      : 284807
+  adversarial subset   : 492
+  false_permits        : 0   UER=0.0  FPR=0.0
+  FCR                  : 1.0   FDR=0.0   DR=1.0
+  L2 total false perms : 0  adaptive fp=0/11808
+  contamination/canary : PASS/PASS
+  L3 fleet consistency : 1.0  nodes=5  rev p99=20.338ms  partition=PASS
+  L4 replay rate       : 1.0  hashchain=PASS  verifier=PASS
+  ASB pass rate        : 1.0  UER=0.0
+------------------------------------------------------------------
+  level_1_authorization_correctness     : PASS
+  level_2_adversarial_robustness        : PASS
+  level_3_distributed_consistency       : PASS
+  level_4_replay_auditability           : PASS
+  overall_verdict                       : COMPLIANT_PASS
+  elapsed              : 8.5s
+==================================================================
+  supplementary: concurbench_full_report.json ok

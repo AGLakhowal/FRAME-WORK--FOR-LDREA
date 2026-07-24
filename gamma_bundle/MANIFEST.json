@@ -1,0 +1,281 @@
+{
+  "schema_version": "gamma-audit-bundle/v1",
+  "bundle_id": "30159125bfcf43e1dc2a06aa7325748cccebdb1dceb7f0394eac9d5c090c3416",
+  "created_utc": "2026-07-11T17:45:12Z",
+  "method_version": "gamma_test_runner/LAB-v1.0/2.0",
+  "git_commit": "264b9ec378a3c0b0984fdf25cdee98c93e024f70",
+  "eval_seed": 20260709,
+  "producer": "tools/export_audit_bundle.py",
+  "ledger": {
+    "mode": "DIGEST_REFERENCE",
+    "sha256": "1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da",
+    "bytes": 200966760,
+    "n_records": 284808,
+    "anchor_records_embedded": 64,
+    "terminus_records_embedded": 64,
+    "note": "The full ledger is referenced by SHA-256, not copied (192 MB). The GENESIS anchor and the chain terminus ARE embedded. Re-export with --full to embed the complete ledger."
+  },
+  "counts": {
+    "members_present": 30,
+    "members_missing": 0,
+    "total_bytes": 398086
+  },
+  "members": [
+    {
+      "path": "evidence/E1_gamma_lab_v1_report.json",
+      "role": "E1 primary metrics",
+      "source": "experiments/runtime_correctness/gamma_lab_v1_report.json",
+      "status": "PRESENT",
+      "sha256": "faad378d2c2d3e5b3ab678ba17ea40283d293552bbdb342f4d4ea802b4da956f",
+      "bytes": 11694
+    },
+    {
+      "path": "evidence/E1_gamma_summary.json",
+      "role": "E1 decision distribution",
+      "source": "experiments/runtime_correctness/gamma_summary.json",
+      "status": "PRESENT",
+      "sha256": "81d10dc03f4b53d9b07c3ccafba9c65089cbfbe3de719ec5f75ad75c71dbb5f6",
+      "bytes": 3514
+    },
+    {
+      "path": "evidence/E1_full_spec_conformance.json",
+      "role": "FULL_SPEC conformance",
+      "source": "experiments/runtime_correctness/full_spec_conformance_report.json",
+      "status": "PRESENT",
+      "sha256": "aaeed075ff566fb6daeadb1449e43a7124295b1d55d01eb3105e2752362e70ac",
+      "bytes": 9789
+    },
+    {
+      "path": "evidence/E1_fcr_test.json",
+      "role": "Fail-Closed Rate",
+      "source": "experiments/runtime_correctness/fcr_test_report.json",
+      "status": "PRESENT",
+      "sha256": "f06256d9a3ff8e9425c5b26335d63c84c80d74ac8dd02eb7373de056afe89529",
+      "bytes": 1805
+    },
+    {
+      "path": "evidence/E1_concurbench.json",
+      "role": "ConcurBench L1-L4",
+      "source": "experiments/runtime_correctness/concurbench_full_report.json",
+      "status": "PRESENT",
+      "sha256": "9a63489d53f2cbaaa00f10dd6a374ec46cc413fb3d3f41206470a7b370ba450b",
+      "bytes": 75622
+    },
+    {
+      "path": "evidence/E1_financial_stress.json",
+      "role": "Financial stress P1-P4",
+      "source": "experiments/runtime_correctness/stress_test_report.json",
+      "status": "PRESENT",
+      "sha256": "0930130a271738fc67ca1ca2eee42218283bac9073f5128649f18473fbe0f61c",
+      "bytes": 14958
+    },
+    {
+      "path": "evidence/E2_replay_report.json",
+      "role": "E2 replay integrity",
+      "source": "experiments/replay/replay_report.json",
+      "status": "PRESENT",
+      "sha256": "f57b238f785b6ea34f67dbd0a6e40349a01f6052954c425a41001b3d8800ada9",
+      "bytes": 529
+    },
+    {
+      "path": "evidence/E3_independent_verifier.json",
+      "role": "E3 exhaustive 2^16",
+      "source": "experiments/formal/independent_verifier_report.json",
+      "status": "PRESENT",
+      "sha256": "1d20111a7cec3d293c16ea51b50aaca6c5541c6eece238eac3dd469abc06c968",
+      "bytes": 1300
+    },
+    {
+      "path": "evidence/E4_concurrency_scaling.json",
+      "role": "E4 concurrency",
+      "source": "experiments/stress/concurrency_scaling.json",
+      "status": "PRESENT",
+      "sha256": "e6b2c209c62f70606f5314161fa3e265744dad3f8d14f3744fd46ec2eee7120a",
+      "bytes": 7141
+    },
+    {
+      "path": "evidence/E5_ablation.json",
+      "role": "E5 component ablation",
+      "source": "experiments/ablation/ablation.json",
+      "status": "PRESENT",
+      "sha256": "63defeb892b96a1565f9397e6cc3a948e81eef796494ea29164222ba235d9f87",
+      "bytes": 5844
+    },
+    {
+      "path": "evidence/E6_runtime_profile.json",
+      "role": "E6 profiling",
+      "source": "experiments/profiling/runtime_profile.json",
+      "status": "PRESENT",
+      "sha256": "d386ebcb2ee3dde9dddccea2cd063a7afef04d5046a1031d3ae785acbac2bb60",
+      "bytes": 984
+    },
+    {
+      "path": "evidence/E7_agentdojo_statistics.json",
+      "role": "E7 AgentDojo statistics",
+      "source": "experiments/agentdojo/statistics.json",
+      "status": "PRESENT",
+      "sha256": "342cdb2224332b64dba0ea8417d2d8357ec396ecd5f0298efb53f046e2dacf9f",
+      "bytes": 10903
+    },
+    {
+      "path": "evidence/E7_boundary_fpr.json",
+      "role": "E7 boundary FPR",
+      "source": "experiments/agentdojo/boundary/boundary_fpr.json",
+      "status": "PRESENT",
+      "sha256": "cde16292bdcaad813b6c6a1e28505ec6a23e7604f449c3d1c424c85b8ee7fb6f",
+      "bytes": 4365
+    },
+    {
+      "path": "evidence/E8_robustness.json",
+      "role": "E8 fault injection",
+      "source": "fresh_evidence/robustness/robustness.json",
+      "status": "PRESENT",
+      "sha256": "9f1abfbd7d74d30a32a25f2b67fbf105643cd4679b779554bcdeafcff3dba39e",
+      "bytes": 9490
+    },
+    {
+      "path": "evidence/E9_predicate_coverage.json",
+      "role": "E9 predicate coverage",
+      "source": "fresh_evidence/predicate_coverage/predicate_coverage.json",
+      "status": "PRESENT",
+      "sha256": "94315e89052a6d008af335976ea1a3417a3c8d32e98f5dbbbf61b80510daae86",
+      "bytes": 18050
+    },
+    {
+      "path": "evidence/statistics_report.json",
+      "role": "Wilson / bootstrap / effect sizes",
+      "source": "experiments/statistics/statistics_report.json",
+      "status": "PRESENT",
+      "sha256": "fad1fbd72d3efbec472e75dd5b6760e28a4093530a94124f4a123e31332a21f4",
+      "bytes": 26419
+    },
+    {
+      "path": "evidence/provenance_graph.json",
+      "role": "Provenance chain",
+      "source": "experiments/provenance/provenance_graph.json",
+      "status": "PRESENT",
+      "sha256": "322fc5e41d077bb3aeca5e5fa94cdeb4cc2be496a72012f1b5f37cfb85dcc13d",
+      "bytes": 25140
+    },
+    {
+      "path": "reproducibility/host.json",
+      "role": "Execution host + git commit + seed",
+      "source": "experiments/_meta/host.json",
+      "status": "PRESENT",
+      "sha256": "ce7015b101e89b3eaf7b28162cdd3d1104a793adc858f3beba38a5b77c733bfc",
+      "bytes": 464
+    },
+    {
+      "path": "reproducibility/run_index.json",
+      "role": "Per-experiment status + duration",
+      "source": "experiments/_meta/run_index.json",
+      "status": "PRESENT",
+      "sha256": "da282bc4c622be6a06010221cf425503dce892c0e522cdc29b2175c1dc3ee9be",
+      "bytes": 17943
+    },
+    {
+      "path": "reproducibility/dataset_fingerprint.json",
+      "role": "Dataset SHA-256",
+      "source": "experiments/_meta/dataset_fingerprint.json",
+      "status": "PRESENT",
+      "sha256": "c2e14da6540784c95f648d4f4e42ebb4e77abae42d52e5ca28089f331498ecfc",
+      "bytes": 153
+    },
+    {
+      "path": "reproducibility/evidence_manifest.json",
+      "role": "Claim -> artifact -> pointer",
+      "source": "evidence_manifest.json",
+      "status": "PRESENT",
+      "sha256": "c55790dab8c4c2f990ea0a0d613bba5dc18ae7049533b1ddee98b857144178c3",
+      "bytes": 24794
+    },
+    {
+      "path": "reproducibility/CLAIM_EVIDENCE_MATRIX.md",
+      "role": "Claim evidence matrix",
+      "source": "CLAIM_EVIDENCE_MATRIX.md",
+      "status": "PRESENT",
+      "sha256": "48a86a26faaa7ce06e918d5effba7ae24c79bfd5b0d23164ae04dabb312e8e11",
+      "bytes": 7318
+    },
+    {
+      "path": "reproducibility/reviewer_mapping.md",
+      "role": "Reviewer concern mapping",
+      "source": "reviewer_mapping.md",
+      "status": "PRESENT",
+      "sha256": "8c25667fc40ad1408763ea88c7018440ff8f020dfb05203ac2b102ca3a76a5ae",
+      "bytes": 10258
+    },
+    {
+      "path": "reproducibility/LIMITATIONS_AND_NEGATIVE_RESULTS.md",
+      "role": "Disclosed limitations",
+      "source": "LIMITATIONS_AND_NEGATIVE_RESULTS.md",
+      "status": "PRESENT",
+      "sha256": "c0887573ecbe7152e9aa273a7bef600b8d65c8471202187c5c91982745eb7695",
+      "bytes": 2745
+    },
+    {
+      "path": "reproducibility/THREATS_TO_VALIDITY.md",
+      "role": "Threats to validity",
+      "source": "THREATS_TO_VALIDITY.md",
+      "status": "PRESENT",
+      "sha256": "8e24d07394ab63757054149ce7d17fbb65c339395ef99a09bfd9b3220372aea7",
+      "bytes": 3470
+    },
+    {
+      "path": "replay_package/gamma_replay_verify.py",
+      "role": "Independent replay verifier",
+      "source": "gamma_replay_verify.py",
+      "status": "PRESENT",
+      "sha256": "d1ec4b5e11348c518e0c426aa44037e9896622b72d668c8b861814d789bc70be",
+      "bytes": 5000
+    },
+    {
+      "path": "formal/ExternalizationMonitor.tla",
+      "role": "TLA+ specification",
+      "source": "formal/ExternalizationMonitor.tla",
+      "status": "PRESENT",
+      "sha256": "f38ae8da968ed4a26fe808e62a4181d4dbe123b19ceda9b9d28e1fca79d42394",
+      "bytes": 5134
+    },
+    {
+      "path": "formal/ExternalizationMonitor.cfg",
+      "role": "TLC configuration",
+      "source": "formal/ExternalizationMonitor.cfg",
+      "status": "PRESENT",
+      "sha256": "594efed0617dd3e38fc4ea37ecb511783643930b80a364e52739d124d8182b84",
+      "bytes": 489
+    },
+    {
+      "path": "formal/E3_tlc.log",
+      "role": "Executed TLC log",
+      "source": "experiments/formal/logs/E3_tlc.log",
+      "status": "PRESENT",
+      "sha256": "82b66b6af9fe29a08a4d45059fd9cfd6016c10185900ae452ed87a212010f2c9",
+      "bytes": 3179
+    },
+    {
+      "path": "replay_package/ledger_anchor_slice.jsonl",
+      "role": "Hydra Ledger anchor + terminus (64 records each end)",
+      "source": "gamma_replay_manifest.jsonl",
+      "status": "PRESENT",
+      "sha256": "0cd314e630dfad7ce4b4838c123c943f446046019f09a4643fdf9e6aac3b459d",
+      "bytes": 89592
+    }
+  ],
+  "verification": {
+    "checksums": "CHECKSUMS.sha256",
+    "command": "shasum -a 256 -c CHECKSUMS.sha256",
+    "programmatic": "python tools/export_audit_bundle.py --verify",
+    "replay": "python replay_package/gamma_replay_verify.py <path-to-gamma_replay_manifest.jsonl>"
+  },
+  "scope_note": "This bundle contains executed artifacts only. It does not contain the 430 MB source dataset; the dataset is identified by SHA-256 in reproducibility/dataset_fingerprint.json.",
+  "self_reference": {
+    "member": "evidence/E1_concurbench.json",
+    "explanation": "ConcurBench's Level-4 `audit_packet_export` check verifies THIS bundle, and the resulting report is then packaged INTO the bundle. The embedded report therefore records the verification of the immediately preceding bundle generation, and this manifest's `bundle_id` was recomputed after that report was sealed. This is the ordinary self-reference of any signed release whose checksum file cannot checksum itself. It is stated here rather than left for a reviewer to discover.",
+    "what_a_reviewer_can_still_check_independently": [
+      "shasum -a 256 -c CHECKSUMS.sha256   (every member re-hashes)",
+      "python tools/export_audit_bundle.py --verify   (manifest + ledger binding)",
+      "python replay_package/gamma_replay_verify.py <ledger>   (no engine, no dataset)"
+    ]
+  }
+}

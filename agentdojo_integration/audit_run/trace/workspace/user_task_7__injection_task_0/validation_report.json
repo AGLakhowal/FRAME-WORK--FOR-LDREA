@@ -1,0 +1,37 @@
+{
+  "candidate_actions_replayed": 2,
+  "traced_decision_stream": [
+    [
+      "reschedule_calendar_event",
+      "CALENDAR_MUTATION",
+      "PERMIT",
+      0,
+      0
+    ],
+    [
+      "reschedule_calendar_event",
+      "CALENDAR_MUTATION",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "replay_decision_stream": [
+    [
+      "reschedule_calendar_event",
+      "CALENDAR_MUTATION",
+      "PERMIT",
+      0,
+      0
+    ],
+    [
+      "reschedule_calendar_event",
+      "CALENDAR_MUTATION",
+      "PERMIT",
+      0,
+      0
+    ]
+  ],
+  "identical": true,
+  "n_decisions": 2
+}

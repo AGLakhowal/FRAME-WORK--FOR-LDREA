@@ -1,0 +1,7 @@
+invariant,violations,holds
+I1_execution_sovereignty,0,True
+I2_non_bypassability,0,True
+I3_non_compensatory_soundness,0,True
+I4_class_level_veto,0,True
+I5_toctou_state_consistency,0,True
+I6_runtime_sovereignty,0,True

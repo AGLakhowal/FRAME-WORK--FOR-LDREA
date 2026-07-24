@@ -1,0 +1,114 @@
+{
+  "experiment": "E11b_watchdog_scenarios",
+  "evidence_level": "Measured Runtime",
+  "supervisor": "runtime_fleet.Watchdog (real threading.Thread, per-worker liveness)",
+  "config": {
+    "interval_ms": 10.0,
+    "stall_threshold_ms": 150.0,
+    "virtual_workers": 3
+  },
+  "method": "each scenario drives the real Watchdog through a distinct heartbeat pattern; detection/SAFE_STATE/recovery are read from the watchdog's own events, not asserted",
+  "scenarios": [
+    {
+      "scenario": "Normal execution",
+      "heartbeats_observed": 34,
+      "heartbeat_alive": true,
+      "stalls_detected": 0,
+      "safe_state_triggered": false,
+      "externalization_blocked": false,
+      "recoveries": 0,
+      "recovery_latency_ms": null,
+      "false_triggers": 0,
+      "detection_worker_ids": [],
+      "expected_detection": false,
+      "expected_recovery": false,
+      "result_pass": true
+    },
+    {
+      "scenario": "Missing heartbeat",
+      "heartbeats_observed": 30,
+      "heartbeat_alive": true,
+      "stalls_detected": 1,
+      "safe_state_triggered": true,
+      "externalization_blocked": true,
+      "recoveries": 0,
+      "recovery_latency_ms": null,
+      "false_triggers": 0,
+      "detection_worker_ids": [
+        1
+      ],
+      "expected_detection": true,
+      "expected_recovery": false,
+      "result_pass": true
+    },
+    {
+      "scenario": "Delayed heartbeat",
+      "heartbeats_observed": 41,
+      "heartbeat_alive": true,
+      "stalls_detected": 0,
+      "safe_state_triggered": false,
+      "externalization_blocked": false,
+      "recoveries": 0,
+      "recovery_latency_ms": null,
+      "false_triggers": 0,
+      "detection_worker_ids": [],
+      "expected_detection": false,
+      "expected_recovery": false,
+      "result_pass": true
+    },
+    {
+      "scenario": "Timeout",
+      "heartbeats_observed": 48,
+      "heartbeat_alive": true,
+      "stalls_detected": 1,
+      "safe_state_triggered": true,
+      "externalization_blocked": true,
+      "recoveries": 0,
+      "recovery_latency_ms": null,
+      "false_triggers": 0,
+      "detection_worker_ids": [
+        1
+      ],
+      "expected_detection": true,
+      "expected_recovery": false,
+      "result_pass": true
+    },
+    {
+      "scenario": "Heartbeat restored",
+      "heartbeats_observed": 58,
+      "heartbeat_alive": true,
+      "stalls_detected": 1,
+      "safe_state_triggered": true,
+      "externalization_blocked": true,
+      "recoveries": 1,
+      "recovery_latency_ms": 237.93,
+      "false_triggers": 0,
+      "detection_worker_ids": [
+        1
+      ],
+      "expected_detection": true,
+      "expected_recovery": true,
+      "result_pass": true
+    },
+    {
+      "scenario": "Multiple failures",
+      "heartbeats_observed": 48,
+      "heartbeat_alive": true,
+      "stalls_detected": 2,
+      "safe_state_triggered": true,
+      "externalization_blocked": true,
+      "recoveries": 0,
+      "recovery_latency_ms": null,
+      "false_triggers": 0,
+      "detection_worker_ids": [
+        1,
+        2
+      ],
+      "expected_detection": true,
+      "expected_recovery": false,
+      "result_pass": true
+    }
+  ],
+  "all_scenarios_pass": true,
+  "total_false_triggers": 0
+}

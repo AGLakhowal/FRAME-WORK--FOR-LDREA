@@ -1,0 +1,282 @@
+{
+  "experiment": "E13_runtime_risk_detection",
+  "evidence_level": "Measured Runtime",
+  "not_a_fraud_classifier": "Ground truth is exact by construction: each artifact is an attack because we built it as one. This measures ENFORCEMENT, not statistical fraud detection. See runtime_detection_report_synthetic.json for the blind statistical pipeline.",
+  "not_the_blocked_ulb_report": "The real-ULB blind result is runtime_detection_report.json (root), status BLOCKED. This file is a different experiment.",
+  "families": 12,
+  "attacks_per_family": 200,
+  "total_attacks": 2394,
+  "attacks_detected": 2394,
+  "missed_attacks": 0,
+  "detection_rate": 1.0,
+  "detection_precision": 1.0,
+  "false_alarms_on_controls": 0,
+  "controls": {
+    "benign_predicate_accepted": 200,
+    "benign_predicate_n": 200,
+    "benign_permit_accepted": 200,
+    "benign_permit_n": 200
+  },
+  "suite_has_power": true,
+  "response_latency_ms": {
+    "n": 2394,
+    "unit": "ms",
+    "mean": 0.7886110409356725,
+    "min": 0.028041,
+    "max": 1.494,
+    "p50": 0.844792,
+    "p95": 0.911375,
+    "p99": 1.435292
+  },
+  "attack_coverage": [
+    "clock_manipulation",
+    "duplicate_execution",
+    "execution_replay",
+    "expired_token",
+    "large_transfer",
+    "nonce_replay",
+    "policy_mismatch_obs",
+    "revoked_permit",
+    "signature_mismatch",
+    "token_forgery",
+    "unknown_destination",
+    "velocity_attack"
+  ],
+  "per_family": {
+    "expired_token": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "TOKEN_VALID": 200,
+        "amount_within_daily_limit": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.848282255,
+        "min": 0.838708,
+        "max": 0.993125,
+        "p50": 0.843208,
+        "p95": 0.865209,
+        "p99": 0.916167
+      }
+    },
+    "token_forgery": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "TOKEN_VALID": 200,
+        "amount_within_daily_limit": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.029157475000000002,
+        "min": 0.028041,
+        "max": 0.041792,
+        "p50": 0.028917,
+        "p95": 0.030416,
+        "p99": 0.032209
+      }
+    },
+    "signature_mismatch": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "AuthoritySignatureValid": 200,
+        "amount_within_daily_limit": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.83527774,
+        "min": 0.833333,
+        "max": 0.845625,
+        "p50": 0.834458,
+        "p95": 0.838042,
+        "p99": 0.840917
+      }
+    },
+    "unknown_destination": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "amount_within_daily_limit": 200,
+        "destination_account_recognized": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.8501958500000001,
+        "min": 0.844542,
+        "max": 0.917333,
+        "p50": 0.84725,
+        "p95": 0.865083,
+        "p99": 0.874625
+      }
+    },
+    "large_transfer": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "amount_within_daily_limit": 200,
+        "behaviour_anomaly": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.85033815,
+        "min": 0.844917,
+        "max": 0.88375,
+        "p50": 0.84825,
+        "p95": 0.862792,
+        "p99": 0.873958
+      }
+    },
+    "policy_mismatch_obs": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "amount_within_daily_limit": 200,
+        "policy_consistency": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.814374595,
+        "min": 0.557,
+        "max": 0.92,
+        "p50": 0.846125,
+        "p95": 0.856166,
+        "p99": 0.863291
+      }
+    },
+    "clock_manipulation": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "TelemetryFresh": 200,
+        "amount_within_daily_limit": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 1.0190341250000001,
+        "min": 0.829917,
+        "max": 1.494,
+        "p50": 0.972166,
+        "p95": 1.447541,
+        "p99": 1.45775
+      }
+    },
+    "velocity_attack": {
+      "n": 194,
+      "detected": 194,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "velocity_check": 194
+      },
+      "latency_ms": {
+        "n": 194,
+        "unit": "ms",
+        "mean": 0.8644925154639175,
+        "min": 0.833375,
+        "max": 0.988792,
+        "p50": 0.8635,
+        "p95": 0.882917,
+        "p99": 0.911583
+      }
+    },
+    "execution_replay": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "ALREADY_CONSUMED": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.83659936,
+        "min": 0.810209,
+        "max": 0.870834,
+        "p50": 0.83525,
+        "p95": 0.853542,
+        "p99": 0.860958
+      }
+    },
+    "duplicate_execution": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "DUPLICATE_EXECUTION": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.84025249,
+        "min": 0.81975,
+        "max": 0.86475,
+        "p50": 0.839917,
+        "p95": 0.856167,
+        "p99": 0.862458
+      }
+    },
+    "nonce_replay": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "NONCE_REUSED": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.8393495900000001,
+        "min": 0.816083,
+        "max": 0.870583,
+        "p50": 0.8385,
+        "p95": 0.854875,
+        "p99": 0.865417
+      }
+    },
+    "revoked_permit": {
+      "n": 200,
+      "detected": 200,
+      "missed": 0,
+      "detection_rate": 1.0,
+      "reasons": {
+        "REVOKED": 200
+      },
+      "latency_ms": {
+        "n": 200,
+        "unit": "ms",
+        "mean": 0.83825479,
+        "min": 0.8195,
+        "max": 0.886083,
+        "p50": 0.8375,
+        "p95": 0.851583,
+        "p99": 0.873
+      }
+    }
+  }
+}

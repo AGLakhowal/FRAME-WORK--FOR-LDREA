@@ -1,0 +1,7 @@
+stat,value_ms
+mean,0.038164
+p50,0.03575
+p95,0.05225
+p99,0.080292
+max,1.359333
+throughput_ops_s,26202.4

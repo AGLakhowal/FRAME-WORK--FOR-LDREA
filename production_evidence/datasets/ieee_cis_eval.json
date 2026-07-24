@@ -1,0 +1,231 @@
+{
+  "dataset": "IEEE-CIS",
+  "domain": "financial (transactions)",
+  "evidence_level": "Measured Runtime",
+  "source_file": "dataset/ieee-fraud-detection/train_transaction.csv",
+  "rows_loaded": 100000,
+  "warmup_rows": 25000,
+  "evaluated_rows": 75000,
+  "sampling": "first-N (order preserved), N=100000",
+  "prevalence": 0.02561,
+  "prevalence_note": null,
+  "predicates_per_decision": 6,
+  "predicate_names": [
+    "amount_within_calibrated_cap",
+    "known_product_code",
+    "recognized_card_network",
+    "recognized_card_type",
+    "billing_addr_present",
+    "card_behaviour_normal"
+  ],
+  "calibration": {
+    "amount_cap": 1575.5,
+    "products": [
+      "C",
+      "H",
+      "R",
+      "S",
+      "W"
+    ],
+    "card4": [
+      "american express",
+      "discover",
+      "mastercard",
+      "visa"
+    ],
+    "card6": [
+      "charge card",
+      "credit",
+      "debit",
+      "debit or credit"
+    ],
+    "warmup_n": 25000
+  },
+  "blindness": "adapter returns (features, label) separately; label absent from the predicate/decision path; opened only in score() after chaining",
+  "permits_issued": 65122,
+  "safe_state": 9878,
+  "load_seconds": 9.747389542000008,
+  "latency": {
+    "predicate_ms": {
+      "n": 75000,
+      "unit": "ms",
+      "mean": 0.07942919609333333,
+      "min": 0.002333,
+      "max": 1.779791,
+      "median": 0.027458,
+      "p95": 0.327459,
+      "p99": 0.5915,
+      "stdev": 0.12109102094575486
+    },
+    "authorization_ms": {
+      "n": 75000,
+      "unit": "ms",
+      "mean": 0.0010659952266666667,
+      "min": 0.000833,
+      "max": 0.225083,
+      "median": 0.001,
+      "p95": 0.001333,
+      "p99": 0.001916,
+      "stdev": 0.0009081383681377425
+    },
+    "end_to_end_ms": {
+      "n": 75000,
+      "unit": "ms",
+      "mean": 0.3745085931866666,
+      "min": 0.218583,
+      "max": 3.629125,
+      "median": 0.32125,
+      "p95": 0.656375,
+      "p99": 0.966041,
+      "stdev": 0.13925582808749135
+    },
+    "throughput_decisions_per_s": 2670.165700314285
+  },
+  "evidence": {
+    "ledger_blocks": 586,
+    "batch_size": 128,
+    "hash_chain_valid": true,
+    "chain_error": null,
+    "merkle_root_head": "ef086744564bdc2f10f1ed71352fd19946b48b8666572acff08c309c667b86c7",
+    "ertuples": 75000,
+    "evidence_level": "Derived From Measured"
+  },
+  "detection": {
+    "evidence_level": "Measured Runtime",
+    "confusion_matrix": {
+      "tp_fraud_denied": 646,
+      "fn_fraud_permitted": 1206,
+      "fp_legit_denied": 9232,
+      "tn_legit_permitted": 63916
+    },
+    "n": 75000,
+    "positives": 1852,
+    "negatives": 73148,
+    "precision": 0.06539785381656206,
+    "recall_detection_rate": 0.3488120950323974,
+    "specificity": 0.8737901241318969,
+    "f1": 0.1101449275362319,
+    "balanced_accuracy": 0.6113011095821472,
+    "matthews_corrcoef": 0.10215340165183448,
+    "auroc": 0.6110444772992558,
+    "auprc": 0.04805671459867371,
+    "roc_curve": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0044020342319680645,
+        0.008099352051835854
+      ],
+      [
+        0.12620987586810303,
+        0.3488120950323974
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "pr_curve": [
+      [
+        0.008099352051835854,
+        0.04451038575667656
+      ],
+      [
+        0.3488120950323974,
+        0.06539785381656206
+      ],
+      [
+        1.0,
+        0.024693333333333334
+      ]
+    ],
+    "false_permit_rate": {
+      "metric": "false_permit_rate",
+      "value": 0.6511879049676026,
+      "wilson95": {
+        "p": 0.6511879049676026,
+        "low": 0.6291893383707093,
+        "high": 0.6725605753077227,
+        "n": 1852,
+        "successes": 1206
+      },
+      "defined": true,
+      "note": null
+    },
+    "false_deny_rate": {
+      "metric": "false_deny_rate",
+      "value": 0.12620987586810303,
+      "wilson95": {
+        "p": 0.12620987586810303,
+        "low": 0.12382292578790649,
+        "high": 0.1286360839995202,
+        "n": 73148,
+        "successes": 9232
+      },
+      "caveat": "recognized-set legitimate class overlaps the gate; near-tautological"
+    },
+    "recall_wilson95": {
+      "p": 0.3488120950323974,
+      "low": 0.3274394246922773,
+      "high": 0.3708106616292906,
+      "n": 1852,
+      "successes": 646
+    },
+    "precision_wilson95": {
+      "p": 0.06539785381656206,
+      "low": 0.060689438722100225,
+      "high": 0.0704441626639051,
+      "n": 9878,
+      "successes": 646
+    },
+    "calibration_by_gamma": {
+      "0": {
+        "n": 65122,
+        "positives": 1206,
+        "empirical_rate": 0.018519087251620037
+      },
+      "1": {
+        "n": 9541,
+        "positives": 631,
+        "empirical_rate": 0.06613562519652028
+      },
+      "2": {
+        "n": 337,
+        "positives": 15,
+        "empirical_rate": 0.04451038575667656
+      }
+    },
+    "cost_model": {
+      "fp_cost": 1.0,
+      "fn_cost": 20.0,
+      "total_cost": 33352.0,
+      "note": "costs are a stated modelling assumption, not a measurement"
+    },
+    "recall_bootstrap95": {
+      "point": 0.3488120950323974,
+      "low": 0.32721382289416845,
+      "high": 0.3698704103671706,
+      "resamples": 2000,
+      "n": 1852,
+      "alpha": 0.05,
+      "method": "percentile bootstrap (seeded, deterministic)"
+    },
+    "false_deny_bootstrap95": {
+      "point": 0.12620987586810303,
+      "low": 0.12379012413189698,
+      "high": 0.12853393120796194,
+      "resamples": 2000,
+      "n": 73148,
+      "alpha": 0.05,
+      "method": "percentile bootstrap (seeded, deterministic)"
+    }
+  },
+  "threats_to_validity": [
+    "Predicates are unsupervised anomaly bounds calibrated on an unlabeled prefix, not domain fraud/intrusion features. Results are a floor for governance-predicate authorization, not a tuned classifier.",
+    "Bounded sample of 75,000 evaluated rows (first-N slice). A time-ordered distribution shift between prefix and tail would bias the operating point.",
+    "Single split, no cross-validation, single host."
+  ],
+  "wall_seconds": 105.26
+}

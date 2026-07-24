@@ -1,0 +1,34 @@
+{
+  "experiment": "E5b",
+  "title": "Combined Component Ablation",
+  "seed": 20260710,
+  "workload_n": 6000,
+  "n_configurations": 19,
+  "duration_s": 120.25,
+  "host": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "python": "3.9.6",
+    "machine": "arm64"
+  },
+  "component_registry": "metadata/COMPONENT_REGISTRY.json",
+  "artifacts": {
+    "primary_json": "experiments/combined_ablation/combined_ablation.json",
+    "tables": [
+      "paper_tables/table_combined_ablation_A.md",
+      "paper_tables/table_combined_ablation_B.md",
+      "paper_tables/table_combined_ablation_C.md"
+    ],
+    "figures_dir": "paper_figures/",
+    "dashboard": "dashboard/combined_runtime_ablation.html",
+    "analyses": [
+      "COMBINED_ABLATION_ANALYSIS.md",
+      "GRACEFUL_DEGRADATION_ANALYSIS.md",
+      "COMBINED_ABLATION_IMPLEMENTATION_REPORT.md"
+    ]
+  },
+  "interaction_classes": {
+    "Redundant": 2,
+    "Additive": 7,
+    "Critical Dependency": 4
+  }
+}

@@ -1,0 +1,51 @@
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Gate_A1", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Gate_A2", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Gate_A3", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Gate_A4", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Gate_A5", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Gate_A6", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Gate_A7", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "Lambda_G", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "TOKEN_VALID", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_predicate", "mechanism": "A", "faulted_field": "AuthoritySignatureValid", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "delayed_predicate", "mechanism": "A", "faulted_field": "Gate_A1+telemetry_delayed", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "delayed_predicate", "mechanism": "A", "faulted_field": "Gate_A3+telemetry_delayed", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "delayed_predicate", "mechanism": "A", "faulted_field": "Gate_A5+telemetry_delayed", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Gate_A1+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Gate_A2+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Gate_A3+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Gate_A4+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Gate_A5+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Gate_A6+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Gate_A7+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "Lambda_G+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "TOKEN_VALID+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "corrupted_predicate", "mechanism": "A", "faulted_field": "AuthoritySignatureValid+harm_corrupt", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "conflicting_predicate", "mechanism": "A", "faulted_field": "class_conflict:CLASS_1", "decision": "SAFE_STATE", "gamma_g": 0, "gamma_class": 1, "unauthorized": true, "false_permit": false}
+{"family": "conflicting_predicate", "mechanism": "A", "faulted_field": "class_conflict:GOODHART", "decision": "SAFE_STATE", "gamma_g": 0, "gamma_class": 1, "unauthorized": true, "false_permit": false}
+{"family": "conflicting_predicate", "mechanism": "A", "faulted_field": "node_conflict:Gate_A2", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "conflicting_predicate", "mechanism": "A", "faulted_field": "node_conflict:Gate_A4", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "stale_context", "mechanism": "A", "faulted_field": "stale_context:StaleContext", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "stale_context", "mechanism": "A", "faulted_field": "stale_context:StaleContext,TelemetryFresh", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_authorization_context", "mechanism": "A", "faulted_field": "missing_auth:TOKEN_VALID", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "missing_authorization_context", "mechanism": "A", "faulted_field": "missing_auth:AuthoritySignatureValid", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "authorization_timeout", "mechanism": "A", "faulted_field": "timeout:Gate_A1", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "authorization_timeout", "mechanism": "A", "faulted_field": "timeout:TOKEN_VALID", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "authorization_timeout", "mechanism": "A", "faulted_field": "timeout:Lambda_G", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "network_delay", "mechanism": "A", "faulted_field": "network_delay", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "partial_system_failure", "mechanism": "A", "faulted_field": "services_down:1", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "partial_system_failure", "mechanism": "A", "faulted_field": "services_down:2", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "partial_system_failure", "mechanism": "A", "faulted_field": "services_down:3", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "partial_system_failure", "mechanism": "A", "faulted_field": "services_down:4", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "partial_system_failure", "mechanism": "A", "faulted_field": "services_down:5", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "predicate_race_condition", "mechanism": "A", "faulted_field": "race_pessimistic:Gate_A3", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "predicate_race_condition", "mechanism": "A", "faulted_field": "race_pessimistic:Gate_A6", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "predicate_race_condition", "mechanism": "A", "faulted_field": "race_pessimistic:Lambda_G", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "clock_skew", "mechanism": "C", "faulted_field": "clock_skew_beyond_bound:TelemetryFresh", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "clock_skew", "mechanism": "C", "faulted_field": "clock_skew_beyond_bound:StaleContext", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "clock_skew", "mechanism": "C", "faulted_field": "clock_skew_beyond_bound:TelemetryFresh,StaleContext", "decision": "SAFE_STATE", "gamma_g": 1, "gamma_class": 0, "unauthorized": true, "false_permit": false}
+{"family": "replay_corruption", "mechanism": "B", "baseline_verify_rc": 0, "mutated_verify_rc": 1, "detected": true}
+{"family": "ledger_corruption", "mechanism": "B", "baseline_verify_rc": 0, "mutated_verify_rc": 1, "detected": true}
+{"family": "partial_ledger_loss", "mechanism": "B", "baseline_verify_rc": 0, "mutated_verify_rc": 1, "detected": true}
+{"family": "event_reordering", "mechanism": "B", "baseline_verify_rc": 0, "mutated_verify_rc": 1, "detected": true}
+{"family": "duplicate_events", "mechanism": "B", "baseline_verify_rc": 0, "mutated_verify_rc": 1, "detected": true}

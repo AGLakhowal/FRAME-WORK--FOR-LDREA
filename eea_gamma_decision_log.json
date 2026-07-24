@@ -1,0 +1,5 @@
+{
+  "n_gamma_decisions": 0,
+  "gamma_decisions": [],
+  "note": "EMPTY: the model proposed NO tool call at all (n_candidate_actions=0) \u2014 not even a read. No EEA was proposed, so Gamma had no candidate action to adjudicate. Not a runtime defect; a model-capability limitation (temperature=0, deterministic)."
+}

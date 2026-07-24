@@ -1,0 +1,11 @@
+{
+  "evidence_level": "Repository Simulation",
+  "why_simulated": "Key CUSTODY is simulated: the seed is a published constant in this source file, so the private key is a test vector, not a credential. There is no HSM, no KMS and no key ceremony. The SIGNATURES themselves are real Ed25519.",
+  "algorithm": "Ed25519 (RFC 8032)",
+  "implementation": "pynacl",
+  "reference_interop_check": true,
+  "public_key_hex": "414babe3afc48831446846b8c2500743fd2f83c47d026260da678a89af5341f6",
+  "key_epoch": 1,
+  "seed_is_public": true,
+  "is_credential": false
+}

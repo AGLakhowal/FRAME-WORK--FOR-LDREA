@@ -1,0 +1,17 @@
+family,mechanism,n_trials,false_permits,safety_holds,expected_property
+missing_predicate,A,10,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+delayed_predicate,A,3,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+corrupted_predicate,A,10,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+conflicting_predicate,A,4,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+stale_context,A,2,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+missing_authorization_context,A,2,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+authorization_timeout,A,3,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+network_delay,A,1,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+partial_system_failure,A,5,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+predicate_race_condition,A,3,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+clock_skew,C,3,0,True,fault -> SAFE_STATE and unauthorized flag set; 0 false permits
+replay_corruption,B,1,,True,clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)
+ledger_corruption,B,1,,True,clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)
+partial_ledger_loss,B,1,,True,clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)
+event_reordering,B,1,,True,clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)
+duplicate_events,B,1,,True,clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)

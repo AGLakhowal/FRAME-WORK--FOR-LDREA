@@ -1,0 +1,131 @@
+{
+  "evidence_level": "Measured Runtime",
+  "signature_algorithm": "Ed25519 (RFC 8032)",
+  "implementation": "pynacl",
+  "reference_interop_check": true,
+  "key_custody_evidence_level": "Repository Simulation",
+  "signatures_created": 24912,
+  "verifications_attempted": 2000,
+  "verifications_succeeded": 2000,
+  "verification_success_rate": 1.0,
+  "wilson95": {
+    "p": 1.0,
+    "low": 0.9980829527187469,
+    "high": 0.9999999999999998,
+    "n": 2000,
+    "successes": 2000
+  },
+  "verification_latency_ms": {
+    "n": 2000,
+    "unit": "ms",
+    "mean": 0.8344073425,
+    "min": 0.534042,
+    "max": 0.869834,
+    "p50": 0.836667,
+    "p95": 0.849958,
+    "p99": 0.856458,
+    "stdev": 0.02822572682010498
+  },
+  "signing_latency_ms": {
+    "n": 24912,
+    "unit": "ms",
+    "mean": 0.2736832542148362,
+    "min": 0.204334,
+    "max": 1.118667,
+    "p50": 0.271167,
+    "p95": 0.2825,
+    "p99": 0.315583,
+    "stdev": 0.017008756951342074
+  },
+  "verification_throughput_per_s": 1198.455417474946,
+  "host": {
+    "python": "3.9.6",
+    "platform": "darwin"
+  },
+  "latency_note": "Host- and build-dependent. A direct micro-benchmark of the underlying library on this host gives verify mean 828.6 us / p99 974.0 us, so the figures above are the library floor, not overhead in this module. An optimised libsodium build typically reaches 50-100 us per verification; do not quote these numbers as a property of Ed25519.",
+  "negative_tests": [
+    {
+      "case": "tampered_signature",
+      "accepted": false,
+      "reason": "BAD_SIGNATURE",
+      "expected_reason": "BAD_SIGNATURE",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "altered_scope",
+      "accepted": false,
+      "reason": "BAD_SIGNATURE",
+      "expected_reason": "BAD_SIGNATURE",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "modified_payload",
+      "accepted": false,
+      "reason": "BAD_SIGNATURE",
+      "expected_reason": "BAD_SIGNATURE",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "wrong_key",
+      "accepted": false,
+      "reason": "BAD_SIGNATURE",
+      "expected_reason": "BAD_SIGNATURE",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "missing_signature",
+      "accepted": false,
+      "reason": "MISSING_SIGNATURE",
+      "expected_reason": "MISSING_SIGNATURE",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "expired_key_epoch",
+      "accepted": false,
+      "reason": "KEY_EPOCH_INACTIVE",
+      "expected_reason": "KEY_EPOCH_INACTIVE",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "expired_permit",
+      "accepted": false,
+      "reason": "EXPIRED",
+      "expected_reason": "EXPIRED",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "policy_mismatch",
+      "accepted": false,
+      "reason": "POLICY_MISMATCH",
+      "expected_reason": "POLICY_MISMATCH",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "reused_nonce",
+      "accepted": false,
+      "reason": "NONCE_REUSED",
+      "expected_reason": "NONCE_REUSED",
+      "rejected_as_expected": true
+    },
+    {
+      "case": "revoked_permit",
+      "accepted": false,
+      "reason": "REVOKED",
+      "expected_reason": "REVOKED",
+      "rejected_as_expected": true
+    }
+  ],
+  "negative_test_count": 10,
+  "all_negative_tests_rejected": true,
+  "positive_control": {
+    "case": "control_valid_permit_accepted",
+    "accepted": true,
+    "reason": "OK",
+    "expected": "OK",
+    "passed": true
+  },
+  "negative_suite_has_power": true,
+  "why_the_control_matters": "A verifier that refused every permit would pass all ten negative tests. The control is the revoked-permit case with the revocation removed; it must be ACCEPTED.",
+  "negative_test_note": "Each case constructs a real permit (correctly signed where the case is not about the signature) and pushes it through the same verify_permit() the happy path uses. A case passes only when the verifier refuses it with the expected reason.",
+  "verification_failures": 0
+}

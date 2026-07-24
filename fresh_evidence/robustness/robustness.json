@@ -1,0 +1,208 @@
+{
+  "experiment": "E8_runtime_robustness",
+  "scope": "Tier-S software reference; faults injected into the harness only, engine unchanged",
+  "theta": 0.5,
+  "engine_entrypoint": "gamma_test_runner.evaluate_decision (frozen)",
+  "integrity_verifier": "gamma_replay_verify.py (stable)",
+  "control": {
+    "clean_proposal_decision": "PERMIT",
+    "clean_proposal_permits": true
+  },
+  "fault_families": [
+    {
+      "family": "missing_predicate",
+      "mechanism": "A",
+      "description": "A required node predicate is unavailable (missing key -> False).",
+      "n_trials": 10,
+      "false_permits": 0,
+      "safe_state_count": 10,
+      "actuated_flagged_unauthorized": 10,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "delayed_predicate",
+      "mechanism": "A",
+      "description": "A predicate has not returned before the freshness window closes.",
+      "n_trials": 3,
+      "false_permits": 0,
+      "safe_state_count": 3,
+      "actuated_flagged_unauthorized": 3,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "corrupted_predicate",
+      "mechanism": "A",
+      "description": "A predicate carries an out-of-domain / adversarial value.",
+      "n_trials": 10,
+      "false_permits": 0,
+      "safe_state_count": 10,
+      "actuated_flagged_unauthorized": 10,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "conflicting_predicate",
+      "mechanism": "A",
+      "description": "Node-level and class-level signals disagree (both directions).",
+      "n_trials": 4,
+      "false_permits": 0,
+      "safe_state_count": 4,
+      "actuated_flagged_unauthorized": 4,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "stale_context",
+      "mechanism": "A",
+      "description": "The runtime context is stale / telemetry not fresh.",
+      "n_trials": 2,
+      "false_permits": 0,
+      "safe_state_count": 2,
+      "actuated_flagged_unauthorized": 2,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "missing_authorization_context",
+      "mechanism": "A",
+      "description": "No valid permit token / authority signature is present.",
+      "n_trials": 2,
+      "false_permits": 0,
+      "safe_state_count": 2,
+      "actuated_flagged_unauthorized": 2,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "authorization_timeout",
+      "mechanism": "A",
+      "description": "A predicate evaluation times out; harness presents it as unavailable.",
+      "n_trials": 3,
+      "false_permits": 0,
+      "safe_state_count": 3,
+      "actuated_flagged_unauthorized": 3,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "network_delay",
+      "mechanism": "A",
+      "description": "Network delay -> telemetry not fresh and context stale.",
+      "n_trials": 1,
+      "false_permits": 0,
+      "safe_state_count": 1,
+      "actuated_flagged_unauthorized": 1,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "partial_system_failure",
+      "mechanism": "A",
+      "description": "A subset of predicate services is down.",
+      "n_trials": 5,
+      "false_permits": 0,
+      "safe_state_count": 5,
+      "actuated_flagged_unauthorized": 5,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "predicate_race_condition",
+      "mechanism": "A",
+      "description": "Concurrent predicate evaluations disagree; fail-closed resolution.",
+      "n_trials": 3,
+      "false_permits": 0,
+      "safe_state_count": 3,
+      "actuated_flagged_unauthorized": 3,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "clock_skew",
+      "mechanism": "C",
+      "description": "Clock skew beyond the freshness bound manifests as stale telemetry/context.",
+      "n_trials": 3,
+      "false_permits": 0,
+      "safe_state_count": 3,
+      "actuated_flagged_unauthorized": 3,
+      "expected_property": "fault -> SAFE_STATE and unauthorized flag set; 0 false permits",
+      "safety_holds": true,
+      "recovery_behaviour": "engine returns SAFE_STATE; execution interlock withholds actuation until a fresh clean proposal is presented (fail-closed, no auto-permit)."
+    },
+    {
+      "family": "replay_corruption",
+      "mechanism": "B",
+      "description": "A recorded hash_current is tampered.",
+      "n_trials": 1,
+      "baseline_verify_pass": true,
+      "corruption_detected": true,
+      "expected_property": "clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)",
+      "safety_holds": true,
+      "recovery_behaviour": "verifier flags the break; the append-only chain is not advanced past the corrupted record (no downstream actuation on a broken chain)."
+    },
+    {
+      "family": "ledger_corruption",
+      "mechanism": "B",
+      "description": "An evidence-quad ledger_hash is tampered.",
+      "n_trials": 1,
+      "baseline_verify_pass": true,
+      "corruption_detected": true,
+      "expected_property": "clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)",
+      "safety_holds": true,
+      "recovery_behaviour": "verifier flags the break; the append-only chain is not advanced past the corrupted record (no downstream actuation on a broken chain)."
+    },
+    {
+      "family": "partial_ledger_loss",
+      "mechanism": "B",
+      "description": "A decision record is lost from the chain.",
+      "n_trials": 1,
+      "baseline_verify_pass": true,
+      "corruption_detected": true,
+      "expected_property": "clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)",
+      "safety_holds": true,
+      "recovery_behaviour": "verifier flags the break; the append-only chain is not advanced past the corrupted record (no downstream actuation on a broken chain)."
+    },
+    {
+      "family": "event_reordering",
+      "mechanism": "B",
+      "description": "Two decision events are reordered.",
+      "n_trials": 1,
+      "baseline_verify_pass": true,
+      "corruption_detected": true,
+      "expected_property": "clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)",
+      "safety_holds": true,
+      "recovery_behaviour": "verifier flags the break; the append-only chain is not advanced past the corrupted record (no downstream actuation on a broken chain)."
+    },
+    {
+      "family": "duplicate_events",
+      "mechanism": "B",
+      "description": "A decision event is duplicated.",
+      "n_trials": 1,
+      "baseline_verify_pass": true,
+      "corruption_detected": true,
+      "expected_property": "clean slice PASSES; mutated slice DETECTED (verifier exits non-zero)",
+      "safety_holds": true,
+      "recovery_behaviour": "verifier flags the break; the append-only chain is not advanced past the corrupted record (no downstream actuation on a broken chain)."
+    }
+  ],
+  "aggregate": {
+    "n_fault_families": 16,
+    "n_families_evaluable": 16,
+    "total_trials": 51,
+    "total_false_permits": 0,
+    "all_safety_properties_hold": true,
+    "families_where_safety_holds": 16
+  }
+}

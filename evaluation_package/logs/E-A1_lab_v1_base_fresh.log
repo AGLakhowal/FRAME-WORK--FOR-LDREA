@@ -1,0 +1,133 @@
+
+================================================================
+  Gamma G-0 / L-DREA  —  LAB v1.0 Authorization Benchmark
+================================================================
+Input            : GAMMA_G0_CREDITCARD_FULL_mapped.csv
+Method version   : gamma_test_runner/LAB-v1.0/2.0
+Rows (N)         : 284807   (adversarial: 492, nominal: 284315)
+Derived PERMIT   : 284315
+Derived SAFE_STATE: 492
+Match vs Status  : 100.0000%
+Match vs SAFE_STATE: 100.0000%
+
+-- Headline: Unauthorized Execution Rate (UER, over ALL rows) --
+  UER              : 0/284807  (rate 0, W95 upper 2.29e-05)
+
+-- Primary LAB v1.0 metrics (Wilson 95% upper bounds; note denominators) --
+metric                                  events/N        rate     W95 upper
+False Permit Rate (FPR)                    0/492           0       1.3118%
+  ↳ population: should-deny (ground truth = deny)
+False Denial Rate (FDR)                 0/284315           0      2.30e-05
+  ↳ population: should-permit (ground truth = permit)
+Replay Determinism Rate (RDR)           0/284807   100.0000%      2.29e-05
+  ↳ population: all rows          
+Revocation Compliance                   0/284807   100.0000%      2.29e-05
+  ↳ population: all rows          
+TOCTOU Violation Rate                   0/284807           0      2.29e-05
+  ↳ population: all actuated/at-risk rows
+Class-Veto Effectiveness                   0/492   100.0000%       1.3118%
+  ↳ population: class-1 (veto-triggering) rows
+
+-- Six runtime invariants (violations; 0 = holds) --
+  [OK ] I1_execution_sovereignty: 0
+  [OK ] I2_non_bypassability: 0
+  [OK ] I3_non_compensatory_soundness: 0
+  [OK ] I4_class_level_veto: 0
+  [OK ] I5_toctou_state_consistency: 0
+  [OK ] I6_runtime_sovereignty: 0
+  ALL INVARIANTS HOLD: True
+
+-- Unauthorized execution (Eq. 7) --
+  UER count        : 0/284807 (all rows)
+  FPR (should-deny): 0/492
+  FDR (should-permit): 0/284315
+
+-- Negative control (two DISTINCT probes) --
+  [1] ACTUAL dataset weighted-sum baseline (rule run as-is on this corpus):
+        weighted-sum total permits       : 284315
+        weighted-sum FALSE permits vs LLC: 0  (0 here: adversarial rows fail MULTIPLE predicates, score stays >= tau=0.15)
+  [2] Corollary 2 COUNTERFACTUAL (each adversarial row reduced to a single deficit):
+        isolated single deficit 0.077 < tau 0.15 -> masked by weighted-sum: True
+        => 492 COUNTERFACTUAL false permits; non-compensatory LLC still denies all.
+
+-- MEASURED per-decision latency (this host: eval+hash+sign+WAL) --
+  samples (timed-path agreement) : 50000 (50000/50000)
+  Metric                         Value         §6.0/§7 Limit    Status
+  Mean latency               0.0378 ms         <= 100 ms P95      Pass
+  P95 latency                0.0434 ms             <= 100 ms      Pass
+  P99 latency                0.0563 ms  hot-path P99 <= 5 ms      Pass
+  Max latency                0.5722 ms       <= 100 ms cycle      Pass
+  Headroom at P95           99.9566 ms             100 - P95    Strong
+  Headroom at max           99.4278 ms             100 - max    Strong
+  Hot-path P99               0.0541 ms               <= 5 ms      Pass
+  Throughput              26,453 ops/sO(n) predicate scaling      Pass
+  (Representative HMAC sign + real SHA-256 + WAL fsync; NOT HSM/FPGA hardware.)
+
+-- Replay determinism / hash chain --
+  hash-chain links ok : 284807/284807
+  ERTuple manifest    : gamma_replay_manifest.jsonl (284807 records)
+    adjacency links ok: 284807/284807 (all_ok=True, genesis=True)
+    manifest SHA-256  : 1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da
+    verify            : python gamma_replay_verify.py gamma_replay_manifest.jsonl
+
+-- TLC model-check verification --
+  VERIFIED            : True
+  verification tier   : tier0_attestation_consistency_only
+    [OK ] V1_spec_hash_consistent
+    [OK ] V2_cfg_hash_consistent
+    [OK ] V3_states_constant
+    [OK ] V4_nontrivial_state_space
+    [OK ] V5_zero_safety_violations
+    [skip] V6_spec_source_binding: artifact not supplied
+    [skip] V7_cfg_source_binding: artifact not supplied
+    [skip] V8_log_states_match: artifact not supplied
+    [skip] V9_log_no_violation: artifact not supplied
+  total states        : 2489446
+  violations          : 0
+  attestation digest  : 8cb1369625e05e6ad00004be477ce50f6c0792f0c9913a234e2ddf0767207686
+  to raise the tier   : supply --tla-spec, --tla-cfg, --tlc-log
+
+-- Decision agreement vs benchmark labels --
+  Derived vs Status      : 100.000000%
+  Derived vs SAFE_STATE  : 100.000000%
+  Derived vs ACT_PERMIT  : 100.000000%
+
+-- LAB scenario-class distribution --
+  NOMINAL_CLASS_0: 284315
+  ADVERSARIAL_CLASS_1: 492
+
+-- Per-scenario-class breakdown --
+  class                                N  SAFE_STATE   false_permits
+  ADVERSARIAL_CLASS_1                492         492               0
+  NOMINAL_CLASS_0                 284315           0               0
+
+-- Top rule failures --
+  Gate_A3: 492
+  Gate_A7: 492
+  Lambda_G: 492
+  HARM_RISK_THETA: 492
+
+-- SAFE_STATE rows (sample) --
+  TXN_000542: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_000624: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_004921: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_006109: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_006330: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_006332: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_006335: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_006337: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_006339: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+  TXN_006428: CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL  [Gate_A3;Gate_A7;Lambda_G;HARM_RISK_THETA]
+
+================================================================
+  LAB v1.0 SUMMARY (Appendix-A style)
+================================================================
+- UER 0 / 284807 (all rows), Wilson 95% upper bound p < 2.29e-05; FPR 0 / 492 (should-deny population only), Wilson 95% upper bound p < 1.31e-02; FDR 0 / 284315 (should-permit population). The FPR bound is wider than the UER bound because its denominator is far smaller.
+- Replay determinism 100.0000%; revocation compliance 100.0000%; TOCTOU violations 0 observed; RDR Wilson 95% upper bound p < 2.29e-05.
+- Latency mean 0.0378 ms, P95 0.0434 ms, P99 0.0563 ms, max 0.5722 ms; throughput ~26,453 ops/s; O(n) predicate scaling.
+- Runtime invariants: 6/6 satisfied; unauthorized executions 0; false permit rate 0%; false denial rate 0%; class-veto effectiveness 100%.
+- Decision agreement: 100.0000% vs Status, 100.0000% vs SAFE_STATE, 100.0000% vs ACT_PERMIT; all 492 adversarial transactions transitioned to SAFE_STATE (492/492) with 0 false permits.
+
+Saved row-level results : gamma_validation_results.csv
+Saved summary JSON      : gamma_summary.json
+Saved LAB v1.0 report   : gamma_lab_v1_report.json

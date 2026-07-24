@@ -1,0 +1,617 @@
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ L-DREA EVALUATION SUITE  ·  Tier-S Reference Implementation                ║
+║ Deterministic Runtime Enforcement — Scientific Evaluation Dashboard        ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌─ Environment & Configuration ──────────────────────────────────────────────
+  Repository            : Independent Benchmark & Reviewer-Closure Framework for L-DREA
+  Git commit            : 763008a32e92  (dirty)
+  Python                : 3.9.6
+  Platform              : macOS-26.5.1-arm64-arm-64bit
+  CPU                   : Apple M5  (10 cores)
+  RAM                   : 17.2 GB
+  Dataset               : GAMMA_G0_CREDITCARD_FULL_mapped.csv  (451.3 MB)
+  Dataset SHA-256       : 0a1e766e3b2f73bd89d577567418f1d00f364d4000d4811c62651b6ba1b86206
+  Random seed           : 20260709
+  Output dir            : experiments/
+  Paper version         : L-DREA R4 (IEEE Access) — Tier-S reference framing
+  Reviewer profile      : IEEE Access reviewers R1-R11 (see reviewer_mapping.md)
+  Experiments           : E1–E8 (8 total) + generators + validators
+  Color mode            : plain (piped/non-tty)
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 1/8   Runtime Authorization Correctness                         ║
+║ Does L-DREA authorize/deny runtime actions correctly on a realistic stream?║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Push every transaction in the ULB stream through the frozen authorization
+    engine and confirm each action is permitted or denied correctly. This is
+    the core reference-monitor claim: the guard makes the right
+    PERMIT/SAFE_STATE call on real data, fails closed, and leaves a replayable
+    record.
+
+  Reviewer Concern  [ ADDRESSING R1 ]
+    Reviewer R1  (Comment #1)
+      "Authorization correctness is not demonstrated on realistic data."
+
+  Benchmark   : LAB v1.0  ·  ConcurBench  ·  FULL_SPEC  ·  Fail-Closed Rate
+
+  Input
+    • Dataset : GAMMA_G0_CREDITCARD_FULL_mapped.csv (284,807 transactions)
+    • Should-deny (adversarial) population : 492 rows
+    • Engine   : gamma_test_runner.evaluate_decision (frozen), theta = 0.5
+
+  Execution plan
+  Calculated now
+    ✓ Authorization accuracy / confusion matrix
+    ✓ False Permit Rate + Wilson bound
+    ✓ False Denial Rate
+    ✓ Unauthorized Execution Rate
+    ✓ Replay Determinism Rate
+    ✓ Class-veto effectiveness
+    ✓ TOCTOU violations
+    ✓ Latency mean/p95/p99
+    ✓ 6 runtime invariants
+  Loaded
+    ✓ ULB corpus + golden-trace expected outcomes
+    ✓ frozen predicate/threshold manifests
+  Reused
+    ✓ ULB dataset (input stream)
+  Generated
+    → gamma_lab_v1_report.json
+    → gamma_summary.json
+    → gamma_validation_results.csv
+    → gamma_replay_manifest.jsonl (the Hydra Ledger)
+
+  Progress
+    ▸ Loading dataset … done
+    ▸ Scoring every transaction … done
+    ▸ Enforcing conjunctive gate … done
+    ▸ Computing statistics (Wilson bounds) … done
+    ▸ Writing ledger + report … done
+
+┌─ Results — Runtime Authorization Correctness ──────────────────────────────
+  Authorization Accuracy        100.0000%  284,807/284,807 ✓
+  Confusion (TP/TN/FP/FN)       284,315 / 492 / 0 / 0
+  False Permit Rate             0/492  Wilson95↑ 1.3118e-02 ✓
+  False Denial Rate             0/284315 ✓
+  Unauthorized Executions       0/284,807 ✓
+  Replay Determinism            100.0000% ✓
+  Class-Veto Effectiveness      100.0%  492/492 ✓
+  TOCTOU Violations             0 ✓
+  Latency mean / p95 / p99      0.0374 / 0.0500 / 0.0617 ms
+  Throughput                    26,723 dec/s
+  Fail-Closed Rate              1.0  fail-open 0 ✓
+
+  Runtime rules / invariants
+    Execution Sovereignty             [ PASS ]
+    Non-Bypassability                 [ PASS ]
+    Non-Compensatory Soundness        [ PASS ]
+    Class-Level Veto Adequacy         [ PASS ]
+    TOCTOU State-Consistency          [ PASS ]
+    Runtime Sovereignty (composed)    [ PASS ]
+
+  Evidence integrity
+    Hash Chain                        [ PASS ]
+    Replay                            [ PASS ]
+    Evidence Quad                     [ PASS ]
+    Hydra Ledger                      [ PASS ]
+
+  Experiment summary
+  Reviewer addressed    : R1
+  Runtime               : 21.186 s
+  Generated outputs     : gamma_lab_v1_report.json, gamma_summary.json, gamma_validati…
+  Paper artifacts       : Table I (primary metrics), fig_authorization_accuracy.svg, fig_false_permit_rate.svg
+  Status                 [ EXECUTED ]
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 2/8   Runtime Replay Integrity                                  ║
+║ Can every authorization decision be re-verified from evidence alone?       ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Independently re-verify every decision straight from the tamper-evident
+    ledger — without the dataset or the engine. Proves the evidence chain is
+    auditable by a third party and that no record was altered.
+
+  Reviewer Concern  [ ADDRESSING R2 ]
+    Reviewer R2  (Comment #2)
+      "Replay determinism / evidence integrity is not proven."
+
+  Benchmark   : Hydra Ledger replay verifier
+
+  Input
+    • Ledger : gamma_replay_manifest.jsonl (284,807 chained decision records)
+    • Verifier : gamma_replay_verify.py (independent; no pandas, no dataset)
+
+  Execution plan
+  Calculated now
+    ✓ Hash-chain adjacency failures
+    ✓ Ledger-bind failures
+    ✓ Self-consistency failures
+    ✓ Recomputed manifest SHA-256
+  Loaded
+    ✓ the Hydra Ledger produced by E1
+  Reused
+    ✓ Hydra Ledger (from E1)
+  Generated
+    → replay_report.json
+
+  Progress
+    ▸ Reading ledger … done
+    ▸ Re-deriving hash chain … done
+    ▸ Checking ledger binding … done
+    ▸ Checking self-consistency … done
+    ▸ Recomputing manifest hash … done
+
+┌─ Results — Runtime Replay Integrity ───────────────────────────────────────
+  Decision records verified     284,807
+  Hash-chain adjacency failures 0 ✓
+  Ledger-bind failures          0 ✓
+  Self-consistency failures     0 ✓
+  Manifest SHA-256              1ce2a9e8d4330a0583a9d20a…
+    Verdict                           [ PASS ]
+
+  Experiment summary
+  Reviewer addressed    : R2
+  Runtime               : 1.745 s
+  Generated outputs     : replay_report.json
+  Paper artifacts       : Table I (replay rows), fig_replay_integrity.svg
+  Status                 [ EXECUTED ]
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 3/8   Formal Verification (Exhaustive + Model Check)            ║
+║ Is the decision logic provably correct, not merely tested on samples?      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Prove the decision logic is mathematically correct: an independently
+    written reference implementation must agree with the engine on EVERY one
+    of the 2^16 possible input states, and the Execution-Sovereignty invariant
+    is TLC model-checked over the Appendix-D specification.
+
+  Reviewer Concern  [ ADDRESSING R3 ]
+    Reviewer R3  (Comment #3)
+      "Correctness rests on testing, not formal guarantees."
+
+  Benchmark   : Exhaustive state-space verifier  ·  TLA+ / TLC
+
+  Input
+    • State space : 2^16 = 65,536 enumerated input states (complete, not sampled)
+    • TLA+ model  : formal/ExternalizationMonitor.tla (+ .cfg)
+
+  Execution plan
+  Calculated now
+    ✓ Decision-equivalence over all 65,536 states
+    ✓ Field mismatches (must be 0)
+    ✓ TLC reachable-state count + invariant violations
+  Loaded
+    ✓ formal/ExternalizationMonitor.tla / .cfg
+  Reused
+    ✓ the frozen engine as the oracle
+  Generated
+    → independent_verifier_report.json
+    → TLC console log
+
+  Progress
+    ▸ Enumerating 2^16 states … done
+    ▸ Comparing reference vs engine … done
+    ▸ Model-checking Appendix-D invariant (TLC) … done
+
+┌─ Results — Formal Verification (Exhaustive + Model Check) ─────────────────
+  States enumerated             65,536/65,536  complete ✓
+  Field mismatches              0 ✓
+  PERMIT / SAFE_STATE states    4 / 65,532
+    Verdict                           [ IDENTICAL ]
+  TLC distinct states           40192 ✓
+    TLC invariants                    [ PASS ]
+
+  Experiment summary
+  Reviewer addressed    : R3
+  Runtime               : 0.83 s
+  Generated outputs     : independent_verifier_report.json, TLC console log
+  Paper artifacts       : Table I (formal rows), Appendix D (TLA+)
+  Status                 [ EXECUTED ]
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 4/8   Runtime Stress Evaluation (Concurrency Scaling)           ║
+║ Does safety hold under concurrency, and how does performance scale?        ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Drive a large decision workload across 1-64 threads and confirm the safety
+    properties hold at every level, while honestly characterizing throughput,
+    latency, queue delay, CPU and memory.
+
+  Reviewer Concern  [ ADDRESSING R4/R5 ]
+    Reviewer R4/R5  (Comment #4)
+      "System scalability and behaviour under load were not demonstrated."
+
+  Benchmark   : Concurrency Scaling (frozen decision path)
+
+  Input
+    • Workload : 200,000 deterministic decisions per thread level
+    • Thread levels : 1, 2, 4, 8, 16, 32, 64
+    • Total decisions : 1,400,000 across all levels
+
+  Execution plan
+  Calculated now
+    ✓ Throughput per level
+    ✓ Latency p50/p95/p99
+    ✓ Queue delay
+    ✓ CPU utilization
+    ✓ Peak RSS
+    ✓ False permits / denials
+    ✓ Ledger + replay consistency
+    ✓ Speedup
+  Loaded
+    ✓ reference ledger hash for cross-check
+  Reused
+    ✓ the frozen GammaBridge decision path
+  Generated
+    → concurrency_scaling.json
+    → concurrency_scaling.csv
+    → latency/throughput SVGs
+
+  Progress
+    ▸ Building 200k workload … done
+    ▸ Running 1->64 threads … done
+    ▸ Measuring latency/throughput … done
+    ▸ Verifying safety at each level … done
+
+┌─ Results — Runtime Stress Evaluation (Concurrency Scaling) ────────────────
+  Concurrency scaling (safety holds at every level)
+    threads   throughput      p50      p95      p99  RSS MB  FP  FD
+          1      228,749  0.00237  0.00287  0.00346  2124.4   0   0
+          2      229,615  0.00229  0.00258  0.00296  2124.4   0   0
+          4      212,258  0.00233  0.00262  0.00392  2124.4   0   0
+          8       57,237  0.00321  0.00471  0.00596  2124.4   0   0
+         16       48,979  0.00350  0.00496  0.00579  2124.4   0   0
+         32       54,631  0.00325  0.00450  0.00513  2124.4   0   0
+         64       49,082  0.00337  0.00454  0.00542  2124.4   0   0
+  Total false permits / denials 0 / 0 ✓
+  All-authorization-correct     True ✓
+  Speedup @ max threads         0.215×  throughput is GIL-bound (honest negative result)
+
+  Experiment summary
+  Reviewer addressed    : R4/R5
+  Runtime               : 21.375 s
+  Generated outputs     : concurrency_scaling.json, concurrency_scaling.csv, latency/t…
+  Paper artifacts       : Table II (concurrency scaling), fig_latency.svg, fig_throughput.svg
+  Status                 [ EXECUTED ]
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 5/8   Component Ablation                                        ║
+║ Is every architectural component necessary?                                ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Remove each structural control one at a time and measure how many denials
+    it converts into permits ('leaked permits'). This is the causal evidence
+    that every component contributes to safety and none is redundant.
+
+  Reviewer Concern  [ ADDRESSING R6 ]
+    Reviewer R6  (Comment #5)
+      "The architecture may be over-engineered; component necessity is
+      unproven."
+
+  Benchmark   : Ablation harness (frozen engine, controlled deficit workload)
+
+  Input
+    • Workload : 60,000 deterministic decisions per configuration
+    • Configurations : baseline, -class-veto, -non-compensatory-Gamma, -authorization-layer
+
+  Execution plan
+  Calculated now
+    ✓ Leaked permits per removed component
+    ✓ Leak rate + Wilson CI
+    ✓ Throughput per config
+    ✓ Replay consistency per config
+  Reused
+    ✓ the frozen evaluate_decision as the baseline
+  Generated
+    → ablation.json
+    → ablation.csv
+    → ablation_log.jsonl
+
+  Progress
+    ▸ Building deficit workload … done
+    ▸ Running each ablated config … done
+    ▸ Counting leaked permits … done
+
+┌─ Results — Component Ablation ─────────────────────────────────────────────
+  Leaked permits per removed component (of 60,000)
+  baseline_full_LDREA           0  Wilson95 [0.0000, 0.0001] ✓
+  remove_class_veto             15,000  Wilson95 [0.2466, 0.2535]
+  remove_noncompensatory_gamma  15,000  Wilson95 [0.2466, 0.2535]
+  remove_authorization_layer    45,000  Wilson95 [0.7465, 0.7534]
+  Replay consistent (all configs)  True ✓
+
+  Experiment summary
+  Reviewer addressed    : R6
+  Runtime               : 3.265 s
+  Generated outputs     : ablation.json, ablation.csv, ablation_log.jsonl
+  Paper artifacts       : Table I (ablation rows), fig_component_ablation.svg
+  Status                 [ EXECUTED ]
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 6/8   Runtime Profiling                                         ║
+║ What is the runtime overhead of the authorization layer, stage by stage?   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Measure the per-stage cost of the governance layer — the Runtime-Context
+    plane, the Replay plane, and the full pipeline — plus per-stage latency
+    distributions from the recorded agent traces, to quantify overhead.
+
+  Reviewer Concern  [ ADDRESSING R7 ]
+    Reviewer R7  (Comment #6)
+      "The overhead of the governance layer is not quantified."
+
+  Benchmark   : Runtime profiler (frozen planes)
+
+  Input
+    • Workload : 5,000-row synthetic pipeline (35,000 RCL calls)
+    • Per-stage source : recorded AgentDojo execution traces
+
+  Execution plan
+  Calculated now
+    ✓ Runtime-Context ms/row + % of end-to-end
+    ✓ Replay ms/row + %
+    ✓ Full pipeline ms/row
+    ✓ Per-stage mean/median/p95/p99/std
+  Loaded
+    ✓ recorded AgentDojo execution traces
+  Reused
+    ✓ frozen FreshnessClock / CommitActuateJournal / replay writer (timers only)
+  Generated
+    → runtime_profile.json
+    → stage_distributions.json
+
+  Progress
+    ▸ Timing Runtime-Context plane … done
+    ▸ Timing Replay plane … done
+    ▸ Deriving per-stage distributions … done
+
+┌─ Results — Runtime Profiling ──────────────────────────────────────────────
+  Runtime-Context plane         0.01660 ms/row  6.81% of end-to-end
+  Replay plane                  0.00998 ms/row  4.09% of end-to-end
+  Full pipeline                 0.23399 ms/row
+
+  Per-stage latency (recorded traces)
+    stage                        mean   median      p95      p99
+    predicate_evaluation       0.0085   0.0084   0.0125   0.0169
+    gamma_intercept            0.0135   0.0052   0.0113   0.1472
+    gamma_computation          0.0216   0.0172   0.0279   0.0587
+    authorization_actuation    0.4474   0.1945   0.4298   4.8342
+
+  Experiment summary
+  Reviewer addressed    : R7
+  Runtime               : 1.239 s
+  Generated outputs     : runtime_profile.json, stage_distributions.json
+  Paper artifacts       : fig_runtime_breakdown.svg
+  Status                 [ EXECUTED ]
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 7/8   AgentDojo Runtime Governance                              ║
+║ Does the guard stay sound on an external, author-independent adversarial corpus?║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Test the guard on a third-party adversarial benchmark. Every real
+    prompt-injection attack target is submitted straight to the frozen
+    boundary (no LLM needed) to measure whether any genuinely-foreign attacker
+    target is ever permitted, and recorded episodes are re-analyzed for
+    permit/deny/stability/overhead.
+
+  Reviewer Concern  [ ADDRESSING R8 ]
+    Reviewer R8  (Comment #7)
+      "Results may not generalize beyond the authors' own dataset."
+
+  Benchmark   : AgentDojo (workspace, banking, slack, travel)
+
+  Input
+    • Adversarial corpus : 27 injection tasks across 4 suites
+    • Recorded episodes : 33 (permit/deny re-derivation, no LLM)
+    • Boundary probe : every attacker target adjudicated by the frozen engine
+
+  Execution plan
+  Calculated now
+    ✓ Boundary FPR on genuinely-foreign targets
+    ✓ Recognized-identifier sends
+    ✓ Permit rate + Wilson CI (recorded)
+    ✓ Authorization stability
+    ✓ Gamma overhead
+  Loaded
+    ✓ 33 recorded AgentDojo episodes
+    ✓ frozen tool/predicate manifests
+  Reused
+    ✓ recorded episodes (no fresh LLM calls)
+  Generated
+    → boundary_fpr.json
+    → statistics.json
+    → decisions.csv
+  Note: Fresh end-to-end episodes (Utility / attack-success rate) require Ollama + llama3.1:8b and are the one documented BLOCKED item; the boundary FPR runs without an LLM.
+
+  Progress
+    ▸ Re-deriving metrics from recorded episodes … done
+    ▸ Adjudicating attacker targets … done
+    ▸ Computing boundary FPR … done
+
+┌─ Results — AgentDojo Runtime Governance ───────────────────────────────────
+  Boundary FPR (foreign targets)  0/62  Wilson95↑ 5.8344e-02 ✓
+  Recognized-identifier sends   8/8  correct-by-policy (known contacts)
+  Adversarial actions adjudicated  70
+  Permit rate (recorded 33 episodes)  0.786  Wilson95 [0.524, 0.924]
+  Authorization stability       0.9667
+  Note: fresh end-to-end episodes (Utility/TASR) require Ollama — documented BLOCKED item.
+
+  Experiment summary
+  Reviewer addressed    : R8
+  Runtime               : 3.062 s
+  Generated outputs     : boundary_fpr.json, statistics.json, decisions.csv
+  Paper artifacts       : Table I (boundary FPR), fig_false_permit_rate.svg
+  Status                 [ EXECUTED ]
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EXPERIMENT 8/8   Runtime Robustness (Fault Injection)                      ║
+║ Do safety properties survive when the runtime environment misbehaves?      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  Purpose
+    Inject 16 realistic runtime faults — missing/delayed/corrupted/conflicting
+    predicates, stale context, clock skew, replay/ledger corruption,
+    reordering, duplication, timeouts, partial failure, races — ONLY into the
+    harness, and confirm safety still holds: decision-path faults fail closed,
+    integrity faults are detected.
+
+  Reviewer Concern  [ ADDRESSING R9 ]
+    Reviewer R9  (Comment #8)
+      "Behaviour under faults / adversarial runtime conditions is not
+      evaluated."
+
+  Benchmark   : Synthetic Fault-Injection Suite (16 families)
+
+  Input
+    • Fault families : 16 (11 decision-path, 5 integrity/ordering)
+    • Engine + verifier : UNCHANGED; faults injected only into the harness input
+
+  Execution plan
+  Calculated now
+    ✓ False permits per fault family (must be 0)
+    ✓ SAFE_STATE rate
+    ✓ Corruption-detection rate
+    ✓ Per-family safety verdict
+  Loaded
+    ✓ a slice of the real ledger (for integrity-fault tests)
+  Reused
+    ✓ frozen evaluate_decision + stable gamma_replay_verify
+  Generated
+    → robustness.json
+    → robustness.csv
+    → robustness_log.jsonl
+
+  Progress
+    ▸ Control: clean proposal permits? … done
+    ▸ Injecting decision-path faults … done
+    ▸ Injecting integrity/ordering faults … done
+    ▸ Verifying safety holds … done
+
+┌─ Results — Runtime Robustness (Fault Injection) ───────────────────────────
+  Control (clean proposal permits)  True ✓
+  Fault families                16
+  Total trials                  51
+  Total false permits (all faults)  0 ✓
+  Families where safety holds   16/16 ✓
+
+  Per-fault-family verdict
+    missing_predicate             (A) fp=0             [ HOLD ]
+    delayed_predicate             (A) fp=0             [ HOLD ]
+    corrupted_predicate           (A) fp=0             [ HOLD ]
+    conflicting_predicate         (A) fp=0             [ HOLD ]
+    stale_context                 (A) fp=0             [ HOLD ]
+    missing_authorization_context (A) fp=0             [ HOLD ]
+    authorization_timeout         (A) fp=0             [ HOLD ]
+    network_delay                 (A) fp=0             [ HOLD ]
+    partial_system_failure        (A) fp=0             [ HOLD ]
+    predicate_race_condition      (A) fp=0             [ HOLD ]
+    clock_skew                    (C) fp=0             [ HOLD ]
+    replay_corruption             (B) detected=True    [ HOLD ]
+    ledger_corruption             (B) detected=True    [ HOLD ]
+    partial_ledger_loss           (B) detected=True    [ HOLD ]
+    event_reordering              (B) detected=True    [ HOLD ]
+    duplicate_events              (B) detected=True    [ HOLD ]
+
+  Experiment summary
+  Reviewer addressed    : R9
+  Runtime               : 0.764 s
+  Generated outputs     : robustness.json, robustness.csv, robustness_log.jsonl
+  Paper artifacts       : Table III (robustness), fig_robustness.svg
+  Status                 [ EXECUTED ]
+
+┌─ Generating scientific artifacts ──────────────────────────────────────────
+[statistics] proportions=4 zero-event=4 effect-sizes=3
+[figures] wrote 8: fig_authorization_accuracy.svg, fig_false_permit_rate.svg, fig_latency.svg, fig_throughput.svg, fig_replay_integrity.svg, fig_component_ablation.svg, fig_runtime_breakdown.svg, fig_robustness.svg
+[tables] wrote table1 (20 rows), table2, table3, tables.json, LaTeX
+[provenance] 59 edges across 8 chains — ALL INTACT
+[pub-docs] claims=14 statuses={'Supported': 11, 'Supported (negative result)': 1, 'Partially Supported': 1, 'Not Claimed': 1}
+[pub-docs] wrote CLAIM_EVIDENCE_MATRIX.md, reviewer_mapping.md, THREATS_TO_VALIDITY.md,
+[pub-docs] LIMITATIONS_AND_NEGATIVE_RESULTS.md, REPRODUCIBILITY_AUDIT.md,
+[pub-docs] evidence_manifest.json, FINAL_EVIDENCE_REPORT.md
+[dashboard-html] wrote SCIENTIFIC_DASHBOARD.html (59 KB, 8/8 experiments, 14/14 claims)
+
+┌─ Running automated validators ─────────────────────────────────────────────
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ L-DREA EVALUATION SUMMARY                                                  ║
+║ Complete scientific dashboard                                              ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌─ Experiments ──────────────────────────────────────────────────────────────
+  Experiments executed          8/8 ✓
+    E1 Runtime Authorization Correctness             [ EXECUTED ]  21.186s
+    E2 Runtime Replay Integrity                      [ EXECUTED ]  1.745s
+    E3 Formal Verification (Exhaustive + Model C…    [ EXECUTED ]  0.83s
+    E4 Runtime Stress Evaluation (Concurrency Sc…    [ EXECUTED ]  21.375s
+    E5 Component Ablation                            [ EXECUTED ]  3.265s
+    E6 Runtime Profiling                             [ EXECUTED ]  1.239s
+    E7 AgentDojo Runtime Governance                  [ EXECUTED ]  3.062s
+    E8 Runtime Robustness (Fault Injection)          [ EXECUTED ]  0.764s
+
+┌─ Benchmarks ───────────────────────────────────────────────────────────────
+    LAB v1.0                      [ PASS ]
+    ConcurBench                   [ PASS ]
+    FULL_SPEC                     [ PASS ]
+    Fail-Closed Rate              [ PASS ]
+    Formal Verification           [ PASS ]
+    Concurrency Scaling           [ PASS ]
+    Component Ablation            [ PASS ]
+    Runtime Profiling             [ PASS ]
+    AgentDojo                     [ PASS ]
+    Fault Injection               [ PASS ]
+
+┌─ Primary metrics (all calculated from executed runs) ──────────────────────
+  False Permit Rate             0/492 ✓
+  False Denial Rate             0/284315 ✓
+  Unauthorized Execution        0/284,807 ✓
+  Replay Determinism            100.0000% ✓
+  Class Veto                    100.0% ✓
+  TOCTOU                        0 ✓
+  AgentDojo Boundary FPR        0/62 ✓
+  Robustness false permits      0/51 ✓
+
+┌─ Scientific validation ────────────────────────────────────────────────────
+  Wilson CIs                    4  proportion metrics ✓
+  Zero-event bounds             4  Wilson + rule-of-three ✓
+  Effect sizes                  3  risk diff + Cohen's h ✓
+  Provenance chain              59 edges  ALL INTACT ✓
+
+┌─ Automated validators ─────────────────────────────────────────────────────
+    validate_paper_claims.py            [ PASS ]  (14 pass, 0 warn, 0 fail)
+    scientific_consistency.py           [ PASS ]  (9/9 checks)
+
+┌─ Publication artifacts ────────────────────────────────────────────────────
+    CLAIM_EVIDENCE_MATRIX.md                  [ GENERATED ]
+    reviewer_mapping.md                       [ GENERATED ]
+    THREATS_TO_VALIDITY.md                    [ GENERATED ]
+    LIMITATIONS_AND_NEGATIVE_RESULTS.md       [ GENERATED ]
+    REPRODUCIBILITY_AUDIT.md                  [ GENERATED ]
+    evidence_manifest.json                    [ GENERATED ]
+    FINAL_EVIDENCE_REPORT.md                  [ GENERATED ]
+    SCIENTIFIC_DASHBOARD.html                 [ GENERATED ]
+  Tables generated              3 ✓
+  Figures generated             8 ✓
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ FINAL VERDICT                                                              ║
+╚════════════════════════════════════════════════════════════════════════════╝
+  Experiments executed          8/8 ✓
+  Tables / figures              3 / 8  ALL ✓
+  Claims covered                14/14 ✓
+  Reviewer coverage             R1–R11 mapped  reviewer_mapping.md ✓
+
+  Overall repository status:  READY FOR IEEE ACCESS EVALUATION
+  One-stop report: SCIENTIFIC_DASHBOARD.html   ·   summary: FINAL_EVIDENCE_REPORT.md
+

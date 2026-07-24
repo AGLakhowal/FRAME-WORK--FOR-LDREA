@@ -1,0 +1,39 @@
+{
+  "experiment": "E10",
+  "host": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "system": "Darwin",
+    "machine": "arm64",
+    "processor": "arm",
+    "python_version": "3.9.6",
+    "python_executable": "/Users/sukhmangill/Documents/GitHub/Independent Benchmark and Reviewer-Closure Framework for L-DREA/.venv/bin/python",
+    "cpu_count": 10,
+    "eval_seed": 20260709,
+    "cpu_brand": "Apple M5",
+    "mem_bytes": 17179869184,
+    "git_head": "264b9ec378a3c0b0984fdf25cdee98c93e024f70",
+    "git_dirty": true
+  },
+  "run": {
+    "exp_id": "E10",
+    "title": "Audit Bundle Export",
+    "outdir": "experiments/audit_bundle",
+    "reproduction_command": "./.venv/bin/python tools/export_audit_bundle.py && ./.venv/bin/python concurbench_full.py",
+    "status": "EXECUTED",
+    "started_utc": "2026-07-11T17:44:56Z",
+    "duration_s": 15.999,
+    "return_code": 0,
+    "log_path": "experiments/audit_bundle/logs/E10.log",
+    "artifacts": {
+      "audit_bundle_report.json": {
+        "path": "experiments/audit_bundle/audit_bundle_report.json",
+        "sha256": "ca8d22d996ebf613fa84aa3937fa159807fe0b5ad167e3d1f8a0e608e7de584d",
+        "bytes": 1023
+      }
+    },
+    "blocked_reason": null,
+    "missing_dependency": null,
+    "rerun_when_available": null,
+    "notes": null
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "trace_file": "agentdojo_integration/audit_run/trace/slack/user_task_6__injection_task_1/execution_trace.jsonl",
+  "n_events": 35,
+  "chain_root": "2674bd3b348c5a63b1dcfee22c0db772cf48fd2574d1b39f21426153f3b8cc5d",
+  "chain_sidecar": "agentdojo_integration/audit_run/trace/slack/user_task_6__injection_task_1/execution_trace_chained.jsonl",
+  "event_id_monotonic_unique": true,
+  "step_non_decreasing": true,
+  "timestamp_non_decreasing": true,
+  "append_only_ok": true,
+  "integrity_ok": true
+}

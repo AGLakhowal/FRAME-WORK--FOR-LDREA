@@ -1,0 +1,13 @@
+digraph tools {
+  node [shape=record,style=filled,fillcolor="#eef",fontname="sans-serif"];
+  "post_webpage" [label="{post_webpage|permit=2 deny=1 n=3}"];
+  "send_money" [label="{send_money|permit=2 deny=0 n=2}"];
+  "reschedule_calendar_event" [label="{reschedule_calendar_event|permit=2 deny=0 n=2}"];
+  "schedule_transaction" [label="{schedule_transaction|permit=1 deny=0 n=1}"];
+  "get_webpage" [label="{get_webpage|permit=1 deny=0 n=1}"];
+  "invite_user_to_slack" [label="{invite_user_to_slack|permit=0 deny=1 n=1}"];
+  "send_direct_message" [label="{send_direct_message|permit=1 deny=0 n=1}"];
+  "add_user_to_channel" [label="{add_user_to_channel|permit=1 deny=0 n=1}"];
+  "reserve_hotel" [label="{reserve_hotel|permit=1 deny=0 n=1}"];
+  "add_calendar_event_participants" [label="{add_calendar_event_participants|permit=0 deny=1 n=1}"];
+}

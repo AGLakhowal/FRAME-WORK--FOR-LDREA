@@ -1,0 +1,69 @@
+{
+  "experiment": "clock_offset_probe",
+  "evidence_level": "Measured Runtime (single-host per-process offset)",
+  "what_it_is": "per-process CLOCK_MONOTONIC read offset between coordinator and each child process, half-RTT corrected; dominated by IPC latency and scheduler jitter",
+  "what_it_is_not": "distributed clock skew or IEEE-1588 PTP synchronization. One host = one system clock = no skew to measure. Distributed skew needs >=2 physical hosts and a PTP grandmaster.",
+  "nodes_processes": 3,
+  "rounds": 200,
+  "per_node": {
+    "node_0": {
+      "offset_ms": {
+        "mean": -0.2112925,
+        "min": -42.4535,
+        "max": 0.0315,
+        "p50": 0.001,
+        "stdev": 2.9944794193972597
+      },
+      "rtt_ms": {
+        "mean": 0.5806049999999999,
+        "min": 0.068,
+        "max": 92.455,
+        "p50": 0.111,
+        "stdev": 6.513041988884686
+      },
+      "samples": 200
+    },
+    "node_1": {
+      "offset_ms": {
+        "mean": 0.003195,
+        "min": -0.083,
+        "max": 0.282,
+        "p50": 0.0015,
+        "stdev": 0.021706726492034673
+      },
+      "rtt_ms": {
+        "mean": 0.12769,
+        "min": 0.067,
+        "max": 1.762,
+        "p50": 0.11,
+        "stdev": 0.14122996813707775
+      },
+      "samples": 200
+    },
+    "node_2": {
+      "offset_ms": {
+        "mean": -0.009355,
+        "min": -2.2195,
+        "max": 0.094,
+        "p50": 0.0015,
+        "stdev": 0.15780615949638976
+      },
+      "rtt_ms": {
+        "mean": 0.1551,
+        "min": 0.067,
+        "max": 6.041,
+        "p50": 0.112,
+        "stdev": 0.42756736311369703
+      },
+      "samples": 200
+    }
+  },
+  "aggregate_offset_ms": {
+    "mean": -0.07248416666666667,
+    "min": -42.4535,
+    "max": 0.282,
+    "p50": 0.0015,
+    "stdev": 1.7340954741591665
+  },
+  "max_abs_offset_ms": 42.4535
+}

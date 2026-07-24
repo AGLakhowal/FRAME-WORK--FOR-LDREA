@@ -1,0 +1,11 @@
+{
+  "trace_file": "agentdojo_integration/audit_run/trace/banking/user_task_6__injection_task_0/execution_trace.jsonl",
+  "n_events": 34,
+  "chain_root": "9d08e6a67f4d08569883dc52e75cbfda95a2897c90bcfc28bcf2a773e7cb3878",
+  "chain_sidecar": "agentdojo_integration/audit_run/trace/banking/user_task_6__injection_task_0/execution_trace_chained.jsonl",
+  "event_id_monotonic_unique": true,
+  "step_non_decreasing": true,
+  "timestamp_non_decreasing": true,
+  "append_only_ok": true,
+  "integrity_ok": true
+}

@@ -1,0 +1,12 @@
+flowchart TD
+  U[User task] --> L[LLM (Ollama)]
+  L -->|tool_calls| T[ToolsExecutor]
+  T --> G[GammaGovernedRuntime]
+  G --> P[PredicateEvaluator]
+  P --> D[DecisionEngine Γ,Π]
+  D -->|Π=1| PERMIT[PERMIT n=11]
+  D -->|Π=0| DENY[SAFE_STATE n=3]
+  PERMIT --> F[Tool executes → Observation]
+  DENY --> B[Blocked → SAFE_STATE]
+  F --> L
+  B --> L

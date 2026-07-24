@@ -1,0 +1,17 @@
+{
+  "evidence_level": "Derived From Measured",
+  "records_checked": 25000,
+  "fully_bound": 25000,
+  "binding_complete": true,
+  "hash_chain_valid": true,
+  "tamper_detected_on_mutated_block": true,
+  "replay_mismatch_detected": true,
+  "policy_mismatch_detected": true,
+  "bindings": [
+    "ertuple_hash",
+    "replay_hash",
+    "ledger_hash",
+    "evidence_hash",
+    "policy_hash"
+  ]
+}

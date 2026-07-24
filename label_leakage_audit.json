@@ -1,0 +1,201 @@
+{
+  "audit": "label_leakage_of_engine_inputs",
+  "evidence_level": "Benchmark Evidence (read-only audit of an existing corpus)",
+  "corpus": "GAMMA_G0_CREDITCARD_FULL_mapped.csv",
+  "rows_examined": 284807,
+  "ground_truth_source": "ReasonCodes (embeds CLASS_0 / CLASS_1 verbatim)",
+  "class_balance": {
+    "legit_class_0": 284315,
+    "fraud_class_1": 492
+  },
+  "engine_entrypoint": "gamma_test_runner.evaluate_decision",
+  "columns_examined": [
+    "Gate_A1",
+    "Gate_A2",
+    "Gate_A3",
+    "Gate_A4",
+    "Gate_A5",
+    "Gate_A6",
+    "Gate_A7",
+    "Lambda_G",
+    "HARM_RISK",
+    "StaleContext",
+    "TelemetryFresh",
+    "ReasonCodes"
+  ],
+  "findings": [
+    {
+      "column": "Gate_A1",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "True",
+      "value_sets_disjoint": false,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 1,
+      "standalone_classifier_accuracy": null,
+      "leaks_label": false
+    },
+    {
+      "column": "Gate_A2",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "True",
+      "value_sets_disjoint": false,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 1,
+      "standalone_classifier_accuracy": null,
+      "leaks_label": false
+    },
+    {
+      "column": "Gate_A3",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "False",
+      "value_sets_disjoint": true,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 0,
+      "standalone_classifier_accuracy": 1.0,
+      "leaks_label": true
+    },
+    {
+      "column": "Gate_A4",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "True",
+      "value_sets_disjoint": false,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 1,
+      "standalone_classifier_accuracy": null,
+      "leaks_label": false
+    },
+    {
+      "column": "Gate_A5",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "True",
+      "value_sets_disjoint": false,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 1,
+      "standalone_classifier_accuracy": null,
+      "leaks_label": false
+    },
+    {
+      "column": "Gate_A6",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "True",
+      "value_sets_disjoint": false,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 1,
+      "standalone_classifier_accuracy": null,
+      "leaks_label": false
+    },
+    {
+      "column": "Gate_A7",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "False",
+      "value_sets_disjoint": true,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 0,
+      "standalone_classifier_accuracy": 1.0,
+      "leaks_label": true
+    },
+    {
+      "column": "Lambda_G",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "False",
+      "value_sets_disjoint": true,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 0,
+      "standalone_classifier_accuracy": 1.0,
+      "leaks_label": true
+    },
+    {
+      "column": "HARM_RISK",
+      "distinct_values_on_legit": 5578,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "0.020769",
+      "example_fraud": "0.8",
+      "value_sets_disjoint": true,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 0,
+      "standalone_classifier_accuracy": 1.0,
+      "leaks_label": true
+    },
+    {
+      "column": "StaleContext",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "False",
+      "example_fraud": "False",
+      "value_sets_disjoint": false,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 1,
+      "standalone_classifier_accuracy": null,
+      "leaks_label": false
+    },
+    {
+      "column": "TelemetryFresh",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "True",
+      "example_fraud": "True",
+      "value_sets_disjoint": false,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 1,
+      "standalone_classifier_accuracy": null,
+      "leaks_label": false
+    },
+    {
+      "column": "ReasonCodes",
+      "distinct_values_on_legit": 1,
+      "distinct_values_on_fraud": 1,
+      "example_legit": "CLASS_0_LEGITIMATE;ALL_GATES_PASS;PERMITTED_ACTUATED",
+      "example_fraud": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "value_sets_disjoint": true,
+      "constant_on_fraud_rows": true,
+      "overlapping_values": 0,
+      "standalone_classifier_accuracy": 1.0,
+      "leaks_label": true
+    }
+  ],
+  "leaking_inputs": [
+    "Gate_A3",
+    "Gate_A7",
+    "Lambda_G",
+    "HARM_RISK",
+    "ReasonCodes"
+  ],
+  "non_leaking_inputs": [
+    "Gate_A1",
+    "Gate_A2",
+    "Gate_A4",
+    "Gate_A5",
+    "Gate_A6",
+    "StaleContext",
+    "TelemetryFresh"
+  ],
+  "verdict": {
+    "label_leakage_present": true,
+    "n_leaking_inputs": 5,
+    "interpretation": "Every listed leaking input has value sets that are perfectly disjoint across the two classes over all rows. Each is therefore, alone, a 100%-accurate classifier on this corpus. They were produced from the label: gamma_map_raw.py writes 'Class == 1 -> HARM_RISK high, Gate_A3 & Gate_A7 & Lambda_G fail' and encodes the label verbatim into ReasonCodes.",
+    "consequence": "The reported authorization accuracy and the 0-false-permit result on this corpus are CONFORMANCE results: they establish that the reference monitor faithfully enforces the predicates it is given. They are NOT detection results, and must not be read as evidence that L-DREA can identify fraud from observable runtime features. No claim of runtime detection is supported by this corpus.",
+    "what_would_be_required": "Blind runtime detection requires the raw ULB features (Time, V1..V28, Amount) with Class withheld until after the decision. Those columns are not present anywhere in this repository; the mapping discarded them. Supply creditcard.csv and run experiments/experiment_runtime_detection.py."
+  },
+  "does_not_invalidate": [
+    "Replay integrity (E2) \u2014 independent of how predicates were produced.",
+    "Formal verification (E3) \u2014 a property of the decision model, not the corpus.",
+    "Predicate coverage (E9) \u2014 a synthetic suite over the frozen entry point.",
+    "Non-compensatory soundness \u2014 a property of the aggregation rule."
+  ]
+}

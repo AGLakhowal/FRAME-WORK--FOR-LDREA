@@ -1,0 +1,34 @@
+{
+  "verifier": "independent_verifier.py",
+  "oracle": "gamma_test_runner.evaluate_decision (frozen)",
+  "theta": 0.5,
+  "independent_gate_list_matches_frozen": true,
+  "input_dimensions": 16,
+  "total_states_enumerated": 65536,
+  "expected_states": 65536,
+  "coverage_complete": true,
+  "total_row_mismatches": 0,
+  "total_field_mismatches": 0,
+  "per_field_mismatch_counts": {
+    "gamma_g": 0,
+    "gamma_class": 0,
+    "deficit_count": 0,
+    "pi": 0,
+    "isb": 0,
+    "decision": 0,
+    "unauthorized": 0
+  },
+  "permit_states": 4,
+  "safe_state_states": 65532,
+  "unauthorized_true_states": 49149,
+  "reachable_abstract_cells": [
+    "Gamma_G=0,Gamma_class=0",
+    "Gamma_G=0,Gamma_class=1",
+    "Gamma_G=1,Gamma_class=0",
+    "Gamma_G=1,Gamma_class=1"
+  ],
+  "unreachable_abstract_cells": [],
+  "verdict": "IDENTICAL"
+}
+
+[written] /Users/sukhmangill/Documents/GitHub/Independent Benchmark and Reviewer-Closure Framework for L-DREA/independent_verifier_report.json

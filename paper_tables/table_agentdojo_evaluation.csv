@@ -1,0 +1,18 @@
+metric,value,source,provenance
+episodes,33,statistics.json:n_episodes,PASS
+gamma_decisions,14,statistics.json:n_decisions,PASS
+permit,11,statistics.json:n_authorizations_permit,PASS
+safe_state,3,statistics.json:n_denials,PASS
+permit_rate,0.7857142857142857,engine(compute_permit_rate) vs stored,PASS
+permit_wilson_low,0.524107694133997,engine,PASS
+permit_wilson_high,0.9242861328730683,engine,PASS
+gamma_per_episode,0.42424242424242425,engine(compute_gamma_decision_rate),PASS
+overhead_mean_ms,0.021592857142857143,statistics.json:gamma_decision_overhead.mean,PASS
+replay_consistent_traces,33,replay_validation.json:n_traces,PASS
+replay_auth_steps,14,replay_validation.json:total_authorization_steps,PASS
+decision_entropy_bits,0.74959525725948,statistics.json,PASS
+authorization_stability,0.9666666666666668,statistics.json,PASS
+utility_true,3,statistics.json:episode_outcomes,PASS
+security_true,1,statistics.json:episode_outcomes,PASS
+false_permit_rate,,fpr_fdr.json:false_permit_rate,PASS (undefined n=0)
+false_deny_rate,0.0,fpr_fdr.json:false_deny_rate,PASS

@@ -1,0 +1,54 @@
+{
+  "evidence_level": "Repository Simulation",
+  "why_simulated": "There is no second process and no network. Propagation delay is a seeded draw; only the local rejection path is measured.",
+  "permits_revoked": 200,
+  "fleet_nodes": 5,
+  "propagation_latency_ms": {
+    "n": 200,
+    "unit": "ms",
+    "mean": 16.865508028920065,
+    "min": 7.787796551493549,
+    "max": 19.973814864734567,
+    "p50": 17.52715645666209,
+    "p95": 19.617425331576747,
+    "p99": 19.932940912887105,
+    "stdev": 2.6580607994408574
+  },
+  "per_node_latency_ms": {
+    "n": 1000,
+    "unit": "ms",
+    "mean": 11.06315909619458,
+    "min": 2.004052847157964,
+    "max": 19.973814864734567,
+    "p50": 10.959407232649921,
+    "p95": 19.081101586998052,
+    "p99": 19.617425331576747,
+    "stdev": 5.187078655076481
+  },
+  "local_rejection_latency_ms": {
+    "n": 200,
+    "unit": "ms",
+    "mean": 0.847430195,
+    "min": 0.825959,
+    "max": 0.892084,
+    "p50": 0.84725,
+    "p95": 0.861667,
+    "p99": 0.873583,
+    "stdev": 0.009104131424632173,
+    "evidence_level": "Measured Runtime"
+  },
+  "false_permits_after_revocation": 0,
+  "false_permit_probe_size": 200,
+  "false_permit_probe_method": "every revoked permit was re-presented to verify_permit() with its consumption state cleared, so only revocation could refuse it. Measured, not asserted.",
+  "fleet_synchronization": 1.0,
+  "acknowledgement_rate": 1.0,
+  "acks_expected": 1000,
+  "acks_received": 1000,
+  "wilson95_revocation_ack": {
+    "p": 1.0,
+    "low": 0.9811546736227335,
+    "high": 1.0,
+    "n": 200,
+    "successes": 200
+  }
+}

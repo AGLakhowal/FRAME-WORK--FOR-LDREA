@@ -1,0 +1,27 @@
+{
+  "stage": "E10_audit_bundle_export",
+  "bundle_path": "gamma_bundle/",
+  "verification": {
+    "bundle_present": true,
+    "checks": {
+      "schema_known": true,
+      "has_members": true,
+      "checksums_file": true,
+      "verify_doc": true,
+      "all_member_digests_match": true,
+      "all_sections_present": true,
+      "ledger_digest_matches_live": true,
+      "no_missing_members": true
+    },
+    "status": "PASS",
+    "bundle_id": "30159125bfcf43e1dc2a06aa7325748cccebdb1dceb7f0394eac9d5c090c3416",
+    "schema_version": "gamma-audit-bundle/v1",
+    "member_failures": [],
+    "members_verified": 30,
+    "ledger_sha256_recorded": "1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da",
+    "ledger_sha256_live": "1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da"
+  },
+  "manifest_sha256": "2d36cb2c7369560f4367dcdb628776a2a6e6499da869bebc1470bdc12f5e5cf7",
+  "checksums_sha256": "d79ad6070a93bb8755fff196343b26a7b6f5165ac197793479d0e57a3c511b56",
+  "concurbench_level4": "PASS"
+}

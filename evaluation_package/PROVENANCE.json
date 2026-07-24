@@ -1,0 +1,124 @@
+{
+  "host": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.9.6",
+    "processor": "arm",
+    "cpu_brand": "Apple M5",
+    "mem_bytes": 17179869184
+  },
+  "cpu_count": 10,
+  "artifacts": {
+    "A_lab_v1": {
+      "path": "gamma_lab_v1_report.json",
+      "exists": true,
+      "sha256": "386e9af7507d014494a6bbbb67778c90ae51025e77d5b6a46b64d2e3a34592bf",
+      "bytes": 11697
+    },
+    "A_summary": {
+      "path": "gamma_summary.json",
+      "exists": true,
+      "sha256": "81d10dc03f4b53d9b07c3ccafba9c65089cbfbe3de719ec5f75ad75c71dbb5f6",
+      "bytes": 3514
+    },
+    "A_replay_manifest": {
+      "path": "gamma_replay_manifest.jsonl",
+      "exists": true,
+      "sha256": "1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da",
+      "bytes": 200966760
+    },
+    "A_concurbench": {
+      "path": "concurbench_full_report.json",
+      "exists": true,
+      "sha256": "54833f7163dc7b5001a2962f113fb837e0c3175d2ed7f914c9ac612fdf85452e",
+      "bytes": 74634
+    },
+    "A_stress": {
+      "path": "stress_test_report.json",
+      "exists": true,
+      "sha256": "0930130a271738fc67ca1ca2eee42218283bac9073f5128649f18473fbe0f61c",
+      "bytes": 14958
+    },
+    "A_fcr": {
+      "path": "fcr_test_report.json",
+      "exists": true,
+      "sha256": "f06256d9a3ff8e9425c5b26335d63c84c80d74ac8dd02eb7373de056afe89529",
+      "bytes": 1805
+    },
+    "A_fullspec": {
+      "path": "full_spec_conformance_report.json",
+      "exists": true,
+      "sha256": "aaeed075ff566fb6daeadb1449e43a7124295b1d55d01eb3105e2752362e70ac",
+      "bytes": 9789
+    },
+    "B_agentdojo_stats": {
+      "path": "evaluation_package/evidence/agentdojo/statistics.json",
+      "exists": true,
+      "sha256": "342cdb2224332b64dba0ea8417d2d8357ec396ecd5f0298efb53f046e2dacf9f",
+      "bytes": 10903
+    },
+    "B_agentdojo_fprfdr": {
+      "path": "evaluation_package/evidence/agentdojo/fpr_fdr/fpr_fdr.json",
+      "exists": true,
+      "sha256": "681b2959315fd96595183783f83ad7c7237adab745d1fce23f97d342ae80af59",
+      "bytes": 3910
+    },
+    "B_boundary_fpr": {
+      "path": "evaluation_package/evidence/agentdojo_boundary/boundary_fpr.json",
+      "exists": true,
+      "sha256": "cde16292bdcaad813b6c6a1e28505ec6a23e7604f449c3d1c424c85b8ee7fb6f",
+      "bytes": 4365
+    },
+    "C_concurrency": {
+      "path": "evaluation_package/evidence/concurrency/concurrency_scaling.json",
+      "exists": true,
+      "sha256": "f475b8bd7ea1d6940ed20b869d01c538034c31162901419cbdfe5adf443187f6",
+      "bytes": 7068
+    },
+    "C_runtime_profile": {
+      "path": "evaluation_package/evidence/runtime_profile/runtime_profile.json",
+      "exists": true,
+      "sha256": "ee79a8caf7e594bbfb61fe76c81cbf7bdce8c1dffe079283164aa2c24f923ce7",
+      "bytes": 978
+    },
+    "D_verifier": {
+      "path": "independent_verifier_report.json",
+      "exists": true,
+      "sha256": "1d20111a7cec3d293c16ea51b50aaca6c5541c6eece238eac3dd469abc06c968",
+      "bytes": 1300
+    },
+    "E_ablation": {
+      "path": "fresh_evidence/ablation/ablation.json",
+      "exists": true,
+      "sha256": "0382007a5aa337a350af124ddda44529dd1fd1701e5a4f8a13ee91f53c5a059c",
+      "bytes": 5859
+    },
+    "D_tlc_spec": {
+      "path": "formal/ExternalizationMonitor.tla",
+      "exists": true,
+      "sha256": "f38ae8da968ed4a26fe808e62a4181d4dbe123b19ceda9b9d28e1fca79d42394",
+      "bytes": 5134
+    },
+    "D_tlc_cfg": {
+      "path": "formal/ExternalizationMonitor.cfg",
+      "exists": true,
+      "sha256": "594efed0617dd3e38fc4ea37ecb511783643930b80a364e52739d124d8182b84",
+      "bytes": 489
+    },
+    "D_tlc_log": {
+      "path": "evaluation_package/logs/E-D2_tlc.log",
+      "exists": true,
+      "sha256": "2d6acebfc3f0accb2fb02df712681372779e6e21f72f56c1eadff25df86e049b",
+      "bytes": 2974
+    }
+  },
+  "git_head": "763008a32e9225f5086eb8c6794625c88da0bf1b",
+  "java_runtime": "Temurin JRE 21.0.11 (~/.ldrea_tla); TLC tla2tools 1.8.0",
+  "tlc_result": {
+    "verdict": "No error has been found",
+    "distinct_states": 40192,
+    "states_generated": 1340006,
+    "invariant_violations": 0,
+    "depth": 6
+  }
+}

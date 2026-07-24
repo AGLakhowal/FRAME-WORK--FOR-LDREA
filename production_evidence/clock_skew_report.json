@@ -1,0 +1,28 @@
+{
+  "evidence_level": "Repository Simulation",
+  "why_simulated": "No PTP grandmaster and no second host exist. Node offsets are drawn from a seeded RNG bounded by the benchmark's declared clock_skew_bound_ms. The TOCTOU window below is MEASURED.",
+  "nodes": 5,
+  "offsets_ms": [
+    -0.03318813031052703,
+    0.15596204513358103,
+    0.28007982022726297,
+    -0.9740012475074569,
+    -0.6982914556212052
+  ],
+  "max_abs_offset_ms": 0.9740012475074569,
+  "drift_ppm": null,
+  "uncertainty_ms": 1.0,
+  "sync_status": "bounded",
+  "toctou_window_ms": {
+    "n": 25000,
+    "unit": "ms",
+    "mean": 0.31402818847999997,
+    "min": 0.022,
+    "max": 1.280541,
+    "p50": 0.311334,
+    "p95": 0.326041,
+    "p99": 0.387125,
+    "stdev": 0.0277017425988055,
+    "evidence_level": "Measured Runtime"
+  }
+}

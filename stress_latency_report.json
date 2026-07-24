@@ -1,0 +1,144 @@
+{
+  "report": "stress_scenario_latency",
+  "layer": "C-2 (illustrative scenario layer)",
+  "method": "time.perf_counter() around the public scenario builders in stress_test.py. External wrapper: stress_test.py and stress_test_report.json are not modified.",
+  "measures": "predicate evaluation + Gamma computation + authorization decision",
+  "does_not_measure": {
+    "replay_generation": "Not executed in this experiment \u2014 replay integrity is evaluated in Experiment 2.",
+    "evidence_quad": "Not executed in this experiment \u2014 the Evidence Quad is assembled in Experiment 2.",
+    "independent_verifier": "Not executed in this experiment \u2014 independent verification runs in Experiment 2."
+  },
+  "repeats_per_scenario": 2000,
+  "host": {
+    "python": "3.9.6",
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "machine": "arm64"
+  },
+  "scenarios": [
+    {
+      "id": "P1",
+      "name": "Ghost Treasury Transfer",
+      "runtime_decisions": 1,
+      "measured_stages": [
+        "predicate_evaluation",
+        "gamma_computation",
+        "authorization_decision"
+      ],
+      "not_executed": {
+        "replay_generation": "Not executed in this experiment \u2014 replay integrity is evaluated in Experiment 2.",
+        "evidence_quad": "Not executed in this experiment \u2014 the Evidence Quad is assembled in Experiment 2.",
+        "independent_verifier": "Not executed in this experiment \u2014 independent verification runs in Experiment 2."
+      },
+      "latency": {
+        "n": 2000,
+        "mean_ms": 0.008768880500000173,
+        "median_ms": 0.009166000000004892,
+        "min_ms": 0.006916999999995177,
+        "max_ms": 0.018874999999973774,
+        "p95_ms": 0.009625000000013095,
+        "p99_ms": 0.010000000000010001,
+        "stdev_ms": 0.0009654715895456156,
+        "total_ms": 17.537761000000316
+      },
+      "decisions_per_s": 114039.64280274777
+    },
+    {
+      "id": "P2",
+      "name": "Sanctions Drift Cascade",
+      "runtime_decisions": 3,
+      "measured_stages": [
+        "predicate_evaluation",
+        "gamma_computation",
+        "authorization_decision"
+      ],
+      "not_executed": {
+        "replay_generation": "Not executed in this experiment \u2014 replay integrity is evaluated in Experiment 2.",
+        "evidence_quad": "Not executed in this experiment \u2014 the Evidence Quad is assembled in Experiment 2.",
+        "independent_verifier": "Not executed in this experiment \u2014 independent verification runs in Experiment 2."
+      },
+      "latency": {
+        "n": 2000,
+        "mean_ms": 0.008523534499999902,
+        "median_ms": 0.008665999999990515,
+        "min_ms": 0.006666999999987988,
+        "max_ms": 0.023292000000008084,
+        "p95_ms": 0.00904200000001465,
+        "p99_ms": 0.009333000000000258,
+        "stdev_ms": 0.0007761633415779699,
+        "total_ms": 17.047068999999752
+      },
+      "decisions_per_s": 351966.6635947839
+    },
+    {
+      "id": "P3",
+      "name": "Multi-Agent Liquidity Panic",
+      "runtime_decisions": 4,
+      "measured_stages": [
+        "predicate_evaluation",
+        "gamma_computation",
+        "authorization_decision"
+      ],
+      "not_executed": {
+        "replay_generation": "Not executed in this experiment \u2014 replay integrity is evaluated in Experiment 2.",
+        "evidence_quad": "Not executed in this experiment \u2014 the Evidence Quad is assembled in Experiment 2.",
+        "independent_verifier": "Not executed in this experiment \u2014 independent verification runs in Experiment 2."
+      },
+      "latency": {
+        "n": 2000,
+        "mean_ms": 0.00835356000000001,
+        "median_ms": 0.008332999999999258,
+        "min_ms": 0.007915999999996703,
+        "max_ms": 0.012458999999992448,
+        "p95_ms": 0.008708999999995637,
+        "p99_ms": 0.008915999999997704,
+        "stdev_ms": 0.00024076389139527523,
+        "total_ms": 16.70711999999994
+      },
+      "decisions_per_s": 478837.7649768476
+    },
+    {
+      "id": "P4",
+      "name": "Sovereign Cascade Edge Case",
+      "runtime_decisions": 1,
+      "measured_stages": [
+        "predicate_evaluation",
+        "gamma_computation",
+        "authorization_decision"
+      ],
+      "not_executed": {
+        "replay_generation": "Not executed in this experiment \u2014 replay integrity is evaluated in Experiment 2.",
+        "evidence_quad": "Not executed in this experiment \u2014 the Evidence Quad is assembled in Experiment 2.",
+        "independent_verifier": "Not executed in this experiment \u2014 independent verification runs in Experiment 2."
+      },
+      "latency": {
+        "n": 2000,
+        "mean_ms": 0.005461434999999917,
+        "median_ms": 0.005457999999985974,
+        "min_ms": 0.005042000000010649,
+        "max_ms": 0.014291999999999083,
+        "p95_ms": 0.005625000000009095,
+        "p99_ms": 0.00579200000000446,
+        "stdev_ms": 0.0004756909971549676,
+        "total_ms": 10.922869999999639
+      },
+      "decisions_per_s": 183102.0601728328
+    }
+  ],
+  "aggregate": {
+    "scenarios": 4,
+    "total_runtime_decisions": 9,
+    "latency": {
+      "n": 8000,
+      "mean_ms": 0.0077768525000000005,
+      "median_ms": 0.00837499999997715,
+      "min_ms": 0.005042000000010649,
+      "max_ms": 0.023292000000008084,
+      "p95_ms": 0.009457999999989974,
+      "p99_ms": 0.009708000000024919,
+      "stdev_ms": 0.0015045113327069352,
+      "total_ms": 62.21481999999952
+    },
+    "note": "Percentiles are nearest-rank over per-invocation samples. Timing is wall-clock and therefore varies between runs; it is a measurement, not a frozen constant."
+  },
+  "integrity": "This report is a new artifact. It reads stress_test.py through its public entry points and changes no existing experimental output, metric or claim."
+}

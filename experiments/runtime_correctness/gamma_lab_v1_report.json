@@ -1,0 +1,285 @@
+{
+  "benchmark": "LAB v1.0 (L-DREA Authorization Benchmark)",
+  "method_version": "gamma_test_runner/LAB-v1.0/2.0",
+  "input_file": "/Users/sukhmangill/Documents/GitHub/Independent Benchmark and Reviewer-Closure Framework for L-DREA/GAMMA_G0_CREDITCARD_FULL_mapped.csv",
+  "n_total": 284807,
+  "n_adversarial": 492,
+  "n_nominal": 284315,
+  "primary_metrics": {
+    "false_permit_rate": {
+      "metric": "False Permit Rate (FPR)",
+      "n": 492,
+      "adverse_events": 0,
+      "reported_rate": 0.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 0.007747353,
+      "wilson95_clustercorrected_upper": 0.013117879,
+      "n_eff": 289.4,
+      "design_effect": 1.7,
+      "higher_is_better": false,
+      "population": "should-deny (ground truth = deny)"
+    },
+    "false_denial_rate": {
+      "metric": "False Denial Rate (FDR)",
+      "n": 284315,
+      "adverse_events": 0,
+      "reported_rate": 0.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.35111e-05,
+      "wilson95_clustercorrected_upper": 2.29687e-05,
+      "n_eff": 167244.1,
+      "design_effect": 1.7,
+      "higher_is_better": false,
+      "population": "should-permit (ground truth = permit)"
+    },
+    "replay_determinism_rate": {
+      "metric": "Replay Determinism Rate (RDR)",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 1.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": true,
+      "population": "all rows"
+    },
+    "revocation_compliance": {
+      "metric": "Revocation Compliance",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 1.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": true,
+      "population": "all rows"
+    },
+    "toctou_violation_rate": {
+      "metric": "TOCTOU Violation Rate",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 0.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": false,
+      "population": "all actuated/at-risk rows"
+    },
+    "class_veto_effectiveness": {
+      "metric": "Class-Veto Effectiveness",
+      "n": 492,
+      "adverse_events": 0,
+      "reported_rate": 1.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 0.007747353,
+      "wilson95_clustercorrected_upper": 0.013117879,
+      "n_eff": 289.4,
+      "design_effect": 1.7,
+      "higher_is_better": true,
+      "population": "class-1 (veto-triggering) rows"
+    }
+  },
+  "runtime_invariants_violations": {
+    "I1_execution_sovereignty": 0,
+    "I2_non_bypassability": 0,
+    "I3_non_compensatory_soundness": 0,
+    "I4_class_level_veto": 0,
+    "I5_toctou_state_consistency": 0,
+    "I6_runtime_sovereignty": 0
+  },
+  "all_invariants_hold": true,
+  "unauthorized_execution": {
+    "definition": "Eq.7: Execute & (!Valid(Token) | max(GammaG,GammaClass)>0 | ISB=0 | evidence invalid)",
+    "count": 0,
+    "metric": {
+      "metric": "Unauthorized Execution Rate (UER)",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 0.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": false,
+      "population": "all rows"
+    },
+    "denominator": 284807,
+    "note": "UER is taken over ALL rows (any row can externalize); this is distinct from FPR, which is taken only over the should-deny population."
+  },
+  "negative_control": {
+    "description": "Two DISTINCT probes of the compensatory weighted-sum aggregator vs the non-compensatory Law of Concurrence (max). They are not contradictory: one runs the compensatory rule on the data as-is, the other is a counterfactual transform.",
+    "tau": 0.15,
+    "single_deficit_score": 0.077,
+    "n_predicates": 13,
+    "actual_dataset_baseline": {
+      "what": "Run the compensatory weighted-sum rule AS-IS on every mapped row.",
+      "compensatory_total_permits": 284315,
+      "false_permits_vs_llc": 0,
+      "note": "Under tau=0.15 on THIS mapped corpus the weighted-sum admits 0 false permits vs LLC, because every adversarial row here fails MULTIPLE hard predicates, so its weighted score stays >= tau."
+    },
+    "corollary2_counterfactual": {
+      "what": "Counterfactual: reduce each adversarial row to a SINGLE isolated deficit.",
+      "single_deficit_masked": true,
+      "counterfactual_false_permits": 492,
+      "note": "If each adversarial row were reduced to an isolated single deficit (0.077 < tau=0.15), a compensatory gate would MASK the failure -> 492 COUNTERFACTUAL false permits; the non-compensatory max-aggregator (LLC) still denies all of them."
+    },
+    "compensatory_total_permits": 284315,
+    "compensatory_false_permits_vs_llc": 0,
+    "corollary2_single_deficit_masked": true,
+    "corollary2_rows_masked_if_isolated": 492
+  },
+  "measured_latency": {
+    "note": "MEASURED on this host: predicate eval + SHA-256 hash-chain advance + HMAC-SHA256 sign (representative crypto, NOT a hardware HSM signature) + WAL fsync (durable). Not comparable to the paper's HSM/FPGA hardware-in-the-loop figures.",
+    "wal_fsync_included": true,
+    "latency_sampled_rows": 50000,
+    "total_rows": 284807,
+    "samples": 50000,
+    "timed_path_agreement": 50000,
+    "mean_ms": 0.025917,
+    "p50_ms": 0.025125,
+    "p95_ms": 0.032333,
+    "p99_ms": 0.03775,
+    "max_ms": 3.51375,
+    "hotpath_p99_ms": 0.036458,
+    "limit_ms": 100.0,
+    "hotpath_limit_ms": 5.0,
+    "headroom_p95_ms": 99.967667,
+    "headroom_max_ms": 96.48625,
+    "throughput_ops_per_s": 38584.8,
+    "status_p95": "Pass",
+    "status_max": "Pass",
+    "status_hotpath_p99": "Pass"
+  },
+  "replay_determinism": {
+    "hash_chain_links_ok": 284807,
+    "hash_chain_links_total": 284807,
+    "genesis_anchored": true,
+    "tlc_total_states": 2489446,
+    "tlc_violation_count": 0
+  },
+  "tlc_verification": {
+    "available": true,
+    "verified": true,
+    "verification_tier": "tier0_attestation_consistency_only",
+    "checks": {
+      "V1_spec_hash_consistent": true,
+      "V2_cfg_hash_consistent": true,
+      "V3_states_constant": true,
+      "V4_nontrivial_state_space": true,
+      "V5_zero_safety_violations": true,
+      "V6_spec_source_binding": null,
+      "V7_cfg_source_binding": null,
+      "V8_log_states_match": null,
+      "V9_log_no_violation": null
+    },
+    "spec_hash": "1c1e1b60ae15b071370d80eb885d0c84230d325e4638824745f013c2adf7eb08",
+    "cfg_hash": "4123ba374abfe270000846c6c7dfd521752bc624b013f748ee603f987b5793de",
+    "spec_source_sha256": null,
+    "cfg_source_sha256": null,
+    "total_states": 2489446,
+    "violation_count": 0,
+    "attestation_digest": "8cb1369625e05e6ad00004be477ce50f6c0792f0c9913a234e2ddf0767207686",
+    "tlc_log": null,
+    "run_command": null,
+    "artifacts_missing_for_full_closure": [
+      "--tla-spec",
+      "--tla-cfg",
+      "--tlc-log"
+    ],
+    "note": "TLC tier0_attestation_consistency_only. Internal consistency + zero violations verified. Supply --tla-spec, --tla-cfg, --tlc-log to raise the tier."
+  },
+  "decision_agreement": {
+    "match_status_rate": 1.0,
+    "match_safe_state_rate": 1.0,
+    "match_act_permit_rate": 1.0
+  },
+  "per_scenario_class": {
+    "ADVERSARIAL_CLASS_1": {
+      "n": 492,
+      "derived_safe_state": 492,
+      "false_permits": 0
+    },
+    "NOMINAL_CLASS_0": {
+      "n": 284315,
+      "derived_safe_state": 0,
+      "false_permits": 0
+    }
+  },
+  "appendix_a_style_summary": [
+    "UER 0 / 284807 (all rows), Wilson 95% upper bound p < 2.29e-05; FPR 0 / 492 (should-deny population only), Wilson 95% upper bound p < 1.31e-02; FDR 0 / 284315 (should-permit population). The FPR bound is wider than the UER bound because its denominator is far smaller.",
+    "Replay determinism 100.0000%; revocation compliance 100.0000%; TOCTOU violations 0 observed; RDR Wilson 95% upper bound p < 2.29e-05.",
+    "Latency mean 0.0259 ms, P95 0.0323 ms, P99 0.0377 ms, max 3.5137 ms; throughput ~38,585 ops/s; O(n) predicate scaling.",
+    "Runtime invariants: 6/6 satisfied; unauthorized executions 0; false permit rate 0%; false denial rate 0%; class-veto effectiveness 100%.",
+    "Decision agreement: 100.0000% vs Status, 100.0000% vs SAFE_STATE, 100.0000% vs ACT_PERMIT; all 492 adversarial transactions transitioned to SAFE_STATE (492/492) with 0 false permits."
+  ],
+  "governing_rules": {
+    "decision_rule": "PERMIT iff Pi=1, where Pi = [ max(Gamma_G, Gamma_class) == 0 ]. Law of Concurrence: Gamma_G = max_i(d_i), non-compensatory max-aggregation - a single deficit denies regardless of all other predicates.",
+    "node_predicates_must_all_concur": [
+      "Gate_A1",
+      "Gate_A2",
+      "Gate_A3",
+      "Gate_A4",
+      "Gate_A5",
+      "Gate_A6",
+      "Gate_A7",
+      "Lambda_G",
+      "TOKEN_VALID",
+      "AuthoritySignatureValid"
+    ],
+    "derived_deficits": {
+      "HARM_RISK_THETA": "deficit if HARM_RISK > theta (0.5)",
+      "STALE_CONTEXT": "deficit if StaleContext == TRUE",
+      "TELEMETRY_STALE": "deficit if TelemetryFresh == FALSE"
+    },
+    "class_level_veto": "Gamma_class=1 when ReasonCodes contains CLASS_1 or GOODHART; this forces SAFE_STATE even if every node predicate concurs (Goodhart resistance).",
+    "isb_rule": "ISB=1 iff TOKEN_VALID & AuthoritySignatureValid & TelemetryFresh & !StaleContext.",
+    "unauthorized_execution_eq7": "Unauth = Execute & ( !TOKEN_VALID | max(Gamma_G,Gamma_class)>0 | ISB=0 | hash-chain link broken ).",
+    "commit_before_actuate": "Any actuated op MUST have CommitTimestamp <= ActuateTimestamp and CommitBeforeActuate=TRUE; otherwise an ordering/TOCTOU violation is recorded.",
+    "replay_determinism": "Row i HASH_prev MUST equal row (i-1) HASH_current, GENESIS-anchored; any broken link is a replay divergence.",
+    "ground_truth": "Real ULB `Class` label - Class=1 => must deny (SAFE_STATE); Class=0 => may permit.",
+    "parameters": {
+      "harm_threshold_theta": 0.5,
+      "latency_limit_ms": 100.0,
+      "hotpath_limit_ms": 5.0,
+      "freshness_threshold_ms": 100.0,
+      "design_effect_DE": 1.7,
+      "negative_control_tau": 0.15,
+      "wilson_confidence_z": 1.96,
+      "latency_sampled_rows": 50000
+    },
+    "spec_policy_reference_band_7_1": {
+      "note": "FULL_SPEC \u00a77.1 conjunctive acceptance bands - the broader governing policy. A permit requires ALL bands (non-compensatory). Listed as normative reference; this dataset run enforces the gate/harm/token/hash/ordering rules above.",
+      "ICS_integrity_confidence": ">= 0.90",
+      "PR_LCB_robustness_lower_bound": ">= 0.80",
+      "CI_WIDTH": "<= 0.03",
+      "DeltaV_stability_residual": "<= 0",
+      "C_coherence": ">= C_STAR (default 0.85)",
+      "PTP_skew": "<= 1 ms",
+      "cycle_latency": "<= 100 ms (P95)",
+      "ER_LOCAL_evidence_commit": "= 1.0",
+      "hard_stops": [
+        "DEADLINE_MISS",
+        "COMMIT_FAIL",
+        "ATTESTATION_FAIL",
+        "DeltaV>0",
+        "C<C_STAR"
+      ]
+    }
+  },
+  "replay_manifest": {
+    "path": "gamma_replay_manifest.jsonl",
+    "n_records": 284807,
+    "genesis_anchored": true,
+    "adjacency_links_ok": 284807,
+    "adjacency_all_ok": true,
+    "manifest_sha256": "1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da",
+    "verify_with": "python gamma_replay_verify.py gamma_replay_manifest.jsonl"
+  }
+}

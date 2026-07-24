@@ -1,0 +1,59 @@
+{
+  "evidence_level": "Measured Runtime",
+  "decision_latency_ms": {
+    "n": 25000,
+    "unit": "ms",
+    "mean": 0.0014579024000000002,
+    "min": 0.001208,
+    "max": 0.076166,
+    "p50": 0.001416,
+    "p95": 0.001542,
+    "p99": 0.002542,
+    "stdev": 0.0006703893148866858
+  },
+  "commit_latency_ms": {
+    "n": 25000,
+    "unit": "ms",
+    "mean": 0.31257028608,
+    "min": 0.020459,
+    "max": 1.275125,
+    "p50": 0.309917,
+    "p95": 0.324458,
+    "p99": 0.384,
+    "stdev": 0.02761283815086161
+  },
+  "signing_latency_ms": {
+    "n": 24912,
+    "unit": "ms",
+    "mean": 0.2736832542148362,
+    "min": 0.204334,
+    "max": 1.118667,
+    "p50": 0.271167,
+    "p95": 0.2825,
+    "p99": 0.315583,
+    "stdev": 0.017008756951342074
+  },
+  "toctou_window_ms": {
+    "n": 25000,
+    "unit": "ms",
+    "mean": 0.31402818847999997,
+    "min": 0.022,
+    "max": 1.280541,
+    "p50": 0.311334,
+    "p95": 0.326041,
+    "p99": 0.387125,
+    "stdev": 0.0277017425988055
+  },
+  "fields": [
+    "t_received",
+    "t_check",
+    "t_issue",
+    "t_commit"
+  ],
+  "not_measured": {
+    "t_use": "no executor exists in this repository",
+    "t_revoke": "revocation propagation is simulated",
+    "t_replay": "replay timing is measured in E2",
+    "t_verify": "see signature_verification_report.json"
+  }
+}

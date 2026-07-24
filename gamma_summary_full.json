@@ -1,0 +1,138 @@
+{
+  "input_file": "GAMMA_G0_CREDITCARD_FULL_mapped.csv",
+  "method_version": "gamma_test_runner/LAB-v1.0/2.0",
+  "rows": 284807,
+  "derived_permit": 284315,
+  "derived_safe_state": 492,
+  "match_status_rate": 1.0,
+  "match_safe_state_rate": 1.0,
+  "false_permit_count": 0,
+  "false_denial_count": 0,
+  "unauthorized_execution_count": 0,
+  "replay_divergence_count": 0,
+  "ordering_inversion_count": 0,
+  "hash_chain_links_ok": 284807,
+  "harm_threshold": 0.5,
+  "latency_threshold": 50.0,
+  "freshness_threshold": 100.0,
+  "status_distribution": {
+    "PERMITTED": 284315,
+    "SAFE_STATE": 492
+  },
+  "decision_distribution": {
+    "PERMIT": 284315,
+    "SAFE_STATE": 492
+  },
+  "lab_scenario_distribution": {
+    "NOMINAL_CLASS_0": 284315,
+    "ADVERSARIAL_CLASS_1": 492
+  },
+  "top_rule_failures": {
+    "Gate_A3": 492,
+    "Gate_A7": 492,
+    "Lambda_G": 492,
+    "HARM_RISK_THETA": 492
+  },
+  "sample_fail_rows": [
+    {
+      "ProposalID": "TXN_000542",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_000624",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_004921",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_006109",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_006330",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_006332",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_006335",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_006337",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_006339",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    },
+    {
+      "ProposalID": "TXN_006428",
+      "ReasonCodes": "CLASS_1_FRAUD;GATE_A3_HARM_RISK_FAIL;SAFE_STATE_DENIAL",
+      "DerivedRuleFailures": [
+        "Gate_A3",
+        "Gate_A7",
+        "Lambda_G",
+        "HARM_RISK_THETA"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+# Table — Interaction effects (expected vs observed)
+
+*Source: `experiments/combined_ablation/combined_ablation.json` — produced by `experiment_combined_ablation.py` from runtime execution.*
+
+| Combination | Order | Expected Δ(RIS) | Observed Δ(RIS) | Difference | Classification |
+|---|---|---|---|---|---|
+| remove_EQ+HC+LG+PE+RV | 5 | 1.998 | 1.000 | -0.998 | Redundant (saturated) |
+| remove_EQ+PE+RV | 3 | 1.000 | 1.000 | -0.000 | Redundant (saturated) |
+| remove_EQ+PE | 2 | 0.833 | 0.833 | -0.000 | Additive |
+| remove_EQ+RV | 2 | 0.833 | 0.833 | -0.000 | Additive |
+| remove_EQ+HC | 2 | 1.164 | 0.667 | -0.498 | Critical Dependency |
+| remove_EQ+HC+LG | 3 | 1.664 | 0.667 | -0.998 | Critical Dependency |
+| remove_EQ+LG | 2 | 1.167 | 0.667 | -0.500 | Critical Dependency |
+| remove_LG+PE | 2 | 0.667 | 0.667 | +0.000 | Additive |
+| remove_LG+RV | 2 | 0.667 | 0.667 | +0.000 | Additive |
+| remove_HC+PE | 2 | 0.664 | 0.664 | -0.000 | Additive |
+| remove_HC+RV | 2 | 0.664 | 0.664 | -0.000 | Additive |
+| remove_HC+LG | 2 | 0.998 | 0.500 | -0.498 | Critical Dependency |
+| remove_PE+RV | 2 | 0.333 | 0.333 | -0.000 | Additive |
+
+> **NOTE — URR is not the False Permit Rate.**
+> `URR (Undetected Risk Rate) = FN / (TP + FN) = 1 − Blind Detection Recall`
+>
+> This metric measures the fraction of malicious events that remain **undetected during blind runtime evaluation**. It is **NOT** the False Permit Rate reported in the main authorization benchmark. The paper's False Permit Rate (**0/492** and **0/62**) measures **authorization soundness** and remains unchanged.

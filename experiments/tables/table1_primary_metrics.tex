@@ -1,0 +1,31 @@
+\begin{table}[t]
+\centering
+\caption{L-DREA Tier-S primary metrics (executed).}
+\label{tab:ldrea_primary}
+\begin{tabular}{llrl}
+\hline
+Metric & Value & N & Exp \\
+\hline
+False Permit Rate (ULB) & 0/492 & 492 & E1 \\
+False Denial Rate (ULB) & 0/284315 & 284,315 & E1 \\
+Unauthorized Executions (UER) & 0/284807 & 284,807 & E1 \\
+Replay Determinism Rate & 1.0 & 284,807 & E1 \\
+Class-Veto Effectiveness & 1.0 & 492 & E1 \\
+Decision latency mean (ms) & 0.0259 & 284,807 & E1 \\
+Authorization Accuracy & 1.000000 & 284,807 & E1 \\
+Replay hash-chain adjacency failures & 0 & 284,807 & E2 \\
+Replay ledger-bind failures & 0 & 284,807 & E2 \\
+Formal state-space coverage & 65536/65536 & 65,536 & E3 \\
+Decision-equivalence field mismatches & 0 & 65,536 & E3 \\
+Throughput @1 / @64 threads (dec/s) & 355,151 / 69,797 & 200,000 & E4 \\
+False permits/denials under load (all levels) & 0/0 & 1,400,000 & E4 \\
+Leaked permits: baseline\_full\_LDREA & 0/60000 & 60,000 & E5 \\
+Leaked permits: remove\_class\_veto & 15000/60000 & 60,000 & E5 \\
+Leaked permits: remove\_noncompensatory\_gamma & 15000/60000 & 60,000 & E5 \\
+Leaked permits: remove\_authorization\_layer & 45000/60000 & 60,000 & E5 \\
+AgentDojo boundary FPR (foreign targets) & 0/62 & 62 & E7 \\
+AgentDojo permit rate (recorded episodes) & 0.786 & 14 & E7 \\
+Robustness: false permits across all faults & 0/51 & 51 & E8 \\
+\hline
+\end{tabular}
+\end{table}

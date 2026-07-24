@@ -1,0 +1,6 @@
+baseline_full_LDREA              permits= 15000 leaked=     0 tput= 1164068/s  mean=0.00077ms p99=0.00088ms replay_ok=True
+remove_class_veto                permits= 30000 leaked= 15000 tput= 1198663/s  mean=0.00075ms p99=0.00088ms replay_ok=True
+remove_noncompensatory_gamma     permits= 30000 leaked= 15000 tput= 1364603/s  mean=0.00065ms p99=0.00075ms replay_ok=True
+remove_authorization_layer       permits= 60000 leaked= 45000 tput= 5874050/s  mean=0.00008ms p99=0.00013ms replay_ok=True
+
+[written] /Users/sukhmangill/Documents/GitHub/Independent Benchmark and Reviewer-Closure Framework for L-DREA/fresh_evidence/ablation/ablation.json + ablation.csv + ablation_log.jsonl

@@ -1,0 +1,744 @@
+{
+  "campaign": "ldrea_statistical_analysis",
+  "determinism_note": "The authorization engine is deterministic. For its outputs, a confidence interval quantifies coverage of the sampled input space (sampling uncertainty of the proportion), NOT run-to-run stochastic variability. Frequentist p-values are not computed for deterministic equalities. Bootstrap CIs are applied only to measured latency, which is genuinely variable.",
+  "proportion_metrics": [
+    {
+      "metric": "False Permit Rate (ULB, should-deny pop.)",
+      "events": 0,
+      "n": 492,
+      "experiment": "E1",
+      "point": 0.0,
+      "wilson95_low": 0.0,
+      "wilson95_high": 0.007747353014470844
+    },
+    {
+      "metric": "Unauthorized Execution Rate (ULB, all rows)",
+      "events": 0,
+      "n": 284807,
+      "experiment": "E1",
+      "point": 0.0,
+      "wilson95_low": 8.470329472543003e-22,
+      "wilson95_high": 1.3487754893802177e-05
+    },
+    {
+      "metric": "Boundary FPR (AgentDojo foreign targets)",
+      "events": 0,
+      "n": 62,
+      "experiment": "E7",
+      "point": 0.0,
+      "wilson95_low": 0.0,
+      "wilson95_high": 0.058344072101372484
+    },
+    {
+      "metric": "Robustness false-permit rate (all decision-path faults)",
+      "events": 0,
+      "n": 51,
+      "experiment": "E8",
+      "point": 0.0,
+      "wilson95_low": 0.0,
+      "wilson95_high": 0.07004661989853143
+    },
+    {
+      "metric": "Single-deficit false-permit rate (E9 predicate isolation)",
+      "events": 0,
+      "n": 13,
+      "experiment": "E9",
+      "point": 0.0,
+      "wilson95_low": 0.0,
+      "wilson95_high": 0.22809537235419838
+    }
+  ],
+  "zero_event_bounds": [
+    {
+      "metric": "False Permit Rate (ULB, should-deny pop.)",
+      "n": 492,
+      "experiment": "E1",
+      "wilson95_upper": 0.007747353014470844,
+      "rule_of_three_upper": 0.006097560975609756,
+      "clopper_pearson95_upper_two_sided": 0.007469684663594989,
+      "exact_one_sided_upper": 0.006070387030609581
+    },
+    {
+      "metric": "Unauthorized Execution Rate (ULB, all rows)",
+      "n": 284807,
+      "experiment": "E1",
+      "wilson95_upper": 1.3487754893802177e-05,
+      "rule_of_three_upper": 1.053344896719533e-05,
+      "clopper_pearson95_upper_two_sided": 1.2952123945919602e-05,
+      "exact_one_sided_upper": 1.0518409022108877e-05
+    },
+    {
+      "metric": "Boundary FPR (AgentDojo foreign targets)",
+      "n": 62,
+      "experiment": "E7",
+      "wilson95_upper": 0.058344072101372484,
+      "rule_of_three_upper": 0.04838709677419355,
+      "clopper_pearson95_upper_two_sided": 0.05776263442929097,
+      "exact_one_sided_upper": 0.047169511375356854
+    },
+    {
+      "metric": "Robustness false-permit rate (all decision-path faults)",
+      "n": 51,
+      "experiment": "E8",
+      "wilson95_upper": 0.07004661989853143,
+      "rule_of_three_upper": 0.058823529411764705,
+      "clopper_pearson95_upper_two_sided": 0.06977703074953867,
+      "exact_one_sided_upper": 0.0570479523604428
+    },
+    {
+      "metric": "Single-deficit false-permit rate (E9 predicate isolation)",
+      "n": 13,
+      "experiment": "E9",
+      "wilson95_upper": 0.22809537235419838,
+      "rule_of_three_upper": 0.23076923076923078,
+      "clopper_pearson95_upper_two_sided": 0.24705263800047095,
+      "exact_one_sided_upper": 0.20581666518655073
+    }
+  ],
+  "latency_bootstrap": [
+    {
+      "metric": "ULB decision latency (ms) \u2014 summary (no raw samples persisted)",
+      "experiment": "E1",
+      "mean": 0.025917,
+      "p95": 0.032333,
+      "p99": 0.03775,
+      "note": "raw per-row latency samples are not persisted by the stable runner; bootstrap requires the sample vector. Summary reported instead."
+    }
+  ],
+  "ablation_effect_sizes": [
+    {
+      "contrast": "remove_class_veto vs baseline",
+      "baseline_leak_rate": 0.0,
+      "ablated_leak_rate": 0.25,
+      "risk_difference": 0.25,
+      "cohens_h": 1.0471975511965976,
+      "n_per_arm": 60000,
+      "interpretation": "deterministic contrast; risk difference is the causal leak attributable to removing this component (no sampling test needed)."
+    },
+    {
+      "contrast": "remove_noncompensatory_gamma vs baseline",
+      "baseline_leak_rate": 0.0,
+      "ablated_leak_rate": 0.25,
+      "risk_difference": 0.25,
+      "cohens_h": 1.0471975511965976,
+      "n_per_arm": 60000,
+      "interpretation": "deterministic contrast; risk difference is the causal leak attributable to removing this component (no sampling test needed)."
+    },
+    {
+      "contrast": "remove_authorization_layer vs baseline",
+      "baseline_leak_rate": 0.0,
+      "ablated_leak_rate": 0.75,
+      "risk_difference": 0.75,
+      "cohens_h": 2.0943951023931953,
+      "n_per_arm": 60000,
+      "interpretation": "deterministic contrast; risk difference is the causal leak attributable to removing this component (no sampling test needed)."
+    }
+  ],
+  "sensitivity_analysis": {
+    "concurrency_threads": {
+      "levels": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "throughput_decisions_per_s": [
+        355150.6,
+        408922.3,
+        318722.5,
+        95098.4,
+        75342.0,
+        71116.3,
+        69796.5
+      ],
+      "p99_ms": [
+        0.0019159999986584353,
+        0.0015409999996052193,
+        0.003000000003083869,
+        0.003792000001112683,
+        0.0040000000041118255,
+        0.004166000003635872,
+        0.004167000000165899
+      ],
+      "false_permits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "false_denials": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "observation": "safety metrics (FP/FD) are invariant to thread count; throughput is monotone-degrading (GIL-bound) \u2014 a genuine sensitivity of performance, not of correctness."
+    },
+    "design_effect_on_FPR_bound": {
+      "events": 0,
+      "n": 492,
+      "sweep": [
+        {
+          "design_effect": 1.0,
+          "n_eff": 492.0,
+          "wilson95_upper": 0.007747353014470844
+        },
+        {
+          "design_effect": 1.7,
+          "n_eff": 289.4,
+          "wilson95_upper": 0.013117878992148575
+        },
+        {
+          "design_effect": 2.0,
+          "n_eff": 246.0,
+          "wilson95_upper": 0.015375585936884312
+        },
+        {
+          "design_effect": 3.0,
+          "n_eff": 164.0,
+          "wilson95_upper": 0.022887425119427582
+        }
+      ],
+      "observation": "The FPR upper bound scales with the assumed design effect. DE = 1.7 is the value the engine reports; DE = 1.0 (independent rows) is optimistic and DE = 3.0 pessimistic. The qualitative conclusion \u2014 zero observed false permits with a bound of order 1e-2 on n = 492 \u2014 is stable across the sweep."
+    },
+    "ablation_workload": {
+      "workload_n_per_config": 60000,
+      "leak_rates": {
+        "baseline_full_LDREA": 0.0,
+        "remove_class_veto": 0.25,
+        "remove_noncompensatory_gamma": 0.25,
+        "remove_authorization_layer": 0.75
+      },
+      "observation": "The engine is deterministic and the workload is index-driven, so each leak rate is an exact proportion of a constructed population, not an estimate. Increasing n narrows the Wilson interval but cannot move the point value."
+    }
+  },
+  "exact_intervals": [
+    {
+      "metric": "False Permit Rate (ULB, should-deny pop.)",
+      "events": 0,
+      "n": 492,
+      "experiment": "E1",
+      "clopper_pearson95_low": 0.0,
+      "clopper_pearson95_high": 0.007469684663594989,
+      "method": "Clopper-Pearson (exact)",
+      "note": "Exact binomial interval. Reported alongside Wilson because at p -> 0 the normal approximation is unreliable and Wilson is itself an approximation."
+    },
+    {
+      "metric": "Unauthorized Execution Rate (ULB, all rows)",
+      "events": 0,
+      "n": 284807,
+      "experiment": "E1",
+      "clopper_pearson95_low": 0.0,
+      "clopper_pearson95_high": 1.2952123945919602e-05,
+      "method": "Clopper-Pearson (exact)",
+      "note": "Exact binomial interval. Reported alongside Wilson because at p -> 0 the normal approximation is unreliable and Wilson is itself an approximation."
+    },
+    {
+      "metric": "Boundary FPR (AgentDojo foreign targets)",
+      "events": 0,
+      "n": 62,
+      "experiment": "E7",
+      "clopper_pearson95_low": 0.0,
+      "clopper_pearson95_high": 0.05776263442929097,
+      "method": "Clopper-Pearson (exact)",
+      "note": "Exact binomial interval. Reported alongside Wilson because at p -> 0 the normal approximation is unreliable and Wilson is itself an approximation."
+    },
+    {
+      "metric": "Robustness false-permit rate (all decision-path faults)",
+      "events": 0,
+      "n": 51,
+      "experiment": "E8",
+      "clopper_pearson95_low": 0.0,
+      "clopper_pearson95_high": 0.06977703074953867,
+      "method": "Clopper-Pearson (exact)",
+      "note": "Exact binomial interval. Reported alongside Wilson because at p -> 0 the normal approximation is unreliable and Wilson is itself an approximation."
+    },
+    {
+      "metric": "Single-deficit false-permit rate (E9 predicate isolation)",
+      "events": 0,
+      "n": 13,
+      "experiment": "E9",
+      "clopper_pearson95_low": 0.0,
+      "clopper_pearson95_high": 0.24705263800047095,
+      "method": "Clopper-Pearson (exact)",
+      "note": "Exact binomial interval. Reported alongside Wilson because at p -> 0 the normal approximation is unreliable and Wilson is itself an approximation."
+    }
+  ],
+  "statistical_power": [
+    {
+      "metric": "False Permit Rate (ULB, should-deny pop.)",
+      "n": 492,
+      "experiment": "E1",
+      "events_observed": 0,
+      "minimum_detectable_rate_95": 0.006070387030609581,
+      "mdr_definition": "smallest true rate p such that P(0 events in n trials) <= 0.05; equals 1 - 0.05^(1/n), the exact one-sided upper bound",
+      "power_to_detect": [
+        {
+          "true_rate": 0.1,
+          "power": 1.0,
+          "reading": "if the true rate were 0.1, we would have observed >=1 event with probability 100.00%"
+        },
+        {
+          "true_rate": 0.01,
+          "power": 0.9928794139027934,
+          "reading": "if the true rate were 0.01, we would have observed >=1 event with probability 99.29%"
+        },
+        {
+          "true_rate": 0.001,
+          "power": 0.3887481209718511,
+          "reading": "if the true rate were 0.001, we would have observed >=1 event with probability 38.87%"
+        },
+        {
+          "true_rate": 0.0001,
+          "power": 0.048011629535486655,
+          "reading": "if the true rate were 0.0001, we would have observed >=1 event with probability 4.80%"
+        },
+        {
+          "true_rate": 1e-05,
+          "power": 0.0049079411042632914,
+          "reading": "if the true rate were 1e-05, we would have observed >=1 event with probability 0.49%"
+        }
+      ],
+      "design_effect_sensitivity": [
+        {
+          "design_effect": 1.0,
+          "n_eff": 492.0,
+          "wilson95_upper": 0.007747353014470844
+        },
+        {
+          "design_effect": 1.7,
+          "n_eff": 289.4,
+          "wilson95_upper": 0.013117878992148575
+        },
+        {
+          "design_effect": 2.0,
+          "n_eff": 246.0,
+          "wilson95_upper": 0.015375585936884312
+        },
+        {
+          "design_effect": 3.0,
+          "n_eff": 164.0,
+          "wilson95_upper": 0.022887425119427582
+        }
+      ],
+      "caveat": "Assumes independent trials. The cluster-corrected column (DE = 1.7) is the conservative reading; the design-effect sensitivity shows how the bound moves if that correction is wrong."
+    },
+    {
+      "metric": "Unauthorized Execution Rate (ULB, all rows)",
+      "n": 284807,
+      "experiment": "E1",
+      "events_observed": 0,
+      "minimum_detectable_rate_95": 1.0518409022108877e-05,
+      "mdr_definition": "smallest true rate p such that P(0 events in n trials) <= 0.05; equals 1 - 0.05^(1/n), the exact one-sided upper bound",
+      "power_to_detect": [
+        {
+          "true_rate": 0.1,
+          "power": 1.0,
+          "reading": "if the true rate were 0.1, we would have observed >=1 event with probability 100.00%"
+        },
+        {
+          "true_rate": 0.01,
+          "power": 1.0,
+          "reading": "if the true rate were 0.01, we would have observed >=1 event with probability 100.00%"
+        },
+        {
+          "true_rate": 0.001,
+          "power": 1.0,
+          "reading": "if the true rate were 0.001, we would have observed >=1 event with probability 100.00%"
+        },
+        {
+          "true_rate": 0.0001,
+          "power": 0.999999999999573,
+          "reading": "if the true rate were 0.0001, we would have observed >=1 event with probability 100.00%"
+        },
+        {
+          "true_rate": 1e-05,
+          "power": 0.9420447570979471,
+          "reading": "if the true rate were 1e-05, we would have observed >=1 event with probability 94.20%"
+        }
+      ],
+      "design_effect_sensitivity": [
+        {
+          "design_effect": 1.0,
+          "n_eff": 284807.0,
+          "wilson95_upper": 1.3487754893802177e-05
+        },
+        {
+          "design_effect": 1.7,
+          "n_eff": 167533.5,
+          "wilson95_upper": 2.2928902433294878e-05
+        },
+        {
+          "design_effect": 2.0,
+          "n_eff": 142403.5,
+          "wilson95_upper": 2.697505124256054e-05
+        },
+        {
+          "design_effect": 3.0,
+          "n_eff": 94935.7,
+          "wilson95_upper": 4.0462031131159235e-05
+        }
+      ],
+      "caveat": "Assumes independent trials. The cluster-corrected column (DE = 1.7) is the conservative reading; the design-effect sensitivity shows how the bound moves if that correction is wrong."
+    },
+    {
+      "metric": "Boundary FPR (AgentDojo foreign targets)",
+      "n": 62,
+      "experiment": "E7",
+      "events_observed": 0,
+      "minimum_detectable_rate_95": 0.047169511375356854,
+      "mdr_definition": "smallest true rate p such that P(0 events in n trials) <= 0.05; equals 1 - 0.05^(1/n), the exact one-sided upper bound",
+      "power_to_detect": [
+        {
+          "true_rate": 0.1,
+          "power": 0.9985444216570694,
+          "reading": "if the true rate were 0.1, we would have observed >=1 event with probability 99.85%"
+        },
+        {
+          "true_rate": 0.01,
+          "power": 0.463731774792815,
+          "reading": "if the true rate were 0.01, we would have observed >=1 event with probability 46.37%"
+        },
+        {
+          "true_rate": 0.001,
+          "power": 0.060146268565015926,
+          "reading": "if the true rate were 0.001, we would have observed >=1 event with probability 6.01%"
+        },
+        {
+          "true_rate": 0.0001,
+          "power": 0.0061811277642794815,
+          "reading": "if the true rate were 0.0001, we would have observed >=1 event with probability 0.62%"
+        },
+        {
+          "true_rate": 1e-05,
+          "power": 0.0006198109378116046,
+          "reading": "if the true rate were 1e-05, we would have observed >=1 event with probability 0.06%"
+        }
+      ],
+      "design_effect_sensitivity": [
+        {
+          "design_effect": 1.0,
+          "n_eff": 62.0,
+          "wilson95_upper": 0.058344072101372484
+        },
+        {
+          "design_effect": 1.7,
+          "n_eff": 36.5,
+          "wilson95_upper": 0.09641862859446367
+        },
+        {
+          "design_effect": 2.0,
+          "n_eff": 31.0,
+          "wilson95_upper": 0.11025539546043596
+        },
+        {
+          "design_effect": 3.0,
+          "n_eff": 20.7,
+          "wilson95_upper": 0.154639018924847
+        }
+      ],
+      "caveat": "Assumes independent trials. The cluster-corrected column (DE = 1.7) is the conservative reading; the design-effect sensitivity shows how the bound moves if that correction is wrong."
+    },
+    {
+      "metric": "Robustness false-permit rate (all decision-path faults)",
+      "n": 51,
+      "experiment": "E8",
+      "events_observed": 0,
+      "minimum_detectable_rate_95": 0.0570479523604428,
+      "mdr_definition": "smallest true rate p such that P(0 events in n trials) <= 0.05; equals 1 - 0.05^(1/n), the exact one-sided upper bound",
+      "power_to_detect": [
+        {
+          "true_rate": 0.1,
+          "power": 0.9953616023134119,
+          "reading": "if the true rate were 0.1, we would have observed >=1 event with probability 99.54%"
+        },
+        {
+          "true_rate": 0.01,
+          "power": 0.401043993533839,
+          "reading": "if the true rate were 0.01, we would have observed >=1 event with probability 40.10%"
+        },
+        {
+          "true_rate": 0.001,
+          "power": 0.0497455774311657,
+          "reading": "if the true rate were 0.001, we would have observed >=1 event with probability 4.97%"
+        },
+        {
+          "true_rate": 0.0001,
+          "power": 0.005087270800032906,
+          "reading": "if the true rate were 0.0001, we would have observed >=1 event with probability 0.51%"
+        },
+        {
+          "true_rate": 1e-05,
+          "power": 0.0005098725208201316,
+          "reading": "if the true rate were 1e-05, we would have observed >=1 event with probability 0.05%"
+        }
+      ],
+      "design_effect_sensitivity": [
+        {
+          "design_effect": 1.0,
+          "n_eff": 51.0,
+          "wilson95_upper": 0.07004661989853143
+        },
+        {
+          "design_effect": 1.7,
+          "n_eff": 30.0,
+          "wilson95_upper": 0.11351339317396876
+        },
+        {
+          "design_effect": 2.0,
+          "n_eff": 25.5,
+          "wilson95_upper": 0.1287289218592153
+        },
+        {
+          "design_effect": 3.0,
+          "n_eff": 17.0,
+          "wilson95_upper": 0.1843181350088518
+        }
+      ],
+      "caveat": "Assumes independent trials. The cluster-corrected column (DE = 1.7) is the conservative reading; the design-effect sensitivity shows how the bound moves if that correction is wrong."
+    },
+    {
+      "metric": "Single-deficit false-permit rate (E9 predicate isolation)",
+      "n": 13,
+      "experiment": "E9",
+      "events_observed": 0,
+      "minimum_detectable_rate_95": 0.20581666518655073,
+      "mdr_definition": "smallest true rate p such that P(0 events in n trials) <= 0.05; equals 1 - 0.05^(1/n), the exact one-sided upper bound",
+      "power_to_detect": [
+        {
+          "true_rate": 0.1,
+          "power": 0.7458134171670999,
+          "reading": "if the true rate were 0.1, we would have observed >=1 event with probability 74.58%"
+        },
+        {
+          "true_rate": 0.01,
+          "power": 0.12247897700103216,
+          "reading": "if the true rate were 0.01, we would have observed >=1 event with probability 12.25%"
+        },
+        {
+          "true_rate": 0.001,
+          "power": 0.012922285286285251,
+          "reading": "if the true rate were 0.001, we would have observed >=1 event with probability 1.29%"
+        },
+        {
+          "true_rate": 0.0001,
+          "power": 0.0012992202859283264,
+          "reading": "if the true rate were 0.0001, we would have observed >=1 event with probability 0.13%"
+        },
+        {
+          "true_rate": 1e-05,
+          "power": 0.00012999220028542258,
+          "reading": "if the true rate were 1e-05, we would have observed >=1 event with probability 0.01%"
+        }
+      ],
+      "design_effect_sensitivity": [
+        {
+          "design_effect": 1.0,
+          "n_eff": 13.0,
+          "wilson95_upper": 0.22809537235419838
+        },
+        {
+          "design_effect": 1.7,
+          "n_eff": 7.6,
+          "wilson95_upper": 0.32440756488388023
+        },
+        {
+          "design_effect": 2.0,
+          "n_eff": 6.5,
+          "wilson95_upper": 0.3903342879021653
+        },
+        {
+          "design_effect": 3.0,
+          "n_eff": 4.3,
+          "wilson95_upper": 0.4898908364545973
+        }
+      ],
+      "caveat": "Assumes independent trials. The cluster-corrected column (DE = 1.7) is the conservative reading; the design-effect sensitivity shows how the bound moves if that correction is wrong."
+    }
+  ],
+  "uncertainty_analysis": {
+    "exact_no_uncertainty": [
+      "Authorization decisions (deterministic function of the input)",
+      "Confusion matrix counts (TP/TN/FP/FN)",
+      "Exhaustive 2^16 state enumeration and field-mismatch counts (E3)",
+      "TLC distinct reachable states (E3)",
+      "Ablation leak counts and risk differences (deterministic contrasts, E5)",
+      "Predicate coverage and single-deficit outcomes (E9)",
+      "Bundle member digests and ledger binding (E10)"
+    ],
+    "sampling_uncertainty": [
+      "All proportion metrics: uncertainty is over the sampled input space, not run-to-run. Reported as Wilson AND exact Clopper-Pearson intervals.",
+      "Zero-event metrics: the upper bound, never the point estimate of 0, is the claim."
+    ],
+    "host_variability": [
+      "Wall-clock latency (E1, E6, E9) \u2014 varies with host load; bootstrap CI where raw samples exist (E5), summary statistics otherwise.",
+      "Throughput and speedup (E4) \u2014 the values move between runs; the SHAPE (no scaling) is stable."
+    ],
+    "not_quantified": [
+      {
+        "quantity": "Frequentist p-values",
+        "reason": "the engine is deterministic, so the ablation contrasts are exact rather than sampled; no sampling distribution exists under the null. Risk difference and Cohen's h are reported instead."
+      },
+      {
+        "quantity": "Power for non-zero-event metrics",
+        "reason": "power is defined here against a hypothetical true rate for zero-event observations. For metrics with observed events the interval itself is the uncertainty statement."
+      }
+    ]
+  },
+  "robustness_summary": {
+    "n_families": 16,
+    "total_trials": 51,
+    "total_false_permits": 0,
+    "per_family": [
+      {
+        "family": "missing_predicate",
+        "mechanism": "A",
+        "n": 10,
+        "false_permits": 0,
+        "wilson95_upper": 0.2775327998628892,
+        "exact95_upper": 0.30849710781876083,
+        "power_to_detect_1pct": 0.09561792499119559
+      },
+      {
+        "family": "delayed_predicate",
+        "mechanism": "A",
+        "n": 3,
+        "false_permits": 0,
+        "wilson95_upper": 0.5614970317550454,
+        "exact95_upper": 0.7075982261787134,
+        "power_to_detect_1pct": 0.029700999999999977
+      },
+      {
+        "family": "corrupted_predicate",
+        "mechanism": "A",
+        "n": 10,
+        "false_permits": 0,
+        "wilson95_upper": 0.2775327998628892,
+        "exact95_upper": 0.30849710781876083,
+        "power_to_detect_1pct": 0.09561792499119559
+      },
+      {
+        "family": "conflicting_predicate",
+        "mechanism": "A",
+        "n": 4,
+        "false_permits": 0,
+        "wilson95_upper": 0.4898908364545973,
+        "exact95_upper": 0.6023646356164747,
+        "power_to_detect_1pct": 0.039403990000000055
+      },
+      {
+        "family": "stale_context",
+        "mechanism": "A",
+        "n": 2,
+        "false_permits": 0,
+        "wilson95_upper": 0.6576197724933469,
+        "exact95_upper": 0.841886116991581,
+        "power_to_detect_1pct": 0.01990000000000003
+      },
+      {
+        "family": "missing_authorization_context",
+        "mechanism": "A",
+        "n": 2,
+        "false_permits": 0,
+        "wilson95_upper": 0.6576197724933469,
+        "exact95_upper": 0.841886116991581,
+        "power_to_detect_1pct": 0.01990000000000003
+      },
+      {
+        "family": "authorization_timeout",
+        "mechanism": "A",
+        "n": 3,
+        "false_permits": 0,
+        "wilson95_upper": 0.5614970317550454,
+        "exact95_upper": 0.7075982261787134,
+        "power_to_detect_1pct": 0.029700999999999977
+      },
+      {
+        "family": "network_delay",
+        "mechanism": "A",
+        "n": 1,
+        "false_permits": 0,
+        "wilson95_upper": 0.7934506856227626,
+        "exact95_upper": 0.975,
+        "power_to_detect_1pct": 0.010000000000000009
+      },
+      {
+        "family": "partial_system_failure",
+        "mechanism": "A",
+        "n": 5,
+        "false_permits": 0,
+        "wilson95_upper": 0.43448246478317476,
+        "exact95_upper": 0.5218237501049815,
+        "power_to_detect_1pct": 0.04900995010000009
+      },
+      {
+        "family": "predicate_race_condition",
+        "mechanism": "A",
+        "n": 3,
+        "false_permits": 0,
+        "wilson95_upper": 0.5614970317550454,
+        "exact95_upper": 0.7075982261787134,
+        "power_to_detect_1pct": 0.029700999999999977
+      },
+      {
+        "family": "clock_skew",
+        "mechanism": "C",
+        "n": 3,
+        "false_permits": 0,
+        "wilson95_upper": 0.5614970317550454,
+        "exact95_upper": 0.7075982261787134,
+        "power_to_detect_1pct": 0.029700999999999977
+      },
+      {
+        "family": "replay_corruption",
+        "mechanism": "B",
+        "n": 1,
+        "outcome": "corruption_detected",
+        "detected": true,
+        "note": "integrity fault: measured by detection, not by false permits"
+      },
+      {
+        "family": "ledger_corruption",
+        "mechanism": "B",
+        "n": 1,
+        "outcome": "corruption_detected",
+        "detected": true,
+        "note": "integrity fault: measured by detection, not by false permits"
+      },
+      {
+        "family": "partial_ledger_loss",
+        "mechanism": "B",
+        "n": 1,
+        "outcome": "corruption_detected",
+        "detected": true,
+        "note": "integrity fault: measured by detection, not by false permits"
+      },
+      {
+        "family": "event_reordering",
+        "mechanism": "B",
+        "n": 1,
+        "outcome": "corruption_detected",
+        "detected": true,
+        "note": "integrity fault: measured by detection, not by false permits"
+      },
+      {
+        "family": "duplicate_events",
+        "mechanism": "B",
+        "n": 1,
+        "outcome": "corruption_detected",
+        "detected": true,
+        "note": "integrity fault: measured by detection, not by false permits"
+      }
+    ],
+    "honest_reading": "Per-family trial counts are small (1-10). A per-family upper bound is therefore wide; the aggregate bound over all 51 decision-path trials is the defensible figure. Families with n = 1 establish that the mechanism fires, not a rate."
+  }
+}

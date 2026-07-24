@@ -1,0 +1,50 @@
+{
+  "experiment": "E8",
+  "title": "Runtime Robustness",
+  "host": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "system": "Darwin",
+    "machine": "arm64",
+    "processor": "arm",
+    "python_version": "3.9.6",
+    "python_executable": "/Users/sukhmangill/Documents/GitHub/Independent Benchmark and Reviewer-Closure Framework for L-DREA/.venv/bin/python",
+    "cpu_count": 10,
+    "eval_seed": 20260709,
+    "cpu_brand": "Apple M5",
+    "mem_bytes": 17179869184,
+    "git_head": "264b9ec378a3c0b0984fdf25cdee98c93e024f70",
+    "git_dirty": true
+  },
+  "run": {
+    "exp_id": "E8",
+    "title": "Runtime Robustness",
+    "outdir": "experiments/robustness",
+    "reproduction_command": "./.venv/bin/python experiment_robustness.py",
+    "status": "EXECUTED",
+    "started_utc": "2026-07-11T17:39:47Z",
+    "duration_s": 1.4,
+    "return_code": 0,
+    "log_path": "experiments/robustness/logs/E8.log",
+    "artifacts": {
+      "robustness": {
+        "path": "experiments/robustness/robustness.json",
+        "sha256": "9f1abfbd7d74d30a32a25f2b67fbf105643cd4679b779554bcdeafcff3dba39e",
+        "bytes": 9490
+      },
+      "robustness_csv": {
+        "path": "experiments/robustness/robustness.csv",
+        "sha256": "19d188eb6677e4921c4be4958811986c165ff875e0c9911c8674af7ed6b1a80e",
+        "bytes": 1606
+      },
+      "robustness_log": {
+        "path": "experiments/robustness/robustness_log.jsonl",
+        "sha256": "b6666020c34b06112c203b19caa0c56541b0b8bbcef706038e60688337eaf67f",
+        "bytes": 9611
+      }
+    },
+    "blocked_reason": null,
+    "missing_dependency": null,
+    "rerun_when_available": null,
+    "notes": "16 fault families injected into the harness only; frozen engine + stable verifier unchanged."
+  }
+}

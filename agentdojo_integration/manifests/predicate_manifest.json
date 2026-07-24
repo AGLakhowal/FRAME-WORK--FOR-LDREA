@@ -1,0 +1,161 @@
+{
+  "manifest": "Predicate Manifest",
+  "leaf_index": 1,
+  "frozen_date": "2026-07-07",
+  "spec_reference": "IEEE Paper Section IV-A/B (Definition 2, LLC), Section X (domain instantiations); LCP-6 R1-R6; Verification Part 4 (instances of Definition 1) and Part 5 leaf #1.",
+  "blind_authoring_statement": "Predicate families derived exclusively from IEEE Paper Section X action-class semantics and Definition 1. The AgentDojo injection-task corpus was NOT inspected; only injection-task IDs were counted. No predicate was added to catch any specific injection.",
+  "predicate_families_are_existing_only": true,
+  "predicate_families": {
+    "CTR_ISB": "R1 typed context translation + interpretive-sufficiency bit (Section V-B).",
+    "GAMMA": "R2 non-compensatory aggregation Gamma = max_i d_i, Pi = 1[Gamma=0] (Section IV-B). UNCHANGED.",
+    "GATE_recipient_recognition": "R3 cross-domain gate: recipient in recognized set (Section X-A destination-bank analogue).",
+    "GATE_identity_recognition": "R3 cross-domain gate: target identity in recognized set.",
+    "GATE_destination_recognition": "R3 cross-domain gate: outbound URL/destination in recognized set.",
+    "GATE_resource_recognition": "R3 cross-domain gate: reserved resource in recognized set.",
+    "GATE_amount_limit": "R3 cross-domain gate: amount within environment-derived limit (<= available balance).",
+    "GATE_ownership": "R3 cross-domain gate: acting on a resource owned/in-scope for the principal.",
+    "GATE_scope": "R3 scope-of-authority: action within the granted operation scope.",
+    "AUTH_TOKEN": "R4 token validity + freshness/TTL + authorization provenance (Section V-E).",
+    "TRACE": "R5 replay-verifiable evidence chain / Evidence Quad integrity.",
+    "INTERLOCK": "R6 commit-before-actuate (Tier-S software ordering; hardware interlock NOT exercised).",
+    "CLASS_velocity": "Gamma_class autonomy/velocity metric (Section V-C); marginal in short-horizon AgentDojo tasks."
+  },
+  "action_class_predicate_binding": {
+    "FUNDS_TRANSFER": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_recipient_recognition",
+        "GATE_amount_limit",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK",
+        "CLASS_velocity"
+      ],
+      "maps_to_section_x": "Section X-A WIRE_TRANSFER (direct family reuse: recipient/IBAN recognition, amount-limit, scope, freshness)",
+      "risk": "HIGH"
+    },
+    "ACCOUNT_MUTATION": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_ownership",
+        "GATE_amount_limit",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X-A banking mutation family (ownership + amount-limit)",
+      "risk": "MED-HIGH"
+    },
+    "IDENTITY_MUTATION": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_ownership",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X-A ownership/scope gate family",
+      "risk": "HIGH"
+    },
+    "MESSAGE_DISPATCH": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_recipient_recognition",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X-A recipient-recognition + scope gate (generic messaging instance)",
+      "risk": "HIGH"
+    },
+    "ACCESS_GRANT": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_identity_recognition",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X-A identity/recipient-recognition + scope gate",
+      "risk": "HIGH"
+    },
+    "WEB_EXFIL": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_destination_recognition",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X-A destination-recognition + scope gate (outbound content)",
+      "risk": "HIGH"
+    },
+    "CALENDAR_MUTATION": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_ownership",
+        "GATE_recipient_recognition",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X ownership/recipient + scope gate",
+      "risk": "LOW-MED"
+    },
+    "FILE_MUTATION": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_ownership",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X ownership + scope gate",
+      "risk": "LOW-MED"
+    },
+    "RECORD_DELETION": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_ownership",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X ownership + scope gate (destructive)",
+      "risk": "MED-HIGH"
+    },
+    "RESERVATION_COMMIT": {
+      "predicates": [
+        "CTR_ISB",
+        "GAMMA",
+        "GATE_resource_recognition",
+        "GATE_amount_limit",
+        "GATE_scope",
+        "AUTH_TOKEN",
+        "TRACE",
+        "INTERLOCK"
+      ],
+      "maps_to_section_x": "Section X resource-recognition + amount-limit + scope (WIRE_TRANSFER gate shape)",
+      "risk": "MED-HIGH"
+    }
+  },
+  "note": "These are INSTANTIATIONS of existing predicate families for new instances of Definition 1 (Verification Part 4). No new predicate TYPE is introduced."
+}

@@ -1,0 +1,25 @@
+========================================================================
+  EXPERIMENT 8 — RUNTIME ROBUSTNESS (fault injection; engine unchanged)
+========================================================================
+  control clean proposal: PERMIT (permits=True)
+  fault families: 16  ·  total trials: 51
+  total false permits across ALL faults: 0
+  families where safety holds: 16/16
+  ALL safety properties hold: True
+
+  [HOLD] missing_predicate              (A) trials=10  fp=0
+  [HOLD] delayed_predicate              (A) trials=3   fp=0
+  [HOLD] corrupted_predicate            (A) trials=10  fp=0
+  [HOLD] conflicting_predicate          (A) trials=4   fp=0
+  [HOLD] stale_context                  (A) trials=2   fp=0
+  [HOLD] missing_authorization_context  (A) trials=2   fp=0
+  [HOLD] authorization_timeout          (A) trials=3   fp=0
+  [HOLD] network_delay                  (A) trials=1   fp=0
+  [HOLD] partial_system_failure         (A) trials=5   fp=0
+  [HOLD] predicate_race_condition       (A) trials=3   fp=0
+  [HOLD] clock_skew                     (C) trials=3   fp=0
+  [HOLD] replay_corruption              (B) trials=1   detected=True
+  [HOLD] ledger_corruption              (B) trials=1   detected=True
+  [HOLD] partial_ledger_loss            (B) trials=1   detected=True
+  [HOLD] event_reordering               (B) trials=1   detected=True
+  [HOLD] duplicate_events               (B) trials=1   detected=True

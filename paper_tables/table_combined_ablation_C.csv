@@ -1,0 +1,10 @@
+Component,Dependent Components,Failure Impact (measured single removal)
+Predicate Engine (PE),EQ+FT+RD,RIS→0.83; FPR 1.000; evidence 1.000; ledger 1.000
+Runtime Revocation (RV),FT+RD,RIS→0.83; FPR 0.519; evidence 1.000; ledger 1.000
+Evidence Quad (EQ),HC+LG,RIS→0.33; FPR 0.519; evidence 0.000; ledger n/a
+Runtime Ledger (LG),HC,RIS→0.50; FPR 0.519; evidence 1.000; ledger n/a
+Hash Chain (HC),—,RIS→0.50; FPR 0.519; evidence 1.000; ledger 0.000
+Runtime Risk Detection (RD),—,governance stage (not in ablation matrix)
+Runtime Watchdog (WD),FT,governance stage (not in ablation matrix)
+Fleet Telemetry (FT),—,governance stage (not in ablation matrix)
+Clock Consistency (single-host PTP) (CK),—,governance stage (not in ablation matrix)

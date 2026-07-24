@@ -1,0 +1,65 @@
+{
+  "test": "Fail-Closed Rate (FCR)",
+  "definition": "FCR = P(SAFE_STATE | should-deny OR uncertain state); adverse event = fail-open (PERMIT under uncertainty).",
+  "overall": {
+    "population": "should-deny + injected uncertainty",
+    "n": 20492,
+    "fail_open_events": 0,
+    "fail_closed": 20492,
+    "FCR": 1.0,
+    "wilson95_fail_open_upper": 0.0001874263,
+    "pass": true,
+    "pass_threshold": "FCR = 1.0 observed; Wilson 95% upper bound reported"
+  },
+  "by_family": [
+    {
+      "family": "should_deny_real",
+      "n": 492,
+      "fail_open_events": 0,
+      "fail_closed": 492,
+      "fail_closed_rate": 1.0,
+      "wilson95_fail_open_upper": 0.007747353
+    },
+    {
+      "family": "invalid_token",
+      "n": 4000,
+      "fail_open_events": 0,
+      "fail_closed": 4000,
+      "fail_closed_rate": 1.0,
+      "wilson95_fail_open_upper": 0.0009594433
+    },
+    {
+      "family": "stale_telemetry",
+      "n": 4000,
+      "fail_open_events": 0,
+      "fail_closed": 4000,
+      "fail_closed_rate": 1.0,
+      "wilson95_fail_open_upper": 0.0009594433
+    },
+    {
+      "family": "stale_context_toctou",
+      "n": 4000,
+      "fail_open_events": 0,
+      "fail_closed": 4000,
+      "fail_closed_rate": 1.0,
+      "wilson95_fail_open_upper": 0.0009594433
+    },
+    {
+      "family": "missing_predicate",
+      "n": 4000,
+      "fail_open_events": 0,
+      "fail_closed": 4000,
+      "fail_closed_rate": 1.0,
+      "wilson95_fail_open_upper": 0.0009594433
+    },
+    {
+      "family": "ambiguous_signature",
+      "n": 4000,
+      "fail_open_events": 0,
+      "fail_closed": 4000,
+      "fail_closed_rate": 1.0,
+      "wilson95_fail_open_upper": 0.0009594433
+    }
+  ],
+  "engine": "non-compensatory Gamma + ISB (TOKEN_VALID & AuthoritySignatureValid & TelemetryFresh & !StaleContext)"
+}

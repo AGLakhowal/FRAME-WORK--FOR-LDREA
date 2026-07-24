@@ -1,0 +1,119 @@
+{
+  "outdir": "agentdojo_integration/audit_run",
+  "episodes": {
+    "specs": 32,
+    "completed": 21,
+    "skipped": 11,
+    "errors": 0
+  },
+  "validations": {
+    "frozen_integrity_unchanged": true,
+    "trace_integrity_all_ok": true,
+    "replay_all_consistent": true,
+    "authorization_replay_identical": true,
+    "proofs_all_consistent": true
+  },
+  "statistics_headline": {
+    "gamma_decisions": 14,
+    "permits": 11,
+    "denials": 3,
+    "permit_rate_wilson95": {
+      "p": 0.7857142857142857,
+      "low": 0.524107694133997,
+      "high": 0.9242861328730683,
+      "n": 14,
+      "successes": 11
+    }
+  },
+  "artifacts": {
+    "per_episode_dirs": [
+      "agentdojo_integration/audit_run/trace/workspace/user_task_0__injection_task_0",
+      "agentdojo_integration/audit_run/trace/workspace/user_task_1__injection_task_0",
+      "agentdojo_integration/audit_run/trace/workspace/user_task_3__injection_task_0",
+      "agentdojo_integration/audit_run/trace/workspace/user_task_2__injection_task_0",
+      "agentdojo_integration/audit_run/trace/workspace/user_task_5__injection_task_0",
+      "agentdojo_integration/audit_run/trace/workspace/user_task_6__injection_task_0",
+      "agentdojo_integration/audit_run/trace/workspace/user_task_7__injection_task_0",
+      "agentdojo_integration/audit_run/trace/workspace/user_task_8__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_0__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_1__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_2__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_3__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_4__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_5__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_6__injection_task_0",
+      "agentdojo_integration/audit_run/trace/banking/user_task_7__injection_task_0",
+      "agentdojo_integration/audit_run/trace/slack/user_task_0__injection_task_1",
+      "agentdojo_integration/audit_run/trace/slack/user_task_1__injection_task_1",
+      "agentdojo_integration/audit_run/trace/slack/user_task_2__injection_task_1",
+      "agentdojo_integration/audit_run/trace/slack/user_task_3__injection_task_1",
+      "agentdojo_integration/audit_run/trace/slack/user_task_4__injection_task_1",
+      "agentdojo_integration/audit_run/trace/slack/user_task_5__injection_task_1",
+      "agentdojo_integration/audit_run/trace/slack/user_task_6__injection_task_1",
+      "agentdojo_integration/audit_run/trace/slack/user_task_7__injection_task_1",
+      "agentdojo_integration/audit_run/trace/travel/user_task_0__injection_task_6",
+      "agentdojo_integration/audit_run/trace/travel/user_task_1__injection_task_6",
+      "agentdojo_integration/audit_run/trace/travel/user_task_2__injection_task_6",
+      "agentdojo_integration/audit_run/trace/travel/user_task_3__injection_task_6",
+      "agentdojo_integration/audit_run/trace/travel/user_task_4__injection_task_6",
+      "agentdojo_integration/audit_run/trace/travel/user_task_5__injection_task_6",
+      "agentdojo_integration/audit_run/trace/travel/user_task_6__injection_task_6",
+      "agentdojo_integration/audit_run/trace/travel/user_task_7__injection_task_6"
+    ],
+    "statistics": [
+      "statistics.json",
+      "statistics_tables.md",
+      "decisions.csv",
+      "predicates.csv"
+    ],
+    "reviewer": [
+      "reviewer/MASTER_REPORT.md",
+      "reviewer/episodes/ (33 files)"
+    ],
+    "proofs": [
+      "all_proofs.json",
+      "proofs/ (14 proofs)"
+    ],
+    "figures": [
+      "fig1_gamma_histogram",
+      "fig2_pi_histogram",
+      "fig3_predicate_heatmap",
+      "fig4_tool_authorization_heatmap",
+      "fig5_latency_by_event",
+      "fig6_policy_utilization"
+    ],
+    "graphs": [
+      "authorization_graph.dot",
+      "tool_graph.dot",
+      "benchmark_flow.mmd",
+      "decision_sankey.mmd"
+    ],
+    "dashboards": [
+      "dashboard.html",
+      "explorer.html"
+    ],
+    "summary": [
+      "BENCHMARK_SUMMARY.md",
+      "BENCHMARK_SUMMARY.json"
+    ],
+    "supplementary": [
+      "trace_event.schema.json",
+      "csv_schema.json",
+      "SUPPLEMENTARY_MATERIAL.md"
+    ],
+    "integrity": [
+      "frozen_integrity.json",
+      "trace_integrity_all.json",
+      "replay_validation.json"
+    ]
+  },
+  "resource": {
+    "peak_rss_bytes": 202670080,
+    "note": "peak resident set size of the orchestrator process (getrusage), whole run."
+  },
+  "limitations": [
+    "The local model (llama3.1:8b via Ollama) is non-deterministic even at temperature 0, so episode-level utility/security vary run-to-run; authorization-layer values are deterministic given a fixed candidate action (validated).",
+    "false_permit_rate / false_deny_rate require external per-action ground-truth labels not present in the traces; they are reported as null, never fabricated.",
+    "This corpus is a bounded batch (see batch counts); scaling to the full AgentDojo corpus is a runtime-budget matter and requires no code change."
+  ]
+}

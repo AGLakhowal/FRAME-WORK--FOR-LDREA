@@ -1,0 +1,68 @@
+{
+  "generated_from": {
+    "combined_ablation.json": "per-configuration measured metrics + interactions",
+    "combined_statistics.json": "significance (bootstrap-difference on RIS)",
+    "cross_dataset_ablation.json": "replication of each component's signature effect",
+    "metadata/combined_ablation_run_metadata.json": "seed / n / run provenance"
+  },
+  "run": {
+    "workload_n": 6000,
+    "seed": 20260710,
+    "n_configurations": 19,
+    "baseline_undetected_risk_rate": 0.5189873417721519,
+    "cross_dataset_row_limit": 20000,
+    "bootstrap_replicates": 300
+  },
+  "columns": [
+    {
+      "component": "PE",
+      "delta_fpr": "combined_ablation.json \u25b7 configs[disabled_codes==['PE']].undetected_risk_rate \u2212 configs[baseline].undetected_risk_rate",
+      "delta_ris": "combined_ablation.json \u25b7 configs[...].runtime_integrity_score \u2212 baseline_runtime_integrity_score",
+      "delta_evidence": "combined_ablation.json \u25b7 configs[...].evidence_completeness \u2212 configs[baseline].evidence_completeness",
+      "security_impact": "derived from delta_fpr and delta(revocation_compliance) by the stated rule in generate_master_ablation_table.py::security_impact",
+      "interaction": "combined_ablation.json \u25b7 interactions[order==2 and PE in combination].interaction_class",
+      "cross_dataset": "cross_dataset_ablation.json \u25b7 datasets[*].configs[...] signature check (all 3 datasets)",
+      "significant": "combined_statistics.json \u25b7 configs[...].runtime_integrity_score.significant (bootstrap-difference CI excludes 0)"
+    },
+    {
+      "component": "RV",
+      "delta_fpr": "combined_ablation.json \u25b7 configs[disabled_codes==['RV']].undetected_risk_rate \u2212 configs[baseline].undetected_risk_rate",
+      "delta_ris": "combined_ablation.json \u25b7 configs[...].runtime_integrity_score \u2212 baseline_runtime_integrity_score",
+      "delta_evidence": "combined_ablation.json \u25b7 configs[...].evidence_completeness \u2212 configs[baseline].evidence_completeness",
+      "security_impact": "derived from delta_fpr and delta(revocation_compliance) by the stated rule in generate_master_ablation_table.py::security_impact",
+      "interaction": "combined_ablation.json \u25b7 interactions[order==2 and RV in combination].interaction_class",
+      "cross_dataset": "cross_dataset_ablation.json \u25b7 datasets[*].configs[...] signature check (all 3 datasets)",
+      "significant": "combined_statistics.json \u25b7 configs[...].runtime_integrity_score.significant (bootstrap-difference CI excludes 0)"
+    },
+    {
+      "component": "EQ",
+      "delta_fpr": "combined_ablation.json \u25b7 configs[disabled_codes==['EQ']].undetected_risk_rate \u2212 configs[baseline].undetected_risk_rate",
+      "delta_ris": "combined_ablation.json \u25b7 configs[...].runtime_integrity_score \u2212 baseline_runtime_integrity_score",
+      "delta_evidence": "combined_ablation.json \u25b7 configs[...].evidence_completeness \u2212 configs[baseline].evidence_completeness",
+      "security_impact": "derived from delta_fpr and delta(revocation_compliance) by the stated rule in generate_master_ablation_table.py::security_impact",
+      "interaction": "combined_ablation.json \u25b7 interactions[order==2 and EQ in combination].interaction_class",
+      "cross_dataset": "cross_dataset_ablation.json \u25b7 datasets[*].configs[...] signature check (all 3 datasets)",
+      "significant": "combined_statistics.json \u25b7 configs[...].runtime_integrity_score.significant (bootstrap-difference CI excludes 0)"
+    },
+    {
+      "component": "LG",
+      "delta_fpr": "combined_ablation.json \u25b7 configs[disabled_codes==['LG']].undetected_risk_rate \u2212 configs[baseline].undetected_risk_rate",
+      "delta_ris": "combined_ablation.json \u25b7 configs[...].runtime_integrity_score \u2212 baseline_runtime_integrity_score",
+      "delta_evidence": "combined_ablation.json \u25b7 configs[...].evidence_completeness \u2212 configs[baseline].evidence_completeness",
+      "security_impact": "derived from delta_fpr and delta(revocation_compliance) by the stated rule in generate_master_ablation_table.py::security_impact",
+      "interaction": "combined_ablation.json \u25b7 interactions[order==2 and LG in combination].interaction_class",
+      "cross_dataset": "cross_dataset_ablation.json \u25b7 datasets[*].configs[...] signature check (all 3 datasets)",
+      "significant": "combined_statistics.json \u25b7 configs[...].runtime_integrity_score.significant (bootstrap-difference CI excludes 0)"
+    },
+    {
+      "component": "HC",
+      "delta_fpr": "combined_ablation.json \u25b7 configs[disabled_codes==['HC']].undetected_risk_rate \u2212 configs[baseline].undetected_risk_rate",
+      "delta_ris": "combined_ablation.json \u25b7 configs[...].runtime_integrity_score \u2212 baseline_runtime_integrity_score",
+      "delta_evidence": "combined_ablation.json \u25b7 configs[...].evidence_completeness \u2212 configs[baseline].evidence_completeness",
+      "security_impact": "derived from delta_fpr and delta(revocation_compliance) by the stated rule in generate_master_ablation_table.py::security_impact",
+      "interaction": "combined_ablation.json \u25b7 interactions[order==2 and HC in combination].interaction_class",
+      "cross_dataset": "cross_dataset_ablation.json \u25b7 datasets[*].configs[...] signature check (all 3 datasets)",
+      "significant": "combined_statistics.json \u25b7 configs[...].runtime_integrity_score.significant (bootstrap-difference CI excludes 0)"
+    }
+  ]
+}

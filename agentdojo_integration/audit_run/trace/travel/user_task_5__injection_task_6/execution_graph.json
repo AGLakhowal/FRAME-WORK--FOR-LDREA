@@ -1,0 +1,262 @@
+{
+  "nodes": [
+    {
+      "id": "evt-000001",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000002",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 1
+    },
+    {
+      "id": "evt-000003",
+      "type": "TOOL_CALL_PROPOSED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 2
+    },
+    {
+      "id": "evt-000004",
+      "type": "GAMMA_INTERCEPT",
+      "component": "GammaGovernedRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000005",
+      "type": "TOOL_EXECUTION",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000006",
+      "type": "TOOL_RESULT",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 2
+    },
+    {
+      "id": "evt-000007",
+      "type": "OBSERVATION_RETURNED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 2
+    },
+    {
+      "id": "evt-000008",
+      "type": "TOOL_CALL_PROPOSED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 3
+    },
+    {
+      "id": "evt-000009",
+      "type": "GAMMA_INTERCEPT",
+      "component": "GammaGovernedRuntime",
+      "step": 3
+    },
+    {
+      "id": "evt-000010",
+      "type": "TOOL_EXECUTION",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 3
+    },
+    {
+      "id": "evt-000011",
+      "type": "TOOL_RESULT",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 3
+    },
+    {
+      "id": "evt-000012",
+      "type": "OBSERVATION_RETURNED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 3
+    },
+    {
+      "id": "evt-000013",
+      "type": "TOOL_CALL_PROPOSED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 4
+    },
+    {
+      "id": "evt-000014",
+      "type": "GAMMA_INTERCEPT",
+      "component": "GammaGovernedRuntime",
+      "step": 4
+    },
+    {
+      "id": "evt-000015",
+      "type": "TOOL_EXECUTION",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 4
+    },
+    {
+      "id": "evt-000016",
+      "type": "TOOL_RESULT",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 4
+    },
+    {
+      "id": "evt-000017",
+      "type": "OBSERVATION_RETURNED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 4
+    },
+    {
+      "id": "evt-000018",
+      "type": "TOOL_CALL_PROPOSED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 5
+    },
+    {
+      "id": "evt-000019",
+      "type": "GAMMA_INTERCEPT",
+      "component": "GammaGovernedRuntime",
+      "step": 5
+    },
+    {
+      "id": "evt-000020",
+      "type": "TOOL_EXECUTION",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 5
+    },
+    {
+      "id": "evt-000021",
+      "type": "TOOL_RESULT",
+      "component": "AgentDojo.FunctionsRuntime",
+      "step": 5
+    },
+    {
+      "id": "evt-000022",
+      "type": "OBSERVATION_RETURNED",
+      "component": "AgentDojo.ToolsExecutor",
+      "step": 5
+    },
+    {
+      "id": "evt-000023",
+      "type": "LLM_NEXT_CONTEXT",
+      "component": "AgentDojo.pipeline",
+      "step": 6
+    },
+    {
+      "id": "evt-000024",
+      "type": "LLM_REQUEST",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 6
+    },
+    {
+      "id": "evt-000025",
+      "type": "LLM_RESPONSE",
+      "component": "AgentDojo.OpenAILLM",
+      "step": 6
+    },
+    {
+      "id": "evt-000026",
+      "type": "EPISODE_FINISHED",
+      "component": "AgentDojo.benchmark",
+      "step": 6
+    }
+  ],
+  "edges": [
+    {
+      "from": "evt-000001",
+      "to": "evt-000002"
+    },
+    {
+      "from": "evt-000002",
+      "to": "evt-000003"
+    },
+    {
+      "from": "evt-000003",
+      "to": "evt-000004"
+    },
+    {
+      "from": "evt-000004",
+      "to": "evt-000005"
+    },
+    {
+      "from": "evt-000005",
+      "to": "evt-000006"
+    },
+    {
+      "from": "evt-000006",
+      "to": "evt-000007"
+    },
+    {
+      "from": "evt-000007",
+      "to": "evt-000008"
+    },
+    {
+      "from": "evt-000008",
+      "to": "evt-000009"
+    },
+    {
+      "from": "evt-000009",
+      "to": "evt-000010"
+    },
+    {
+      "from": "evt-000010",
+      "to": "evt-000011"
+    },
+    {
+      "from": "evt-000011",
+      "to": "evt-000012"
+    },
+    {
+      "from": "evt-000012",
+      "to": "evt-000013"
+    },
+    {
+      "from": "evt-000013",
+      "to": "evt-000014"
+    },
+    {
+      "from": "evt-000014",
+      "to": "evt-000015"
+    },
+    {
+      "from": "evt-000015",
+      "to": "evt-000016"
+    },
+    {
+      "from": "evt-000016",
+      "to": "evt-000017"
+    },
+    {
+      "from": "evt-000017",
+      "to": "evt-000018"
+    },
+    {
+      "from": "evt-000018",
+      "to": "evt-000019"
+    },
+    {
+      "from": "evt-000019",
+      "to": "evt-000020"
+    },
+    {
+      "from": "evt-000020",
+      "to": "evt-000021"
+    },
+    {
+      "from": "evt-000021",
+      "to": "evt-000022"
+    },
+    {
+      "from": "evt-000022",
+      "to": "evt-000023"
+    },
+    {
+      "from": "evt-000023",
+      "to": "evt-000024"
+    },
+    {
+      "from": "evt-000024",
+      "to": "evt-000025"
+    },
+    {
+      "from": "evt-000025",
+      "to": "evt-000026"
+    }
+  ]
+}

@@ -1,0 +1,542 @@
+[
+  {
+    "table": "LAB_primary",
+    "metric": "false_permit_rate",
+    "value": 0.0,
+    "source": "gamma_lab_v1_report.json:primary_metrics",
+    "code": "metrics_engine (point=adv/n)",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "LAB_primary",
+    "metric": "false_denial_rate",
+    "value": 0.0,
+    "source": "gamma_lab_v1_report.json:primary_metrics",
+    "code": "metrics_engine (point=adv/n)",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "LAB_primary",
+    "metric": "replay_determinism_rate",
+    "value": 1.0,
+    "source": "gamma_lab_v1_report.json:primary_metrics",
+    "code": "metrics_engine (point=adv/n)",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "LAB_primary",
+    "metric": "revocation_compliance",
+    "value": 1.0,
+    "source": "gamma_lab_v1_report.json:primary_metrics",
+    "code": "metrics_engine (point=adv/n)",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "LAB_primary",
+    "metric": "toctou_violation_rate",
+    "value": 0.0,
+    "source": "gamma_lab_v1_report.json:primary_metrics",
+    "code": "metrics_engine (point=adv/n)",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "LAB_primary",
+    "metric": "class_veto_effectiveness",
+    "value": 1.0,
+    "source": "gamma_lab_v1_report.json:primary_metrics",
+    "code": "metrics_engine (point=adv/n)",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "LAB_primary",
+    "metric": "UER",
+    "value": 0,
+    "source": "gamma_lab_v1_report.json:unauthorized_execution",
+    "code": "metrics_engine.compute_zero_event_upper_bound",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "runtime_invariants",
+    "metric": "I1_execution_sovereignty",
+    "value": 0,
+    "source": "gamma_lab_v1_report.json:runtime_invariants_violations",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "runtime_invariants",
+    "metric": "I2_non_bypassability",
+    "value": 0,
+    "source": "gamma_lab_v1_report.json:runtime_invariants_violations",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "runtime_invariants",
+    "metric": "I3_non_compensatory_soundness",
+    "value": 0,
+    "source": "gamma_lab_v1_report.json:runtime_invariants_violations",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "runtime_invariants",
+    "metric": "I4_class_level_veto",
+    "value": 0,
+    "source": "gamma_lab_v1_report.json:runtime_invariants_violations",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "runtime_invariants",
+    "metric": "I5_toctou_state_consistency",
+    "value": 0,
+    "source": "gamma_lab_v1_report.json:runtime_invariants_violations",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "runtime_invariants",
+    "metric": "I6_runtime_sovereignty",
+    "value": 0,
+    "source": "gamma_lab_v1_report.json:runtime_invariants_violations",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "latency",
+    "metric": "mean_ms",
+    "value": 0.038164,
+    "source": "gamma_lab_v1_report.json:measured_latency",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "latency",
+    "metric": "p95_ms",
+    "value": 0.05225,
+    "source": "gamma_lab_v1_report.json:measured_latency",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "latency",
+    "metric": "p99_ms",
+    "value": 0.080292,
+    "source": "gamma_lab_v1_report.json:measured_latency",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "episodes",
+    "value": 33,
+    "source": "statistics.json:n_episodes",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "gamma_decisions",
+    "value": 14,
+    "source": "statistics.json:n_decisions",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "permit",
+    "value": 11,
+    "source": "statistics.json:n_authorizations_permit",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "safe_state",
+    "value": 3,
+    "source": "statistics.json:n_denials",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "permit_rate",
+    "value": 0.7857142857142857,
+    "source": "engine(compute_permit_rate) vs stored",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "permit_wilson_low",
+    "value": 0.524107694133997,
+    "source": "engine",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "permit_wilson_high",
+    "value": 0.9242861328730683,
+    "source": "engine",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "gamma_per_episode",
+    "value": 0.42424242424242425,
+    "source": "engine(compute_gamma_decision_rate)",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "overhead_mean_ms",
+    "value": 0.021592857142857143,
+    "source": "statistics.json:gamma_decision_overhead.mean",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "replay_consistent_traces",
+    "value": 33,
+    "source": "replay_validation.json:n_traces",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "replay_auth_steps",
+    "value": 14,
+    "source": "replay_validation.json:total_authorization_steps",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "decision_entropy_bits",
+    "value": 0.74959525725948,
+    "source": "statistics.json",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "authorization_stability",
+    "value": 0.9666666666666668,
+    "source": "statistics.json",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "utility_true",
+    "value": 3,
+    "source": "statistics.json:episode_outcomes",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "security_true",
+    "value": 1,
+    "source": "statistics.json:episode_outcomes",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "false_permit_rate",
+    "value": null,
+    "source": "fpr_fdr.json:false_permit_rate",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS (undefined n=0)",
+    "note": ""
+  },
+  {
+    "table": "agentdojo_eval",
+    "metric": "false_deny_rate",
+    "value": 0.0,
+    "source": "fpr_fdr.json:false_deny_rate",
+    "code": "paper_table_generator/metrics_engine",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "concurrency_scaling",
+    "metric": "throughput@1t",
+    "value": 390765.78100577585,
+    "source": "concurrency_scaling.json:levels",
+    "code": "metrics_engine.compute_throughput",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "concurrency_scaling",
+    "metric": "throughput@2t",
+    "value": 384099.1590391537,
+    "source": "concurrency_scaling.json:levels",
+    "code": "metrics_engine.compute_throughput",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "concurrency_scaling",
+    "metric": "throughput@4t",
+    "value": 372103.26353863516,
+    "source": "concurrency_scaling.json:levels",
+    "code": "metrics_engine.compute_throughput",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "concurrency_scaling",
+    "metric": "throughput@8t",
+    "value": 221655.35908384874,
+    "source": "concurrency_scaling.json:levels",
+    "code": "metrics_engine.compute_throughput",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "concurrency_scaling",
+    "metric": "throughput@16t",
+    "value": 74524.52306291758,
+    "source": "concurrency_scaling.json:levels",
+    "code": "metrics_engine.compute_throughput",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "concurrency_scaling",
+    "metric": "throughput@32t",
+    "value": 59829.64928922418,
+    "source": "concurrency_scaling.json:levels",
+    "code": "metrics_engine.compute_throughput",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "combined_ablation",
+    "metric": "Runtime Context (RCL)",
+    "value": 0.01059101287391968,
+    "source": "runtime_profile.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "combined_ablation",
+    "metric": "Replay (ERTuple)",
+    "value": 0.014995891800208484,
+    "source": "runtime_profile.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "combined_ablation",
+    "metric": "stage:build",
+    "value": 0.07436287200000535,
+    "source": "PERFORMANCE_RESULTS.json:7_performance",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "combined_ablation",
+    "metric": "stage:bind",
+    "value": 0.10181792999998507,
+    "source": "PERFORMANCE_RESULTS.json:7_performance",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "combined_ablation",
+    "metric": "stage:adapt",
+    "value": 0.0021988295000294755,
+    "source": "PERFORMANCE_RESULTS.json:7_performance",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "combined_ablation",
+    "metric": "stage:eval",
+    "value": 0.0016904199999654423,
+    "source": "PERFORMANCE_RESULTS.json:7_performance",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "combined_ablation",
+    "metric": "stage:emit",
+    "value": 0.01674282900003199,
+    "source": "PERFORMANCE_RESULTS.json:7_performance",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "UER",
+    "value": 0.0,
+    "source": "full_spec_conformance_report.json:metrics_11_1",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "FPR",
+    "value": 0.0,
+    "source": "full_spec_conformance_report.json:metrics_11_1",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "FDR",
+    "value": 0.0,
+    "source": "full_spec_conformance_report.json:metrics_11_1",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "DR",
+    "value": 1.0,
+    "source": "full_spec_conformance_report.json:metrics_11_1",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "FCR",
+    "value": 1.0,
+    "source": "full_spec_conformance_report.json:metrics_11_1",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "SVR",
+    "value": 0.0,
+    "source": "full_spec_conformance_report.json:metrics_11_1",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "FFC_gamma_compliance",
+    "value": 1.0,
+    "source": "full_spec_conformance_report.json:metrics_11_1",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "full_spec",
+    "metric": "verdict",
+    "value": "FULL_SPEC_CONFORMANT (Tier-S)",
+    "source": "full_spec_conformance_report.json:full_spec_verdict",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "formal_state_space",
+    "metric": "states_enumerated",
+    "value": 65536,
+    "source": "independent_verifier_report.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "formal_state_space",
+    "metric": "coverage_complete",
+    "value": true,
+    "source": "independent_verifier_report.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "formal_state_space",
+    "metric": "total_field_mismatches",
+    "value": 0,
+    "source": "independent_verifier_report.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "formal_state_space",
+    "metric": "permit_states",
+    "value": 4,
+    "source": "independent_verifier_report.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "formal_state_space",
+    "metric": "safe_state_states",
+    "value": 65532,
+    "source": "independent_verifier_report.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  },
+  {
+    "table": "formal_state_space",
+    "metric": "verdict",
+    "value": "IDENTICAL",
+    "source": "independent_verifier_report.json",
+    "code": "direct read",
+    "status": "PASS",
+    "note": ""
+  }
+]

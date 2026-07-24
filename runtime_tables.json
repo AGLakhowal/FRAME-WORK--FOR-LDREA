@@ -1,0 +1,576 @@
+{
+  "tables": {
+    "dataset_comparison": {
+      "title": "Dataset Comparison",
+      "rows": [
+        {
+          "dataset": "UNSW-NB15",
+          "precision": 0.857361904396826,
+          "recall": 0.6608361648692569,
+          "auroc": 0.7609717202749718,
+          "evidence_source": "production_evidence/datasets/unsw_nb15_eval.json",
+          "resolved": true
+        },
+        {
+          "dataset": "ULB",
+          "precision": 0.1099116781157998,
+          "recall": 0.8296296296296296,
+          "auroc": 0.9116380348825416,
+          "evidence_source": "production_evidence/datasets/ulb_eval.json",
+          "resolved": true
+        },
+        {
+          "dataset": "IEEE-CIS",
+          "precision": 0.06539785381656206,
+          "recall": 0.3488120950323974,
+          "auroc": 0.6110444772992558,
+          "evidence_source": "production_evidence/datasets/ieee_cis_eval.json",
+          "resolved": true
+        }
+      ]
+    },
+    "runtime_revocation": {
+      "title": "Runtime Revocation",
+      "rows": [
+        {
+          "metric": "Permits revoked",
+          "value": 120,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 120,
+          "evidence_source": "production_evidence/revocation_report_live.json::permits_revoked",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "Acknowledgements received",
+          "value": 600,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 600,
+          "evidence_source": "production_evidence/revocation_report_live.json::acks_received",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "Acknowledgement rate",
+          "value": 1.0,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 600,
+          "evidence_source": "production_evidence/revocation_report_live.json::acknowledgement_rate",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "Compliance rate",
+          "value": 1.0,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 120,
+          "evidence_source": "production_evidence/revocation_report_live.json::compliance_rate",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "Propagation p50",
+          "value": 51.423,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 120,
+          "evidence_source": "production_evidence/revocation_report_live.json::propagation_latency_ms.p50",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "Propagation p95",
+          "value": 51.929,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 120,
+          "evidence_source": "production_evidence/revocation_report_live.json::propagation_latency_ms.p95",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "Propagation p99",
+          "value": 52.038,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 120,
+          "evidence_source": "production_evidence/revocation_report_live.json::propagation_latency_ms.p99",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "False permits after revocation",
+          "value": 0,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 120,
+          "evidence_source": "production_evidence/revocation_report_live.json::false_permits_after_revocation",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        },
+        {
+          "metric": "Revocations/sec",
+          "value": 19.396055327247822,
+          "units": "1/s",
+          "ci": "n/a",
+          "sample_size": 120,
+          "evidence_source": "production_evidence/revocation_report_live.json::revocations_per_s",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-A",
+          "resolved": true
+        }
+      ]
+    },
+    "runtime_watchdog": {
+      "title": "Runtime Watchdog",
+      "rows": [
+        {
+          "metric": "Heartbeats",
+          "value": 311,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 311,
+          "evidence_source": "production_evidence/watchdog_summary.json::heartbeats",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-B",
+          "resolved": true
+        },
+        {
+          "metric": "Heartbeat latency mean",
+          "value": 3.1654501607717043,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 311,
+          "evidence_source": "production_evidence/watchdog_summary.json::heartbeat_latency_ms.mean",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-B",
+          "resolved": true
+        },
+        {
+          "metric": "Stall threshold",
+          "value": 250.0,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": "1",
+          "evidence_source": "production_evidence/watchdog_summary.json::stall_threshold_ms",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-B",
+          "resolved": true
+        },
+        {
+          "metric": "Injected stalls detected",
+          "value": 1,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 1,
+          "evidence_source": "production_evidence/watchdog_summary.json::stalls_detected_on_injected_worker",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-B",
+          "resolved": true
+        },
+        {
+          "metric": "Detection rate",
+          "value": 1.0,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 1,
+          "evidence_source": "production_evidence/watchdog_summary.json::detection_rate",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-B",
+          "resolved": true
+        },
+        {
+          "metric": "False triggers",
+          "value": 0,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 311,
+          "evidence_source": "production_evidence/watchdog_summary.json::false_triggers",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-B",
+          "resolved": true
+        },
+        {
+          "metric": "Recovery latency p95",
+          "value": 209.617,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 1,
+          "evidence_source": "production_evidence/watchdog_summary.json::recovery_latency_ms.p95",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-B",
+          "resolved": true
+        }
+      ]
+    },
+    "runtime_fleet": {
+      "title": "Fleet Runtime",
+      "rows": [
+        {
+          "metric": "Worker processes",
+          "value": 5,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 5,
+          "evidence_source": "production_evidence/fleet_summary.json::nodes",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-C",
+          "resolved": true
+        },
+        {
+          "metric": "Throughput",
+          "value": 2161.6605011305487,
+          "units": "1/s",
+          "ci": "n/a",
+          "sample_size": 1500,
+          "evidence_source": "production_evidence/fleet_summary.json::throughput_decisions_per_s",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-C",
+          "resolved": true
+        },
+        {
+          "metric": "Queue delay p95",
+          "value": 526.0,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 1500,
+          "evidence_source": "production_evidence/fleet_summary.json::queue_delay_ms.p95",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-C",
+          "resolved": true
+        },
+        {
+          "metric": "Busy fraction mean",
+          "value": 0.049872372148202254,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 5,
+          "evidence_source": "production_evidence/fleet_summary.json::utilization.busy_fraction_mean",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-C",
+          "resolved": true
+        },
+        {
+          "metric": "Busy fraction peak",
+          "value": 0.0612410031017903,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 5,
+          "evidence_source": "production_evidence/fleet_summary.json::utilization.busy_fraction_peak",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-C",
+          "resolved": true
+        },
+        {
+          "metric": "Load imbalance (CV)",
+          "value": 0.43224478661466303,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 5,
+          "evidence_source": "production_evidence/fleet_summary.json::utilization.load_imbalance_cv",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-C",
+          "resolved": true
+        }
+      ]
+    },
+    "runtime_risk_detection": {
+      "title": "Runtime Risk Detection (attack injection)",
+      "rows": [
+        {
+          "metric": "Attack families",
+          "value": 12,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 12,
+          "evidence_source": "production_evidence/runtime_risk_detection_report.json::families",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VII-A",
+          "resolved": true
+        },
+        {
+          "metric": "Total attacks",
+          "value": 2394,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 2394,
+          "evidence_source": "production_evidence/runtime_risk_detection_report.json::total_attacks",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VII-A",
+          "resolved": true
+        },
+        {
+          "metric": "Attacks detected",
+          "value": 2394,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 2394,
+          "evidence_source": "production_evidence/runtime_risk_detection_report.json::attacks_detected",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VII-A",
+          "resolved": true
+        },
+        {
+          "metric": "Detection rate",
+          "value": 1.0,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 2394,
+          "evidence_source": "production_evidence/runtime_risk_detection_report.json::detection_rate",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VII-A",
+          "resolved": true
+        },
+        {
+          "metric": "Detection precision",
+          "value": 1.0,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 2394,
+          "evidence_source": "production_evidence/runtime_risk_detection_report.json::detection_precision",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VII-A",
+          "resolved": true
+        },
+        {
+          "metric": "Suite has power (control)",
+          "value": true,
+          "units": "bool",
+          "ci": "n/a",
+          "sample_size": "1",
+          "evidence_source": "production_evidence/runtime_risk_detection_report.json::suite_has_power",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VII-A",
+          "resolved": true
+        },
+        {
+          "metric": "Response latency p99",
+          "value": 1.435292,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 2394,
+          "evidence_source": "production_evidence/runtime_risk_detection_report.json::response_latency_ms.p99",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VII-A",
+          "resolved": true
+        }
+      ]
+    },
+    "runtime_clock": {
+      "title": "Runtime Clock Consistency (NOT PTP)",
+      "rows": [
+        {
+          "metric": "Timestamp resolution",
+          "value": 41,
+          "units": "ns",
+          "ci": "n/a",
+          "sample_size": 20000,
+          "evidence_source": "production_evidence/runtime_clock_consistency_report.json::timestamp_resolution_ns",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-D",
+          "resolved": true
+        },
+        {
+          "metric": "Sampling jitter p95",
+          "value": 333,
+          "units": "ns",
+          "ci": "n/a",
+          "sample_size": 20000,
+          "evidence_source": "production_evidence/runtime_clock_consistency_report.json::sampling_jitter_ns.p95",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-D",
+          "resolved": true
+        },
+        {
+          "metric": "Sampling jitter p99",
+          "value": 417,
+          "units": "ns",
+          "ci": "n/a",
+          "sample_size": 20000,
+          "evidence_source": "production_evidence/runtime_clock_consistency_report.json::sampling_jitter_ns.p99",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-D",
+          "resolved": true
+        },
+        {
+          "metric": "Monotonic consistency",
+          "value": true,
+          "units": "bool",
+          "ci": "n/a",
+          "sample_size": 20000,
+          "evidence_source": "production_evidence/runtime_clock_consistency_report.json::monotonic_consistency",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-D",
+          "resolved": true
+        },
+        {
+          "metric": "Wall-vs-monotonic drift",
+          "value": -18.17884346197895,
+          "units": "ppm",
+          "ci": "n/a",
+          "sample_size": "1",
+          "evidence_source": "production_evidence/runtime_clock_consistency_report.json::wall_vs_monotonic_drift_ppm",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-D",
+          "resolved": true
+        }
+      ]
+    },
+    "runtime_detection_synth": {
+      "title": "Blind Runtime Detection (Synthetic)",
+      "rows": [
+        {
+          "metric": "Precision",
+          "value": 0.20253164556962025,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/runtime_detection_report_synthetic.json::precision",
+          "evidence_level": "Synthetic Runtime",
+          "paper_section": "VII-B",
+          "resolved": true
+        },
+        {
+          "metric": "Recall",
+          "value": 0.41379310344827586,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/runtime_detection_report_synthetic.json::recall_detection_rate",
+          "evidence_level": "Synthetic Runtime",
+          "paper_section": "VII-B",
+          "resolved": true
+        },
+        {
+          "metric": "F1",
+          "value": 0.27195467422096314,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/runtime_detection_report_synthetic.json::f1",
+          "evidence_level": "Synthetic Runtime",
+          "paper_section": "VII-B",
+          "resolved": true
+        },
+        {
+          "metric": "MCC",
+          "value": 0.2698095112612521,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/runtime_detection_report_synthetic.json::matthews_corrcoef",
+          "evidence_level": "Synthetic Runtime",
+          "paper_section": "VII-B",
+          "resolved": true
+        },
+        {
+          "metric": "AUROC",
+          "value": 0.6921502496542348,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/runtime_detection_report_synthetic.json::auroc",
+          "evidence_level": "Synthetic Runtime",
+          "paper_section": "VII-B",
+          "resolved": true
+        },
+        {
+          "metric": "AUPRC",
+          "value": 0.23469693001600467,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/runtime_detection_report_synthetic.json::auprc",
+          "evidence_level": "Synthetic Runtime",
+          "paper_section": "VII-B",
+          "resolved": true
+        },
+        {
+          "metric": "Balanced accuracy",
+          "value": 0.6908360486649945,
+          "units": "ratio",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/runtime_detection_report_synthetic.json::balanced_accuracy",
+          "evidence_level": "Synthetic Runtime",
+          "paper_section": "VII-B",
+          "resolved": true
+        }
+      ]
+    },
+    "execution_timeline": {
+      "title": "Execution Timeline",
+      "rows": [
+        {
+          "metric": "Executions",
+          "value": 6000,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/execution_timeline_report.json::executions",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-E",
+          "resolved": true
+        },
+        {
+          "metric": "Permits issued",
+          "value": 5763,
+          "units": "count",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/execution_timeline_report.json::permits_issued",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-E",
+          "resolved": true
+        },
+        {
+          "metric": "End-to-end mean",
+          "value": 1.7872572354999998,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/execution_timeline_report.json::end_to_end_ms.mean",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-E",
+          "resolved": true
+        },
+        {
+          "metric": "End-to-end p95",
+          "value": 2.605625,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/execution_timeline_report.json::end_to_end_ms.p95",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-E",
+          "resolved": true
+        },
+        {
+          "metric": "Execution mean",
+          "value": 0.024560625333333336,
+          "units": "ms",
+          "ci": "n/a",
+          "sample_size": 6000,
+          "evidence_source": "production_evidence/execution_timeline_report.json::execution_ms.mean",
+          "evidence_level": "Measured Runtime",
+          "paper_section": "VI-E",
+          "resolved": true
+        }
+      ]
+    }
+  },
+  "total_rows": 49,
+  "missing": 0
+}

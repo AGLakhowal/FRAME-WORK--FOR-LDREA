@@ -1,0 +1,91 @@
+{
+  "experiment": "E12_dataset_independent_blind_evaluation",
+  "discovery": {
+    "search_roots": [
+      "datasets",
+      "dataset",
+      "."
+    ],
+    "adapters_registered": [
+      "ULB",
+      "IEEE-CIS",
+      "UNSW-NB15"
+    ],
+    "datasets_found": [
+      {
+        "adapter": "UNSW-NB15",
+        "domain": "network intrusion telemetry",
+        "path": "dataset/ieee-fraud-detection/CSV Files/Training and Testing Sets/UNSW_NB15_testing-set.csv",
+        "size_bytes": 15380800
+      },
+      {
+        "adapter": "ULB",
+        "domain": "financial (PCA-anonymised)",
+        "path": "dataset/ieee-fraud-detection/creditcard.csv",
+        "size_bytes": 150828752
+      },
+      {
+        "adapter": "IEEE-CIS",
+        "domain": "financial (transactions)",
+        "path": "dataset/ieee-fraud-detection/train_transaction.csv",
+        "size_bytes": 683351067
+      }
+    ],
+    "not_found": []
+  },
+  "pipeline": [
+    "discover",
+    "adapter",
+    "calibrate(unlabeled)",
+    "predicate_vector",
+    "gamma_decision",
+    "ertuple",
+    "merkle_ledger",
+    "REVEAL_LABELS",
+    "score+bootstrap"
+  ],
+  "gamma_untouched": "stress_test.gamma_decision imported and used identically for all datasets",
+  "datasets_evaluated": 3,
+  "not_found": [],
+  "summaries": [
+    {
+      "dataset": "UNSW-NB15",
+      "domain": "network intrusion telemetry",
+      "evaluated_rows": 61749,
+      "prevalence": 0.5506000097167566,
+      "precision": 0.857361904396826,
+      "recall": 0.6608361648692569,
+      "f1": 0.7463792297937663,
+      "auroc": 0.7609717202749718,
+      "mcc": 0.5314673629671437,
+      "status": "EXECUTED",
+      "evidence_level": "Measured Runtime"
+    },
+    {
+      "dataset": "ULB",
+      "domain": "financial (PCA-anonymised)",
+      "evaluated_rows": 75000,
+      "prevalence": 0.00223,
+      "precision": 0.1099116781157998,
+      "recall": 0.8296296296296296,
+      "f1": 0.19410745233968804,
+      "auroc": 0.9116380348825416,
+      "mcc": 0.2993329780977258,
+      "status": "EXECUTED",
+      "evidence_level": "Measured Runtime"
+    },
+    {
+      "dataset": "IEEE-CIS",
+      "domain": "financial (transactions)",
+      "evaluated_rows": 75000,
+      "prevalence": 0.02561,
+      "precision": 0.06539785381656206,
+      "recall": 0.3488120950323974,
+      "f1": 0.1101449275362319,
+      "auroc": 0.6110444772992558,
+      "mcc": 0.10215340165183448,
+      "status": "EXECUTED",
+      "evidence_level": "Measured Runtime"
+    }
+  ]
+}

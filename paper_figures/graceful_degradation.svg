@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="900" height="590" viewBox="0 0 900 590">
+<rect x="0" y="0" width="900" height="590" fill="#ffffff"/>
+<text x="24" y="34" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#111111" font-weight="bold" text-anchor="start">Graceful degradation: runtime integrity vs number of components removed</text>
+<text x="24" y="51" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#555555" text-anchor="start">Mean and worst case (minimum) RIS over every configuration with that many components removed.  Individual configurations shown as dots.</text>
+<line x1="92" y1="420" x2="650" y2="420" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="84" y="423.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.0</text>
+<line x1="92" y1="358.4" x2="650" y2="358.4" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="84" y="361.9" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.2</text>
+<line x1="92" y1="296.8" x2="650" y2="296.8" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="84" y="300.3" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.4</text>
+<line x1="92" y1="235.2" x2="650" y2="235.2" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="84" y="238.7" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.6</text>
+<line x1="92" y1="173.6" x2="650" y2="173.6" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="84" y="177.1" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">0.8</text>
+<line x1="92" y1="112" x2="650" y2="112" stroke="#dddddd" stroke-width="0.8" stroke-linecap="round"/>
+<text x="84" y="115.5" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="end">1.0</text>
+<line x1="92" y1="420" x2="92" y2="425" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="92" y="438" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle">0</text>
+<line x1="203.6" y1="420" x2="203.6" y2="425" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="203.6" y="438" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle">1</text>
+<line x1="315.2" y1="420" x2="315.2" y2="425" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="315.2" y="438" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle">2</text>
+<line x1="426.8" y1="420" x2="426.8" y2="425" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="426.8" y="438" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle">3</text>
+<line x1="538.4" y1="420" x2="538.4" y2="425" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="538.4" y="438" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle">4</text>
+<line x1="650" y1="420" x2="650" y2="425" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="650" y="438" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle">5</text>
+<line x1="92" y1="112" x2="92" y2="420" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<line x1="92" y1="420" x2="650" y2="420" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/>
+<text x="371" y="460" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle">number of components removed</text>
+<text x="34" y="266" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#111111" text-anchor="middle" transform="rotate(-90 34 266)">runtime integrity score (RIS)</text>
+<circle cx="92" cy="112" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="203.6" cy="163.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="203.6" cy="163.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="203.6" cy="317.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="203.6" cy="266" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="203.6" cy="265.2771" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="214.6666" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="368.6666" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="317.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="316.6103" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="368.6666" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="317.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="316.6103" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="317.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="317.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="315.2" cy="266" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="426.8" cy="420" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="426.8" cy="317.3334" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<circle cx="650" cy="420" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<polyline points="92,112 203.6,317.3334 315.2,368.6666 426.8,420 650,420" fill="none" stroke="#d55e00" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="92,112 203.6,235.0555 315.2,312.0554 426.8,368.6667 650,420" fill="none" stroke="#0072b2" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="92" cy="112" r="5" fill="#0072b2" stroke="#ffffff" stroke-width="1.2"/>
+<text x="92" y="101" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#0072b2" font-weight="bold" text-anchor="middle">1.000</text>
+<circle cx="203.6" cy="235.0555" r="5" fill="#0072b2" stroke="#ffffff" stroke-width="1.2"/>
+<text x="203.6" y="224.0555" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#0072b2" font-weight="bold" text-anchor="middle">0.600</text>
+<circle cx="315.2" cy="312.0554" r="5" fill="#0072b2" stroke="#ffffff" stroke-width="1.2"/>
+<text x="315.2" y="301.0554" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#0072b2" font-weight="bold" text-anchor="middle">0.350</text>
+<circle cx="426.8" cy="368.6667" r="5" fill="#0072b2" stroke="#ffffff" stroke-width="1.2"/>
+<text x="426.8" y="357.6667" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#0072b2" font-weight="bold" text-anchor="middle">0.167</text>
+<circle cx="650" cy="420" r="5" fill="#0072b2" stroke="#ffffff" stroke-width="1.2"/>
+<text x="650" y="409" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#0072b2" font-weight="bold" text-anchor="middle">0.000</text>
+<circle cx="92" cy="112" r="5" fill="#d55e00" stroke="#ffffff" stroke-width="1.2"/>
+<text x="101" y="115.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#d55e00" font-weight="bold" text-anchor="start">1.000</text>
+<circle cx="203.6" cy="317.3334" r="5" fill="#d55e00" stroke="#ffffff" stroke-width="1.2"/>
+<text x="212.6" y="320.8334" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#d55e00" font-weight="bold" text-anchor="start">0.333</text>
+<circle cx="315.2" cy="368.6666" r="5" fill="#d55e00" stroke="#ffffff" stroke-width="1.2"/>
+<text x="324.2" y="372.1666" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#d55e00" font-weight="bold" text-anchor="start">0.167</text>
+<circle cx="426.8" cy="420" r="5" fill="#d55e00" stroke="#ffffff" stroke-width="1.2"/>
+<text x="435.8" y="423.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#d55e00" font-weight="bold" text-anchor="start">0.000</text>
+<circle cx="650" cy="420" r="5" fill="#d55e00" stroke="#ffffff" stroke-width="1.2"/>
+<text x="641" y="423.5" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#d55e00" font-weight="bold" text-anchor="end">0.000</text>
+<text x="676" y="116" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" font-weight="bold" text-anchor="start">series</text>
+<line x1="676" y1="132" x2="696" y2="132" stroke="#0072b2" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="686" cy="132" r="4.5" fill="#0072b2" stroke="#ffffff" stroke-width="1"/>
+<text x="702" y="135" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" text-anchor="start">mean RIS</text>
+<line x1="676" y1="152" x2="696" y2="152" stroke="#d55e00" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="686" cy="152" r="4.5" fill="#d55e00" stroke="#ffffff" stroke-width="1"/>
+<text x="702" y="155" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#111111" text-anchor="start">worst case (min)</text>
+<circle cx="686" cy="172" r="3" fill="#c7c7c7" stroke="#ffffff" stroke-width="0.6"/>
+<text x="702" y="175" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#555555" text-anchor="start">single configuration</text>
+<text x="676" y="202" font-family="Helvetica, Arial, sans-serif" font-size="1" fill="#000000" text-anchor="start"></text>
+<text x="676" y="202" font-family="Helvetica, Arial, sans-serif" font-size="1" fill="#000000" text-anchor="start"></text>
+<text x="676" y="202" font-family="Helvetica, Arial, sans-serif" font-size="1" fill="#000000" text-anchor="start"></text>
+<text x="676" y="202" font-family="Helvetica, Arial, sans-serif" font-size="1" fill="#000000" text-anchor="start"></text>
+<text x="676" y="202" font-family="Helvetica, Arial, sans-serif" font-size="1" fill="#000000" text-anchor="start"></text>
+<text x="676" y="204" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#111111" font-weight="bold" text-anchor="start">configurations per k</text>
+<text x="676" y="218" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">k = 0:  n = 1</text>
+<text x="676" y="230" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">k = 1:  n = 5</text>
+<text x="676" y="242" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">k = 2:  n = 10</text>
+<text x="676" y="254" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">k = 3:  n = 2</text>
+<text x="676" y="266" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">k = 5:  n = 1</text>
+<text x="24" y="496" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">Degradation is monotone but NOT linear: the first removal already costs up to 0.67 RIS in the worst case,</text>
+<text x="24" y="508" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">because a single evidence-plane removal takes the ledger, hash-chain and replay planes down with it.</text>
+<text x="24" y="520" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#555555" text-anchor="start">Note: no configuration in the ablation matrix removes exactly 4 component(s), so that abscissa has no data and the lines interpolate across it.</text>
+</svg>

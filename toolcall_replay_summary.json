@@ -1,0 +1,297 @@
+{
+  "N": 24,
+  "responses_with_structured_tool_calls": 24,
+  "responses_text_only_no_tool_calls": 0,
+  "responses_that_called_the_EEA_create_calendar_event": 24,
+  "responses_tool_calls_but_only_read_only_tools": 0,
+  "per_call": [
+    {
+      "i": 0,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 1,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 2,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 3,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 4,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 5,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 6,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 7,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 8,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 9,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 10,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 11,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 12,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 13,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 14,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 15,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 16,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 17,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 18,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 19,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 20,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 21,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 22,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    },
+    {
+      "i": 23,
+      "finish_reason": "tool_calls",
+      "has_tool_calls_key": true,
+      "n_tool_calls": 1,
+      "tool_names": [
+        "create_calendar_event"
+      ],
+      "content_is_empty": true,
+      "content_len": 0,
+      "content_mentions_json_call": false
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "evidence_level": "Measured Runtime",
+  "testbed_type": "multi-process (real OS processes, spawn), single host",
+  "nodes": 5,
+  "pids": [
+    5187,
+    5188,
+    5189,
+    5190,
+    5191
+  ],
+  "requests": 1500,
+  "wall_time_s": 0.693911,
+  "throughput_decisions_per_s": 2161.6605011305487,
+  "queue_delay_ms": {
+    "n": 1500,
+    "unit": "ms",
+    "mean": 286.653234,
+    "min": 0.571,
+    "max": 549.657,
+    "p50": 291.351,
+    "p95": 526.0,
+    "p99": 545.893,
+    "stdev": 160.63917556213337
+  },
+  "per_worker_decisions": {
+    "0": 352,
+    "4": 371,
+    "1": 367,
+    "3": 369,
+    "2": 41
+  },
+  "decision_agreement": {
+    "note": "Workers hold independent baselines, so identical inputs need not yield identical decisions once baselines diverge. Agreement is therefore reported on the deterministic predicates only."
+  },
+  "per_worker_telemetry": {
+    "3": {
+      "decisions": 369,
+      "cpu_user_s": 0.6003569999999999,
+      "cpu_sys_s": 0.083719,
+      "cpu_utilization": 0.0983019082390408,
+      "busy_fraction": 0.06097830686302447,
+      "idle_fraction": 0.9390216931369755,
+      "maxrss_bytes": 20987904,
+      "vol_ctxsw": 985,
+      "invol_ctxsw": 4021,
+      "minflt": 2366,
+      "majflt": 17
+    },
+    "0": {
+      "decisions": 352,
+      "cpu_user_s": 0.581187,
+      "cpu_sys_s": 0.084244,
+      "cpu_utilization": 0.09540683513537848,
+      "busy_fraction": 0.0585272825889347,
+      "idle_fraction": 0.9414727174110653,
+      "maxrss_bytes": 20643840,
+      "vol_ctxsw": 927,
+      "invol_ctxsw": 3867,
+      "minflt": 2347,
+      "majflt": 17
+    },
+    "2": {
+      "decisions": 41,
+      "cpu_user_s": 0.215004,
+      "cpu_sys_s": 0.060218999999999995,
+      "cpu_utilization": 0.03947466367227408,
+      "busy_fraction": 0.007417392902010185,
+      "idle_fraction": 0.9925826070979898,
+      "maxrss_bytes": 20545536,
+      "vol_ctxsw": 789,
+      "invol_ctxsw": 1456,
+      "minflt": 2339,
+      "majflt": 17
+    },
+    "1": {
+      "decisions": 367,
+      "cpu_user_s": 0.596734,
+      "cpu_sys_s": 0.080401,
+      "cpu_utilization": 0.0971293457613071,
+      "busy_fraction": 0.061197875285251606,
+      "idle_fraction": 0.9388021247147484,
+      "maxrss_bytes": 20643840,
+      "vol_ctxsw": 892,
+      "invol_ctxsw": 3851,
+      "minflt": 2345,
+      "majflt": 17
+    },
+    "4": {
+      "decisions": 371,
+      "cpu_user_s": 0.602506,
+      "cpu_sys_s": 0.08345,
+      "cpu_utilization": 0.09877404333866738,
+      "busy_fraction": 0.0612410031017903,
+      "idle_fraction": 0.9387589968982097,
+      "maxrss_bytes": 20955136,
+      "vol_ctxsw": 1025,
+      "invol_ctxsw": 3676,
+      "minflt": 2365,
+      "majflt": 17
+    }
+  },
+  "utilization": {
+    "evidence_level": "Measured Runtime",
+    "busy_fraction_mean": 0.049872372148202254,
+    "busy_fraction_peak": 0.0612410031017903,
+    "idle_fraction_mean": 0.9501276278517977,
+    "per_worker_decisions": [
+      369,
+      352,
+      41,
+      367,
+      371
+    ],
+    "load_imbalance_cv": 0.43224478661466303,
+    "load_imbalance_note": "coefficient of variation of per-worker decision counts; 0 = even",
+    "busy_definition": "cumulative predicate+authorize time / worker wall time"
+  },
+  "context_switches_available": true,
+  "clock_offset": {
+    "evidence_level": "Repository Simulation",
+    "why_not_measured": "All processes read the same system CLOCK_MONOTONIC. The values below are IPC round-trip and scheduling jitter, NOT distributed clock skew. Real skew needs a second host and a PTP grandmaster.",
+    "coordinator_minus_worker_ms": {
+      "n": 5,
+      "unit": "ms",
+      "mean": 0.7638,
+      "min": 0.583,
+      "max": 1.21,
+      "p50": 0.66,
+      "p95": 1.21,
+      "p99": 1.21,
+      "stdev": 0.23076949538446365
+    }
+  }
+}

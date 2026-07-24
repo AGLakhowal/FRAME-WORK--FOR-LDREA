@@ -1,0 +1,31 @@
+{
+  "evidence_level": "Derived From Measured",
+  "sample_rows": 25000,
+  "decisions": 25000,
+  "permits_issued": 24912,
+  "safe_state": 88,
+  "permit_per_permit_decision_invariant": true,
+  "states": {
+    "ISSUED": 24912,
+    "ACTIVATED": 24912,
+    "CONSUMED": 24912,
+    "EXPIRED": 0,
+    "REVOKED": 200,
+    "REJECTED": 0
+  },
+  "rejection_reasons_on_first_consume": {},
+  "single_use_verified": true,
+  "atomic_consumption_proof": true,
+  "double_use_probe_size": 1000,
+  "double_use_rejected": 1000,
+  "replay_probe_size": 200,
+  "replay_rejected": 200,
+  "replay_rejection_complete": true,
+  "state_transition_graph": [
+    "ISSUED->ACTIVATED",
+    "ACTIVATED->CONSUMED",
+    "ISSUED->REVOKED",
+    "ISSUED->EXPIRED",
+    "*->REJECTED"
+  ]
+}

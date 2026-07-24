@@ -1,0 +1,11 @@
+[runtime-stack] n=8000 warmup=2000 evaluated=6000 permits=5763 safe_state=237
+[runtime-stack] SYNTHETIC detection  TP=48 FN=68 FP=189 TN=5695
+[runtime-stack]   precision=0.2025 recall=0.4138 F1=0.2720 MCC=0.2698 AUROC=0.6922
+[runtime-stack] ledger blocks=94 chain_ok=True tamper=True fork=True
+[runtime-stack] fleet pids=5 throughput=2162/s queue_delay_p95=526.000ms
+[runtime-stack] revocation prop_p95=51.929ms acks=600/600 false_permits=0 probe_has_power=True
+[runtime-stack] watchdog hb=311 detected=1/1 recovery_p95=209.6ms false_triggers=0
+[runtime-stack] clock consistency: monotonic=True resolution_ns=41 jitter_p95_ns=333
+[runtime-stack] attacks: 12 families, 2394/2394 detected (rate 1.000, precision 1.000, power=True)
+
+---STDERR---

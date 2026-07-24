@@ -1,0 +1,70 @@
+{
+  "manifest": "Threshold Manifest",
+  "leaf_index": 2,
+  "frozen_date": "2026-07-07",
+  "spec_reference": "IEEE Paper Section IV-B (d_i = max(0, m_i - theta_i)); Verification Part 5 leaf #2; V2 D-1 (minimize numeric tuning surface).",
+  "design_principle": "Thresholds are STRUCTURAL/binary (membership or ordering) wherever possible to minimize the tuning surface. The only environment-derived numeric threshold is amount <= available balance. NO free numeric constant is introduced.",
+  "thresholds": {
+    "GATE_recipient_recognition": {
+      "type": "binary_membership",
+      "deficit_rule": "d=0 iff recipient in RecognizedRecipients(env_benign); else d=1",
+      "numeric_constant": null
+    },
+    "GATE_identity_recognition": {
+      "type": "binary_membership",
+      "deficit_rule": "d=0 iff identity in RecognizedIdentities(env_benign); else d=1",
+      "numeric_constant": null
+    },
+    "GATE_destination_recognition": {
+      "type": "binary_membership",
+      "deficit_rule": "d=0 iff url/destination in RecognizedDestinations(env_benign); else d=1",
+      "numeric_constant": null
+    },
+    "GATE_resource_recognition": {
+      "type": "binary_membership",
+      "deficit_rule": "d=0 iff resource in RecognizedResources(env_benign); else d=1",
+      "numeric_constant": null
+    },
+    "GATE_amount_limit": {
+      "type": "environment_derived_numeric",
+      "deficit_rule": "d=0 iff amount <= available_balance(env_benign); else d=1",
+      "numeric_constant": "available_balance (from env state, NOT a tuned constant)"
+    },
+    "GATE_ownership": {
+      "type": "binary_structural",
+      "deficit_rule": "d=0 iff target resource owned/in-scope for principal; else d=1",
+      "numeric_constant": null
+    },
+    "GATE_scope": {
+      "type": "binary_structural",
+      "deficit_rule": "d=0 iff action within granted operation scope; else d=1",
+      "numeric_constant": null
+    },
+    "AUTH_TOKEN": {
+      "type": "binary_structural",
+      "deficit_rule": "d=0 iff token valid & fresh & provenance-signed; else d=1",
+      "numeric_constant": null
+    },
+    "TRACE": {
+      "type": "binary_structural",
+      "deficit_rule": "d=0 iff evidence chain intact & Evidence Quad well-formed; else d=1",
+      "numeric_constant": null
+    },
+    "INTERLOCK": {
+      "type": "binary_structural",
+      "deficit_rule": "d=0 iff commit-before-actuate ordering holds; else d=1",
+      "numeric_constant": null
+    },
+    "CTR_ISB": {
+      "type": "binary_structural",
+      "deficit_rule": "d=0 iff CTR typed/bounded/fresh (ISB=1); else d=1",
+      "numeric_constant": null
+    },
+    "CLASS_velocity": {
+      "type": "binary_structural",
+      "deficit_rule": "d=0 iff no class-level autonomy/velocity breach; else d=1",
+      "numeric_constant": null
+    }
+  },
+  "aggregation": "Gamma = max_i d_i over the bound predicate set; max(Gamma_G, Gamma_class)=0 required for PERMIT. Aggregation law UNCHANGED (Section IV-B)."
+}

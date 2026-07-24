@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "registry_version": "1.1.0",
+  "generated_from": [
+    "FINAL_FORENSIC_AUTHORIZATION_AUDIT.md",
+    "AUTHORIZATION_ENGINE_CLASSIFICATION.md"
+  ],
+  "engine_function": "evaluate_decision",
+  "description": "Engineering registry of ALL known authorization-related implementation sites. This file is NOT part of Gamma, L-DREA, FULL_SPEC, or any scientific artifact and defines no authorization logic. It is consumed only by tools/check_single_engine.py (a local, warn-only guardrail). 'exempt: true' suppresses guardrail warnings for a legitimate site: the single frozen engine, its reuse callers, replay verification, or a documented separate layer. 'exempt: false' entries are known pending sites that SHOULD continue to warn until their migration commit resolves them. Updating this registry after Commits 1.1 / 3.1 / 5.2 requires NO change to the scanner implementation.",
+  "sites": [
+    {
+      "path": "gamma_test_runner.py",
+      "classification": "PRIMARY_ENGINE",
+      "reason": "The single frozen Gamma authorization engine: evaluate_decision (single-row) and its vectorized twin. Every other site must reuse this.",
+      "authoritative_source": "FINAL_FORENSIC_AUTHORIZATION_AUDIT.md 2",
+      "status": "FROZEN",
+      "exempt": true
+    },
+    {
+      "path": "gamma_replay_verify.py",
+      "classification": "REPLAY_VERIFICATION",
+      "reason": "Independent replay verifier; re-checks the recorded pi/gamma relationship for self-consistency. Issues no authorization.",
+      "authoritative_source": "FINAL_FORENSIC_AUTHORIZATION_AUDIT.md 3 (REPLAY ONLY)",
+      "status": "FROZEN",
+      "exempt": true
+    },
+    {
+      "path": "agentdojo_integration/interception/gamma_bridge.py",
+      "classification": "REUSE",
+      "reason": "Bridges to the frozen engine (returns evaluate_decision(...)); defines no authorization logic of its own.",
+      "authoritative_source": "FINAL_FORENSIC_AUTHORIZATION_AUDIT.md 3 (reuse)",
+      "status": "FROZEN",
+      "exempt": true
+    },
+    {
+      "path": "agentdojo_integration/interception/governed_runtime.py",
+      "classification": "REUSE_FAILCLOSED",
+      "reason": "Reads the decision from the bridge; the only SAFE_STATE literal is the unknown-tool fail-closed default (FULL_SPEC 2.3/0.10), not an aggregation.",
+      "authoritative_source": "FINAL_FORENSIC_AUTHORIZATION_AUDIT.md 3 (policy default)",
+      "status": "FROZEN",
+      "exempt": true
+    },
+    {
+      "path": "fcr_test.py",
+      "classification": "REUSE",
+      "reason": "Fail-Closed Rate test; evaluates every family via evaluate_decision(...).",
+      "authoritative_source": "FINAL_FORENSIC_AUTHORIZATION_AUDIT.md 3 (reuse)",
+      "status": "FROZEN",
+      "exempt": true
+    },
+    {
+      "path": "stress_test.py",
+      "classification": "BENCHMARK_SCENARIO_LAYER",
+      "reason": "C-2: scenario-illustration harness applying the same non-compensatory operator on a bespoke finance predicate vocabulary. Classified KEEP/DOCUMENT (not a duplicate of the LAB engine).",
+      "authoritative_source": "AUTHORIZATION_ENGINE_CLASSIFICATION.md (C-2, Class C)",
+      "status": "LEGITIMATE_LAYER",
+      "exempt": true
+    },
+    {
+      "path": "full_spec_conformance.py",
+      "classification": "SEPARATE_POLICY_LAYER",
+      "reason": "C-3: FULL_SPEC 7.1 broader governing policy (node gates + bands + AIS + class veto). Same operator, higher tier. Classified KEEP/DOCUMENT.",
+      "authoritative_source": "AUTHORIZATION_ENGINE_CLASSIFICATION.md (C-3, Class D)",
+      "status": "LEGITIMATE_LAYER",
+      "exempt": true
+    },
+    {
+      "path": "concurbench_full.py",
+      "classification": "MIXED_REUSE_AND_C4_DEFECT",
+      "reason": "Levels 2/3/ASB reuse evaluate_decision; level1 contains an inline copy of the decision rule (C-4). The C-4 site SHOULD warn until Commit 3.1 routes it through the shared engine.",
+      "authoritative_source": "AUTHORIZATION_ENGINE_CLASSIFICATION.md (C-4, Class A)",
+      "status": "PENDING_REFACTOR_COMMIT_3_1",
+      "exempt": false
+    },
+    {
+      "path": "archive/external_validation_legacy/agentdojo_adapter.py",
+      "classification": "COMPETING_ENGINE_DEFECT",
+      "reason": "C-1: independent heuristic authorization engine (sensitivity -> gamma_g). Quarantined by Commit 1.1 into archive/external_validation_legacy/ (excluded from scanning); preserved intact as historical evidence, not repaired.",
+      "authoritative_source": "AUTHORIZATION_ENGINE_CLASSIFICATION.md (C-1, Class A)",
+      "status": "QUARANTINED_COMMIT_1_1",
+      "exempt": false
+    },
+    {
+      "path": "gamma_map_raw.py",
+      "classification": "DECISION_AUTHORING_DEFECT",
+      "reason": "C-5: authors decision columns (Status/Gamma/SAFE_STATE) from the Class label; no aggregation. Pending replacement by the Class-blind interpreter.",
+      "authoritative_source": "AUTHORIZATION_ENGINE_CLASSIFICATION.md (C-5, Class A)",
+      "status": "PENDING_REPLACE_COMMIT_5_2",
+      "exempt": false
+    }
+  ]
+}

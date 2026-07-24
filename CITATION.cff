@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite both the paper and this software."
+title: "Independent Benchmark and Reviewer-Closure Framework for L-DREA / Gamma G-0"
+abstract: >-
+  The reproducibility artifact accompanying the L-DREA / Gamma G-0 paper: a deterministic
+  reference monitor for autonomous action, and the executed evidence that it works. One command
+  regenerates every number, figure, table and document in the repository from executed code.
+type: software
+version: "1.0-paper"
+license-url: "https://github.com/REPLACE-ME/REPLACE-ME/blob/main/LICENSE"
+repository-code: "https://github.com/REPLACE-ME/REPLACE-ME"
+
+# ---------------------------------------------------------------------------------------------
+# PLACEHOLDERS — deliberately not invented.
+# Author names, ORCIDs, the release date, the DOI, the journal volume and the page range are NOT
+# present anywhere in this repository. Fill them in before the public release; do not guess.
+# ---------------------------------------------------------------------------------------------
+authors:
+  - given-names: "TODO"
+    family-names: "TODO"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"
+date-released: "TODO"   # YYYY-MM-DD
+# doi: "TODO"           # Zenodo/software DOI — leave commented until minted
+
+keywords:
+  - runtime enforcement
+  - reference monitor
+  - AI agent safety
+  - reproducibility
+  - formal verification
+  - AgentDojo
+
+preferred-citation:
+  type: article
+  title: >-
+    Deterministic Runtime Enforcement for Autonomous Action:
+    The L-DREA / Gamma G-0 Architecture
+  journal: "IEEE Access"
+  authors:
+    - given-names: "TODO"
+      family-names: "TODO"
+  year: TODO      # TODO
+  volume: TODO    # TODO
+  # doi: "TODO"   # publication DOI — leave commented until assigned

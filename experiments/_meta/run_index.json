@@ -1,0 +1,403 @@
+{
+  "campaign": "ldrea_tier_s_reference_evaluation",
+  "host": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "system": "Darwin",
+    "machine": "arm64",
+    "processor": "arm",
+    "python_version": "3.9.6",
+    "python_executable": "/Users/sukhmangill/Documents/GitHub/Independent Benchmark and Reviewer-Closure Framework for L-DREA/.venv/bin/python",
+    "cpu_count": 10,
+    "eval_seed": 20260709,
+    "cpu_brand": "Apple M5",
+    "mem_bytes": 17179869184,
+    "git_head": "264b9ec378a3c0b0984fdf25cdee98c93e024f70",
+    "git_dirty": true
+  },
+  "total_duration_s": 503.3,
+  "last_run_scope": [
+    "correctness",
+    "replay",
+    "formal",
+    "stress",
+    "ablation",
+    "combined_ablation",
+    "profiling",
+    "agentdojo",
+    "robustness",
+    "coverage",
+    "runtime_stack",
+    "datasets",
+    "audit_bundle"
+  ],
+  "experiments": {
+    "E1": {
+      "exp_id": "E1",
+      "title": "Runtime Authorization Correctness",
+      "outdir": "experiments/runtime_correctness",
+      "reproduction_command": "./.venv/bin/python gamma_test_runner.py --no-html --no-open",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:36:49Z",
+      "duration_s": 12.854,
+      "return_code": 0,
+      "log_path": "experiments/runtime_correctness/logs/E1.log",
+      "artifacts": {
+        "lab_report": {
+          "path": "experiments/runtime_correctness/gamma_lab_v1_report.json",
+          "sha256": "faad378d2c2d3e5b3ab678ba17ea40283d293552bbdb342f4d4ea802b4da956f",
+          "bytes": 11694
+        },
+        "summary": {
+          "path": "experiments/runtime_correctness/gamma_summary.json",
+          "sha256": "81d10dc03f4b53d9b07c3ccafba9c65089cbfbe3de719ec5f75ad75c71dbb5f6",
+          "bytes": 3514
+        },
+        "rowlevel_csv": {
+          "path": "experiments/runtime_correctness/gamma_validation_results.csv",
+          "sha256": "f45ebb23b52be3cc982b6b691edc137f46ba662a3e5521f276148c5366f5eae4",
+          "bytes": 133854351
+        },
+        "full_spec_conformance_report.json": {
+          "path": "experiments/runtime_correctness/full_spec_conformance_report.json",
+          "sha256": "aaeed075ff566fb6daeadb1449e43a7124295b1d55d01eb3105e2752362e70ac",
+          "bytes": 9789
+        },
+        "fcr_test_report.json": {
+          "path": "experiments/runtime_correctness/fcr_test_report.json",
+          "sha256": "f06256d9a3ff8e9425c5b26335d63c84c80d74ac8dd02eb7373de056afe89529",
+          "bytes": 1805
+        },
+        "stress_test_report.json": {
+          "path": "experiments/runtime_correctness/stress_test_report.json",
+          "sha256": "0930130a271738fc67ca1ca2eee42218283bac9073f5128649f18473fbe0f61c",
+          "bytes": 14958
+        },
+        "concurbench_full_report.json": {
+          "path": "experiments/runtime_correctness/concurbench_full_report.json",
+          "sha256": "9a63489d53f2cbaaa00f10dd6a374ec46cc413fb3d3f41206470a7b370ba450b",
+          "bytes": 75622,
+          "regenerated_by": "E10 (audit-bundle stage re-scores ConcurBench Level 4 against the exported bundle)"
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": "Every ULB transaction adjudicated by the frozen evaluate_decision engine; labels are the golden-trace expected authorization outcomes, not fraud labels."
+    },
+    "E2": {
+      "exp_id": "E2",
+      "title": "Runtime Replay Integrity",
+      "outdir": "experiments/replay",
+      "reproduction_command": "./.venv/bin/python gamma_replay_verify.py gamma_replay_manifest.jsonl",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:37:13Z",
+      "duration_s": 1.102,
+      "return_code": 0,
+      "log_path": "experiments/replay/logs/E2.log",
+      "artifacts": {
+        "replay_report": {
+          "path": "experiments/replay/replay_report.json",
+          "sha256": "f57b238f785b6ea34f67dbd0a6e40349a01f6052954c425a41001b3d8800ada9",
+          "bytes": 529
+        },
+        "manifest": {
+          "path": "gamma_replay_manifest.jsonl",
+          "sha256": "1ce2a9e8d4330a0583a9d20a398de43297ea59c404e006e7f1161208481931da",
+          "bytes": 200966760
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": null
+    },
+    "E3": {
+      "exp_id": "E3",
+      "title": "Formal Verification (exhaustive 2^16 decision state space)",
+      "outdir": "experiments/formal",
+      "reproduction_command": "./.venv/bin/python independent_verifier.py",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:37:15Z",
+      "duration_s": 0.467,
+      "return_code": 0,
+      "log_path": "experiments/formal/logs/E3.log",
+      "artifacts": {
+        "verifier_report": {
+          "path": "experiments/formal/independent_verifier_report.json",
+          "sha256": "1d20111a7cec3d293c16ea51b50aaca6c5541c6eece238eac3dd469abc06c968",
+          "bytes": 1300
+        },
+        "tlc": {
+          "status": "EXECUTED",
+          "distinct_states": 40192,
+          "no_error_found": true,
+          "return_code": 0,
+          "log": "experiments/formal/logs/E3_tlc.log"
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": "Independent reference decision fn vs frozen engine over all 2^16 input states."
+    },
+    "E4": {
+      "exp_id": "E4",
+      "title": "Runtime Stress Evaluation",
+      "outdir": "experiments/stress",
+      "reproduction_command": "./.venv/bin/python -c \"from agentdojo_integration.audit import concurrency_scaling as c; c.run('experiments/stress', 200000, [1, 2, 4, 8, 16, 32, 64])\"",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:37:17Z",
+      "duration_s": 14.271,
+      "return_code": 0,
+      "log_path": "experiments/stress/logs/E4.log",
+      "artifacts": {
+        "concurrency_scaling.json": {
+          "path": "experiments/stress/concurrency_scaling.json",
+          "sha256": "e6b2c209c62f70606f5314161fa3e265744dad3f8d14f3744fd46ec2eee7120a",
+          "bytes": 7141
+        },
+        "concurrency_scaling.csv": {
+          "path": "experiments/stress/concurrency_scaling.csv",
+          "sha256": "2fc8d389b35580a99ba6665c7b312eff6d78ec4fdd1841db1d4fd7c7519cf7e9",
+          "bytes": 1092
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": null
+    },
+    "E5": {
+      "exp_id": "E5",
+      "title": "Component Ablation",
+      "outdir": "experiments/ablation",
+      "reproduction_command": "./.venv/bin/python experiment_ablation.py",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:37:32Z",
+      "duration_s": 1.979,
+      "return_code": 0,
+      "log_path": "experiments/ablation/logs/E5.log",
+      "artifacts": {
+        "ablation": {
+          "path": "experiments/ablation/ablation.json",
+          "sha256": "63defeb892b96a1565f9397e6cc3a948e81eef796494ea29164222ba235d9f87",
+          "bytes": 5844
+        },
+        "ablation_csv": {
+          "path": "experiments/ablation/ablation.csv",
+          "sha256": "fefee215e380c94de783b813c301c777f4caa80378131ef12108f4dd1020d27d",
+          "bytes": 478
+        },
+        "ablation_log": {
+          "path": "experiments/ablation/ablation_log.jsonl",
+          "sha256": "84e25fd4f8a04b2566bdfeb584391503612fffb46ea5c99f7b14b1950880de72",
+          "bytes": 2270
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": "Removes class-veto, non-compensatory Gamma, authorization layer; leaked-permit counts."
+    },
+    "E6": {
+      "exp_id": "E6",
+      "title": "Runtime Profiling",
+      "outdir": "experiments/profiling",
+      "reproduction_command": "./.venv/bin/python -c \"from agentdojo_integration.audit import runtime_profile as r; r.run('experiments/profiling', 5000)\"",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:39:35Z",
+      "duration_s": 2.12,
+      "return_code": 0,
+      "log_path": "experiments/profiling/logs/E6.log",
+      "artifacts": {
+        "runtime_profile.json": {
+          "path": "experiments/profiling/runtime_profile.json",
+          "sha256": "d386ebcb2ee3dde9dddccea2cd063a7afef04d5046a1031d3ae785acbac2bb60",
+          "bytes": 984
+        },
+        "stage_distributions.json": {
+          "path": "experiments/profiling/stage_distributions.json",
+          "sha256": "854061ca16fd3269a997f0e62f97c7193b5569e4ce39c7cf10ed5f8b266deab4",
+          "bytes": 1258
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": null
+    },
+    "E7": {
+      "exp_id": "E7",
+      "title": "AgentDojo external validation (offline)",
+      "outdir": "experiments/agentdojo",
+      "reproduction_command": "agentdojo_integration/.venv/bin/python experiment_agentdojo_metrics.py",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:39:37Z",
+      "duration_s": 10.33,
+      "return_code": 0,
+      "log_path": "experiments/agentdojo/logs/E7_boundary.log",
+      "artifacts": {
+        "statistics.json": {
+          "path": "experiments/agentdojo/statistics.json",
+          "sha256": "342cdb2224332b64dba0ea8417d2d8357ec396ecd5f0298efb53f046e2dacf9f",
+          "bytes": 10903
+        },
+        "boundary_fpr.json": {
+          "path": "experiments/agentdojo/boundary/boundary_fpr.json",
+          "sha256": "cde16292bdcaad813b6c6a1e28505ec6a23e7604f449c3d1c424c85b8ee7fb6f",
+          "bytes": 4365
+        },
+        "e7_metrics.json": {
+          "path": "experiments/agentdojo/e7_metrics.json",
+          "sha256": "5879bd58ad0c51efdf2369368e21f88a594b7f27e562f4cf4477279b35d81f78",
+          "bytes": 5903
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": "{\"stats_rederivation\": {\"return_code\": 0, \"produces\": \"statistics.json, decisions.csv, predicates.csv\"}, \"boundary_fpr\": {\"return_code\": 0}, \"metrics_aggregation\": {\"return_code\": 0, \"produces\": \"e7_metrics.json\", \"verdict\": \"PASS\"}, \"live_episodes\": {\"status\": \"NOT_RUN\", \"scope\": \"OPTIONAL \\u2014 agent-side metrics only\", \"measurement_mode\": \"REPLAY\", \"missing_dependency\": \"local Ollama server\", \"ollama_probe\": {\"available\": false, \"endpoint\": \"http://localhost:11434/v1\", \"port\": 11434, \"models\": [], \"detail\": \"no Ollama server at http://localhost:11434/api/tags: [Errno 61] Connection refused\"}, \"core_arm_unaffected\": true, \"fallback_executed\": [\"stats_rederivation (33 recorded episodes)\", \"boundary_fpr (direct adjudication, no LLM)\", \"metrics_aggregation (e7_metrics.json)\"], \"why_this_is_not_a_gap\": \"Utility and attack-success rate are properties of the AGENT, not of the guard, and require a live model to generate fresh trajectories. Every metric L-DREA claims \\u2014 false-permit rate, replay determinism, evidence-quad completeness, hash-chain and ledger integrity, latency \\u2014 is measured with no model in the loop.\", \"rerun\": \"ollama serve & ollama pull llama3.1:8b && export LOCAL_LLM_PORT=11434; then agentdojo_integration/.venv/bin/python agentdojo_integration/run_audit.py --suites workspace banking slack travel --outdir agentdojo_integration/audit_run\"}, \"measurement_provenance\": {\"boundary_fpr\": {\"mode\": \"DIRECT_ADJUDICATION\", \"llm_in_loop\": false, \"note\": \"every attacker target submitted to the frozen engine; no model runs\"}, \"permit_rate / authorization_stability / gamma_overhead\": {\"mode\": \"REPLAY\", \"llm_in_loop\": false, \"note\": \"re-derived from 33 previously recorded episodes; no fresh generation\"}, \"hash_chain / ledger / evidence_quad / replay_determinism\": {\"mode\": \"RECOMPUTED\", \"llm_in_loop\": false, \"note\": \"hash chain independently recomputed from the chained sidecar, not read from a flag\"}, \"task_utility / attack_success_rate\": {\"mode\": \"NOT_MEASURED\", \"llm_in_loop\": true, \"note\": \"agent-side; requires a local Ollama server. Not measured, not substituted. No L-DREA claim depends on it.\"}}, \"external_api_credentials_required\": false}"
+    },
+    "E8": {
+      "exp_id": "E8",
+      "title": "Runtime Robustness",
+      "outdir": "experiments/robustness",
+      "reproduction_command": "./.venv/bin/python experiment_robustness.py",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:39:47Z",
+      "duration_s": 1.4,
+      "return_code": 0,
+      "log_path": "experiments/robustness/logs/E8.log",
+      "artifacts": {
+        "robustness": {
+          "path": "experiments/robustness/robustness.json",
+          "sha256": "9f1abfbd7d74d30a32a25f2b67fbf105643cd4679b779554bcdeafcff3dba39e",
+          "bytes": 9490
+        },
+        "robustness_csv": {
+          "path": "experiments/robustness/robustness.csv",
+          "sha256": "19d188eb6677e4921c4be4958811986c165ff875e0c9911c8674af7ed6b1a80e",
+          "bytes": 1606
+        },
+        "robustness_log": {
+          "path": "experiments/robustness/robustness_log.jsonl",
+          "sha256": "b6666020c34b06112c203b19caa0c56541b0b8bbcef706038e60688337eaf67f",
+          "bytes": 9611
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": "16 fault families injected into the harness only; frozen engine + stable verifier unchanged."
+    },
+    "E9": {
+      "exp_id": "E9",
+      "title": "Runtime Predicate Coverage & Single-Deficit Isolation",
+      "outdir": "experiments/predicate_coverage",
+      "reproduction_command": "./.venv/bin/python experiment_predicate_coverage.py",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:39:49Z",
+      "duration_s": 0.738,
+      "return_code": 0,
+      "log_path": "experiments/predicate_coverage/logs/E9.log",
+      "artifacts": {
+        "predicate_coverage": {
+          "path": "experiments/predicate_coverage/predicate_coverage.json",
+          "sha256": "94315e89052a6d008af335976ea1a3417a3c8d32e98f5dbbbf61b80510daae86",
+          "bytes": 18050
+        },
+        "predicate_coverage_csv": {
+          "path": "experiments/predicate_coverage/predicate_coverage.csv",
+          "sha256": "15255956a4c800ec4d18a2378780c4af238de59d7886ea7741aeb10499373a11",
+          "bytes": 2180
+        },
+        "predicate_coverage_log": {
+          "path": "experiments/predicate_coverage/predicate_coverage_log.jsonl",
+          "sha256": "cf469e31e3887ddc10d96119a66d7c8a44f004dae085f91a4290b6c5bca7e2af",
+          "bytes": 10563
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": "Deterministic synthetic suite over the frozen evaluate_decision: every runtime predicate falsified in isolation. Closes the E1 corpus-coverage gap empirically."
+    },
+    "E10": {
+      "exp_id": "E10",
+      "title": "Audit Bundle Export",
+      "outdir": "experiments/audit_bundle",
+      "reproduction_command": "./.venv/bin/python tools/export_audit_bundle.py && ./.venv/bin/python concurbench_full.py",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:44:56Z",
+      "duration_s": 15.999,
+      "return_code": 0,
+      "log_path": "experiments/audit_bundle/logs/E10.log",
+      "artifacts": {
+        "audit_bundle_report.json": {
+          "path": "experiments/audit_bundle/audit_bundle_report.json",
+          "sha256": "ca8d22d996ebf613fa84aa3937fa159807fe0b5ad167e3d1f8a0e608e7de584d",
+          "bytes": 1023
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": null
+    },
+    "E11": {
+      "status": "EXECUTED",
+      "duration_s": 24.75,
+      "returncode": 0,
+      "reproduction_command": "./.venv/bin/python experiments/run_runtime_stack.py --n 8000",
+      "started": "2026-07-11T17:39:50Z",
+      "note": "Measured runtime evidence stack. Detection numbers are Synthetic Runtime; real-dataset detection is E12. No E1-E10 artifact is touched."
+    },
+    "E12": {
+      "status": "EXECUTED",
+      "duration_s": 281.31,
+      "returncode": 0,
+      "reproduction_command": "./.venv/bin/python experiments/run_dataset_eval.py --limit 100000",
+      "started": "2026-07-11T17:40:14Z",
+      "note": "Real Measured-Runtime blind detection over discovered public datasets. ULB raw features now present; detection is no longer BLOCKED. Predicates are unsupervised anomaly bounds, not tuned classifiers."
+    },
+    "E5b": {
+      "exp_id": "E5b",
+      "title": "Combined Component Ablation (interaction effects)",
+      "outdir": "experiments/combined_ablation",
+      "reproduction_command": "./.venv/bin/python experiment_combined_ablation.py",
+      "status": "EXECUTED",
+      "started_utc": "2026-07-11T17:37:34Z",
+      "duration_s": 120.551,
+      "return_code": 0,
+      "log_path": "experiments/combined_ablation/logs/E5b.log",
+      "artifacts": {
+        "combined_ablation": {
+          "path": "experiments/combined_ablation/combined_ablation.json",
+          "sha256": "143ef86da1e81a750549ae6033945fd98dc8dffbed662c9e2d913953e5686aad",
+          "bytes": 166979
+        },
+        "combined_ablation_csv": {
+          "path": "experiments/combined_ablation/combined_ablation.csv",
+          "sha256": "29462051776fc69acd377900bb4f048e38bc3506ec4662b57dad8e969bbc3bcc",
+          "bytes": 2756
+        },
+        "combined_ablation_matrix": {
+          "path": "experiments/combined_ablation/combined_ablation_matrix.csv",
+          "sha256": "46e7975c4aeaff7e7f3d1d28eec4724ec1ca9f8f0e584028bb5bac5c260307fa",
+          "bytes": 1072
+        }
+      },
+      "blocked_reason": null,
+      "missing_dependency": null,
+      "rerun_when_available": null,
+      "notes": "Baseline + 5 singles + 10 pairs + 2 triples + full over 5 runtime components; classifies pairwise/higher-order interactions (additive/synergistic/redundant/critical-dependency) from measured Runtime Integrity Score."
+    }
+  },
+  "generator_failures": [
+    {
+      "generator": "scientific_consistency.py",
+      "returncode": 1
+    }
+  ],
+  "generators_ok": false
+}

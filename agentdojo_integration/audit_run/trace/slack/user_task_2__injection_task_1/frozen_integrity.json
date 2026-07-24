@@ -1,0 +1,53 @@
+{
+  "before": {
+    "agentdojo_integration/interception/__init__.py": "f5ff79aff7867bf20955b40a713571051f32c21647553b823a684e3a5b61d97d",
+    "agentdojo_integration/interception/execution_binding.py": "c115b4238f68c1acd541266a49eda657bf55427871e0736bc07c66a5e00bb3e4",
+    "agentdojo_integration/interception/frozen_policy.py": "7e98da2e4b7f0ce425d8bc68e518201b98785146065d9ad17bf414b52c5b66ab",
+    "agentdojo_integration/interception/gamma_bridge.py": "ec7298eb2496a138e92ea8ab48603792046fce90ab8e7212c64c8bf417dd4afa",
+    "agentdojo_integration/interception/governed_runtime.py": "4d18c56b94fa5520057d66d40288c702e2fb8e424231ceefe4a7548adc68c994",
+    "agentdojo_integration/interception/predicate_evaluation.py": "cf5a1c09d56c02898ca989bd814fc6aaa63d3105703aa9ee96f01882ba4d766d",
+    "gamma_test_runner.py": "6c7ca5717240f248bb8baa048ba5e9816fcf862bcca1de70a1ce3bc5c42ef202",
+    "agentdojo_integration/manifests/Execution_Binding_Manifest.json": "3e0c42937cd03cda729965e0f5823f38226238391178fd161d2fee994229b76d",
+    "agentdojo_integration/manifests/_raw_inventory_v1.json": "24f1109156616b12d0dfe149252ce391f02d0b6eb329fb20203603cad5c38dc2",
+    "agentdojo_integration/manifests/agentdojo_freeze_manifest.json": "cbb7c85729ebb50f3e13f545d8fdc7229cda7348796aaf3bd14ffc61831b1cc1",
+    "agentdojo_integration/manifests/dataset_manifest.json": "ee1ae68ea3587399502c86e9d9ffd42f33d1ad39fc8e354a7cc5fec0cdd30bf2",
+    "agentdojo_integration/manifests/environment_provisioning_record.json": "69c2c1a0836749baa2cc1536d5e6c1c6dc75b255468aeecb4928393c7c1c75a1",
+    "agentdojo_integration/manifests/evaluation_manifest.json": "f1d9d0e4dbc6f9ef1128e9ebf24ced5d1b969b2f17b8970c6c641a299035ab6c",
+    "agentdojo_integration/manifests/merkle_root.json": "36cd04a178e38f376cd98d6352a7a58b9dbfd0568b25d106a52f64b3a6be1bf2",
+    "agentdojo_integration/manifests/predicate_manifest.json": "f336b102df3041d4872ee98a1e0efb4ba7f56281d605d692fc0213fe4235f4a8",
+    "agentdojo_integration/manifests/recipient_derivation_manifest.json": "6e2a8f6e76a03308f00ea39e6ca692ef175dda9704dd46a86208f6ae1138d077",
+    "agentdojo_integration/manifests/threshold_manifest.json": "73c5b8657e43757cb9e1efb73fbba738afb440e59db224fa67d7dd965cbe7a61",
+    "agentdojo_integration/manifests/tool_mapping_manifest.json": "543306fdd2c91a9fab6a038d49e2a4ef77efb8f60c52d1d840862b7866b821e5",
+    "agentdojo_integration/manifests/version_manifest.json": "06ac6407d59f389d92845406c60659bbb4cb646cd6eb94b6ac3fb8c957d6bfa3"
+  },
+  "after": {
+    "agentdojo_integration/interception/__init__.py": "f5ff79aff7867bf20955b40a713571051f32c21647553b823a684e3a5b61d97d",
+    "agentdojo_integration/interception/execution_binding.py": "c115b4238f68c1acd541266a49eda657bf55427871e0736bc07c66a5e00bb3e4",
+    "agentdojo_integration/interception/frozen_policy.py": "7e98da2e4b7f0ce425d8bc68e518201b98785146065d9ad17bf414b52c5b66ab",
+    "agentdojo_integration/interception/gamma_bridge.py": "ec7298eb2496a138e92ea8ab48603792046fce90ab8e7212c64c8bf417dd4afa",
+    "agentdojo_integration/interception/governed_runtime.py": "4d18c56b94fa5520057d66d40288c702e2fb8e424231ceefe4a7548adc68c994",
+    "agentdojo_integration/interception/predicate_evaluation.py": "cf5a1c09d56c02898ca989bd814fc6aaa63d3105703aa9ee96f01882ba4d766d",
+    "gamma_test_runner.py": "6c7ca5717240f248bb8baa048ba5e9816fcf862bcca1de70a1ce3bc5c42ef202",
+    "agentdojo_integration/manifests/Execution_Binding_Manifest.json": "3e0c42937cd03cda729965e0f5823f38226238391178fd161d2fee994229b76d",
+    "agentdojo_integration/manifests/_raw_inventory_v1.json": "24f1109156616b12d0dfe149252ce391f02d0b6eb329fb20203603cad5c38dc2",
+    "agentdojo_integration/manifests/agentdojo_freeze_manifest.json": "cbb7c85729ebb50f3e13f545d8fdc7229cda7348796aaf3bd14ffc61831b1cc1",
+    "agentdojo_integration/manifests/dataset_manifest.json": "ee1ae68ea3587399502c86e9d9ffd42f33d1ad39fc8e354a7cc5fec0cdd30bf2",
+    "agentdojo_integration/manifests/environment_provisioning_record.json": "69c2c1a0836749baa2cc1536d5e6c1c6dc75b255468aeecb4928393c7c1c75a1",
+    "agentdojo_integration/manifests/evaluation_manifest.json": "f1d9d0e4dbc6f9ef1128e9ebf24ced5d1b969b2f17b8970c6c641a299035ab6c",
+    "agentdojo_integration/manifests/merkle_root.json": "36cd04a178e38f376cd98d6352a7a58b9dbfd0568b25d106a52f64b3a6be1bf2",
+    "agentdojo_integration/manifests/predicate_manifest.json": "f336b102df3041d4872ee98a1e0efb4ba7f56281d605d692fc0213fe4235f4a8",
+    "agentdojo_integration/manifests/recipient_derivation_manifest.json": "6e2a8f6e76a03308f00ea39e6ca692ef175dda9704dd46a86208f6ae1138d077",
+    "agentdojo_integration/manifests/threshold_manifest.json": "73c5b8657e43757cb9e1efb73fbba738afb440e59db224fa67d7dd965cbe7a61",
+    "agentdojo_integration/manifests/tool_mapping_manifest.json": "543306fdd2c91a9fab6a038d49e2a4ef77efb8f60c52d1d840862b7866b821e5",
+    "agentdojo_integration/manifests/version_manifest.json": "06ac6407d59f389d92845406c60659bbb4cb646cd6eb94b6ac3fb8c957d6bfa3"
+  },
+  "verdict": {
+    "unchanged": true,
+    "n_files": 19,
+    "changed": [],
+    "added": [],
+    "removed": [],
+    "before_root": "79c4442cb19daeea2ba6f65b2687f26bc5933f42bd73042889573848b9dc4b37",
+    "after_root": "79c4442cb19daeea2ba6f65b2687f26bc5933f42bd73042889573848b9dc4b37"
+  }
+}

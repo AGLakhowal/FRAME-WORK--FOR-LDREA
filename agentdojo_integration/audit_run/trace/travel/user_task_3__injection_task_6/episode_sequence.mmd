@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant L as LLM
+    participant T as ToolsExecutor
+    participant G as GammaGovernedRuntime
+    participant P as PredicateEngine
+    participant D as DecisionEngine(Γ,Π)
+    participant F as ToolRuntime
+    U->>L: LLM_REQUEST (step 1)
+    L-->>T: LLM_RESPONSE finish=stop, tool_calls=0
+    Note over U,F: EPISODE_FINISHED utility=False security=False

@@ -1,0 +1,70 @@
+{
+  "manifest": "Merkle Root \u2014 canonical frozen experiment identifier",
+  "frozen_date": "2026-07-07",
+  "spec_reference": "Engineering governance refinement #3; Verification Part 5 (Merkle commitment).",
+  "procedure": "leaf = SHA256(canonical_json(manifest)); canonical_json = sort_keys, separators (',',':'); internal = SHA256(left_hex_ascii + right_hex_ascii); odd node duplicated; fixed order by leaf_index 1..7.",
+  "leaves": [
+    {
+      "leaf_index": 1,
+      "file": "predicate_manifest.json",
+      "sha256": "288c7a26427be76da6d6bc988ffdb191fb32268e94a8707c7dc9df0f788b3511"
+    },
+    {
+      "leaf_index": 2,
+      "file": "threshold_manifest.json",
+      "sha256": "edb59650837b2333800b2e627b23891df22bb287b05b7792d258ceec1f6f447b"
+    },
+    {
+      "leaf_index": 3,
+      "file": "tool_mapping_manifest.json",
+      "sha256": "a53583625eb2dc94a2ff4ea97df009fc536e55b2fcd4e24e18172926ee42f1ea"
+    },
+    {
+      "leaf_index": 4,
+      "file": "recipient_derivation_manifest.json",
+      "sha256": "9c2df01e091dead4a3b134f64d0038db8b1fe891b54a0397417352a8d8ef448e"
+    },
+    {
+      "leaf_index": 5,
+      "file": "evaluation_manifest.json",
+      "sha256": "61543f55c31b74ce311dea84873ba0a806e0e90a943d21809dfc8fc4e782708c"
+    },
+    {
+      "leaf_index": 6,
+      "file": "version_manifest.json",
+      "sha256": "7666f87232d52bdf3f7eb3df7beb033286067cdcae5d869ebfa56938a45f01e1"
+    },
+    {
+      "leaf_index": 7,
+      "file": "dataset_manifest.json",
+      "sha256": "057cae8fc93e3eebbe5ee850f9950d6ef80ebe1bfb3f1bc8ea8a3498d2647c0b"
+    }
+  ],
+  "tree_levels": [
+    [
+      "288c7a26427be76da6d6bc988ffdb191fb32268e94a8707c7dc9df0f788b3511",
+      "edb59650837b2333800b2e627b23891df22bb287b05b7792d258ceec1f6f447b",
+      "a53583625eb2dc94a2ff4ea97df009fc536e55b2fcd4e24e18172926ee42f1ea",
+      "9c2df01e091dead4a3b134f64d0038db8b1fe891b54a0397417352a8d8ef448e",
+      "61543f55c31b74ce311dea84873ba0a806e0e90a943d21809dfc8fc4e782708c",
+      "7666f87232d52bdf3f7eb3df7beb033286067cdcae5d869ebfa56938a45f01e1",
+      "057cae8fc93e3eebbe5ee850f9950d6ef80ebe1bfb3f1bc8ea8a3498d2647c0b"
+    ],
+    [
+      "e60eb37914ddae485338db238f52a84fce6190f6624e5eb5d7ad7661f101faa4",
+      "123e773b42753f168faa8f478acb8f3e082ad5b337d71f47dca8b10d64d881df",
+      "28aa60499e88a8d08b9f99909c055f7c08577bc65fbcc3874b36a75d34895c25",
+      "5117f05b98c20934b960e9bf48e01137f9042f2bae09b4c793af72ac66dd6ded"
+    ],
+    [
+      "a9ff5c2678cafdb6c17b230b4492f4db34dc46606789e8b195e507a466ffbc95",
+      "aa65f200188939fc4d577e269ca6e6f7d605d46041276b388c59caf280f88f2a"
+    ],
+    [
+      "ce8c8467a3a9d60c69864b8a94a44f2b871440b333f659307da011e1bb64f618"
+    ]
+  ],
+  "merkle_root": "ce8c8467a3a9d60c69864b8a94a44f2b871440b333f659307da011e1bb64f618",
+  "blind_authoring_statement": "Predicate/Threshold/Tool-Mapping/Recipient manifests were authored from IEEE Paper Section X action-class semantics and Definition 1; the AgentDojo injection-task corpus (task goals/content) was never inspected. Injection-task IDs were counted only.",
+  "freeze_rule": "No predicate, threshold, mapping, or recipient rule may change after this root is committed. Any change re-opens the anti-circularity gate and voids the independence claim (Verification Part 5)."
+}

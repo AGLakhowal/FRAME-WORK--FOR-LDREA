@@ -1,0 +1,23 @@
+{
+  "candidate_actions_replayed": 1,
+  "traced_decision_stream": [
+    [
+      "post_webpage",
+      "WEB_EXFIL",
+      "SAFE_STATE",
+      1,
+      0
+    ]
+  ],
+  "replay_decision_stream": [
+    [
+      "post_webpage",
+      "WEB_EXFIL",
+      "SAFE_STATE",
+      1,
+      0
+    ]
+  ],
+  "identical": true,
+  "n_decisions": 1
+}

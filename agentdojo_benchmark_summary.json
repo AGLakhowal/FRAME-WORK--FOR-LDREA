@@ -1,0 +1,36 @@
+{
+  "summary": "AgentDojo benchmark executability",
+  "framework": {
+    "name": "agentdojo",
+    "version": "0.1.35",
+    "benchmark_version": "v1",
+    "source": "upstream (unmodified, not forked, not emulated)"
+  },
+  "environment": {
+    "interpreter": "agentdojo_integration/.venv/bin/python",
+    "python": "3.11.15"
+  },
+  "injection_point": "TaskSuite.run_task_with_pipeline(runtime_class=...) \u2014 official extension seam",
+  "suites_available": [
+    "workspace",
+    "travel",
+    "banking",
+    "slack"
+  ],
+  "harness_status": "VERIFIED_OFFLINE",
+  "scored_run_status": "EXECUTED (OFFLINE_NO_LLM)",
+  "frozen_integrity": "PASS",
+  "verifications": {
+    "official_benchmark_wired": true,
+    "interception_complete": true,
+    "replay_deterministic": true,
+    "determinism_temperature": 0.0,
+    "no_frozen_component_modified": true,
+    "no_results_fabricated": true
+  },
+  "external_api_credentials_required": false,
+  "evaluation_target": "L-DREA runtime governance. NOT the language model.",
+  "scored_run_note": "E7 executes fully offline: AgentDojo is the independent workload generator and every L-DREA governance metric is computed with no model in the loop. The prior pending-status value was a stale artifact of a hosted-provider default (gpt-4o) that E7 never required. Agent-side Utility/TASR remain unmeasured on this host (no local Ollama server) and are never substituted.",
+  "verdict": "PASS",
+  "full_report": "experiments/agentdojo/e7_metrics.json"
+}

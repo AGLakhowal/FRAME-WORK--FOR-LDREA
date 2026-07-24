@@ -1,0 +1,157 @@
+{
+  "benchmark": "LAB v1.0 (L-DREA Authorization Benchmark)",
+  "method_version": "gamma_test_runner/LAB-v1.0/2.0",
+  "input_file": "GAMMA_G0_CREDITCARD_FULL_mapped.csv",
+  "n_total": 284807,
+  "n_adversarial": 492,
+  "n_nominal": 284315,
+  "primary_metrics": {
+    "false_permit_rate": {
+      "metric": "False Permit Rate (FPR)",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 0.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": false
+    },
+    "false_denial_rate": {
+      "metric": "False Denial Rate (FDR)",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 0.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": false
+    },
+    "replay_determinism_rate": {
+      "metric": "Replay Determinism Rate (RDR)",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 1.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": true
+    },
+    "revocation_compliance": {
+      "metric": "Revocation Compliance",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 1.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": true
+    },
+    "toctou_violation_rate": {
+      "metric": "TOCTOU Violation Rate",
+      "n": 284807,
+      "adverse_events": 0,
+      "reported_rate": 0.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 1.34878e-05,
+      "wilson95_clustercorrected_upper": 2.29289e-05,
+      "n_eff": 167533.5,
+      "design_effect": 1.7,
+      "higher_is_better": false
+    },
+    "class_veto_effectiveness": {
+      "metric": "Class-Veto Effectiveness",
+      "n": 492,
+      "adverse_events": 0,
+      "reported_rate": 1.0,
+      "adverse_rate": 0.0,
+      "wilson95_naive_upper": 0.007747353,
+      "wilson95_clustercorrected_upper": 0.013117879,
+      "n_eff": 289.4,
+      "design_effect": 1.7,
+      "higher_is_better": true
+    }
+  },
+  "runtime_invariants_violations": {
+    "I1_execution_sovereignty": 0,
+    "I2_non_bypassability": 0,
+    "I3_non_compensatory_soundness": 0,
+    "I4_class_level_veto": 0,
+    "I5_toctou_state_consistency": 0,
+    "I6_runtime_sovereignty": 0
+  },
+  "all_invariants_hold": true,
+  "unauthorized_execution": {
+    "definition": "Eq.7: Execute & (!Valid(Token) | max(GammaG,GammaClass)>0 | ISB=0 | evidence invalid)",
+    "count": 0
+  },
+  "negative_control": {
+    "description": "Compensatory weighted-sum aggregator (Corollary 2) vs non-compensatory LLC (max).",
+    "tau": 0.15,
+    "compensatory_total_permits": 284315,
+    "compensatory_false_permits_vs_llc": 0,
+    "corollary2_single_deficit_masked": true,
+    "corollary2_rows_masked_if_isolated": 492,
+    "interpretation": "As observed, every adversarial row fails multiple hard predicates, so the weighted-sum aggregator happens to deny them too. The constructive Corollary 2 probe shows that an isolated single deficit scores 0.077 < tau=0.15, which the weighted-sum would MASK (false permit) while the non-compensatory max-aggregator (Law of Concurrence) still denies."
+  },
+  "measured_latency": {
+    "note": "MEASURED on this host: predicate eval + SHA-256 hash-chain advance + HMAC-SHA256 sign (representative crypto, NOT a hardware HSM signature) + WAL fsync (durable). Not comparable to the paper's HSM/FPGA hardware-in-the-loop figures.",
+    "wal_fsync_included": true,
+    "latency_sampled_rows": 50000,
+    "total_rows": 284807,
+    "samples": 50000,
+    "timed_path_agreement": 50000,
+    "mean_ms": 0.020352,
+    "p50_ms": 0.019417,
+    "p95_ms": 0.025834,
+    "p99_ms": 0.03125,
+    "max_ms": 1.493792,
+    "hotpath_p99_ms": 0.030167,
+    "limit_ms": 100.0,
+    "hotpath_limit_ms": 5.0,
+    "headroom_p95_ms": 99.974166,
+    "headroom_max_ms": 98.506208,
+    "throughput_ops_per_s": 49134.2,
+    "status_p95": "Pass",
+    "status_max": "Pass",
+    "status_hotpath_p99": "Pass"
+  },
+  "replay_determinism": {
+    "hash_chain_links_ok": 284807,
+    "hash_chain_links_total": 284807,
+    "genesis_anchored": true,
+    "tlc_total_states": 2489446,
+    "tlc_violation_count": 0
+  },
+  "decision_agreement": {
+    "match_status_rate": 1.0,
+    "match_safe_state_rate": 1.0,
+    "match_act_permit_rate": 1.0
+  },
+  "per_scenario_class": {
+    "ADVERSARIAL_CLASS_1": {
+      "n": 492,
+      "derived_safe_state": 492,
+      "false_permits": 0
+    },
+    "NOMINAL_CLASS_0": {
+      "n": 284315,
+      "derived_safe_state": 0,
+      "false_permits": 0
+    }
+  },
+  "appendix_a_style_summary": [
+    "UER 0 / 284807; adversarial false permits 0 / 492; Wilson 95% upper bound p < 2.29e-05.",
+    "Replay determinism 100.0000%; revocation compliance 100.0000%; TOCTOU violations 0 observed; Wilson 95% upper bound p < 2.29e-05.",
+    "Latency mean 0.0204 ms, P95 0.0258 ms, P99 0.0312 ms, max 1.4938 ms; throughput ~49,134 ops/s; O(n) predicate scaling.",
+    "Runtime invariants: 6/6 satisfied; unauthorized executions 0; false permit rate 0%; false denial rate 0%; class-veto effectiveness 100%.",
+    "Decision agreement: 100.0000% vs Status, 100.0000% vs SAFE_STATE, 100.0000% vs ACT_PERMIT; all 492 adversarial transactions transitioned to SAFE_STATE (492/492) with 0 false permits."
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "primary_metrics": [
+    {
+      "metric": "False Permit Rate (ULB)",
+      "value": "0/492",
+      "ci": "Wilson95\u2191 1.312e-02",
+      "n": 492,
+      "exp": "E1",
+      "repro": "./.venv/bin/python gamma_test_runner.py --no-html --no-open"
+    },
+    {
+      "metric": "False Denial Rate (ULB)",
+      "value": "0/284315",
+      "ci": "\u2014",
+      "n": 284315,
+      "exp": "E1",
+      "repro": "./.venv/bin/python gamma_test_runner.py --no-html --no-open"
+    },
+    {
+      "metric": "Unauthorized Executions (UER)",
+      "value": "0/284807",
+      "ci": "\u2014",
+      "n": 284807,
+      "exp": "E1",
+      "repro": "./.venv/bin/python gamma_test_runner.py --no-html --no-open"
+    },
+    {
+      "metric": "Replay Determinism Rate",
+      "value": "1.0",
+      "ci": "\u2014",
+      "n": 284807,
+      "exp": "E1",
+      "repro": "./.venv/bin/python gamma_test_runner.py --no-html --no-open"
+    },
+    {
+      "metric": "Class-Veto Effectiveness",
+      "value": "1.0",
+      "ci": "\u2014",
+      "n": 492,
+      "exp": "E1",
+      "repro": "./.venv/bin/python gamma_test_runner.py --no-html --no-open"
+    },
+    {
+      "metric": "Decision latency mean (ms)",
+      "value": "0.0259",
+      "ci": "p95 0.0323 / p99 0.0377",
+      "n": 284807,
+      "exp": "E1",
+      "repro": "./.venv/bin/python gamma_test_runner.py --no-html --no-open"
+    },
+    {
+      "metric": "Authorization Accuracy",
+      "value": "1.000000",
+      "ci": "TP 284315/TN 492/FP 0/FN 0",
+      "n": 284807,
+      "exp": "E1",
+      "repro": "./.venv/bin/python gamma_test_runner.py --no-html --no-open"
+    },
+    {
+      "metric": "Replay hash-chain adjacency failures",
+      "value": "0",
+      "ci": "\u2014",
+      "n": 284807,
+      "exp": "E2",
+      "repro": "./.venv/bin/python gamma_replay_verify.py gamma_replay_manifest.jsonl"
+    },
+    {
+      "metric": "Replay ledger-bind failures",
+      "value": "0",
+      "ci": "\u2014",
+      "n": 284807,
+      "exp": "E2",
+      "repro": "./.venv/bin/python gamma_replay_verify.py gamma_replay_manifest.jsonl"
+    },
+    {
+      "metric": "Formal state-space coverage",
+      "value": "65536/65536",
+      "ci": "complete",
+      "n": 65536,
+      "exp": "E3",
+      "repro": "./.venv/bin/python independent_verifier.py"
+    },
+    {
+      "metric": "Decision-equivalence field mismatches",
+      "value": "0",
+      "ci": "verdict IDENTICAL",
+      "n": 65536,
+      "exp": "E3",
+      "repro": "./.venv/bin/python independent_verifier.py"
+    },
+    {
+      "metric": "Throughput @1 / @64 threads (dec/s)",
+      "value": "355,151 / 69,797",
+      "ci": "speedup 0.197\u00d7",
+      "n": 200000,
+      "exp": "E4",
+      "repro": "./.venv/bin/python -c \"from agentdojo_integration.audit import concurrency_scaling as c; c.run('experiments/stress',200000,[1,2,4,8,16,32,64])\""
+    },
+    {
+      "metric": "False permits/denials under load (all levels)",
+      "value": "0/0",
+      "ci": "all-correct True",
+      "n": 1400000,
+      "exp": "E4",
+      "repro": "./.venv/bin/python -c \"from agentdojo_integration.audit import concurrency_scaling as c; c.run('experiments/stress',200000,[1,2,4,8,16,32,64])\""
+    },
+    {
+      "metric": "Leaked permits: baseline_full_LDREA",
+      "value": "0/60000",
+      "ci": "[0.0000, 0.0001]",
+      "n": 60000,
+      "exp": "E5",
+      "repro": "./.venv/bin/python experiment_ablation.py"
+    },
+    {
+      "metric": "Leaked permits: remove_class_veto",
+      "value": "15000/60000",
+      "ci": "[0.2466, 0.2535]",
+      "n": 60000,
+      "exp": "E5",
+      "repro": "./.venv/bin/python experiment_ablation.py"
+    },
+    {
+      "metric": "Leaked permits: remove_noncompensatory_gamma",
+      "value": "15000/60000",
+      "ci": "[0.2466, 0.2535]",
+      "n": 60000,
+      "exp": "E5",
+      "repro": "./.venv/bin/python experiment_ablation.py"
+    },
+    {
+      "metric": "Leaked permits: remove_authorization_layer",
+      "value": "45000/60000",
+      "ci": "[0.7465, 0.7534]",
+      "n": 60000,
+      "exp": "E5",
+      "repro": "./.venv/bin/python experiment_ablation.py"
+    },
+    {
+      "metric": "AgentDojo boundary FPR (foreign targets)",
+      "value": "0/62",
+      "ci": "Wilson95\u2191 5.834e-02",
+      "n": 62,
+      "exp": "E7",
+      "repro": "agentdojo_integration/.venv/bin/python experiment_agentdojo_boundary_fpr.py"
+    },
+    {
+      "metric": "AgentDojo permit rate (recorded episodes)",
+      "value": "0.786",
+      "ci": "[0.524, 0.924]",
+      "n": 14,
+      "exp": "E7",
+      "repro": "agentdojo_integration/.venv/bin/python experiment_agentdojo_boundary_fpr.py"
+    },
+    {
+      "metric": "Robustness: false permits across all faults",
+      "value": "0/51",
+      "ci": "safety holds 16/16 families",
+      "n": 51,
+      "exp": "E8",
+      "repro": "./.venv/bin/python experiment_robustness.py"
+    }
+  ]
+}

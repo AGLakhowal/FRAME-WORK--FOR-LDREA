@@ -1,0 +1,11 @@
+{
+  "trace_file": "agentdojo_integration/audit_run/trace/travel/user_task_2__injection_task_6/execution_trace.jsonl",
+  "n_events": 16,
+  "chain_root": "673a0ba0de93823774aec2c5e7740d44a4d1030a3eb4d7e3a3702cab15b82046",
+  "chain_sidecar": "agentdojo_integration/audit_run/trace/travel/user_task_2__injection_task_6/execution_trace_chained.jsonl",
+  "event_id_monotonic_unique": true,
+  "step_non_decreasing": true,
+  "timestamp_non_decreasing": true,
+  "append_only_ok": true,
+  "integrity_ok": true
+}

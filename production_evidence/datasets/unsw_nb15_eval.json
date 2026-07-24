@@ -1,0 +1,251 @@
+{
+  "dataset": "UNSW-NB15",
+  "domain": "network intrusion telemetry",
+  "evidence_level": "Measured Runtime",
+  "source_file": "dataset/ieee-fraud-detection/CSV Files/Training and Testing Sets/UNSW_NB15_testing-set.csv",
+  "rows_loaded": 82332,
+  "warmup_rows": 20583,
+  "evaluated_rows": 61749,
+  "sampling": "deterministic shuffle of first 82332 file rows, seed 20260710, then take 82332 (stateless predicates -> order does not affect the decision)",
+  "prevalence": 0.5506000097167566,
+  "prevalence_note": "UNSW-NB15 is a curated intrusion benchmark with high attack prevalence, not a rare-event stream; ULB and IEEE-CIS are natural low-prevalence fraud streams",
+  "predicates_per_decision": 7,
+  "predicate_names": [
+    "bytes_within_bound",
+    "rate_within_bound",
+    "duration_within_bound",
+    "packets_within_bound",
+    "recognized_service",
+    "normal_connection_state",
+    "ttl_seen_in_baseline"
+  ],
+  "calibration": {
+    "bytes_cap": 803566.0,
+    "rate_cap": 1000000.003,
+    "dur_cap": 45.037312,
+    "pkts_cap": 730.0,
+    "services": [
+      "dhcp",
+      "dns",
+      "ftp",
+      "ftp-data",
+      "http",
+      "irc",
+      "pop3",
+      "radius",
+      "..."
+    ],
+    "ttls": [
+      0.0,
+      1.0,
+      29.0,
+      31.0,
+      32.0,
+      60.0,
+      62.0,
+      63.0,
+      "..."
+    ],
+    "warmup_n": 20583
+  },
+  "blindness": "adapter returns (features, label) separately; label absent from the predicate/decision path; opened only in score() after chaining",
+  "permits_issued": 35662,
+  "safe_state": 26087,
+  "load_seconds": 1.322995625,
+  "latency": {
+    "predicate_ms": {
+      "n": 61749,
+      "unit": "ms",
+      "mean": 0.0036663999740886495,
+      "min": 0.003,
+      "max": 0.120125,
+      "median": 0.003458,
+      "p95": 0.004667,
+      "p99": 0.007834,
+      "stdev": 0.0011752127952616178
+    },
+    "authorization_ms": {
+      "n": 61749,
+      "unit": "ms",
+      "mean": 0.0010984939513190497,
+      "min": 0.000875,
+      "max": 0.187083,
+      "median": 0.001042,
+      "p95": 0.00125,
+      "p99": 0.002,
+      "stdev": 0.0009527239762377297
+    },
+    "end_to_end_ms": {
+      "n": 61749,
+      "unit": "ms",
+      "mean": 0.2942711701727963,
+      "min": 0.219042,
+      "max": 7.249791,
+      "median": 0.2845,
+      "p95": 0.315042,
+      "p99": 0.514834,
+      "stdev": 0.06666943962309843
+    },
+    "throughput_decisions_per_s": 3398.2261986887643
+  },
+  "evidence": {
+    "ledger_blocks": 483,
+    "batch_size": 128,
+    "hash_chain_valid": true,
+    "chain_error": null,
+    "merkle_root_head": "19e1b1b947a7f10ed4d1f26da18066fd2743508c76bddc659d7e8f0dd6796cbf",
+    "ertuples": 61749,
+    "evidence_level": "Derived From Measured"
+  },
+  "detection": {
+    "evidence_level": "Measured Runtime",
+    "confusion_matrix": {
+      "tp_fraud_denied": 22366,
+      "fn_fraud_permitted": 11479,
+      "fp_legit_denied": 3721,
+      "tn_legit_permitted": 24183
+    },
+    "n": 61749,
+    "positives": 33845,
+    "negatives": 27904,
+    "precision": 0.857361904396826,
+    "recall_detection_rate": 0.6608361648692569,
+    "specificity": 0.8666499426605505,
+    "f1": 0.7463792297937663,
+    "balanced_accuracy": 0.7637430537649037,
+    "matthews_corrcoef": 0.5314673629671437,
+    "auroc": 0.7609717202749718,
+    "auprc": 0.6448127896968524,
+    "roc_curve": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        7.167431192660551e-05,
+        0.00047274338897916975
+      ],
+      [
+        0.009317660550458715,
+        0.004579701580735707
+      ],
+      [
+        0.13335005733944955,
+        0.6608361648692569
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "pr_curve": [
+      [
+        0.00047274338897916975,
+        0.8888888888888888
+      ],
+      [
+        0.004579701580735707,
+        0.37349397590361444
+      ],
+      [
+        0.6608361648692569,
+        0.857361904396826
+      ],
+      [
+        1.0,
+        0.5481060422031127
+      ]
+    ],
+    "false_permit_rate": {
+      "metric": "false_permit_rate",
+      "value": 0.3391638351307431,
+      "wilson95": {
+        "p": 0.3391638351307431,
+        "low": 0.3341386035886584,
+        "high": 0.3442255728265156,
+        "n": 33845,
+        "successes": 11479
+      },
+      "defined": true,
+      "note": null
+    },
+    "false_deny_rate": {
+      "metric": "false_deny_rate",
+      "value": 0.13335005733944955,
+      "wilson95": {
+        "p": 0.13335005733944955,
+        "low": 0.12941176333608093,
+        "high": 0.13738928861225327,
+        "n": 27904,
+        "successes": 3721
+      },
+      "caveat": "recognized-set legitimate class overlaps the gate; near-tautological"
+    },
+    "recall_wilson95": {
+      "p": 0.6608361648692569,
+      "low": 0.6557744271734844,
+      "high": 0.6658613964113416,
+      "n": 33845,
+      "successes": 22366
+    },
+    "precision_wilson95": {
+      "p": 0.857361904396826,
+      "low": 0.8530656607370891,
+      "high": 0.8615529164148782,
+      "n": 26087,
+      "successes": 22366
+    },
+    "calibration_by_gamma": {
+      "0": {
+        "n": 35662,
+        "positives": 11479,
+        "empirical_rate": 0.3218832370590545
+      },
+      "1": {
+        "n": 25672,
+        "positives": 22211,
+        "empirical_rate": 0.8651838578996572
+      },
+      "2": {
+        "n": 397,
+        "positives": 139,
+        "empirical_rate": 0.3501259445843829
+      },
+      "3": {
+        "n": 18,
+        "positives": 16,
+        "empirical_rate": 0.8888888888888888
+      }
+    },
+    "cost_model": {
+      "fp_cost": 1.0,
+      "fn_cost": 20.0,
+      "total_cost": 233301.0,
+      "note": "costs are a stated modelling assumption, not a measurement"
+    },
+    "recall_bootstrap95": {
+      "point": 0.6608361648692569,
+      "low": 0.6557541734377308,
+      "high": 0.6659477027625942,
+      "resamples": 2000,
+      "n": 33845,
+      "alpha": 0.05,
+      "method": "percentile bootstrap (seeded, deterministic)"
+    },
+    "false_deny_bootstrap95": {
+      "point": 0.13335005733944955,
+      "low": 0.12926462155963303,
+      "high": 0.13739965596330275,
+      "resamples": 2000,
+      "n": 27904,
+      "alpha": 0.05,
+      "method": "percentile bootstrap (seeded, deterministic)"
+    }
+  },
+  "threats_to_validity": [
+    "Predicates are unsupervised anomaly bounds calibrated on an unlabeled prefix, not domain fraud/intrusion features. Results are a floor for governance-predicate authorization, not a tuned classifier.",
+    "Bounded sample of 61,749 evaluated rows (first-N slice). A time-ordered distribution shift between prefix and tail would bias the operating point.",
+    "Single split, no cross-validation, single host."
+  ],
+  "wall_seconds": 76.58
+}

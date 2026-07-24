@@ -1,0 +1,67 @@
+{
+  "mode": "quick",
+  "elapsed_s": 0.11,
+  "steps": [
+    {
+      "step": "rederive:agentdojo_statistics",
+      "status": "PASS",
+      "detail": "n_decisions 14 vs canonical 14"
+    },
+    {
+      "step": "rederive:fpr_fdr",
+      "status": "SKIP",
+      "detail": "ModuleNotFoundError: No module named 'agentdojo'"
+    },
+    {
+      "step": "reexec:heavy",
+      "status": "REUSE",
+      "detail": "reusing committed raw-experiment JSON (pass --full to re-run)"
+    },
+    {
+      "step": "regenerate:agentdojo_episodes",
+      "status": "GATED",
+      "detail": "requires ollama+llama3.1:8b; run: python agentdojo_integration/run_audit.py \u2026"
+    },
+    {
+      "step": "generate:tables",
+      "status": "PASS",
+      "detail": "8 tables, provenance 60 PASS / 0 FAIL / 0 ERROR"
+    },
+    {
+      "step": "generate:figures",
+      "status": "PASS",
+      "detail": "3 figures"
+    }
+  ],
+  "outputs": {
+    "tables": {
+      "tables_produced": [
+        "table_lab_primary",
+        "table_runtime_invariants",
+        "table_latency",
+        "table_agentdojo",
+        "table_concurrency",
+        "table_combined_ablation",
+        "table_full_spec",
+        "table_formal_state_space"
+      ],
+      "provenance_records": 60,
+      "PASS": 60,
+      "FAIL": 0,
+      "ERROR": 0,
+      "out_dir": "paper_tables"
+    },
+    "figures": {
+      "figures": [
+        "fig_lab_primary_rates",
+        "fig_concurrency_throughput",
+        "fig_concurrency_p99"
+      ],
+      "out_dir": "paper_figures",
+      "notes": [
+        "PNG/PDF not emitted: no SVG converter (rsvg-convert/cairosvg/inkscape) on PATH. SVG + *_data.csv are the portable, reproducible artifacts."
+      ]
+    }
+  },
+  "provenance_ledger": "paper_tables/provenance_ledger.json"
+}

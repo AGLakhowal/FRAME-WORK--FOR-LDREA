@@ -1,0 +1,32 @@
+{
+  "status": "EXECUTED",
+  "measurement_mode": "OFFLINE_NO_LLM",
+  "external_api_credentials_required": false,
+  "benchmark": "AgentDojo (agentdojo==0.1.35), suites: banking, slack, travel, workspace",
+  "evaluation_target": "L-DREA runtime governance. NOT the language model.",
+  "verdict": "PASS",
+  "headline_metrics": {
+    "scenarios": 33,
+    "tool_calls": 42,
+    "authorized_decisions": 11,
+    "denied_decisions": 3,
+    "false_permit_rate": 0.0,
+    "false_denial_rate": 0.0,
+    "replay_determinism": 1.0,
+    "evidence_quad_completeness": 1.0,
+    "hash_chain_integrity": 1.0,
+    "ledger_integrity": 1.0,
+    "runtime_risk_detection": 1.0
+  },
+  "frozen": {
+    "scientific_root": "ce8c8467a3a9d60c69864b8a94a44f2b871440b333f659307da011e1bb64f618",
+    "binding_sha": "a38619274c6e796eeb8ba2e03c45a9ef351cd571c141118be82dc8351dc969b1"
+  },
+  "full_report": "experiments/agentdojo/e7_metrics.json",
+  "how_to_run": "agentdojo_integration/.venv/bin/python experiment_agentdojo_metrics.py experiments/agentdojo   # offline, no credential",
+  "optional_live_arm": {
+    "purpose": "agent-side task utility / attack-success rate (NOT an L-DREA metric)",
+    "backend": "local Ollama via agentdojo vllm_parsed provider; no hosted provider",
+    "how_to_run": "ollama serve & ollama pull llama3.1:8b && export LOCAL_LLM_PORT=11434 && agentdojo_integration/.venv/bin/python agentdojo_integration/run_audit.py"
+  }
+}

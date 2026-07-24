@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Raw datasets (too large for GitHub — keep out of version control)
+dataset/
+datasets/**/*.csv
+
+# Large generated data files (>100MB, exceed GitHub's file size limit)
+GAMMA_G0_CREDITCARD_FULL_mapped.csv
+gamma_replay_manifest.jsonl
+gamma_validation_results.csv
+experiments/runtime_correctness/gamma_validation_results.csv
